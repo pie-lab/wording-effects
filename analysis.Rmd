@@ -51,14 +51,13 @@ data = data %>%
 
 ## Recode personality item responses to numeric
 
-
 We recode the responses to personality items, which we downloaded as text strings. 
 
 ```{r}
-contains_accurate = apply(data, 2, FUN = function(x) str_detect(x, "accurate"))
-contains_accurate = apply(contains_accurate, 2, sum, na.rm=T)
-contains_accurate = names(data)[contains_accurate > 0]
-personality_items = select(data, proid, all_of(contains_accurate))
+p_items = str_extract(names(data), "^[[:alpha:]]*_[abcd](_2)?$")
+p_items = p_items[!is.na(p_items)]
+
+personality_items = select(data, proid, all_of(p_items))
 ```
 
 Next we write a simple function to recode values.
@@ -88,9 +87,111 @@ personality_items = personality_items %>%
 Now we merge this back into the data.
 
 ```{r}
-data = select(data, -all_of(contains_accurate))
+data = select(data, -all_of(p_items))
 data = full_join(data, personality_items)
 ```
+
+## Reverse score personality items
+
+The following items are (typically) negatively correlated with the others: reckless, moody, worrying, nervous, careless, impulsive. We reverse-score them to ease interpretation of associations and means in the later sections. In short, all traits will be scored such that larger numbers are indicative of the more socially desirable end of the specturm.
+
+```{r}
+data = data %>%
+  mutate(
+    across(matches("^reckless"),  ~(.x*-1)+7),
+    across(matches("^moody"),     ~(.x*-1)+7),
+    across(matches("^worrying"),  ~(.x*-1)+7),
+    across(matches("^nervous"),   ~(.x*-1)+7),
+    across(matches("^careless"),  ~(.x*-1)+7),
+    across(matches("^impulsive"), ~(.x*-1)+7))
+  
+```
+
+
+# Drop bots
+
+We remove participants without valid Prolific IDs.
+
+```{r}
+data = data %>%
+  mutate(proid = str_remove(proid, "Value will be set from panel or URL"),
+         proid = str_remove(proid, "Value will be set from panel or UR")) %>%
+  filter(proid != "")
+```
+
+Participants are removed if they do not speak english well or very well.
+
+```{r}
+data = data %>%
+  filter(english %in% c("Well", "Very well (fluent/native)"))
+```
+
+We remove any participant who provides the same response to over half of the items (≥ 17) from a given block in a row.
+
+```{r}
+# first, identify unique adjectives, in order
+adjectives = p_items %>%
+  str_remove_all("_.") %>%
+  unique()
+
+# extract block 1 questions
+block1 = data %>%
+  select(proid, matches("^[[:alpha:]]+_[abcd]$")) 
+
+#rename variables 
+n = 0
+for(i in adjectives){
+  n = n+1
+  names(block1) = str_replace(names(block1), i, paste0("trait", str_pad(n, 2, pad = "0")))
+}
+
+
+block1 = block1 %>%
+  gather(item, response, -proid) %>%
+  filter(!is.na(response)) %>%
+  separate(item, into = c("item", "format")) %>%
+  select(-format) %>%
+  spread(item, response)
+
+runs = numeric(length = nrow(block1))
+
+
+#   working on this!!!
+for(i in 1:nrow(block1)){
+  run = 0
+  maxrun = 0
+  for(j in 3:ncol(block1)){
+    if(block1[i,j] == block1[i, j-1]){
+      run = run+1
+      } else{run = 0}
+    if(run > 0) maxrun = run
+  } 
+  runs[i] = run
+}
+```
+
+```{r}
+# extract block 1 questions
+block2 = data %>%
+  select(proid, matches("^[[:alpha:]]+_[abcd]_2$")) 
+
+#rename variables 
+n = 0
+for(i in adjectives){
+  n = n+1
+  names(block2) = str_replace(names(block2), i, paste0("trait", str_pad(n, 2, pad = "0")))
+}
+
+block2 = block2 %>%
+  gather(item, response, -proid) %>%
+  filter(!is.na(response)) %>%
+  mutate(item = str_remove(item, "_2")) %>%
+  separate(item, into = c("item", "format")) %>%
+  select(-format) %>%
+  arrange(proid, item)
+```
+
+
 
 # Analyses
 
@@ -124,9 +225,17 @@ item_responses = item_responses %>%
 ### Results
 
 ```{r}
+item_responses$format = as.factor(item_responses$format)
+item_responses$format = relevel(item_responses$format, ref = "a")
+
 mod.format = lmer(response~format + (1|proid), 
                   data = item_responses)
 anova(mod.format)
+summary(mod.format)
+
+mod.format2 = aov(response~format + Error(proid) , data = item_responses)
+summary(mod.format2)
+
 ```
 
 ```{r}
@@ -177,13 +286,6 @@ mod_by_item %>%
   kable(digits = 2, booktabs = T) %>%
   kable_styling()
 ```
-
-
-
-
-
-
-
 
 **These analyses will attempt to account for memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).**
 
