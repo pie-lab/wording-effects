@@ -1,0 +1,132 @@
+---
+title: "Format effects"
+date: "Last updated `r Sys.Date()`"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(warning = F, message = F)
+```
+
+# Workspace
+
+```{r}
+library(here) # for working with files
+library(tidyverse) # for cleaning
+library(janitor) # for variable names
+library(lme4) # for mulitlevel modeling
+library(sjPlot) # for figures
+library(ggpubr) # for prettier plots
+library(kableExtra) # for nicer tables
+```
+
+```{r, echo = F}
+load(here("data/cleaned_data.Rds"))
+```
+
+
+## Data prep
+
+**We will use between-person analyses to compare responses using group-level data for the different formats.**
+
+First we select the responses to the items of different formats. These variable names all have the same format: `[trait]_[abcd]` (for example, `talkative_a`). We search for these items using regular expressions.
+
+```{r}
+items_seen_first = str_subset(
+  names(data),
+  "^([[:alpha:]])+_[abcd]$"
+)
+
+item_responses = data %>%
+  select(proid, all_of(items_seen_first))
+```
+
+Next we reshape these data into long form.
+
+```{r}
+item_responses = item_responses %>%
+  gather(item, response, -proid) %>%
+  separate(item, into = c("item", "format")) %>%
+  filter(!is.na(response))
+```
+
+## Results
+
+```{r}
+item_responses$format = as.factor(item_responses$format)
+item_responses$format = relevel(item_responses$format, ref = "a")
+
+mod.format = lmer(response~format + (1|proid), 
+                  data = item_responses)
+anova(mod.format)
+summary(mod.format)
+
+mod.format2 = aov(response~format + Error(proid) , data = item_responses)
+summary(mod.format2)
+
+```
+
+```{r}
+plot_model(mod.format, type = "pred")
+```
+
+```{r}
+means_by_group = item_responses %>%
+  group_by(format) %>% 
+  summarise(m = mean(response),
+            s = sd(response))
+
+item_responses %>%
+  ggplot(aes(x = response, fill = format)) +
+  geom_histogram(bins = 6, color = "white") +
+  geom_vline(aes(xintercept = m), data = means_by_group) +
+  geom_text(aes(x = 1, 
+                y = 125, 
+                label = paste("M =", round(m,2), 
+                              "\nSD =", round(s,2))), 
+            data = means_by_group, 
+            hjust =0, 
+            vjust = 1) +
+  facet_wrap(~format) +
+  guides(fill = F) +
+  theme_pubr()
+```
+
+We can also repeat this analysis separately for each trait. 
+
+```{r, results = 'asis'}
+mod_by_item = item_responses %>%
+  group_by(item) %>%
+  nest() %>%
+  mutate(mod = map(data, ~lm(response~format, data = .))) %>%
+  mutate(aov = map(mod, anova)) 
+
+mod_by_item %>%
+  mutate(tidy = map(aov, broom::tidy)) %>%
+  select(item, tidy) %>% 
+  unnest(cols = c(tidy)) %>%
+  filter(term == "format") %>%
+  mutate(p.adj = p.adjust(p.value, method = "holm")) %>%
+  mutate(across(
+    starts_with("p"),
+    papaja::printnum
+  )) %>%
+  kable(digits = 2, booktabs = T) %>%
+  kable_styling()
+```
+
+**These analyses will attempt to account for memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).**
+
+Within-person analyses will model the proportions of variance attributable to item format, stems of the items (i.e., the content of the adjectives), and the respondent-level variance.
+
+We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone.
+
+We will also consider the effect on retest reliability of performance on the word recall task.
+
+We will further compare response times as a function of item format using both within- and between-person data in order to evaluate the presumption that adjective ratings require less time than phrased items. 
+
+Finally, secondary analyses will consider preliminary evidence for differences (e.g., mean response times, mean level of response) based on the type of device used to complete the survey (mobile, desktop, or tablet).
+

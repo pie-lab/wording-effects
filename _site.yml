@@ -2,9 +2,16 @@ name: On item wording effects
 output_dir: "."
 navbar:
   title: "On item wording effects"
+  left:
+    - text: Data cleaning
+      href: 1-cleaning.html
+    - text: Analysis
+      menu:
+        - text: "Does item formatting affect response?"
+          href: analysis_format.html
   right:
     - icon: fa-github
-      href: https://github.com/uopsych/psy611
+      href: https://github.com/pie-lab/wording-effects
 output:
   html_document:
     lib_dir: site_libs

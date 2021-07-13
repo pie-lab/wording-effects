@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Data cleaning</title>
+
+<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">On item wording effects</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="1-cleaning.html">Data cleaning</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="analysis_format.html">Does item formatting affect response?</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/pie-lab/wording-effects">
+    <span class="fas fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Data cleaning</h1>
+<h4 class="date">Last updated 2021-07-13</h4>
+
+</div>
+
+
+<div id="workspace" class="section level1">
+<h1>Workspace</h1>
+<pre class="r"><code>library(here) # for working with files
+library(tidyverse) # for cleaning
+library(janitor) # for variable names
+library(lme4) # for mulitlevel modeling
+library(sjPlot) # for figures
+library(ggpubr) # for prettier plots
+library(kableExtra) # for nicer tables</code></pre>
+<pre class="r"><code>data_path = here(&quot;data/Wording_July 12, 2021_18.12.text.csv&quot;)
+
+data_labels = read_csv(data_path)
+
+data = read_csv(data_path,
+                skip = 3, 
+                col_names = names(data_labels))
+rm(data_labels)
+data = clean_names(data)</code></pre>
+<p>Remove the following columns.</p>
+<pre class="r"><code>data = data %&gt;%
+  select(-end_date,
+         -ip_address, 
+         -progress, 
+         -duration_in_seconds,
+         -finished,
+         -recorded_date,
+         -external_reference, 
+         -distribution_channel,
+         -user_language,
+         -starts_with(&quot;recipient&quot;),
+         -starts_with(&quot;location&quot;),
+         -starts_with(&quot;meta_info&quot;))</code></pre>
+</div>
+<div id="temporary" class="section level1">
+<h1>TEMPORARY</h1>
+<pre class="r"><code># rename T_HelpfulD_2
+
+data = rename(data, 
+              helpful_d_2 = t_helpful_d_2)</code></pre>
+</div>
+<div id="cleaning" class="section level1">
+<h1>Cleaning</h1>
+<div id="recode-personality-item-responses-to-numeric" class="section level2">
+<h2>Recode personality item responses to numeric</h2>
+<p>We recode the responses to personality items, which we downloaded as text strings.</p>
+<pre class="r"><code>p_items = str_extract(names(data), &quot;^[[:alpha:]]*_[abcd](_2)?$&quot;)
+p_items = p_items[!is.na(p_items)]
+
+personality_items = select(data, proid, all_of(p_items))</code></pre>
+<p>Next we write a simple function to recode values.</p>
+<pre class="r"><code>recode_p = function(x){
+  y = case_when(
+    x == &quot;Very inaccurate&quot; ~ 1,
+    x == &quot;Moderately inaccurate&quot; ~ 2,
+    x == &quot;Slightly inaccurate&quot; ~ 3,
+    x == &quot;Slightly accurate&quot; ~ 4,
+    x == &quot;Moderately accurate&quot; ~ 5,
+    x == &quot;Very accurate&quot; ~ 6,
+    TRUE ~ NA_real_)
+  return(y)
+}</code></pre>
+<p>Finally, we apply this function to all personality items.</p>
+<pre class="r"><code>personality_items = personality_items %&gt;%
+  mutate(
+    across(!c(proid), recode_p))</code></pre>
+<p>Now we merge this back into the data.</p>
+<pre class="r"><code>data = select(data, -all_of(p_items))
+data = full_join(data, personality_items)</code></pre>
+</div>
+<div id="drop-bots" class="section level2">
+<h2>Drop bots</h2>
+<div id="based-on-responses" class="section level3">
+<h3>Based on responses</h3>
+<p>We removed 4 participants without valid Prolific IDs.</p>
+<pre class="r"><code>data = data %&gt;%
+  mutate(proid = str_remove(proid, &quot;Value will be set from panel or URL&quot;),
+         proid = str_remove(proid, &quot;Value will be set from panel or UR&quot;)) %&gt;%
+  filter(proid != &quot;&quot;)</code></pre>
+<p>We removed 0 participants that do not speak english well or very well.</p>
+</div>
+<div id="based-on-patterns" class="section level3">
+<h3>Based on patterns</h3>
+<p>We remove any participant who provides the same response to over half of the items (≥ 17) from a given block in a row.</p>
+<pre class="r"><code># first, identify unique adjectives, in order
+adjectives = p_items %&gt;%
+  str_remove_all(&quot;_.&quot;) %&gt;%
+  unique()
+
+# extract block 1 questions
+block1 = data %&gt;%
+  select(proid, matches(&quot;^[[:alpha:]]+_[abcd]$&quot;)) 
+
+#rename variables 
+n = 0
+for(i in adjectives){
+  n = n+1
+  names(block1) = str_replace(names(block1), i, paste0(&quot;trait&quot;, str_pad(n, 2, pad = &quot;0&quot;)))
+}
+
+
+block1 = block1 %&gt;%
+  gather(item, response, -proid) %&gt;%
+  filter(!is.na(response)) %&gt;%
+  separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
+  select(-format) %&gt;%
+  spread(item, response)
+
+block1_runs = numeric(length = nrow(block1))
+
+#   working on this!!!
+for(i in 1:nrow(block1)){
+  run = 0
+  maxrun = 0
+  for(j in 3:ncol(block1)){
+    if(block1[i,j] == block1[i, j-1]){
+      run = run+1
+      if(run &gt; maxrun) maxrun = run
+      } else{ run = 0}
+  } 
+  block1_runs[i] = maxrun
+}
+
+#add to data frame
+block1$block1_runs = block1_runs</code></pre>
+<pre class="r"><code># extract block 2 questions
+block2 = data %&gt;%
+  select(proid, matches(&quot;^[[:alpha:]]+_[abcd]_2$&quot;)) 
+
+#rename variables 
+n = 0
+for(i in adjectives){
+  n = n+1
+  names(block2) = str_replace(names(block2), i, paste0(&quot;trait&quot;, str_pad(n, 2, pad = &quot;0&quot;)))
+}
+
+block2 = block2 %&gt;%
+  gather(item, response, -proid) %&gt;%
+  filter(!is.na(response)) %&gt;%
+  mutate(item = str_remove(item, &quot;_2&quot;)) %&gt;%
+  separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
+  select(-format) %&gt;%
+  spread(item, response)
+
+block2_runs = numeric(length = nrow(block2))
+
+#   working on this!!!
+for(i in 1:nrow(block2)){
+  run = 0
+  maxrun = 0
+  for(j in 3:ncol(block2)){
+    if(block2[i,j] == block2[i, j-1]){
+      run = run+1
+      if(run &gt; maxrun) maxrun = run
+      } else{ run = 0}
+  } 
+  block2_runs[i] = maxrun
+}
+
+#add to data frame
+block2$block2_runs = block2_runs</code></pre>
+<pre class="r"><code>#combine results
+runs_data = block1 %&gt;%
+  select(proid, block1_runs) %&gt;%
+  full_join(select(block2, proid, block2_runs)) %&gt;%
+  mutate(
+    remove = case_when(
+      block1_runs &gt;= 17 ~ &quot;Remove&quot;,
+      block2_runs &gt;= 17 ~ &quot;Remove&quot;,
+      TRUE ~ &quot;Keep&quot;
+    ))</code></pre>
+<pre class="r"><code>#visualize
+runs_data %&gt;%
+  ggplot(aes(block1_runs, block2_runs)) +
+  geom_point(aes(color = remove)) +
+  scale_color_manual(values = c(&quot;black&quot;, &quot;red&quot;)) +
+  guides(color = &quot;none&quot;) +
+  labs(
+    x = &quot;block 1 runs&quot;,
+    y = &quot;block 2 runs&quot;
+  ) +
+  theme_pubr()</code></pre>
+<div class="figure">
+<img src="1-cleaning_files/figure-html/unnamed-chunk-16-1.png" alt="Maximum number of same consecutive responses in personality blocks." width="672" />
+<p class="caption">
+Maximum number of same consecutive responses in personality blocks.
+</p>
+</div>
+<p>There were 2 participants who provided the same answer 17 or more times in a row. These participants were removed from the analyses.</p>
+<pre class="r"><code>data = data %&gt;%
+  full_join(select(runs_data, proid, remove)) %&gt;%
+  filter(remove != &quot;Remove&quot;) %&gt;%
+  select(-remove)
+
+rm(runs_data)</code></pre>
+</div>
+<div id="based-on-inattentive-responding" class="section level3">
+<h3>Based on inattentive responding</h3>
+<p>We expect to exclude any participant who has an average response of 4 (“slightly agree”) or greater to the attention check items. Two items from the Inattentive and Deviant Responding Inventory for Adjectives (IDRIA) scale (Kay &amp; Saucier, in prep) have been included here, in part to help evaluate the extent of inattentive responding but also to consider the effect of item wording on these items. The two items used here (i.e., “Asleep”, “Human”) were chosen to be as inconspicuous as possible, so as to not to inflate item response durations. The frequency item (i.e., “human”) will be reverse-scored, so that higher scores on both the infrequency and frequency items reflect greater inattentive responding.</p>
+<pre class="r"><code>in_average = data %&gt;%
+  # reverse score human
+  mutate(across(matches(&quot;^human&quot;),  ~(.x*-1)+7)) %&gt;%
+  # select id and attention check items
+  select(proid, matches(&quot;^human&quot;), matches(&quot;^asleep&quot;)) %&gt;% 
+  gather(item, response, -proid) %&gt;%
+  filter(!is.na(response)) %&gt;%
+  group_by(proid) %&gt;%
+  summarise(avg = mean(response)) %&gt;%
+  mutate(
+    remove = case_when(
+      avg &gt;= 4 ~ &quot;Remove&quot;,
+      TRUE ~ &quot;Keep&quot;))</code></pre>
+<pre class="r"><code>in_average %&gt;%
+  ggplot(aes(x = avg, fill = remove)) +
+  geom_histogram(bins = 20, color = &quot;white&quot;) +
+  geom_vline(aes(xintercept = 4)) +
+  guides(fill = &quot;none&quot;) +
+  labs(x = &quot;Average response to inattention check items&quot;) +
+  theme_pubr()</code></pre>
+<div class="figure">
+<img src="1-cleaning_files/figure-html/unnamed-chunk-19-1.png" alt="Average response to inattention check items" width="672" />
+<p class="caption">
+Average response to inattention check items
+</p>
+</div>
+<p>We remove 1 participants whose responses suggest inattention.</p>
+<pre class="r"><code>data = data %&gt;%
+  full_join(select(in_average, proid, remove)) %&gt;%
+  filter(remove != &quot;Remove&quot;) %&gt;%
+  select(-remove)</code></pre>
+</div>
+</div>
+<div id="reverse-score-personality-items" class="section level2">
+<h2>Reverse score personality items</h2>
+<p>The following items are (typically) negatively correlated with the others: reckless, moody, worrying, nervous, careless, impulsive. We reverse-score them to ease interpretation of associations and means in the later sections. In short, all traits will be scored such that larger numbers are indicative of the more socially desirable end of the specturm.</p>
+<pre class="r"><code>data = data %&gt;%
+  mutate(
+    across(matches(&quot;^reckless&quot;),  ~(.x*-1)+7),
+    across(matches(&quot;^moody&quot;),     ~(.x*-1)+7),
+    across(matches(&quot;^worrying&quot;),  ~(.x*-1)+7),
+    across(matches(&quot;^nervous&quot;),   ~(.x*-1)+7),
+    across(matches(&quot;^careless&quot;),  ~(.x*-1)+7),
+    across(matches(&quot;^impulsive&quot;), ~(.x*-1)+7))</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

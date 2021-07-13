@@ -1,7 +1,7 @@
 ---
-title: "Test"
-subtitle: "Subtitle"
-author: "Authors"
+title: "On item wording effects"
+subtitle: "Code and supplemental material"
+author: "Kelsey Condon, Cameron Kay, Sara Weston, & David Condon"
 output: 
   html_document:
     toc: TRUE
@@ -12,3 +12,8 @@ output:
 
 # Overview
 
+A fundamental assumption in the methodology of psychological assessment relates to the equivalence of self-report ratings based on single-word descriptors (typically, adjectives) and brief phrases containing the same terms (i.e., “Calm” vs “I am typically calm.”). The assumption is that seemingly trivial differences in stimuli have no effect on response patterns or the interpretations that can be made from data collected using either of these formats. Indeed, there are numerous cases where the assumption of functional equivalence is self-evident. To give another example, “Talkative” and “Talk a lot” are essentially identical.
+
+Yet, claims of equivalence based on face validity have some limits. For example, the absence of an effect due to item wording changes seems less clear for some descriptors than others. Consider being instructed to rate yourself as “active” or “warm” relative to “Tend to be active” or “Tend to be warm.” By specifically invoking tendency, the latter phrasing is more clearly prompting the respondents to rate trait-level psychological characteristics across situations, reducing the likelihood that they will respond based on transient physical (or even psychological) states. Similarly, the extent of the differences in phrasing should also be expected to increase the likelihood of a meaningful difference, i.e., “Organized” vs “I am someone who tends to be organized.” The latter format improves upon the simple adjective prompt in this case by clarifying both the trait/state ambiguity (by referencing tendency) and the lack of clarity around between-person and within-person ratings (with “... am someone who…”). To be specific, the second format is prompting respondents to rate the tendency to be organized relative to other people.
+
+The primary aim of the current study is to evaluate the effect of different item wording options using both between-person and within-person analyses. The study design required to evaluate this question will also allow for evaluation of test-retest reliability at the item-level. Main effects of item-wording format are not expected, though minor variability is expected depending on the content of the item stem -- the single-word descriptor. In addition, the absence of a significant main effect is likely to be a meaningful contribution for research on personality structure and assessment.
