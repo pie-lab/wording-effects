@@ -1,7 +1,10 @@
 ---
 title: "Analysis for item wording effects project"
 date: "Last updated `r Sys.Date()`"
-output: html_document
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
 ---
 
 ```{r, include = FALSE}
@@ -21,10 +24,13 @@ library(kableExtra) # for nicer tables
 ```
 
 ```{r}
-data_labels = read_csv(here("data/Wording_July+11,+2021_17.17.csv"))
+data_path = here("data/Wording_July 12, 2021_18.12.text.csv")
 
-data = read_csv(here("data/Wording_July+11,+2021_17.17.csv"),
-                skip = 3, col_names = names(data_labels))
+data_labels = read_csv(data_path)
+
+data = read_csv(data_path,
+                skip = 3, 
+                col_names = names(data_labels))
 rm(data_labels)
 data = clean_names(data)
 ```
@@ -46,6 +52,16 @@ data = data %>%
          -starts_with("location"),
          -starts_with("meta_info"))
 ```
+
+# TEMPORARY
+
+```{r}
+# rename T_HelpfulD_2
+
+data = rename(data, 
+              helpful_d_2 = t_helpful_d_2)
+```
+
 
 # Cleaning
 
@@ -91,40 +107,40 @@ data = select(data, -all_of(p_items))
 data = full_join(data, personality_items)
 ```
 
-## Reverse score personality items
+## Drop bots
 
-The following items are (typically) negatively correlated with the others: reckless, moody, worrying, nervous, careless, impulsive. We reverse-score them to ease interpretation of associations and means in the later sections. In short, all traits will be scored such that larger numbers are indicative of the more socially desirable end of the specturm.
+### Based on responses
 
-```{r}
-data = data %>%
-  mutate(
-    across(matches("^reckless"),  ~(.x*-1)+7),
-    across(matches("^moody"),     ~(.x*-1)+7),
-    across(matches("^worrying"),  ~(.x*-1)+7),
-    across(matches("^nervous"),   ~(.x*-1)+7),
-    across(matches("^careless"),  ~(.x*-1)+7),
-    across(matches("^impulsive"), ~(.x*-1)+7))
-  
+```{r, echo = F}
+olddata = data
 ```
 
-
-# Drop bots
-
-We remove participants without valid Prolific IDs.
-
-```{r}
+```{r rm_proid, echo = F}
 data = data %>%
   mutate(proid = str_remove(proid, "Value will be set from panel or URL"),
          proid = str_remove(proid, "Value will be set from panel or UR")) %>%
   filter(proid != "")
+
 ```
 
-Participants are removed if they do not speak english well or very well.
 
-```{r}
+We removed `r nrow(olddata)-nrow(data)` participants without valid Prolific IDs.
+
+```{r, ref.label='rm_proid'}
+```
+
+```{r, echo = F}
+olddata = data
+```
+
+```{r rm_english, echo = F}
 data = data %>%
   filter(english %in% c("Well", "Very well (fluent/native)"))
 ```
+
+We removed `r nrow(olddata)-nrow(data)` participants that do not speak english well or very well.
+
+### Based on patterns
 
 We remove any participant who provides the same response to over half of the items (≥ 17) from a given block in a row.
 
@@ -153,8 +169,7 @@ block1 = block1 %>%
   select(-format) %>%
   spread(item, response)
 
-runs = numeric(length = nrow(block1))
-
+block1_runs = numeric(length = nrow(block1))
 
 #   working on this!!!
 for(i in 1:nrow(block1)){
@@ -163,15 +178,18 @@ for(i in 1:nrow(block1)){
   for(j in 3:ncol(block1)){
     if(block1[i,j] == block1[i, j-1]){
       run = run+1
-      } else{run = 0}
-    if(run > 0) maxrun = run
+      if(run > maxrun) maxrun = run
+      } else{ run = 0}
   } 
-  runs[i] = run
+  block1_runs[i] = maxrun
 }
+
+#add to data frame
+block1$block1_runs = block1_runs
 ```
 
 ```{r}
-# extract block 1 questions
+# extract block 2 questions
 block2 = data %>%
   select(proid, matches("^[[:alpha:]]+_[abcd]_2$")) 
 
@@ -188,7 +206,118 @@ block2 = block2 %>%
   mutate(item = str_remove(item, "_2")) %>%
   separate(item, into = c("item", "format")) %>%
   select(-format) %>%
-  arrange(proid, item)
+  spread(item, response)
+
+block2_runs = numeric(length = nrow(block2))
+
+#   working on this!!!
+for(i in 1:nrow(block2)){
+  run = 0
+  maxrun = 0
+  for(j in 3:ncol(block2)){
+    if(block2[i,j] == block2[i, j-1]){
+      run = run+1
+      if(run > maxrun) maxrun = run
+      } else{ run = 0}
+  } 
+  block2_runs[i] = maxrun
+}
+
+#add to data frame
+block2$block2_runs = block2_runs
+```
+
+```{r}
+#combine results
+runs_data = block1 %>%
+  select(proid, block1_runs) %>%
+  full_join(select(block2, proid, block2_runs)) %>%
+  mutate(
+    remove = case_when(
+      block1_runs >= 17 ~ "Remove",
+      block2_runs >= 17 ~ "Remove",
+      TRUE ~ "Keep"
+    ))
+```
+
+```{r, fig.cap = "Maximum number of same consecutive responses in personality blocks."}
+#visualize
+runs_data %>%
+  ggplot(aes(block1_runs, block2_runs)) +
+  geom_point(aes(color = remove)) +
+  scale_color_manual(values = c("black", "red")) +
+  guides(color = "none") +
+  labs(
+    x = "block 1 runs",
+    y = "block 2 runs"
+  ) +
+  theme_pubr()
+```
+
+There were `r table(runs_data$remove)[[2]]` participants who provided the same answer 17 or more times in a row. These participants were removed from the analyses.
+
+```{r}
+data = data %>%
+  full_join(select(runs_data, proid, remove)) %>%
+  filter(remove != "Remove") %>%
+  select(-remove)
+
+rm(runs_data)
+```
+
+### Based on inattentive responding
+
+We expect to exclude any participant who has an average response of 4 (“slightly agree”) or greater to the attention check items. Two items from the Inattentive and Deviant Responding Inventory for Adjectives (IDRIA) scale (Kay & Saucier, in prep) have been included here, in part to help evaluate the extent of inattentive responding but also to consider the effect of item wording on these items. The two items used here (i.e., “Asleep”, “Human”) were chosen to be as inconspicuous as possible, so as to not to inflate item response durations. The frequency item (i.e., “human”) will be reverse-scored, so that higher scores on both the infrequency and frequency items reflect greater inattentive responding.
+
+```{r}
+in_average = data %>%
+  # reverse score human
+  mutate(across(matches("^human"),  ~(.x*-1)+7)) %>%
+  # select id and attention check items
+  select(proid, matches("^human"), matches("^asleep")) %>% 
+  gather(item, response, -proid) %>%
+  filter(!is.na(response)) %>%
+  group_by(proid) %>%
+  summarise(avg = mean(response)) %>%
+  mutate(
+    remove = case_when(
+      avg >= 4 ~ "Remove",
+      TRUE ~ "Keep"))
+```
+```{r, fig.cap = "Average response to inattention check items"}
+in_average %>%
+  ggplot(aes(x = avg, fill = remove)) +
+  geom_histogram(bins = 20, color = "white") +
+  geom_vline(aes(xintercept = 4)) +
+  guides(fill = "none") +
+  labs(x = "Average response to inattention check items") +
+  theme_pubr()
+```
+
+We remove `r table(in_average$remove[[2]])` participants whose responses suggest inattention.
+
+```{r}
+data = data %>%
+  full_join(select(in_average, proid, remove)) %>%
+  filter(remove != "Remove") %>%
+  select(-remove)
+```
+
+
+## Reverse score personality items
+
+The following items are (typically) negatively correlated with the others: reckless, moody, worrying, nervous, careless, impulsive. We reverse-score them to ease interpretation of associations and means in the later sections. In short, all traits will be scored such that larger numbers are indicative of the more socially desirable end of the specturm.
+
+```{r}
+data = data %>%
+  mutate(
+    across(matches("^reckless"),  ~(.x*-1)+7),
+    across(matches("^moody"),     ~(.x*-1)+7),
+    across(matches("^worrying"),  ~(.x*-1)+7),
+    across(matches("^nervous"),   ~(.x*-1)+7),
+    across(matches("^careless"),  ~(.x*-1)+7),
+    across(matches("^impulsive"), ~(.x*-1)+7))
+  
 ```
 
 

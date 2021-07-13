@@ -1,0 +1,11 @@
+name: On item wording effects
+output_dir: "."
+navbar:
+  title: "On item wording effects"
+  right:
+    - icon: fa-github
+      href: https://github.com/uopsych/psy611
+output:
+  html_document:
+    lib_dir: site_libs
+    self_contained: no
