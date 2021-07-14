@@ -352,13 +352,13 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2021-07-13</h4>
+<h4 class="date">Last updated 2021-07-14</h4>
 
 </div>
 
 
-<div id="workspace" class="section level1">
-<h1>Workspace</h1>
+<div id="workspace" class="section level2">
+<h2>Workspace</h2>
 <pre class="r"><code>library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
@@ -366,7 +366,7 @@ library(lme4) # for mulitlevel modeling
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables</code></pre>
-<pre class="r"><code>data_path = here(&quot;data/Wording_July 12, 2021_18.12.text.csv&quot;)
+<pre class="r"><code>data_path = here(&quot;data/Wording_July 13, 2021_20.00.text.csv&quot;)
 
 data_labels = read_csv(data_path)
 
@@ -390,15 +390,6 @@ data = clean_names(data)</code></pre>
          -starts_with(&quot;location&quot;),
          -starts_with(&quot;meta_info&quot;))</code></pre>
 </div>
-<div id="temporary" class="section level1">
-<h1>TEMPORARY</h1>
-<pre class="r"><code># rename T_HelpfulD_2
-
-data = rename(data, 
-              helpful_d_2 = t_helpful_d_2)</code></pre>
-</div>
-<div id="cleaning" class="section level1">
-<h1>Cleaning</h1>
 <div id="recode-personality-item-responses-to-numeric" class="section level2">
 <h2>Recode personality item responses to numeric</h2>
 <p>We recode the responses to personality items, which we downloaded as text strings.</p>
@@ -439,7 +430,7 @@ data = full_join(data, personality_items)</code></pre>
 </div>
 <div id="based-on-patterns" class="section level3">
 <h3>Based on patterns</h3>
-<p>We remove any participant who provides the same response to over half of the items (≥ 17) from a given block in a row.</p>
+<p>We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row.</p>
 <pre class="r"><code># first, identify unique adjectives, in order
 adjectives = p_items %&gt;%
   str_remove_all(&quot;_.&quot;) %&gt;%
@@ -539,7 +530,7 @@ runs_data %&gt;%
   ) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/unnamed-chunk-16-1.png" alt="Maximum number of same consecutive responses in personality blocks." width="672" />
+<img src="1-cleaning_files/figure-html/unnamed-chunk-15-1.png" alt="Maximum number of same consecutive responses in personality blocks." width="672" />
 <p class="caption">
 Maximum number of same consecutive responses in personality blocks.
 </p>
@@ -576,7 +567,7 @@ rm(runs_data)</code></pre>
   labs(x = &quot;Average response to inattention check items&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/unnamed-chunk-19-1.png" alt="Average response to inattention check items" width="672" />
+<img src="1-cleaning_files/figure-html/unnamed-chunk-18-1.png" alt="Average response to inattention check items" width="672" />
 <p class="caption">
 Average response to inattention check items
 </p>
@@ -599,7 +590,6 @@ Average response to inattention check items
     across(matches(&quot;^nervous&quot;),   ~(.x*-1)+7),
     across(matches(&quot;^careless&quot;),  ~(.x*-1)+7),
     across(matches(&quot;^impulsive&quot;), ~(.x*-1)+7))</code></pre>
-</div>
 </div>
 
 

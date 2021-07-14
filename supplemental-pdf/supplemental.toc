@@ -1,0 +1,8 @@
+\contentsline {section}{Cleaning}{1}{section*.2}%
+\contentsline {subsection}{Workspace}{1}{section*.3}%
+\contentsline {subsection}{Recode personality item responses to numeric}{2}{section*.4}%
+\contentsline {subsection}{Drop bots}{2}{section*.5}%
+\contentsline {subsubsection}{Based on responses}{2}{section*.6}%
+\contentsline {subsubsection}{Based on patterns}{3}{section*.7}%
+\contentsline {subsubsection}{Based on inattentive responding}{5}{section*.8}%
+\contentsline {subsection}{Reverse score personality items}{6}{section*.9}%

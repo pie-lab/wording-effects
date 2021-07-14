@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(warning = F, message = F)
 ```
 
-# Workspace
+## Workspace
 
 ```{r}
 library(here) # for working with files
@@ -24,7 +24,7 @@ library(kableExtra) # for nicer tables
 ```
 
 ```{r}
-data_path = here("data/Wording_July 12, 2021_18.12.text.csv")
+data_path = here("data/Wording_July 13, 2021_20.00.text.csv")
 
 data_labels = read_csv(data_path)
 
@@ -52,18 +52,6 @@ data = data %>%
          -starts_with("location"),
          -starts_with("meta_info"))
 ```
-
-# TEMPORARY
-
-```{r}
-# rename T_HelpfulD_2
-
-data = rename(data, 
-              helpful_d_2 = t_helpful_d_2)
-```
-
-
-# Cleaning
 
 ## Recode personality item responses to numeric
 
@@ -142,7 +130,7 @@ We removed `r nrow(olddata)-nrow(data)` participants that do not speak english w
 
 ### Based on patterns
 
-We remove any participant who provides the same response to over half of the items (≥ 17) from a given block in a row.
+We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row.
 
 ```{r}
 # first, identify unique adjectives, in order
