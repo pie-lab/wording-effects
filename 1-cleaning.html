@@ -35,6 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -365,7 +367,8 @@ library(janitor) # for variable names
 library(lme4) # for mulitlevel modeling
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
-library(kableExtra) # for nicer tables</code></pre>
+library(kableExtra) # for nicer tables
+library(stringdist)</code></pre>
 <pre class="r"><code>data_path = here(&quot;data/Wording_July 13, 2021_20.00.text.csv&quot;)
 
 data_labels = read_csv(data_path)
@@ -380,7 +383,6 @@ data = clean_names(data)</code></pre>
   select(-end_date,
          -ip_address, 
          -progress, 
-         -duration_in_seconds,
          -finished,
          -recorded_date,
          -external_reference, 
@@ -419,12 +421,13 @@ data = full_join(data, personality_items)</code></pre>
 </div>
 <div id="drop-bots" class="section level2">
 <h2>Drop bots</h2>
-<div id="based-on-responses" class="section level3">
-<h3>Based on responses</h3>
-<p>We removed 4 participants without valid Prolific IDs.</p>
+<div id="based-on-id" class="section level3">
+<h3>Based on ID</h3>
+<p>We removed 5 participants without valid Prolific IDs.</p>
 <pre class="r"><code>data = data %&gt;%
   mutate(proid = str_remove(proid, &quot;Value will be set from panel or URL&quot;),
-         proid = str_remove(proid, &quot;Value will be set from panel or UR&quot;)) %&gt;%
+         proid = str_remove(proid, &quot;Value will be set from panel or UR&quot;),
+         proid = str_remove(proid, &quot;TEST&quot;)) %&gt;%
   filter(proid != &quot;&quot;)</code></pre>
 <p>We removed 0 participants that do not speak english well or very well.</p>
 </div>
@@ -578,6 +581,53 @@ Average response to inattention check items
   filter(remove != &quot;Remove&quot;) %&gt;%
   select(-remove)</code></pre>
 </div>
+<div id="based-on-average-time-to-respond" class="section level3">
+<h3>Based on average time to respond</h3>
+<p>First we count how many answers each participant responded to. Why count using code and not just looking at qualtrics? Two reasons: 1. It’s not entirely clear from Qualtrics how many questions are in the survey, because there are 4 versions of each trait item and 4 different recall conditoins. 2. We expect the survey to change after reviews during Stage 1, and the person who wrote this code will definitely forget to change this section later.</p>
+<pre class="r"><code>num_variables = data %&gt;% 
+  select(-c(start_date:response_id),
+         -starts_with(&quot;t_&quot;),
+         -any_of(c(&quot;prolific_pid&quot;)) # not used. will we clean it up later? doesn&#39;t matter! 
+  ) %&gt;%
+  gather(item,response, -proid) %&gt;%
+  filter(!is.na(response)) %&gt;%
+  group_by(proid) %&gt;%
+  count(name = &quot;num_var&quot;) #how many variables per person? 
+
+# should be about the same number of responses per person with forced response
+table(num_variables$num_var)</code></pre>
+<pre><code>## 
+## 82 83 
+## 32  3</code></pre>
+<pre class="r"><code># participants with one more response included text in the response to the question 
+# Why should we exclude you?</code></pre>
+<p>Now we calculate the average time to respond by taking the duration in seconds variable and dividing by the number of responses.</p>
+<pre class="r"><code>num_variables = data %&gt;%
+  select(proid, duration_in_seconds) %&gt;%
+  full_join(num_variables) %&gt;%
+  mutate(time_per_item = duration_in_seconds/num_var) %&gt;%
+  mutate(remove = case_when(
+    time_per_item &lt; 1 ~ &quot;Remove&quot;,
+    time_per_item &gt; 30 ~ &quot;Remove&quot;,
+    TRUE ~ &quot;Keep&quot;
+  ))</code></pre>
+<pre class="r"><code>num_variables %&gt;%
+  ggplot(aes(x = time_per_item, fill = remove)) +
+  geom_histogram(bins = 30, color = &quot;white&quot;) +
+  labs(x = &quot;Seconds per item&quot;) +
+  theme_pubr()</code></pre>
+<div class="figure">
+<img src="1-cleaning_files/figure-html/unnamed-chunk-22-1.png" alt="Average item response time" width="672" />
+<p class="caption">
+Average item response time
+</p>
+</div>
+<p>We remove 1 participants whose average item response time is outside the allowed range.</p>
+<pre class="r"><code>data = data %&gt;%
+  full_join(select(num_variables, proid, remove)) %&gt;%
+  filter(remove != &quot;Remove&quot;) %&gt;%
+  select(-remove)</code></pre>
+</div>
 </div>
 <div id="reverse-score-personality-items" class="section level2">
 <h2>Reverse score personality items</h2>
@@ -590,6 +640,218 @@ Average response to inattention check items
     across(matches(&quot;^nervous&quot;),   ~(.x*-1)+7),
     across(matches(&quot;^careless&quot;),  ~(.x*-1)+7),
     across(matches(&quot;^impulsive&quot;), ~(.x*-1)+7))</code></pre>
+</div>
+<div id="score-memory-task" class="section level2">
+<h2>Score memory task</h2>
+<p>Now we score the memory task. We start by creating vectors of the correct responses.</p>
+<pre class="r"><code>correct1 = c(&quot;book&quot;, &quot;child&quot;, &quot;gold&quot;, &quot;hotel&quot;, &quot;king&quot;, 
+             &quot;market&quot;, &quot;paper&quot;, &quot;river&quot;, &quot;skin&quot;, &quot;tree&quot;)
+
+correct2 = c(&quot;butter&quot;, &quot;college&quot;, &quot;dollar&quot;, &quot;earth&quot;, &quot;flag&quot;, 
+             &quot;home&quot;, &quot;machine&quot;, &quot;ocean&quot;, &quot;sky&quot;, &quot;wife&quot;)
+
+correct3 = c(&quot;blood&quot;, &quot;corner&quot;, &quot;engine&quot;, &quot;girl&quot;, &quot;house&quot;, 
+             &quot;letter&quot;, &quot;rock&quot;, &quot;shoes&quot;, &quot;valley&quot;, &quot;woman&quot;)
+
+correct4 = c(&quot;baby&quot;, &quot;church&quot;, &quot;doctor&quot;, &quot;fire&quot;, &quot;garden&quot;, 
+             &quot;palace&quot;, &quot;sea&quot;, &quot;table&quot;, &quot;village&quot;, &quot;water&quot;)</code></pre>
+<p>Next we convert all responses to lowercase. Then we break the string of responses into a vector containing many strings.</p>
+<pre class="r"><code>data = data %&gt;%
+  mutate(
+    across(starts_with(&quot;recall&quot;),tolower), # convert to lower
+    #replace carriage return with space
+    across(starts_with(&quot;recall&quot;), str_replace_all, pattern = &quot;\\n&quot;, replacement = &quot;,&quot;),
+    # remove spaces
+    across(starts_with(&quot;recall&quot;), str_replace_all, pattern = &quot; &quot;, replacement = &quot;,&quot;),
+    # remove doubles
+    across(starts_with(&quot;recall&quot;), str_replace_all, pattern = &quot;,,&quot;, replacement = &quot;,&quot;),
+    #remove last comma
+    across(starts_with(&quot;recall&quot;), str_remove, pattern = &quot;,$&quot;),
+    # split the strings based on the spaces
+    across(starts_with(&quot;recall&quot;), str_split, pattern = &quot;,&quot;))</code></pre>
+<p>Now we use the <code>amatch</code> function in the <code>stringdist</code> package to look for exact (or close) matches to the target words. This function returns for each word either the position of the key in which you can find the target word or <code>NA</code> to indicate the word or a close match does not exist in the string.</p>
+<pre class="r"><code>distance = 1 #maximum distance between target word and correct response
+data = data %&gt;%
+  mutate(
+    memory1 = map(recall1, ~sapply(., amatch, correct1, maxDist = distance)),
+    memory2 = map(recall2, ~sapply(., amatch, correct2, maxDist = distance)),
+    memory3 = map(recall3, ~sapply(., amatch, correct3, maxDist = distance)),
+    memory4 = map(recall4, ~sapply(., amatch, correct4, maxDist = distance))
+    )</code></pre>
+<p>We count the number of correct answers. This gets complicated…</p>
+<pre class="r"><code>data = data %&gt;%
+  mutate(
+    across(starts_with(&quot;memory&quot;),
+      #replace position with 1
+      ~map(., sapply, FUN = function(x) ifelse(x &gt;0, 1, 0))),
+    across(starts_with(&quot;recall&quot;),
+           # are there non-missing values in the original response?
+           ~map_dbl(., 
+                    .f = function(x) sum(!is.na(x))), 
+           .names = &quot;{.col}_miss&quot;),
+    across(starts_with(&quot;memory&quot;),
+      #replace position with 1
+      # count the number of correct answers
+      ~map_dbl(., sum, na.rm=T))) %&gt;%
+  mutate(
+    memory1 = case_when(
+      # if there were no resposes, make the answer NA
+      recall1_miss == 0 ~ NA_real_,
+      # otherwise, the number of correct guesses
+      TRUE ~ memory1),
+    memory2 = case_when(
+      recall2_miss == 0 ~ NA_real_,
+      TRUE ~ memory2),
+    memory3 = case_when(
+      recall3_miss == 0 ~ NA_real_,
+      TRUE ~ memory3),
+    memory4 = case_when(
+      recall4_miss == 0 ~ NA_real_,
+      TRUE ~ memory4)) %&gt;%
+  # no longer need the missing count variables
+  select(-ends_with(&quot;miss&quot;))</code></pre>
+<p>Finally, we want to go from 4 columns (one for each recall test), to two: one that has the number of correct resposnes, and one that indicates which version they saw.</p>
+<pre class="r"><code>data = data %&gt;%
+  select(proid, starts_with(&quot;memory&quot;)) %&gt;%
+  gather(mem_condition, memory, -proid) %&gt;%
+  filter(!is.na(memory)) %&gt;%
+  mutate(mem_condition = str_remove(mem_condition, &quot;memory&quot;)) %&gt;%
+  full_join(data)</code></pre>
+<p>Participants remember on average 5.59 words correctly <span class="math inline">\((SD = 2.76)\)</span>,</p>
+<pre class="r"><code>data %&gt;%
+  ggplot(aes(x = memory)) +
+  geom_histogram(bins = 10, color = &quot;white&quot;) +
+  labs(x = &quot;Number of correct responses&quot;) +
+  theme_pubr()</code></pre>
+<div class="figure">
+<img src="1-cleaning_files/figure-html/unnamed-chunk-30-1.png" alt="Correct responses on the memory task" width="672" />
+<p class="caption">
+Correct responses on the memory task
+</p>
+</div>
+<pre class="r"><code>data %&gt;%
+  group_by(mem_condition) %&gt;%
+  summarise(
+    m = mean(memory),
+    s = sd(memory),
+    min = min(memory),
+    max = max(memory),
+    n = n()
+  ) %&gt;%
+  kable(booktabs = T,
+        col.names = c(&quot;Condition&quot;, &quot;Mean&quot;, &quot;SD&quot;, &quot;Min&quot;, &quot;Max&quot;, &quot;N&quot;),
+        digits = c(0, 2, 2, 1, 1, 1),
+        caption = &quot;Memory responses by condition&quot;) %&gt;%
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Memory responses by condition
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Condition
+</th>
+<th style="text-align:right;">
+Mean
+</th>
+<th style="text-align:right;">
+SD
+</th>
+<th style="text-align:right;">
+Min
+</th>
+<th style="text-align:right;">
+Max
+</th>
+<th style="text-align:right;">
+N
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+5.50
+</td>
+<td style="text-align:right;">
+2.56
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+4.29
+</td>
+<td style="text-align:right;">
+3.30
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+6.11
+</td>
+<td style="text-align:right;">
+2.71
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:right;">
+6.25
+</td>
+<td style="text-align:right;">
+2.60
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 

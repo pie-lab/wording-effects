@@ -16,3 +16,11 @@ library(here)
 ```{r, child = here("1-cleaning.Rmd")}
 ```
 
+\newpage
+
+# Does item format affect response?
+
+```{r, child = here("analysis_format.Rmd")}
+```
+
+

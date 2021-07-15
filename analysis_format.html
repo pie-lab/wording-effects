@@ -395,47 +395,47 @@ mod.format = lmer(response~format + (1|proid),
 anova(mod.format)</code></pre>
 <pre><code>## Analysis of Variance Table
 ##        npar Sum Sq Mean Sq F value
-## format    3 1.7626 0.58752  0.3584</code></pre>
+## format    3 1.1015 0.36715    0.23</code></pre>
 <pre class="r"><code>summary(mod.format)</code></pre>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: response ~ format + (1 | proid)
 ##    Data: item_responses
 ## 
-## REML criterion at convergence: 3774.8
+## REML criterion at convergence: 3332.6
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -3.3486 -0.5211  0.2343  0.7250  1.5773 
+## -3.4196 -0.5368  0.2336  0.7280  1.6140 
 ## 
 ## Random effects:
 ##  Groups   Name        Variance Std.Dev.
-##  proid    (Intercept) 0.1762   0.4198  
-##  Residual             1.6394   1.2804  
-## Number of obs: 1116, groups:  proid, 36
+##  proid    (Intercept) 0.2005   0.4478  
+##  Residual             1.5966   1.2636  
+## Number of obs: 992, groups:  proid, 32
 ## 
 ## Fixed effects:
 ##             Estimate Std. Error t value
-## (Intercept)  4.66569    0.14432  32.330
-## formatb     -0.21049    0.21513  -0.978
-## formatc     -0.10521    0.22241  -0.473
-## formatd     -0.03262    0.22241  -0.147
+## (Intercept)  4.63871    0.15875  29.221
+## formatb     -0.15484    0.24739  -0.626
+## formatc     -0.07823    0.23812  -0.329
+## formatd      0.04793    0.24739   0.194
 ## 
 ## Correlation of Fixed Effects:
 ##         (Intr) formtb formtc
-## formatb -0.671              
-## formatc -0.649  0.435       
-## formatd -0.649  0.435  0.421</code></pre>
+## formatb -0.642              
+## formatc -0.667  0.428       
+## formatd -0.642  0.412  0.428</code></pre>
 <pre class="r"><code>mod.format2 = aov(response~format + Error(proid) , data = item_responses)
 summary(mod.format2)</code></pre>
 <pre><code>## 
 ## Error: proid
 ##           Df Sum Sq Mean Sq F value Pr(&gt;F)
-## format     3   7.64   2.545   0.358  0.783
-## Residuals 32 227.26   7.102               
+## format     3   5.39   1.796    0.23  0.875
+## Residuals 28 218.74   7.812               
 ## 
 ## Error: Within
-##             Df Sum Sq Mean Sq F value Pr(&gt;F)
-## Residuals 1080   1770   1.639</code></pre>
+##            Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals 960   1533   1.597</code></pre>
 <pre class="r"><code>plot_model(mod.format, type = &quot;pred&quot;)</code></pre>
 <pre><code>## $format</code></pre>
 <p><img src="analysis_format_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
@@ -519,19 +519,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-1.97
+1.24
 </td>
 <td style="text-align:right;">
-0.66
+0.41
 </td>
 <td style="text-align:right;">
-0.48
+0.29
 </td>
 <td style="text-align:left;">
-0.70
+0.83
 </td>
 <td style="text-align:left;">
-0.70
+0.83
 </td>
 </tr>
 <tr>
@@ -545,19 +545,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-0.16
+0.86
 </td>
 <td style="text-align:right;">
-0.05
+0.29
 </td>
 <td style="text-align:right;">
-0.07
+0.36
 </td>
 <td style="text-align:left;">
-0.98
+0.78
 </td>
 <td style="text-align:left;">
-0.98
+0.78
 </td>
 </tr>
 <tr>
@@ -571,19 +571,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-6.99
+5.39
 </td>
 <td style="text-align:right;">
-2.33
+1.80
 </td>
 <td style="text-align:right;">
-0.91
+0.80
 </td>
 <td style="text-align:left;">
-0.45
+0.50
 </td>
 <td style="text-align:left;">
-0.45
+0.50
 </td>
 </tr>
 <tr>
@@ -597,19 +597,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-5.83
+2.44
 </td>
 <td style="text-align:right;">
-1.94
+0.81
 </td>
 <td style="text-align:right;">
-1.09
+0.45
 </td>
 <td style="text-align:left;">
-0.37
+0.72
 </td>
 <td style="text-align:left;">
-0.37
+0.72
 </td>
 </tr>
 <tr>
@@ -623,19 +623,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-2.19
+2.55
 </td>
 <td style="text-align:right;">
-0.73
+0.85
 </td>
 <td style="text-align:right;">
-0.68
+0.75
 </td>
 <td style="text-align:left;">
-0.57
+0.53
 </td>
 <td style="text-align:left;">
-0.57
+0.53
 </td>
 </tr>
 <tr>
@@ -649,19 +649,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-0.90
+0.36
 </td>
 <td style="text-align:right;">
-0.30
+0.12
 </td>
 <td style="text-align:right;">
-0.56
+0.23
 </td>
 <td style="text-align:left;">
-0.65
+0.88
 </td>
 <td style="text-align:left;">
-0.65
+0.88
 </td>
 </tr>
 <tr>
@@ -675,19 +675,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-0.54
+1.53
 </td>
 <td style="text-align:right;">
-0.18
+0.51
 </td>
 <td style="text-align:right;">
-0.15
+0.42
 </td>
 <td style="text-align:left;">
-0.93
+0.74
 </td>
 <td style="text-align:left;">
-0.93
+0.74
 </td>
 </tr>
 <tr>
@@ -701,19 +701,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-7.70
+5.89
 </td>
 <td style="text-align:right;">
-2.57
+1.96
 </td>
 <td style="text-align:right;">
-1.09
+0.81
 </td>
 <td style="text-align:left;">
-0.37
+0.50
 </td>
 <td style="text-align:left;">
-0.37
+0.50
 </td>
 </tr>
 <tr>
@@ -727,19 +727,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-0.91
+0.43
 </td>
 <td style="text-align:right;">
-0.30
+0.14
 </td>
 <td style="text-align:right;">
-0.70
+0.34
 </td>
 <td style="text-align:left;">
-0.56
+0.79
 </td>
 <td style="text-align:left;">
-0.56
+0.79
 </td>
 </tr>
 <tr>
@@ -753,19 +753,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-1.22
+0.47
 </td>
 <td style="text-align:right;">
-0.41
+0.16
 </td>
 <td style="text-align:right;">
-0.32
+0.14
 </td>
 <td style="text-align:left;">
-0.81
+0.93
 </td>
 <td style="text-align:left;">
-0.81
+0.93
 </td>
 </tr>
 <tr>
@@ -779,19 +779,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-0.83
+1.16
 </td>
 <td style="text-align:right;">
-0.28
+0.39
 </td>
 <td style="text-align:right;">
-0.12
+0.20
 </td>
 <td style="text-align:left;">
-0.95
+0.90
 </td>
 <td style="text-align:left;">
-0.95
+0.90
 </td>
 </tr>
 <tr>
@@ -805,19 +805,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-1.95
+1.55
 </td>
 <td style="text-align:right;">
-0.65
+0.52
 </td>
 <td style="text-align:right;">
-0.88
+0.70
 </td>
 <td style="text-align:left;">
-0.46
+0.56
 </td>
 <td style="text-align:left;">
-0.46
+0.56
 </td>
 </tr>
 <tr>
@@ -831,19 +831,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-1.42
+0.34
 </td>
 <td style="text-align:right;">
-0.47
+0.11
 </td>
 <td style="text-align:right;">
-0.19
+0.05
 </td>
 <td style="text-align:left;">
-0.90
+0.98
 </td>
 <td style="text-align:left;">
-0.90
+0.98
 </td>
 </tr>
 <tr>
@@ -857,19 +857,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-2.19
+1.83
 </td>
 <td style="text-align:right;">
-0.73
+0.61
 </td>
 <td style="text-align:right;">
-0.76
+0.58
 </td>
 <td style="text-align:left;">
-0.53
+0.63
 </td>
 <td style="text-align:left;">
-0.53
+0.63
 </td>
 </tr>
 <tr>
@@ -883,19 +883,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-0.05
-</td>
-<td style="text-align:right;">
 0.02
 </td>
 <td style="text-align:right;">
-0.03
+0.01
+</td>
+<td style="text-align:right;">
+0.01
 </td>
 <td style="text-align:left;">
-0.99
+1.00
 </td>
 <td style="text-align:left;">
-0.99
+1.00
 </td>
 </tr>
 <tr>
@@ -909,19 +909,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-1.17
+1.93
 </td>
 <td style="text-align:right;">
-0.39
+0.64
 </td>
 <td style="text-align:right;">
-0.50
+0.83
 </td>
 <td style="text-align:left;">
-0.69
+0.49
 </td>
 <td style="text-align:left;">
-0.69
+0.49
 </td>
 </tr>
 <tr>
@@ -935,19 +935,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-1.61
+0.87
 </td>
 <td style="text-align:right;">
-0.54
+0.29
 </td>
 <td style="text-align:right;">
-0.39
+0.20
 </td>
 <td style="text-align:left;">
-0.76
+0.90
 </td>
 <td style="text-align:left;">
-0.76
+0.90
 </td>
 </tr>
 <tr>
@@ -961,19 +961,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-4.16
+3.35
 </td>
 <td style="text-align:right;">
-1.39
+1.12
 </td>
 <td style="text-align:right;">
-1.32
+1.13
 </td>
 <td style="text-align:left;">
-0.29
+0.35
 </td>
 <td style="text-align:left;">
-0.29
+0.35
 </td>
 </tr>
 <tr>
@@ -987,19 +987,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-2.34
+1.96
 </td>
 <td style="text-align:right;">
-0.78
+0.65
 </td>
 <td style="text-align:right;">
-0.57
+0.44
 </td>
 <td style="text-align:left;">
-0.64
+0.73
 </td>
 <td style="text-align:left;">
-0.64
+0.73
 </td>
 </tr>
 <tr>
@@ -1013,19 +1013,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-0.45
+0.81
 </td>
 <td style="text-align:right;">
-0.15
+0.27
 </td>
 <td style="text-align:right;">
-0.14
+0.24
 </td>
 <td style="text-align:left;">
-0.94
+0.87
 </td>
 <td style="text-align:left;">
-0.94
+0.87
 </td>
 </tr>
 <tr>
@@ -1039,19 +1039,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-3.24
+2.39
 </td>
 <td style="text-align:right;">
-1.08
+0.80
 </td>
 <td style="text-align:right;">
-0.73
+0.49
 </td>
 <td style="text-align:left;">
-0.54
+0.69
 </td>
 <td style="text-align:left;">
-0.54
+0.69
 </td>
 </tr>
 <tr>
@@ -1065,13 +1065,13 @@ format
 3
 </td>
 <td style="text-align:right;">
-3.86
+3.70
 </td>
 <td style="text-align:right;">
-1.29
+1.23
 </td>
 <td style="text-align:right;">
-2.72
+2.84
 </td>
 <td style="text-align:left;">
 0.06
@@ -1091,19 +1091,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-18.54
-</td>
-<td style="text-align:right;">
-6.18
+8.74
 </td>
 <td style="text-align:right;">
 2.91
 </td>
-<td style="text-align:left;">
-0.05
+<td style="text-align:right;">
+1.42
 </td>
 <td style="text-align:left;">
-0.05
+0.26
+</td>
+<td style="text-align:left;">
+0.26
 </td>
 </tr>
 <tr>
@@ -1117,19 +1117,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-4.46
+2.28
 </td>
 <td style="text-align:right;">
-1.49
+0.76
 </td>
 <td style="text-align:right;">
-0.77
+0.36
 </td>
 <td style="text-align:left;">
-0.52
+0.78
 </td>
 <td style="text-align:left;">
-0.52
+0.78
 </td>
 </tr>
 <tr>
@@ -1143,19 +1143,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-3.90
+4.05
 </td>
 <td style="text-align:right;">
-1.30
+1.35
 </td>
 <td style="text-align:right;">
-1.28
+1.27
 </td>
 <td style="text-align:left;">
-0.30
+0.31
 </td>
 <td style="text-align:left;">
-0.30
+0.31
 </td>
 </tr>
 <tr>
@@ -1169,13 +1169,13 @@ format
 3
 </td>
 <td style="text-align:right;">
-1.31
+1.44
 </td>
 <td style="text-align:right;">
-0.44
+0.48
 </td>
 <td style="text-align:right;">
-0.28
+0.29
 </td>
 <td style="text-align:left;">
 0.84
@@ -1195,19 +1195,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-17.40
+13.60
 </td>
 <td style="text-align:right;">
-5.80
+4.53
 </td>
 <td style="text-align:right;">
-3.02
+2.27
 </td>
 <td style="text-align:left;">
-0.04
+0.10
 </td>
 <td style="text-align:left;">
-0.04
+0.10
 </td>
 </tr>
 <tr>
@@ -1221,19 +1221,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-1.07
+0.27
 </td>
 <td style="text-align:right;">
-0.36
+0.09
 </td>
 <td style="text-align:right;">
-0.22
+0.06
 </td>
 <td style="text-align:left;">
-0.88
+0.98
 </td>
 <td style="text-align:left;">
-0.88
+0.98
 </td>
 </tr>
 <tr>
@@ -1247,19 +1247,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-1.24
+1.15
 </td>
 <td style="text-align:right;">
-0.41
+0.38
 </td>
 <td style="text-align:right;">
-0.48
+0.43
 </td>
 <td style="text-align:left;">
-0.70
+0.74
 </td>
 <td style="text-align:left;">
-0.70
+0.74
 </td>
 </tr>
 <tr>
@@ -1273,19 +1273,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-0.45
+0.38
 </td>
 <td style="text-align:right;">
-0.15
+0.13
 </td>
 <td style="text-align:right;">
-0.12
+0.10
 </td>
 <td style="text-align:left;">
-0.95
+0.96
 </td>
 <td style="text-align:left;">
-0.95
+0.96
 </td>
 </tr>
 <tr>
@@ -1299,19 +1299,19 @@ format
 3
 </td>
 <td style="text-align:right;">
-7.82
+8.89
 </td>
 <td style="text-align:right;">
-2.61
+2.96
 </td>
 <td style="text-align:right;">
-2.04
+2.22
 </td>
 <td style="text-align:left;">
-0.13
+0.11
 </td>
 <td style="text-align:left;">
-0.13
+0.11
 </td>
 </tr>
 </tbody>

@@ -21,6 +21,7 @@ library(lme4) # for mulitlevel modeling
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
+library(stringdist)
 ```
 
 ```{r}
@@ -42,7 +43,6 @@ data = data %>%
   select(-end_date,
          -ip_address, 
          -progress, 
-         -duration_in_seconds,
          -finished,
          -recorded_date,
          -external_reference, 
@@ -97,7 +97,7 @@ data = full_join(data, personality_items)
 
 ## Drop bots
 
-### Based on responses
+### Based on ID
 
 ```{r, echo = F}
 olddata = data
@@ -106,7 +106,8 @@ olddata = data
 ```{r rm_proid, echo = F}
 data = data %>%
   mutate(proid = str_remove(proid, "Value will be set from panel or URL"),
-         proid = str_remove(proid, "Value will be set from panel or UR")) %>%
+         proid = str_remove(proid, "Value will be set from panel or UR"),
+         proid = str_remove(proid, "TEST")) %>%
   filter(proid != "")
 
 ```
@@ -291,6 +292,59 @@ data = data %>%
   select(-remove)
 ```
 
+### Based on average time to respond
+
+First we count how many answers each participant responded to. Why count using code and not just looking at qualtrics? Two reasons: 
+  1. It's not entirely clear from Qualtrics how many questions are in the survey, because there are 4 versions of each trait item and 4 different recall conditoins. 
+  2. We expect the survey to change after reviews during Stage 1, and the person who wrote this code will definitely forget to change this section later. 
+
+```{r}
+num_variables = data %>% 
+  select(-c(start_date:response_id),
+         -starts_with("t_"),
+         -any_of(c("prolific_pid")) # not used. will we clean it up later? doesn't matter! 
+  ) %>%
+  gather(item,response, -proid) %>%
+  filter(!is.na(response)) %>%
+  group_by(proid) %>%
+  count(name = "num_var") #how many variables per person? 
+
+# should be about the same number of responses per person with forced response
+table(num_variables$num_var)
+# participants with one more response included text in the response to the question 
+# Why should we exclude you?
+```
+
+Now we calculate the average time to respond by taking the duration in seconds variable and dividing by the number of responses. 
+
+```{r}
+num_variables = data %>%
+  select(proid, duration_in_seconds) %>%
+  full_join(num_variables) %>%
+  mutate(time_per_item = duration_in_seconds/num_var) %>%
+  mutate(remove = case_when(
+    time_per_item < 1 ~ "Remove",
+    time_per_item > 30 ~ "Remove",
+    TRUE ~ "Keep"
+  ))
+```
+
+```{r, fig.cap="Average item response time"}
+num_variables %>%
+  ggplot(aes(x = time_per_item, fill = remove)) +
+  geom_histogram(bins = 30, color = "white") +
+  labs(x = "Seconds per item") +
+  theme_pubr()
+```
+
+We remove `r table(num_variables$remove[[2]])` participants whose average item response time is outside the allowed range.
+
+```{r}
+data = data %>%
+  full_join(select(num_variables, proid, remove)) %>%
+  filter(remove != "Remove") %>%
+  select(-remove)
+```
 
 ## Reverse score personality items
 
@@ -307,6 +361,131 @@ data = data %>%
     across(matches("^impulsive"), ~(.x*-1)+7))
   
 ```
+
+
+## Score memory task
+
+Now we score the memory task. We start by creating vectors of the correct responses. 
+
+```{r}
+correct1 = c("book", "child", "gold", "hotel", "king", 
+             "market", "paper", "river", "skin", "tree")
+
+correct2 = c("butter", "college", "dollar", "earth", "flag", 
+             "home", "machine", "ocean", "sky", "wife")
+
+correct3 = c("blood", "corner", "engine", "girl", "house", 
+             "letter", "rock", "shoes", "valley", "woman")
+
+correct4 = c("baby", "church", "doctor", "fire", "garden", 
+             "palace", "sea", "table", "village", "water")
+```
+
+Next we convert all responses to lowercase. Then we break the string of responses into a vector containing many strings.
+
+```{r}
+data = data %>%
+  mutate(
+    across(starts_with("recall"),tolower), # convert to lower
+    #replace carriage return with space
+    across(starts_with("recall"), str_replace_all, pattern = "\\n", replacement = ","),
+    # remove spaces
+    across(starts_with("recall"), str_replace_all, pattern = " ", replacement = ","),
+    # remove doubles
+    across(starts_with("recall"), str_replace_all, pattern = ",,", replacement = ","),
+    #remove last comma
+    across(starts_with("recall"), str_remove, pattern = ",$"),
+    # split the strings based on the spaces
+    across(starts_with("recall"), str_split, pattern = ","))
+```
+
+Now we use the `amatch` function in the `stringdist` package to look for exact (or close) matches to the target words. This function returns for each word either the position of the key in which you can find the target word or `NA` to indicate the word or a close match does not exist in the string.
+
+```{r}
+distance = 1 #maximum distance between target word and correct response
+data = data %>%
+  mutate(
+    memory1 = map(recall1, ~sapply(., amatch, correct1, maxDist = distance)),
+    memory2 = map(recall2, ~sapply(., amatch, correct2, maxDist = distance)),
+    memory3 = map(recall3, ~sapply(., amatch, correct3, maxDist = distance)),
+    memory4 = map(recall4, ~sapply(., amatch, correct4, maxDist = distance))
+    )
+```
+
+We count the number of correct answers. This gets complicated...
+
+```{r}
+data = data %>%
+  mutate(
+    across(starts_with("memory"),
+      #replace position with 1
+      ~map(., sapply, FUN = function(x) ifelse(x >0, 1, 0))),
+    across(starts_with("recall"),
+           # are there non-missing values in the original response?
+           ~map_dbl(., 
+                    .f = function(x) sum(!is.na(x))), 
+           .names = "{.col}_miss"),
+    across(starts_with("memory"),
+      #replace position with 1
+      # count the number of correct answers
+      ~map_dbl(., sum, na.rm=T))) %>%
+  mutate(
+    memory1 = case_when(
+      # if there were no resposes, make the answer NA
+      recall1_miss == 0 ~ NA_real_,
+      # otherwise, the number of correct guesses
+      TRUE ~ memory1),
+    memory2 = case_when(
+      recall2_miss == 0 ~ NA_real_,
+      TRUE ~ memory2),
+    memory3 = case_when(
+      recall3_miss == 0 ~ NA_real_,
+      TRUE ~ memory3),
+    memory4 = case_when(
+      recall4_miss == 0 ~ NA_real_,
+      TRUE ~ memory4)) %>%
+  # no longer need the missing count variables
+  select(-ends_with("miss"))
+```
+
+Finally, we want to go from 4 columns (one for each recall test), to two: one that has the number of correct resposnes, and one that indicates which version they saw.
+
+```{r, results = 'asis'}
+data = data %>%
+  select(proid, starts_with("memory")) %>%
+  gather(mem_condition, memory, -proid) %>%
+  filter(!is.na(memory)) %>%
+  mutate(mem_condition = str_remove(mem_condition, "memory")) %>%
+  full_join(data)
+```
+
+Participants remember on average `r papaja::printnum(mean(data$memory))` words correctly $(SD = `r papaja::printnum(sd(data$memory))`)$,
+
+```{r, fig.cap = "Correct responses on the memory task"}
+data %>%
+  ggplot(aes(x = memory)) +
+  geom_histogram(bins = 10, color = "white") +
+  labs(x = "Number of correct responses") +
+  theme_pubr()
+```
+
+```{r}
+data %>%
+  group_by(mem_condition) %>%
+  summarise(
+    m = mean(memory),
+    s = sd(memory),
+    min = min(memory),
+    max = max(memory),
+    n = n()
+  ) %>%
+  kable(booktabs = T,
+        col.names = c("Condition", "Mean", "SD", "Min", "Max", "N"),
+        digits = c(0, 2, 2, 1, 1, 1),
+        caption = "Memory responses by condition") %>%
+  kable_styling()
+```
+
 
 ```{r, echo = F}
 save(data, file = here("data/cleaned_data.Rds"))
