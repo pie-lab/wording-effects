@@ -359,8 +359,8 @@ div.tocify {
 </div>
 
 
-<div id="workspace" class="section level1">
-<h1>Workspace</h1>
+<div id="workspace" class="section level2">
+<h2>Workspace</h2>
 <pre class="r"><code>library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
@@ -368,6 +368,7 @@ library(lme4) # for mulitlevel modeling
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables</code></pre>
+</div>
 <div id="data-prep" class="section level2">
 <h2>Data prep</h2>
 <p><strong>We will use between-person analyses to compare responses using group-level data for the different formats.</strong></p>
@@ -378,15 +379,15 @@ library(kableExtra) # for nicer tables</code></pre>
 )
 
 item_responses = data %&gt;%
-  select(proid, all_of(items_seen_first))</code></pre>
+  select(proid, all_of(items_seen_first), memory)</code></pre>
 <p>Next we reshape these data into long form.</p>
 <pre class="r"><code>item_responses = item_responses %&gt;%
-  gather(item, response, -proid) %&gt;%
+  gather(item, response, -proid, -memory) %&gt;%
   separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
   filter(!is.na(response))</code></pre>
 </div>
-<div id="results" class="section level2">
-<h2>Results</h2>
+<div id="response-by-format" class="section level2">
+<h2>Response by Format</h2>
 <pre class="r"><code>item_responses$format = as.factor(item_responses$format)
 item_responses$format = relevel(item_responses$format, ref = &quot;a&quot;)
 
@@ -438,7 +439,12 @@ summary(mod.format2)</code></pre>
 ## Residuals 960   1533   1.597</code></pre>
 <pre class="r"><code>plot_model(mod.format, type = &quot;pred&quot;)</code></pre>
 <pre><code>## $format</code></pre>
-<p><img src="analysis_format_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="figure">
+<img src="analysis_format_files/figure-html/unnamed-chunk-7-1.png" alt="Predicted response on personality items by condition." width="672" />
+<p class="caption">
+Predicted response on personality items by condition.
+</p>
+</div>
 <pre class="r"><code>means_by_group = item_responses %&gt;%
   group_by(format) %&gt;% 
   summarise(m = mean(response),
@@ -458,7 +464,12 @@ item_responses %&gt;%
   facet_wrap(~format) +
   guides(fill = F) +
   theme_pubr()</code></pre>
-<p><img src="analysis_format_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div class="figure">
+<img src="analysis_format_files/figure-html/unnamed-chunk-8-1.png" alt="Distribution of responses by category" width="672" />
+<p class="caption">
+Distribution of responses by category
+</p>
+</div>
 <p>We can also repeat this analysis separately for each trait.</p>
 <pre class="r"><code>mod_by_item = item_responses %&gt;%
   group_by(item) %&gt;%
@@ -471,6 +482,7 @@ mod_by_item %&gt;%
   select(item, tidy) %&gt;% 
   unnest(cols = c(tidy)) %&gt;%
   filter(term == &quot;format&quot;) %&gt;%
+  select(-term, -df) %&gt;% 
   mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;)) %&gt;%
   mutate(across(
     starts_with(&quot;p&quot;),
@@ -483,12 +495,6 @@ mod_by_item %&gt;%
 <tr>
 <th style="text-align:left;">
 item
-</th>
-<th style="text-align:left;">
-term
-</th>
-<th style="text-align:right;">
-df
 </th>
 <th style="text-align:right;">
 sumsq
@@ -512,12 +518,6 @@ p.adj
 <td style="text-align:left;">
 outgoing
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 1.24
 </td>
@@ -537,12 +537,6 @@ format
 <tr>
 <td style="text-align:left;">
 helpful
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 0.86
@@ -564,12 +558,6 @@ format
 <td style="text-align:left;">
 reckless
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 5.39
 </td>
@@ -589,12 +577,6 @@ format
 <tr>
 <td style="text-align:left;">
 moody
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 2.44
@@ -616,12 +598,6 @@ format
 <td style="text-align:left;">
 organized
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 2.55
 </td>
@@ -641,12 +617,6 @@ format
 <tr>
 <td style="text-align:left;">
 friendly
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 0.36
@@ -668,12 +638,6 @@ format
 <td style="text-align:left;">
 warm
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 1.53
 </td>
@@ -693,12 +657,6 @@ format
 <tr>
 <td style="text-align:left;">
 worrying
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 5.89
@@ -720,12 +678,6 @@ format
 <td style="text-align:left;">
 responsible
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 0.43
 </td>
@@ -745,12 +697,6 @@ format
 <tr>
 <td style="text-align:left;">
 lively
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 0.47
@@ -772,12 +718,6 @@ format
 <td style="text-align:left;">
 asleep
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 1.16
 </td>
@@ -797,12 +737,6 @@ format
 <tr>
 <td style="text-align:left;">
 caring
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 1.55
@@ -824,12 +758,6 @@ format
 <td style="text-align:left;">
 nervous
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 0.34
 </td>
@@ -849,12 +777,6 @@ format
 <tr>
 <td style="text-align:left;">
 creative
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 1.83
@@ -876,12 +798,6 @@ format
 <td style="text-align:left;">
 hardworking
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 0.02
 </td>
@@ -901,12 +817,6 @@ format
 <tr>
 <td style="text-align:left;">
 imaginative
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 1.93
@@ -928,12 +838,6 @@ format
 <td style="text-align:left;">
 softhearted
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 0.87
 </td>
@@ -953,12 +857,6 @@ format
 <tr>
 <td style="text-align:left;">
 calm
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 3.35
@@ -980,12 +878,6 @@ format
 <td style="text-align:left;">
 intelligent
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 1.96
 </td>
@@ -1005,12 +897,6 @@ format
 <tr>
 <td style="text-align:left;">
 curious
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 0.81
@@ -1032,12 +918,6 @@ format
 <td style="text-align:left;">
 active
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 2.39
 </td>
@@ -1057,12 +937,6 @@ format
 <tr>
 <td style="text-align:left;">
 human
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 3.70
@@ -1084,12 +958,6 @@ format
 <td style="text-align:left;">
 careless
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 8.74
 </td>
@@ -1109,12 +977,6 @@ format
 <tr>
 <td style="text-align:left;">
 impulsive
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 2.28
@@ -1136,12 +998,6 @@ format
 <td style="text-align:left;">
 sympathetic
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 4.05
 </td>
@@ -1161,12 +1017,6 @@ format
 <tr>
 <td style="text-align:left;">
 cautious
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 1.44
@@ -1188,12 +1038,6 @@ format
 <td style="text-align:left;">
 talkative
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 13.60
 </td>
@@ -1213,12 +1057,6 @@ format
 <tr>
 <td style="text-align:left;">
 sophisticated
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 0.27
@@ -1240,12 +1078,6 @@ format
 <td style="text-align:left;">
 adventurous
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 1.15
 </td>
@@ -1265,12 +1097,6 @@ format
 <tr>
 <td style="text-align:left;">
 thorough
-</td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 0.38
@@ -1292,12 +1118,6 @@ format
 <td style="text-align:left;">
 thrifty
 </td>
-<td style="text-align:left;">
-format
-</td>
-<td style="text-align:right;">
-3
-</td>
 <td style="text-align:right;">
 8.89
 </td>
@@ -1316,13 +1136,732 @@ format
 </tr>
 </tbody>
 </table>
-<p><strong>These analyses will attempt to account for memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).</strong></p>
-<p>Within-person analyses will model the proportions of variance attributable to item format, stems of the items (i.e., the content of the adjectives), and the respondent-level variance.</p>
-<p>We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific – formats #3 and #4 above vs the use of adjectives alone.</p>
-<p>We will also consider the effect on retest reliability of performance on the word recall task.</p>
-<p>We will further compare response times as a function of item format using both within- and between-person data in order to evaluate the presumption that adjective ratings require less time than phrased items.</p>
-<p>Finally, secondary analyses will consider preliminary evidence for differences (e.g., mean response times, mean level of response) based on the type of device used to complete the survey (mobile, desktop, or tablet).</p>
 </div>
+<div id="response-by-format-memory" class="section level2">
+<h2>Response by Format + Memory</h2>
+<p><strong>These analyses will attempt to account for memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).</strong></p>
+<pre class="r"><code>mod.format_mem = lmer(response~format + memory + (1|proid), 
+                  data = item_responses)
+anova(mod.format_mem)</code></pre>
+<pre><code>## Analysis of Variance Table
+##        npar Sum Sq Mean Sq F value
+## format    3 1.1395 0.37983  0.2379
+## memory    1 3.1406 3.14065  1.9670</code></pre>
+<pre class="r"><code>summary(mod.format_mem)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: response ~ format + memory + (1 | proid)
+##    Data: item_responses
+## 
+## REML criterion at convergence: 3335.7
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.3946 -0.5108  0.2391  0.6993  1.6041 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  proid    (Intercept) 0.1921   0.4383  
+##  Residual             1.5966   1.2636  
+## Number of obs: 992, groups:  proid, 32
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  4.37639    0.24360  17.965
+## formatb     -0.14450    0.24334  -0.594
+## formatc     -0.05335    0.23478  -0.227
+## formatd      0.05180    0.24324   0.213
+## memory       0.04523    0.03225   1.403
+## 
+## Correlation of Fixed Effects:
+##         (Intr) formtb formtc formtd
+## formatb -0.434                     
+## formatc -0.484  0.429              
+## formatd -0.420  0.412  0.427       
+## memory  -0.768  0.030  0.076  0.011</code></pre>
+<pre class="r"><code>plot_model(mod.format_mem, type = &quot;pred&quot;, term = c(&quot;format&quot;))</code></pre>
+<div class="figure">
+<img src="analysis_format_files/figure-html/unnamed-chunk-11-1.png" alt="Predicted response on personality items by condition after controlling for memory." width="672" />
+<p class="caption">
+Predicted response on personality items by condition after controlling for memory.
+</p>
+</div>
+<pre class="r"><code>plot_model(mod.format_mem, type = &quot;pred&quot;, term = c(&quot;memory&quot;))</code></pre>
+<div class="figure">
+<img src="analysis_format_files/figure-html/unnamed-chunk-12-1.png" alt="Predicted response on personality items by memory." width="672" />
+<p class="caption">
+Predicted response on personality items by memory.
+</p>
+</div>
+<pre class="r"><code>mod_by_item = item_responses %&gt;%
+  group_by(item) %&gt;%
+  nest() %&gt;%
+  mutate(mod = map(data, ~lm(response~format + memory, data = .))) %&gt;%
+  mutate(aov = map(mod, anova)) 
+
+mod_by_item %&gt;%
+  mutate(tidy = map(aov, broom::tidy)) %&gt;%
+  select(item, tidy) %&gt;% 
+  unnest(cols = c(tidy)) %&gt;%
+  filter(term == &quot;format&quot;) %&gt;%
+  select(-term, -df) %&gt;% 
+  mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;)) %&gt;%
+  mutate(across(
+    starts_with(&quot;p&quot;),
+    papaja::printnum
+  )) %&gt;%
+  kable(digits = 2, booktabs = T) %&gt;%
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+item
+</th>
+<th style="text-align:right;">
+sumsq
+</th>
+<th style="text-align:right;">
+meansq
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:left;">
+p.value
+</th>
+<th style="text-align:left;">
+p.adj
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+outgoing
+</td>
+<td style="text-align:right;">
+1.24
+</td>
+<td style="text-align:right;">
+0.41
+</td>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:left;">
+0.84
+</td>
+<td style="text-align:left;">
+0.84
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+helpful
+</td>
+<td style="text-align:right;">
+0.86
+</td>
+<td style="text-align:right;">
+0.29
+</td>
+<td style="text-align:right;">
+0.35
+</td>
+<td style="text-align:left;">
+0.79
+</td>
+<td style="text-align:left;">
+0.79
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+reckless
+</td>
+<td style="text-align:right;">
+5.39
+</td>
+<td style="text-align:right;">
+1.80
+</td>
+<td style="text-align:right;">
+0.79
+</td>
+<td style="text-align:left;">
+0.51
+</td>
+<td style="text-align:left;">
+0.51
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+moody
+</td>
+<td style="text-align:right;">
+2.44
+</td>
+<td style="text-align:right;">
+0.81
+</td>
+<td style="text-align:right;">
+0.48
+</td>
+<td style="text-align:left;">
+0.70
+</td>
+<td style="text-align:left;">
+0.70
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+organized
+</td>
+<td style="text-align:right;">
+2.55
+</td>
+<td style="text-align:right;">
+0.85
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+<td style="text-align:left;">
+0.53
+</td>
+<td style="text-align:left;">
+0.53
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friendly
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:right;">
+0.24
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+warm
+</td>
+<td style="text-align:right;">
+1.53
+</td>
+<td style="text-align:right;">
+0.51
+</td>
+<td style="text-align:right;">
+0.49
+</td>
+<td style="text-align:left;">
+0.70
+</td>
+<td style="text-align:left;">
+0.70
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+worrying
+</td>
+<td style="text-align:right;">
+5.89
+</td>
+<td style="text-align:right;">
+1.96
+</td>
+<td style="text-align:right;">
+0.78
+</td>
+<td style="text-align:left;">
+0.51
+</td>
+<td style="text-align:left;">
+0.51
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+responsible
+</td>
+<td style="text-align:right;">
+0.43
+</td>
+<td style="text-align:right;">
+0.14
+</td>
+<td style="text-align:right;">
+0.34
+</td>
+<td style="text-align:left;">
+0.80
+</td>
+<td style="text-align:left;">
+0.80
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lively
+</td>
+<td style="text-align:right;">
+0.47
+</td>
+<td style="text-align:right;">
+0.16
+</td>
+<td style="text-align:right;">
+0.14
+</td>
+<td style="text-align:left;">
+0.93
+</td>
+<td style="text-align:left;">
+0.93
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+asleep
+</td>
+<td style="text-align:right;">
+1.16
+</td>
+<td style="text-align:right;">
+0.39
+</td>
+<td style="text-align:right;">
+0.19
+</td>
+<td style="text-align:left;">
+0.90
+</td>
+<td style="text-align:left;">
+0.90
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+caring
+</td>
+<td style="text-align:right;">
+1.55
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+<td style="text-align:right;">
+0.69
+</td>
+<td style="text-align:left;">
+0.57
+</td>
+<td style="text-align:left;">
+0.57
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nervous
+</td>
+<td style="text-align:right;">
+0.34
+</td>
+<td style="text-align:right;">
+0.11
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+<td style="text-align:left;">
+0.99
+</td>
+<td style="text-align:left;">
+0.99
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creative
+</td>
+<td style="text-align:right;">
+1.83
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+<td style="text-align:right;">
+0.60
+</td>
+<td style="text-align:left;">
+0.62
+</td>
+<td style="text-align:left;">
+0.62
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hardworking
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:left;">
+1.00
+</td>
+<td style="text-align:left;">
+1.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+imaginative
+</td>
+<td style="text-align:right;">
+1.93
+</td>
+<td style="text-align:right;">
+0.64
+</td>
+<td style="text-align:right;">
+0.88
+</td>
+<td style="text-align:left;">
+0.47
+</td>
+<td style="text-align:left;">
+0.47
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+softhearted
+</td>
+<td style="text-align:right;">
+0.87
+</td>
+<td style="text-align:right;">
+0.29
+</td>
+<td style="text-align:right;">
+0.20
+</td>
+<td style="text-align:left;">
+0.89
+</td>
+<td style="text-align:left;">
+0.89
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calm
+</td>
+<td style="text-align:right;">
+3.35
+</td>
+<td style="text-align:right;">
+1.12
+</td>
+<td style="text-align:right;">
+1.13
+</td>
+<td style="text-align:left;">
+0.36
+</td>
+<td style="text-align:left;">
+0.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+intelligent
+</td>
+<td style="text-align:right;">
+1.96
+</td>
+<td style="text-align:right;">
+0.65
+</td>
+<td style="text-align:right;">
+0.44
+</td>
+<td style="text-align:left;">
+0.72
+</td>
+<td style="text-align:left;">
+0.72
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+curious
+</td>
+<td style="text-align:right;">
+0.81
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:right;">
+0.24
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+active
+</td>
+<td style="text-align:right;">
+2.39
+</td>
+<td style="text-align:right;">
+0.80
+</td>
+<td style="text-align:right;">
+0.48
+</td>
+<td style="text-align:left;">
+0.70
+</td>
+<td style="text-align:left;">
+0.70
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+human
+</td>
+<td style="text-align:right;">
+3.70
+</td>
+<td style="text-align:right;">
+1.23
+</td>
+<td style="text-align:right;">
+2.75
+</td>
+<td style="text-align:left;">
+0.06
+</td>
+<td style="text-align:left;">
+0.06
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+careless
+</td>
+<td style="text-align:right;">
+8.74
+</td>
+<td style="text-align:right;">
+2.91
+</td>
+<td style="text-align:right;">
+1.58
+</td>
+<td style="text-align:left;">
+0.22
+</td>
+<td style="text-align:left;">
+0.22
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+impulsive
+</td>
+<td style="text-align:right;">
+2.28
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+0.35
+</td>
+<td style="text-align:left;">
+0.79
+</td>
+<td style="text-align:left;">
+0.79
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sympathetic
+</td>
+<td style="text-align:right;">
+4.05
+</td>
+<td style="text-align:right;">
+1.35
+</td>
+<td style="text-align:right;">
+1.23
+</td>
+<td style="text-align:left;">
+0.32
+</td>
+<td style="text-align:left;">
+0.32
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cautious
+</td>
+<td style="text-align:right;">
+1.44
+</td>
+<td style="text-align:right;">
+0.48
+</td>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:left;">
+0.84
+</td>
+<td style="text-align:left;">
+0.84
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+talkative
+</td>
+<td style="text-align:right;">
+13.60
+</td>
+<td style="text-align:right;">
+4.53
+</td>
+<td style="text-align:right;">
+2.21
+</td>
+<td style="text-align:left;">
+0.11
+</td>
+<td style="text-align:left;">
+0.11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sophisticated
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+<td style="text-align:left;">
+0.98
+</td>
+<td style="text-align:left;">
+0.98
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+adventurous
+</td>
+<td style="text-align:right;">
+1.15
+</td>
+<td style="text-align:right;">
+0.38
+</td>
+<td style="text-align:right;">
+0.41
+</td>
+<td style="text-align:left;">
+0.75
+</td>
+<td style="text-align:left;">
+0.75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thorough
+</td>
+<td style="text-align:right;">
+0.38
+</td>
+<td style="text-align:right;">
+0.13
+</td>
+<td style="text-align:right;">
+0.10
+</td>
+<td style="text-align:left;">
+0.96
+</td>
+<td style="text-align:left;">
+0.96
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thrifty
+</td>
+<td style="text-align:right;">
+8.89
+</td>
+<td style="text-align:right;">
+2.96
+</td>
+<td style="text-align:right;">
+2.15
+</td>
+<td style="text-align:left;">
+0.12
+</td>
+<td style="text-align:left;">
+0.12
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Within-person analyses will model the proportions of variance attributable to item format, stems of the items (i.e., the content of the adjectives), and the respondent-level variance. -->
+<!-- We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. -->
+<!-- We will also consider the effect on retest reliability of performance on the word recall task. -->
+<!-- We will further compare response times as a function of item format using both within- and between-person data in order to evaluate the presumption that adjective ratings require less time than phrased items.  -->
+<!-- Finally, secondary analyses will consider preliminary evidence for differences (e.g., mean response times, mean level of response) based on the type of device used to complete the survey (mobile, desktop, or tablet). -->
 </div>
 
 

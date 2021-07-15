@@ -41,19 +41,19 @@ items_seen_first = str_subset(
 )
 
 item_responses = data %>%
-  select(proid, all_of(items_seen_first))
+  select(proid, all_of(items_seen_first), memory)
 ```
 
 Next we reshape these data into long form.
 
 ```{r}
 item_responses = item_responses %>%
-  gather(item, response, -proid) %>%
+  gather(item, response, -proid, -memory) %>%
   separate(item, into = c("item", "format")) %>%
   filter(!is.na(response))
 ```
 
-## Results
+## Response by Format
 
 ```{r}
 item_responses$format = as.factor(item_responses$format)
@@ -69,11 +69,11 @@ summary(mod.format2)
 
 ```
 
-```{r}
+```{r, fig.cap = "Predicted response on personality items by condition."}
 plot_model(mod.format, type = "pred")
 ```
 
-```{r}
+```{r, fig.cap = "Distribution of responses by category"}
 means_by_group = item_responses %>%
   group_by(format) %>% 
   summarise(m = mean(response),
@@ -109,6 +109,7 @@ mod_by_item %>%
   select(item, tidy) %>% 
   unnest(cols = c(tidy)) %>%
   filter(term == "format") %>%
+  select(-term, -df) %>% 
   mutate(p.adj = p.adjust(p.value, method = "holm")) %>%
   mutate(across(
     starts_with("p"),
@@ -118,8 +119,46 @@ mod_by_item %>%
   kable_styling()
 ```
 
+## Response by Format + Memory
+
 **These analyses will attempt to account for memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).**
 
+```{r}
+mod.format_mem = lmer(response~format + memory + (1|proid), 
+                  data = item_responses)
+anova(mod.format_mem)
+summary(mod.format_mem)
+```
+
+```{r, fig.cap = "Predicted response on personality items by condition after controlling for memory."}
+plot_model(mod.format_mem, type = "pred", term = c("format"))
+```
+
+```{r, fig.cap = "Predicted response on personality items by memory."}
+plot_model(mod.format_mem, type = "pred", term = c("memory"))
+```
+
+```{r, results = 'asis'}
+mod_by_item = item_responses %>%
+  group_by(item) %>%
+  nest() %>%
+  mutate(mod = map(data, ~lm(response~format + memory, data = .))) %>%
+  mutate(aov = map(mod, anova)) 
+
+mod_by_item %>%
+  mutate(tidy = map(aov, broom::tidy)) %>%
+  select(item, tidy) %>% 
+  unnest(cols = c(tidy)) %>%
+  filter(term == "format") %>%
+  select(-term, -df) %>% 
+  mutate(p.adj = p.adjust(p.value, method = "holm")) %>%
+  mutate(across(
+    starts_with("p"),
+    papaja::printnum
+  )) %>%
+  kable(digits = 2, booktabs = T) %>%
+  kable_styling()
+```
 <!-- Within-person analyses will model the proportions of variance attributable to item format, stems of the items (i.e., the content of the adjectives), and the respondent-level variance. -->
 
 <!-- We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. -->
