@@ -334,6 +334,9 @@ div.tocify {
     <li>
       <a href="analysis_format.html">Does item formatting affect response?</a>
     </li>
+    <li>
+      <a href="analysis_propVariance">Partitioning variance in response</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -359,6 +362,9 @@ div.tocify {
 </div>
 
 
+<p>The primary aims of this study are to evaluate the effects of item wording in online, self-report personality assessment. Specifically, we intend to consider the extent to which incremental wording changes may influence differences in the distributions of responses, response times, and psychometric properties of the items. These wording changes will include a progression from using (1) trait-descriptive adjectives by themselves, (2) with the linking verb “to be” (Am…), (3) with the additional verb “to tend” (Tend to be…), and (4) with the pronoun “someone” (Am someone who tends to be…).</p>
+<p>Using a protocol that administers each adjective twice to the same participant (in different combinations of item format administered randomly across participants), we will use between-person analyses to compare responses using group-level data for the different formats.</p>
+<p>These analyses will attempt to account for memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).</p>
 <div id="workspace" class="section level2">
 <h2>Workspace</h2>
 <pre class="r"><code>library(here) # for working with files
@@ -1139,7 +1145,6 @@ thrifty
 </div>
 <div id="response-by-format-memory" class="section level2">
 <h2>Response by Format + Memory</h2>
-<p><strong>These analyses will attempt to account for memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).</strong></p>
 <pre class="r"><code>mod.format_mem = lmer(response~format + memory + (1|proid), 
                   data = item_responses)
 anova(mod.format_mem)</code></pre>

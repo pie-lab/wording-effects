@@ -7,6 +7,13 @@ output:
     toc_float: TRUE
 ---
 
+The primary aims of this study are to evaluate the effects of item wording in online, self-report personality assessment. Specifically, we intend to consider the extent to which incremental wording changes may influence differences in the distributions of responses, response times, and psychometric properties of the items. These wording changes will include a progression from using (1) trait-descriptive adjectives by themselves, (2) with the linking verb “to be” (Am…), (3) with the additional verb “to tend” (Tend to be...), and (4) with the pronoun “someone” (Am someone who tends to be…). 
+
+Using a protocol that administers each adjective twice to the same participant (in different combinations of item format administered randomly across participants), we will use between-person analyses to compare responses using group-level data for the different formats. 
+
+These analyses will attempt to account for memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).
+
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(warning = F, message = F)
 ```
@@ -121,7 +128,6 @@ mod_by_item %>%
 
 ## Response by Format + Memory
 
-**These analyses will attempt to account for memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).**
 
 ```{r}
 mod.format_mem = lmer(response~format + memory + (1|proid), 

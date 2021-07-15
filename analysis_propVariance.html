@@ -9,15 +9,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Kelsey Condon, Cameron Kay, Sara Weston, &amp; David Condon" />
 
 
-<title>On item wording effects</title>
+<title>Format effects</title>
 
 <script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -355,19 +354,86 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">On item wording effects</h1>
-<h3 class="subtitle">Code and supplemental material</h3>
-<h4 class="author">Kelsey Condon, Cameron Kay, Sara Weston, &amp; David Condon</h4>
+<h1 class="title toc-ignore">Format effects</h1>
+<h4 class="date">Last updated 2021-07-14</h4>
 
 </div>
 
 
-<p>Would you prefer to see the code and results in PDF form? <a href="supplemental-pdf/supplemental.pdf">You can download a PDF here</a>.</p>
-<div id="overview" class="section level1">
-<h1>Overview</h1>
-<p>A fundamental assumption in the methodology of psychological assessment relates to the equivalence of self-report ratings based on single-word descriptors (typically, adjectives) and brief phrases containing the same terms (i.e., “Calm” vs “I am typically calm.”). The assumption is that seemingly trivial differences in stimuli have no effect on response patterns or the interpretations that can be made from data collected using either of these formats. Indeed, there are numerous cases where the assumption of functional equivalence is self-evident. To give another example, “Talkative” and “Talk a lot” are essentially identical.</p>
-<p>Yet, claims of equivalence based on face validity have some limits. For example, the absence of an effect due to item wording changes seems less clear for some descriptors than others. Consider being instructed to rate yourself as “active” or “warm” relative to “Tend to be active” or “Tend to be warm.” By specifically invoking tendency, the latter phrasing is more clearly prompting the respondents to rate trait-level psychological characteristics across situations, reducing the likelihood that they will respond based on transient physical (or even psychological) states. Similarly, the extent of the differences in phrasing should also be expected to increase the likelihood of a meaningful difference, i.e., “Organized” vs “I am someone who tends to be organized.” The latter format improves upon the simple adjective prompt in this case by clarifying both the trait/state ambiguity (by referencing tendency) and the lack of clarity around between-person and within-person ratings (with “… am someone who…”). To be specific, the second format is prompting respondents to rate the tendency to be organized relative to other people.</p>
-<p>The primary aim of the current study is to evaluate the effect of different item wording options using both between-person and within-person analyses. The study design required to evaluate this question will also allow for evaluation of test-retest reliability at the item-level. Main effects of item-wording format are not expected, though minor variability is expected depending on the content of the item stem – the single-word descriptor. In addition, the absence of a significant main effect is likely to be a meaningful contribution for research on personality structure and assessment.</p>
+<p>Within-person analyses will model the proportions of variance attributable to item format, stems of the items (i.e., the content of the adjectives), and the respondent-level variance.</p>
+<div id="workspace" class="section level2">
+<h2>Workspace</h2>
+<pre class="r"><code>library(here) # for working with files
+library(tidyverse) # for cleaning
+library(janitor) # for variable names
+library(lme4) # for mulitlevel modeling
+library(sjPlot) # for figures
+library(ggpubr) # for prettier plots
+library(kableExtra) # for nicer tables</code></pre>
+</div>
+<div id="data-prep" class="section level2">
+<h2>Data prep</h2>
+<p>First we select the responses to the items of different formats. These variable names all have the same format: <code>[trait]_[abcd]</code> (for example, <code>talkative_a</code>). We search for these items using regular expressions.</p>
+<pre class="r"><code>personality_items = str_subset(
+  names(data),
+  &quot;^([[:alpha:]])+_[abcd]_?2?$&quot;
+)
+
+item_responses = data %&gt;%
+  select(proid, all_of(personality_items), memory) </code></pre>
+<p>Next we reshape these data into long form.</p>
+<pre class="r"><code>item_responses = item_responses %&gt;%
+  gather(item, response, -proid, -memory) %&gt;%
+  mutate(
+    time = ifelse(str_detect(item, &quot;_2&quot;), &quot;2&quot;, &quot;1&quot;),
+    item = str_remove(item, &quot;_2&quot;)) %&gt;%
+  separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
+  filter(!is.na(response))</code></pre>
+</div>
+<div id="model" class="section level2">
+<h2>Model</h2>
+<p>We estimate variance attributable to particpant (<code>proid</code>), adjective (<code>item</code>), and format (<code>format</code>) using a nested model.</p>
+<pre class="r"><code>mod_within_full = lmer(response ~ 1 
+                  + (1 | item)
+                  + (1 | format)
+                  + (1 |proid),
+                  data = item_responses)
+summary(mod_within_full)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: response ~ 1 + (1 | item) + (1 | format) + (1 | proid)
+##    Data: item_responses
+## 
+## REML criterion at convergence: 6092.1
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -4.2303 -0.5087  0.1022  0.6234  3.1248 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  proid    (Intercept) 0.171252 0.41383 
+##  item     (Intercept) 0.521154 0.72191 
+##  format   (Intercept) 0.002454 0.04954 
+##  Residual             1.152363 1.07348 
+## Number of obs: 1984, groups:  proid, 32; item, 31; format, 4
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)   4.5805     0.1528   29.97</code></pre>
+<pre class="r"><code>variances = VarCorr(mod_within_full, comp=&quot;Variance&quot;)
+var_proid  = variances$proid[[1]]
+var_item   = variances$item[[1]]
+var_format = variances$format[[1]]
+var_resid = attr(variances, &quot;sc&quot;)^2
+var_total = var_proid + var_item + var_format + var_resid</code></pre>
+<p>Participants account for 9.27 percent of the variability in response.</p>
+<p>Items account for 28.21 percent of the variability in response.</p>
+<p>Format accounts for 0.13 percent of the variability in response.</p>
+<p>In total, 37.62 percent of the variability in response is explained.</p>
+<!-- We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. -->
+<!-- We will also consider the effect on retest reliability of performance on the word recall task. -->
+<!-- We will further compare response times as a function of item format using both within- and between-person data in order to evaluate the presumption that adjective ratings require less time than phrased items.  -->
+<!-- Finally, secondary analyses will consider preliminary evidence for differences (e.g., mean response times, mean level of response) based on the type of device used to complete the survey (mobile, desktop, or tablet). -->
 </div>
 
 
@@ -416,7 +482,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2",
+      selectors: "h1,h2,h3",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {

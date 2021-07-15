@@ -1,0 +1,98 @@
+---
+title: "Format effects"
+date: "Last updated `r Sys.Date()`"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+Within-person analyses will model the proportions of variance attributable to item format, stems of the items (i.e., the content of the adjectives), and the respondent-level variance.
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(warning = F, message = F)
+```
+
+## Workspace
+
+```{r}
+library(here) # for working with files
+library(tidyverse) # for cleaning
+library(janitor) # for variable names
+library(lme4) # for mulitlevel modeling
+library(sjPlot) # for figures
+library(ggpubr) # for prettier plots
+library(kableExtra) # for nicer tables
+```
+
+```{r, echo = F}
+load(here("data/cleaned_data.Rds"))
+```
+
+
+## Data prep
+
+First we select the responses to the items of different formats. These variable names all have the same format: `[trait]_[abcd]` (for example, `talkative_a`). We search for these items using regular expressions.
+
+```{r}
+personality_items = str_subset(
+  names(data),
+  "^([[:alpha:]])+_[abcd]_?2?$"
+)
+
+item_responses = data %>%
+  select(proid, all_of(personality_items), memory) 
+```
+
+Next we reshape these data into long form.
+
+```{r}
+item_responses = item_responses %>%
+  gather(item, response, -proid, -memory) %>%
+  mutate(
+    time = ifelse(str_detect(item, "_2"), "2", "1"),
+    item = str_remove(item, "_2")) %>%
+  separate(item, into = c("item", "format")) %>%
+  filter(!is.na(response))
+```
+
+## Model
+
+We estimate variance attributable to particpant (`proid`), adjective (`item`), and format (`format`) using a nested model.
+
+```{r}
+mod_within_full = lmer(response ~ 1 
+                  + (1 | item)
+                  + (1 | format)
+                  + (1 |proid),
+                  data = item_responses)
+summary(mod_within_full)
+
+```
+
+```{r}
+variances = VarCorr(mod_within_full, comp="Variance")
+var_proid  = variances$proid[[1]]
+var_item   = variances$item[[1]]
+var_format = variances$format[[1]]
+var_resid = attr(variances, "sc")^2
+var_total = var_proid + var_item + var_format + var_resid
+```
+
+Participants account for `r round(100*var_proid/var_total, 2)` percent of the variability in response.
+
+Items account for `r round(100*var_item/var_total, 2)` percent of the variability in response.
+
+Format accounts for `r round(100*var_format/var_total, 2)` percent of the variability in response.
+
+In total, `r round(100*(var_proid+var_item+var_format)/var_total, 2)` percent of the variability in response is explained.
+
+
+<!-- We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. -->
+
+<!-- We will also consider the effect on retest reliability of performance on the word recall task. -->
+
+<!-- We will further compare response times as a function of item format using both within- and between-person data in order to evaluate the presumption that adjective ratings require less time than phrased items.  -->
+
+<!-- Finally, secondary analyses will consider preliminary evidence for differences (e.g., mean response times, mean level of response) based on the type of device used to complete the survey (mobile, desktop, or tablet). -->
+

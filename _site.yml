@@ -9,6 +9,8 @@ navbar:
       menu:
         - text: "Does item formatting affect response?"
           href: analysis_format.html
+        - text: "Partitioning variance in response"
+          href: analysis_propVariance
   right:
     - icon: fa-github
       href: https://github.com/pie-lab/wording-effects
