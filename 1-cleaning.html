@@ -370,11 +370,12 @@ div.tocify {
 <pre class="r"><code>library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
-library(lme4) # for mulitlevel modeling
+library(lme4) # for multilevel modeling
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
-library(stringdist) # for scoring memory task</code></pre>
+library(stringdist) # for scoring memory task
+library(papaja) # for pretty numbers</code></pre>
 <pre class="r"><code>data_path = here(&quot;data/Wording_July 13, 2021_20.00.text.csv&quot;)
 
 data_labels = read_csv(data_path)
@@ -862,6 +863,66 @@ N
 </tbody>
 </table>
 </div>
+<div id="delayed-recall" class="section level3">
+<h3>Delayed recall</h3>
+<p>A challenge with the delayed recall task is identifying the memory condition that participants were assigned to, but this is made easier by the work done above.</p>
+<pre class="r"><code>mem2 = data %&gt;%
+  select(proid, mem_condition, delayed_recall) %&gt;%
+  mutate(newid = 1:nrow(.))
+
+mem2 = mem2 %&gt;%
+  mutate(
+    delayed_recall1 = map(delayed_recall, ~sapply(., amatch, correct1, maxDist = distance)),
+    delayed_recall2 = map(delayed_recall, ~sapply(., amatch, correct2, maxDist = distance)),
+    delayed_recall3 = map(delayed_recall, ~sapply(., amatch, correct3, maxDist = distance)),
+    delayed_recall4 = map(delayed_recall, ~sapply(., amatch, correct4, maxDist = distance))
+    ) %&gt;%
+  gather(variable, delayed_memory, delayed_recall1:delayed_recall4)
+
+mem2 = mem2 %&gt;%
+  mutate(
+      delayed_memory = map(delayed_memory, sapply, 
+                  FUN = function(x) ifelse(x &gt;0, 1, 0)),
+      # count the number of correct answers
+      delayed_memory = map_dbl(delayed_memory, sum, na.rm=T))
+
+mem2 = mem2 %&gt;%
+  group_by(proid) %&gt;%
+  filter(delayed_memory == max(delayed_memory)) %&gt;%
+  filter(row_number() == 1 ) %&gt;% 
+  select(-delayed_recall, -variable)
+
+data = inner_join(data, mem2)</code></pre>
+<pre class="r"><code>data %&gt;%
+  ggplot(aes(x = delayed_memory)) +
+  geom_histogram(color = &quot;white&quot;, bins = 11) +
+  scale_x_continuous(&quot;Number correct&quot;, breaks = c(0:10)) +
+  labs(y = &quot;Number of participants&quot;) +
+  theme_pubr() </code></pre>
+<div class="figure">
+<img src="1-cleaning_files/figure-html/unnamed-chunk-33-1.png" alt="Distribution of delayed memory scores" width="672" />
+<p class="caption">
+Distribution of delayed memory scores
+</p>
+</div>
+<pre class="r"><code>data %&gt;%
+  ggplot(aes(x = memory, y = delayed_memory)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;) +
+  scale_x_continuous(&quot;Immediate number correct&quot;, breaks = c(0:10)) +
+  scale_y_continuous(&quot;Delayed number correct&quot;, breaks = c(0:10)) +
+  labs(title = paste0(&quot;r = &quot;, printnum(cor(data$memory, data$delayed_memory, use = &quot;pairwise&quot;)))) +
+  theme_pubr() </code></pre>
+<div class="figure">
+<img src="1-cleaning_files/figure-html/unnamed-chunk-34-1.png" alt="Relationship between immediate and delayed recall" width="672" />
+<p class="caption">
+Relationship between immediate and delayed recall
+</p>
+</div>
+</div>
+</div>
+<div id="save-data" class="section level2">
+<h2>Save data</h2>
 </div>
 
 

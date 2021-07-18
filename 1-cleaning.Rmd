@@ -17,11 +17,12 @@ knitr::opts_chunk$set(warning = F, message = F)
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
-library(lme4) # for mulitlevel modeling
+library(lme4) # for multilevel modeling
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
 library(stringdist) # for scoring memory task
+library(papaja) # for pretty numbers
 ```
 
 ```{r}
@@ -489,6 +490,63 @@ data %>%
   kable_styling()
 ```
 
+### Delayed recall
+
+A challenge with the delayed recall task is identifying the memory condition that participants were assigned to, but this is made easier by the work done above.
+
+```{r}
+mem2 = data %>%
+  select(proid, mem_condition, delayed_recall) %>%
+  mutate(newid = 1:nrow(.))
+
+mem2 = mem2 %>%
+  mutate(
+    delayed_recall1 = map(delayed_recall, ~sapply(., amatch, correct1, maxDist = distance)),
+    delayed_recall2 = map(delayed_recall, ~sapply(., amatch, correct2, maxDist = distance)),
+    delayed_recall3 = map(delayed_recall, ~sapply(., amatch, correct3, maxDist = distance)),
+    delayed_recall4 = map(delayed_recall, ~sapply(., amatch, correct4, maxDist = distance))
+    ) %>%
+  gather(variable, delayed_memory, delayed_recall1:delayed_recall4)
+
+mem2 = mem2 %>%
+  mutate(
+      delayed_memory = map(delayed_memory, sapply, 
+                  FUN = function(x) ifelse(x >0, 1, 0)),
+      # count the number of correct answers
+      delayed_memory = map_dbl(delayed_memory, sum, na.rm=T))
+
+mem2 = mem2 %>%
+  group_by(proid) %>%
+  filter(delayed_memory == max(delayed_memory)) %>%
+  filter(row_number() == 1 ) %>% 
+  select(-delayed_recall, -variable)
+
+data = inner_join(data, mem2)
+```
+
+```{r, fig.cap = "Distribution of delayed memory scores"}
+data %>%
+  ggplot(aes(x = delayed_memory)) +
+  geom_histogram(color = "white", bins = 11) +
+  scale_x_continuous("Number correct", breaks = c(0:10)) +
+  labs(y = "Number of participants") +
+  theme_pubr() 
+```
+
+
+```{r, fig.cap = "Relationship between immediate and delayed recall"}
+data %>%
+  ggplot(aes(x = memory, y = delayed_memory)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  scale_x_continuous("Immediate number correct", breaks = c(0:10)) +
+  scale_y_continuous("Delayed number correct", breaks = c(0:10)) +
+  labs(title = paste0("r = ", printnum(cor(data$memory, data$delayed_memory, use = "pairwise")))) +
+  theme_pubr() 
+```
+
+
+## Save data
 
 ```{r, echo = F}
 save(data, file = here("data/cleaned_data.Rds"))
