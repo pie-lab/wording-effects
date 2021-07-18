@@ -62,22 +62,35 @@ item_responses = item_responses %>%
 
 ## Response by Format
 
+We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format.
+
 ```{r}
 item_responses$format = as.factor(item_responses$format)
-item_responses$format = relevel(item_responses$format, ref = "a")
+item_responses$format = relevel(item_responses$format, ref = "a") 
+item_responses$format = factor(item_responses$format,
+                               levels = c("a","b","c","d"),
+                               labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective"))
 
 mod.format = lmer(response~format + (1|proid), 
                   data = item_responses)
 anova(mod.format)
+#look up p-value
+pf(0.23, df1 = 3, df2 = 960, lower.tail = F)
 summary(mod.format)
 
-mod.format2 = aov(response~format + Error(proid) , data = item_responses)
-summary(mod.format2)
+# mod.format2 = aov(response~format + Error(proid) , data = item_responses)
+# summary(mod.format2)
 
 ```
 
 ```{r, fig.cap = "Predicted response on personality items by condition."}
-plot_model(mod.format, type = "pred")
+plot1 = plot_model(mod.format, type = "pred") 
+
+plot1$format +
+  labs(x = NULL,
+       y = "Average response",
+       title = "Average responses by item formatting") +
+  theme_pubclean()
 ```
 
 ```{r, fig.cap = "Distribution of responses by category"}
@@ -99,6 +112,9 @@ item_responses %>%
             vjust = 1) +
   facet_wrap(~format) +
   guides(fill = F) +
+  scale_x_continuous(breaks = 1:6) +
+  labs(y = "Number of particpants",
+       title = "Distribution of responses by format") +
   theme_pubr()
 ```
 

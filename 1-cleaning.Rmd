@@ -21,7 +21,7 @@ library(lme4) # for mulitlevel modeling
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
-library(stringdist)
+library(stringdist) # for scoring memory task
 ```
 
 ```{r}
@@ -294,8 +294,8 @@ data = data %>%
 
 ### Based on average time to respond
 
-First we count how many answers each participant responded to. Why count using code and not just looking at qualtrics? Two reasons: 
-  1. It's not entirely clear from Qualtrics how many questions are in the survey, because there are 4 versions of each trait item and 4 different recall conditoins. 
+First we count how many answers each participant responded to. Why count using code and not just looking at Qualtrics? Two reasons: 
+  1. It's not entirely clear from Qualtrics how many questions are in the survey, because there are 4 versions of each trait item and 4 different recall conditions. 
   2. We expect the survey to change after reviews during Stage 1, and the person who wrote this code will definitely forget to change this section later. 
 
 ```{r}
@@ -386,18 +386,20 @@ Next we convert all responses to lowercase. Then we break the string of response
 ```{r}
 data = data %>%
   mutate(
-    across(starts_with("recall"),tolower), # convert to lower
+    across(matches("recall"),tolower), # convert to lower
     #replace carriage return with space
-    across(starts_with("recall"), str_replace_all, pattern = "\\n", replacement = ","),
+    across(matches("recall"), str_replace_all, pattern = "\\n", replacement = ","),
     # remove spaces
-    across(starts_with("recall"), str_replace_all, pattern = " ", replacement = ","),
+    across(matches("recall"), str_replace_all, pattern = " ", replacement = ","),
     # remove doubles
-    across(starts_with("recall"), str_replace_all, pattern = ",,", replacement = ","),
+    across(matches("recall"), str_replace_all, pattern = ",,", replacement = ","),
     #remove last comma
-    across(starts_with("recall"), str_remove, pattern = ",$"),
+    across(matches("recall"), str_remove, pattern = ",$"),
     # split the strings based on the spaces
-    across(starts_with("recall"), str_split, pattern = ","))
+    across(matches("recall"), str_split, pattern = ","))
 ```
+
+### Immediate recall
 
 Now we use the `amatch` function in the `stringdist` package to look for exact (or close) matches to the target words. This function returns for each word either the position of the key in which you can find the target word or `NA` to indicate the word or a close match does not exist in the string.
 
@@ -464,8 +466,9 @@ Participants remember on average `r papaja::printnum(mean(data$memory))` words c
 ```{r, fig.cap = "Correct responses on the memory task"}
 data %>%
   ggplot(aes(x = memory)) +
-  geom_histogram(bins = 10, color = "white") +
+  geom_histogram(bins = 11, color = "white") +
   labs(x = "Number of correct responses") +
+  scale_x_continuous(breaks = 0:10) +
   theme_pubr()
 ```
 

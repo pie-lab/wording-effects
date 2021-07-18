@@ -324,6 +324,9 @@ div.tocify {
         <li>
   <a href="1-cleaning.html">Data cleaning</a>
 </li>
+<li>
+  <a href="descriptives.html">Descriptives</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Analysis
@@ -357,7 +360,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2021-07-14</h4>
+<h4 class="date">Last updated 2021-07-18</h4>
 
 </div>
 
@@ -371,7 +374,7 @@ library(lme4) # for mulitlevel modeling
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
-library(stringdist)</code></pre>
+library(stringdist) # for scoring memory task</code></pre>
 <pre class="r"><code>data_path = here(&quot;data/Wording_July 13, 2021_20.00.text.csv&quot;)
 
 data_labels = read_csv(data_path)
@@ -586,7 +589,7 @@ Average response to inattention check items
 </div>
 <div id="based-on-average-time-to-respond" class="section level3">
 <h3>Based on average time to respond</h3>
-<p>First we count how many answers each participant responded to. Why count using code and not just looking at qualtrics? Two reasons: 1. It’s not entirely clear from Qualtrics how many questions are in the survey, because there are 4 versions of each trait item and 4 different recall conditoins. 2. We expect the survey to change after reviews during Stage 1, and the person who wrote this code will definitely forget to change this section later.</p>
+<p>First we count how many answers each participant responded to. Why count using code and not just looking at Qualtrics? Two reasons: 1. It’s not entirely clear from Qualtrics how many questions are in the survey, because there are 4 versions of each trait item and 4 different recall conditions. 2. We expect the survey to change after reviews during Stage 1, and the person who wrote this code will definitely forget to change this section later.</p>
 <pre class="r"><code>num_variables = data %&gt;% 
   select(-c(start_date:response_id),
          -starts_with(&quot;t_&quot;),
@@ -661,17 +664,19 @@ correct4 = c(&quot;baby&quot;, &quot;church&quot;, &quot;doctor&quot;, &quot;fir
 <p>Next we convert all responses to lowercase. Then we break the string of responses into a vector containing many strings.</p>
 <pre class="r"><code>data = data %&gt;%
   mutate(
-    across(starts_with(&quot;recall&quot;),tolower), # convert to lower
+    across(matches(&quot;recall&quot;),tolower), # convert to lower
     #replace carriage return with space
-    across(starts_with(&quot;recall&quot;), str_replace_all, pattern = &quot;\\n&quot;, replacement = &quot;,&quot;),
+    across(matches(&quot;recall&quot;), str_replace_all, pattern = &quot;\\n&quot;, replacement = &quot;,&quot;),
     # remove spaces
-    across(starts_with(&quot;recall&quot;), str_replace_all, pattern = &quot; &quot;, replacement = &quot;,&quot;),
+    across(matches(&quot;recall&quot;), str_replace_all, pattern = &quot; &quot;, replacement = &quot;,&quot;),
     # remove doubles
-    across(starts_with(&quot;recall&quot;), str_replace_all, pattern = &quot;,,&quot;, replacement = &quot;,&quot;),
+    across(matches(&quot;recall&quot;), str_replace_all, pattern = &quot;,,&quot;, replacement = &quot;,&quot;),
     #remove last comma
-    across(starts_with(&quot;recall&quot;), str_remove, pattern = &quot;,$&quot;),
+    across(matches(&quot;recall&quot;), str_remove, pattern = &quot;,$&quot;),
     # split the strings based on the spaces
-    across(starts_with(&quot;recall&quot;), str_split, pattern = &quot;,&quot;))</code></pre>
+    across(matches(&quot;recall&quot;), str_split, pattern = &quot;,&quot;))</code></pre>
+<div id="immediate-recall" class="section level3">
+<h3>Immediate recall</h3>
 <p>Now we use the <code>amatch</code> function in the <code>stringdist</code> package to look for exact (or close) matches to the target words. This function returns for each word either the position of the key in which you can find the target word or <code>NA</code> to indicate the word or a close match does not exist in the string.</p>
 <pre class="r"><code>distance = 1 #maximum distance between target word and correct response
 data = data %&gt;%
@@ -723,8 +728,9 @@ data = data %&gt;%
 <p>Participants remember on average 5.59 words correctly <span class="math inline">\((SD = 2.76)\)</span>,</p>
 <pre class="r"><code>data %&gt;%
   ggplot(aes(x = memory)) +
-  geom_histogram(bins = 10, color = &quot;white&quot;) +
+  geom_histogram(bins = 11, color = &quot;white&quot;) +
   labs(x = &quot;Number of correct responses&quot;) +
+  scale_x_continuous(breaks = 0:10) +
   theme_pubr()</code></pre>
 <div class="figure">
 <img src="1-cleaning_files/figure-html/unnamed-chunk-30-1.png" alt="Correct responses on the memory task" width="672" />
@@ -855,6 +861,7 @@ N
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 
 

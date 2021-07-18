@@ -1,0 +1,158 @@
+---
+title: "Descriptive statistics"
+date: "Last updated `r Sys.Date()`"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(warning = F, message = F)
+```
+
+## Workspace
+
+```{r}
+library(here) # for working with files
+library(tidyverse) # for cleaning
+library(sjPlot) # for figures
+library(ggpubr) # for prettier plots
+library(kableExtra) # for nicer tables
+library(papaja) # for pretty numbers
+```
+
+```{r, echo = F}
+load(here("data/cleaned_data.Rds"))
+```
+
+## Block 1 personality
+
+First we select the responses to the items of different formats. These variable names all have the same format: `[trait]_[abcd]` (for example, `talkative_a`). We search for these items using regular expressions.
+
+```{r}
+items_seen_first = str_subset(
+  names(data),
+  "^([[:alpha:]])+_[abcd]$"
+)
+
+item_responses = data %>%
+  select(proid, all_of(items_seen_first), memory)
+```
+
+Next we reshape these data into long form.
+
+```{r}
+item_responses = item_responses %>%
+  gather(item, response, -proid, -memory) %>%
+  separate(item, into = c("item", "format")) %>%
+  filter(!is.na(response))
+```
+
+```{r, results = 'asis'}
+item_responses %>%
+  group_by(format) %>%
+  summarise(
+    mean = mean(response),
+    sd = sd(response),
+    median = median(response),
+    N_responses = n(),
+    N_participants = length(unique(proid))
+  ) %>%
+  mutate(format = factor(
+    format,
+    levels = c("a","b","c","d"),
+    labels = c("Adjective Only", "Am Adjective", "Tend to be Adjective", "I am someone who tends to be Adjective")
+  )) %>% 
+  kable(booktabs = T, digits = c(0,2,2,0,0,0)) %>%
+  kable_styling()
+```
+
+
+```{r, results = 'asis'}
+item_responses %>%
+  group_by(item, format) %>%
+  summarise(
+    mean = mean(response),
+    sd = sd(response)
+  ) %>% 
+  mutate(value = paste0(
+    printnum(mean), " (", printnum(sd), ")"
+  )) %>%
+  select(-mean, -sd) %>%
+  mutate(format = factor(
+    format,
+    levels = c("a","b","c","d"),
+    labels = c("Adjective Only", "Am Adjective", "Tend to be Adjective", "I am someone who tends to be Adjective")
+  )) %>% 
+  spread(format, value) %>% 
+  kable(booktabs = T) %>%
+  kable_styling()
+```
+
+## Block 2 personality
+
+First we select the responses to the items of different formats. These variable names all have the same format: `[trait]_[abcd]_2` (for example, `talkative_a_2`). We search for these items using regular expressions.
+
+```{r}
+items_seen_second = str_subset(
+  names(data),
+  "^([[:alpha:]])+_[abcd]_2$"
+)
+
+item_responses2 = data %>%
+  select(proid, all_of(items_seen_second), memory)
+```
+
+Next we reshape these data into long form.
+
+```{r}
+item_responses2 = item_responses2 %>%
+  gather(item, response, -proid, -memory) %>%
+  mutate(item = str_remove(item, "_2")) %>% 
+  separate(item, into = c("item", "format")) %>%
+  filter(!is.na(response))
+```
+
+```{r, results = 'asis'}
+item_responses2 %>%
+  group_by(format) %>%
+  summarise(
+    mean = mean(response),
+    sd = sd(response),
+    median = median(response),
+    N_responses = n(),
+    N_participants = length(unique(proid))
+  ) %>%
+  mutate(format = factor(
+    format,
+    levels = c("a","b","c","d"),
+    labels = c("Adjective Only", "Am Adjective", "Tend to be Adjective", "I am someone who tends to be Adjective")
+  )) %>% 
+  kable(booktabs = T, digits = c(0,2,2,0,0,0)) %>%
+  kable_styling()
+```
+
+
+```{r, results = 'asis'}
+item_responses2 %>%
+  group_by(item, format) %>%
+  summarise(
+    mean = mean(response),
+    sd = sd(response)
+  ) %>% 
+  mutate(value = paste0(
+    printnum(mean), " (", printnum(sd), ")"
+  )) %>%
+  select(-mean, -sd) %>%
+  mutate(format = factor(
+    format,
+    levels = c("a","b","c","d"),
+    labels = c("Adjective Only", "Am Adjective", "Tend to be Adjective", "I am someone who tends to be Adjective")
+  )) %>% 
+  spread(format, value) %>% 
+  kable(booktabs = T) %>%
+  kable_styling()
+```
+

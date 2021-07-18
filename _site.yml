@@ -5,6 +5,8 @@ navbar:
   left:
     - text: Data cleaning
       href: 1-cleaning.html
+    - text: Descriptives
+      href: descriptives.html
     - text: Analysis
       menu:
         - text: "Does item formatting affect response?"
