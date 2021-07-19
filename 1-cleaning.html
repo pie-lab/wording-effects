@@ -360,7 +360,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2021-07-18</h4>
+<h4 class="date">Last updated 2021-07-19</h4>
 
 </div>
 
@@ -588,52 +588,64 @@ Average response to inattention check items
   filter(remove != &quot;Remove&quot;) %&gt;%
   select(-remove)</code></pre>
 </div>
-<div id="based-on-average-time-to-respond" class="section level3">
-<h3>Based on average time to respond</h3>
-<p>First we count how many answers each participant responded to. Why count using code and not just looking at Qualtrics? Two reasons: 1. It’s not entirely clear from Qualtrics how many questions are in the survey, because there are 4 versions of each trait item and 4 different recall conditions. 2. We expect the survey to change after reviews during Stage 1, and the person who wrote this code will definitely forget to change this section later.</p>
-<pre class="r"><code>num_variables = data %&gt;% 
-  select(-c(start_date:response_id),
-         -starts_with(&quot;t_&quot;),
-         -any_of(c(&quot;prolific_pid&quot;)) # not used. will we clean it up later? doesn&#39;t matter! 
-  ) %&gt;%
-  gather(item,response, -proid) %&gt;%
-  filter(!is.na(response)) %&gt;%
-  group_by(proid) %&gt;%
-  count(name = &quot;num_var&quot;) #how many variables per person? 
+<div id="based-on-average-time-to-respond-to-personality-items" class="section level3">
+<h3>Based on average time to respond to personality items</h3>
+<p>First, select just the timing of the personality items. We do this by searching for specific strings: "t_[someword]<em>[a or b or c or d]</em>(maybe 2_)_page_submit."</p>
+<pre class="r"><code>timing_data = data %&gt;%
+  select(proid, matches(&quot;t_[[:alpha:]]*_[abcd](_2)?_page_submit&quot;))</code></pre>
+<p>Next we gather into long form and remove missing timing values</p>
+<pre class="r"><code>timing_data = timing_data %&gt;%
+  gather(variable, timing, -proid) %&gt;%
+  filter(!is.na(timing))
 
-# should be about the same number of responses per person with forced response
-table(num_variables$num_var)</code></pre>
-<pre><code>## 
-## 82 83 
-## 32  3</code></pre>
-<pre class="r"><code># participants with one more response included text in the response to the question 
-# Why should we exclude you?</code></pre>
-<p>Now we calculate the average time to respond by taking the duration in seconds variable and dividing by the number of responses.</p>
-<pre class="r"><code>num_variables = data %&gt;%
-  select(proid, duration_in_seconds) %&gt;%
-  full_join(num_variables) %&gt;%
-  mutate(time_per_item = duration_in_seconds/num_var) %&gt;%
+timing_data</code></pre>
+<pre><code>## # A tibble: 2,170 x 3
+##    proid                    variable                 timing
+##    &lt;chr&gt;                    &lt;chr&gt;                     &lt;dbl&gt;
+##  1 5f0227ae81bf2f3a4618c8c7 t_outgoing_a_page_submit   4.47
+##  2 60eb3434de863fc43f563b0e t_outgoing_a_page_submit   4.52
+##  3 60eb31222e8b2fb8dc904432 t_outgoing_a_page_submit   4.86
+##  4 60e49d66c9c4f08ce7a3b789 t_outgoing_a_page_submit   4.16
+##  5 60ea7b0e32a76a57b4a34664 t_outgoing_a_page_submit   4.20
+##  6 60e950d879a14636c5fc286d t_outgoing_a_page_submit   4.49
+##  7 60e781742748ec6401b79f86 t_outgoing_a_page_submit   4.5 
+##  8 60e9521961c670e718bcc4df t_outgoing_a_page_submit  85.7 
+##  9 60e777356e13630d745eeb49 t_outgoing_a_page_submit   2.47
+## 10 60e99999b101ef725cb0b8a2 t_outgoing_a_page_submit   4.45
+## # … with 2,160 more rows</code></pre>
+<p>To check, each participant should have the same number of responses: 62.</p>
+<pre class="r"><code>timing_data %&gt;%
+  group_by(proid) %&gt;%
+  count() %&gt;%
+  ungroup() %&gt;% 
+  summarise(min(n), max(n))</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##   `min(n)` `max(n)`
+##      &lt;int&gt;    &lt;int&gt;
+## 1       62       62</code></pre>
+<p>Excellent! Now we calculate the average response time per item for each participant. We mark a participant for removal if their average time is less than 1 second or greater than 30. See Figure @ref(fig:timing_dist) for a distribution of average response time.</p>
+<pre class="r"><code>timing_data = timing_data %&gt;%
+  group_by(proid) %&gt;%
+  summarise(m_time = mean(timing)) %&gt;%
   mutate(remove = case_when(
-    time_per_item &lt; 1 ~ &quot;Remove&quot;,
-    time_per_item &gt; 30 ~ &quot;Remove&quot;,
+    m_time &lt; 1 ~ &quot;Remove&quot;,
+    m_time &gt; 30 ~ &quot;Remove&quot;,
     TRUE ~ &quot;Keep&quot;
   ))</code></pre>
-<pre class="r"><code>num_variables %&gt;%
-  ggplot(aes(x = time_per_item, fill = remove)) +
-  geom_histogram(bins = 30, color = &quot;white&quot;) +
-  labs(x = &quot;Seconds per item&quot;) +
+<pre class="r"><code>timing_data %&gt;%
+  ggplot(aes(x = m_time, fill = remove)) +
+  geom_histogram(color = &quot;white&quot;) +
+  labs(x = &quot;Average response time (seconds)&quot;, y = &quot;Number of participants&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/unnamed-chunk-22-1.png" alt="Average item response time" width="672" />
+<img src="1-cleaning_files/figure-html/timing_dist-1.png" alt="Distribution of average time to respond to personality items." width="672" />
 <p class="caption">
-Average item response time
+Distribution of average time to respond to personality items.
 </p>
 </div>
-<p>We remove 1 participants whose average item response time is outside the allowed range.</p>
-<pre class="r"><code>data = data %&gt;%
-  full_join(select(num_variables, proid, remove)) %&gt;%
-  filter(remove != &quot;Remove&quot;) %&gt;%
+<pre class="r"><code>data = inner_join(data, filter(timing_data, remove == &quot;Keep&quot;)) %&gt;%
   select(-remove)</code></pre>
+<p>Based on timing, we removed 0 participants.</p>
 </div>
 </div>
 <div id="reverse-score-personality-items" class="section level2">
@@ -726,7 +738,7 @@ data = data %&gt;%
   filter(!is.na(memory)) %&gt;%
   mutate(mem_condition = str_remove(mem_condition, &quot;memory&quot;)) %&gt;%
   full_join(data)</code></pre>
-<p>Participants remember on average 5.59 words correctly <span class="math inline">\((SD = 2.76)\)</span>,</p>
+<p>Participants remember on average 5.80 words correctly <span class="math inline">\((SD = 2.73)\)</span>,</p>
 <pre class="r"><code>data %&gt;%
   ggplot(aes(x = memory)) +
   geom_histogram(bins = 11, color = &quot;white&quot;) +
@@ -734,7 +746,7 @@ data = data %&gt;%
   scale_x_continuous(breaks = 0:10) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/unnamed-chunk-30-1.png" alt="Correct responses on the memory task" width="672" />
+<img src="1-cleaning_files/figure-html/unnamed-chunk-32-1.png" alt="Correct responses on the memory task" width="672" />
 <p class="caption">
 Correct responses on the memory task
 </p>
@@ -805,10 +817,10 @@ N
 2
 </td>
 <td style="text-align:right;">
-4.29
+4.62
 </td>
 <td style="text-align:right;">
-3.30
+3.20
 </td>
 <td style="text-align:right;">
 1
@@ -817,7 +829,7 @@ N
 10
 </td>
 <td style="text-align:right;">
-7
+8
 </td>
 </tr>
 <tr>
@@ -825,10 +837,10 @@ N
 3
 </td>
 <td style="text-align:right;">
-6.11
+6.40
 </td>
 <td style="text-align:right;">
-2.71
+2.72
 </td>
 <td style="text-align:right;">
 1
@@ -837,7 +849,7 @@ N
 10
 </td>
 <td style="text-align:right;">
-9
+10
 </td>
 </tr>
 <tr>
@@ -845,10 +857,10 @@ N
 4
 </td>
 <td style="text-align:right;">
-6.25
+6.44
 </td>
 <td style="text-align:right;">
-2.60
+2.51
 </td>
 <td style="text-align:right;">
 2
@@ -857,7 +869,7 @@ N
 10
 </td>
 <td style="text-align:right;">
-8
+9
 </td>
 </tr>
 </tbody>
@@ -900,7 +912,7 @@ data = inner_join(data, mem2)</code></pre>
   labs(y = &quot;Number of participants&quot;) +
   theme_pubr() </code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/unnamed-chunk-33-1.png" alt="Distribution of delayed memory scores" width="672" />
+<img src="1-cleaning_files/figure-html/unnamed-chunk-35-1.png" alt="Distribution of delayed memory scores" width="672" />
 <p class="caption">
 Distribution of delayed memory scores
 </p>
@@ -914,7 +926,7 @@ Distribution of delayed memory scores
   labs(title = paste0(&quot;r = &quot;, printnum(cor(data$memory, data$delayed_memory, use = &quot;pairwise&quot;)))) +
   theme_pubr() </code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/unnamed-chunk-34-1.png" alt="Relationship between immediate and delayed recall" width="672" />
+<img src="1-cleaning_files/figure-html/unnamed-chunk-36-1.png" alt="Relationship between immediate and delayed recall" width="672" />
 <p class="caption">
 Relationship between immediate and delayed recall
 </p>

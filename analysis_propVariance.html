@@ -358,7 +358,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Format effects</h1>
-<h4 class="date">Last updated 2021-07-18</h4>
+<h4 class="date">Last updated 2021-07-19</h4>
 
 </div>
 
@@ -406,33 +406,33 @@ summary(mod_within_full)</code></pre>
 ## Formula: response ~ 1 + (1 | item) + (1 | format) + (1 | proid)
 ##    Data: item_responses
 ## 
-## REML criterion at convergence: 6092.1
+## REML criterion at convergence: 6724.8
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -4.2303 -0.5087  0.1022  0.6234  3.1248 
+## -4.1453 -0.5052  0.0946  0.6176  3.1789 
 ## 
 ## Random effects:
-##  Groups   Name        Variance Std.Dev.
-##  proid    (Intercept) 0.171252 0.41383 
-##  item     (Intercept) 0.521154 0.72191 
-##  format   (Intercept) 0.002454 0.04954 
-##  Residual             1.152363 1.07348 
-## Number of obs: 1984, groups:  proid, 32; item, 31; format, 4
+##  Groups   Name        Variance  Std.Dev.
+##  proid    (Intercept) 0.1622567 0.40281 
+##  item     (Intercept) 0.5149790 0.71762 
+##  format   (Intercept) 0.0005179 0.02276 
+##  Residual             1.1924370 1.09199 
+## Number of obs: 2170, groups:  proid, 35; item, 31; format, 4
 ## 
 ## Fixed effects:
 ##             Estimate Std. Error t value
-## (Intercept)   4.5805     0.1528   29.97</code></pre>
+## (Intercept)   4.5802     0.1481   30.93</code></pre>
 <pre class="r"><code>variances = VarCorr(mod_within_full, comp=&quot;Variance&quot;)
 var_proid  = variances$proid[[1]]
 var_item   = variances$item[[1]]
 var_format = variances$format[[1]]
 var_resid = attr(variances, &quot;sc&quot;)^2
 var_total = var_proid + var_item + var_format + var_resid</code></pre>
-<p>Participants account for 9.27 percent of the variability in response.</p>
-<p>Items account for 28.21 percent of the variability in response.</p>
-<p>Format accounts for 0.13 percent of the variability in response.</p>
-<p>In total, 37.62 percent of the variability in response is explained.</p>
+<p>Participants account for 8.68 percent of the variability in response.</p>
+<p>Items account for 27.54 percent of the variability in response.</p>
+<p>Format accounts for 0.03 percent of the variability in response.</p>
+<p>In total, 36.24 percent of the variability in response is explained.</p>
 <!-- We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. -->
 <!-- We will also consider the effect on retest reliability of performance on the word recall task. -->
 <!-- We will further compare response times as a function of item format using both within- and between-person data in order to evaluate the presumption that adjective ratings require less time than phrased items.  -->

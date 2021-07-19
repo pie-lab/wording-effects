@@ -191,3 +191,6 @@ mod_by_item %>%
 
 <!-- Finally, secondary analyses will consider preliminary evidence for differences (e.g., mean response times, mean level of response) based on the type of device used to complete the survey (mobile, desktop, or tablet). -->
 
+## Questions
+
+* I only used responses in Block 1 here. Should I merge the two blocks together? Or I can repeat the analyses using Block 2? One thing to consider if we merge is that I can't use the simple ANOVA for the item-level analyses (we'll have two responses per person, so back to a nested design).

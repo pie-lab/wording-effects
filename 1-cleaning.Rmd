@@ -293,59 +293,68 @@ data = data %>%
   select(-remove)
 ```
 
-### Based on average time to respond
+### Based on average time to respond to personality items
 
-First we count how many answers each participant responded to. Why count using code and not just looking at Qualtrics? Two reasons: 
-  1. It's not entirely clear from Qualtrics how many questions are in the survey, because there are 4 versions of each trait item and 4 different recall conditions. 
-  2. We expect the survey to change after reviews during Stage 1, and the person who wrote this code will definitely forget to change this section later. 
+First, select just the timing of the personality items. We do this by searching for specific strings: "t_[someword]_[a or b or c or d]_(maybe 2_)_page_submit."
 
 ```{r}
-num_variables = data %>% 
-  select(-c(start_date:response_id),
-         -starts_with("t_"),
-         -any_of(c("prolific_pid")) # not used. will we clean it up later? doesn't matter! 
-  ) %>%
-  gather(item,response, -proid) %>%
-  filter(!is.na(response)) %>%
-  group_by(proid) %>%
-  count(name = "num_var") #how many variables per person? 
-
-# should be about the same number of responses per person with forced response
-table(num_variables$num_var)
-# participants with one more response included text in the response to the question 
-# Why should we exclude you?
+timing_data = data %>%
+  select(proid, matches("t_[[:alpha:]]*_[abcd](_2)?_page_submit"))
 ```
 
-Now we calculate the average time to respond by taking the duration in seconds variable and dividing by the number of responses. 
+Next we gather into long form and remove missing timing values
 
 ```{r}
-num_variables = data %>%
-  select(proid, duration_in_seconds) %>%
-  full_join(num_variables) %>%
-  mutate(time_per_item = duration_in_seconds/num_var) %>%
+timing_data = timing_data %>%
+  gather(variable, timing, -proid) %>%
+  filter(!is.na(timing))
+
+timing_data
+```
+
+To check, each participant should have the same number of responses: 62.
+
+```{r}
+timing_data %>%
+  group_by(proid) %>%
+  count() %>%
+  ungroup() %>% 
+  summarise(min(n), max(n))
+```
+
+Excellent! Now we calculate the average response time per item for each participant. We mark a participant for removal if their average time is less than 1 second or greater than 30. See Figure \@ref(fig:timing_dist) for a distribution of average response time.
+
+```{r}
+timing_data = timing_data %>%
+  group_by(proid) %>%
+  summarise(m_time = mean(timing)) %>%
   mutate(remove = case_when(
-    time_per_item < 1 ~ "Remove",
-    time_per_item > 30 ~ "Remove",
+    m_time < 1 ~ "Remove",
+    m_time > 30 ~ "Remove",
     TRUE ~ "Keep"
   ))
 ```
 
-```{r, fig.cap="Average item response time"}
-num_variables %>%
-  ggplot(aes(x = time_per_item, fill = remove)) +
-  geom_histogram(bins = 30, color = "white") +
-  labs(x = "Seconds per item") +
+```{r timing_dist, fig.cap = "Distribution of average time to respond to personality items."}
+
+timing_data %>%
+  ggplot(aes(x = m_time, fill = remove)) +
+  geom_histogram(color = "white") +
+  labs(x = "Average response time (seconds)", y = "Number of participants") +
   theme_pubr()
+
 ```
 
-We remove `r table(num_variables$remove[[2]])` participants whose average item response time is outside the allowed range.
+```{r, echo = F}
+olddata = data
+```
 
 ```{r}
-data = data %>%
-  full_join(select(num_variables, proid, remove)) %>%
-  filter(remove != "Remove") %>%
+data = inner_join(data, filter(timing_data, remove == "Keep")) %>%
   select(-remove)
 ```
+
+Based on timing, we removed `r printnum(nrow(olddata)-nrow(data))` participants.
 
 ## Reverse score personality items
 
