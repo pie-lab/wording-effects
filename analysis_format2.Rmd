@@ -1,5 +1,5 @@
 ---
-title: "Format effects (Block  1 Data)"
+title: "Format effects (Block 1 and 2 Data)"
 date: "Last updated `r Sys.Date()`"
 output: 
   html_document:
@@ -25,8 +25,8 @@ library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
 library(lme4) # for mulitlevel modeling
-library(lmerTest) # for p-values
-library(emmeans) # for comparisons
+library(lmerTest) # for df and p-values
+library(emmeans) # for pairwise comparisons
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
@@ -41,18 +41,18 @@ load(here("data/cleaned_data.Rds"))
 
 **We will use between-person analyses to compare responses using group-level data for the different formats.**
 
-First we select the responses to the items of different formats. For this set of analyses, we only use data collected in Block 1 -- that is, each participant saw the same format for every item. 
+First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2-- that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.
 
-These variable names all have the same format: `[trait]_[abcd]` (for example, `talkative_a`). We search for these items using regular expressions.
+These variable names have one of two formats: `[trait]_[abcd]` (for example, `talkative_a`) or `[trait]_[abcd]_2` (for example, `talkative_a_2`). We search for these items using regular expressions.
 
 ```{r}
-items_seen_first = str_subset(
+items_seen_b1b2 = str_subset(
   names(data),
-  "^([[:alpha:]])+_[abcd]$"
+  "^([[:alpha:]])+_[abcd](_2)?$"
 )
 
 item_responses = data %>%
-  select(proid, all_of(items_seen_first), memory)
+  select(proid, all_of(items_seen_b1b2), memory)
 ```
 
 Next we reshape these data into long form.
@@ -60,6 +60,11 @@ Next we reshape these data into long form.
 ```{r}
 item_responses = item_responses %>%
   gather(item, response, -proid, -memory) %>%
+  mutate(
+    block = case_when(             # which block is the item from?
+      str_detect(item, "_2") ~ "2",
+      TRUE ~ "1"),
+    item = str_remove(item, "_2")) %>%  # remove block id from item string
   separate(item, into = c("item", "format")) %>%
   filter(!is.na(response))
 ```
@@ -78,6 +83,7 @@ item_responses$format = factor(item_responses$format,
 mod.format = lmer(response~format + (1|proid), 
                   data = item_responses)
 anova(mod.format)
+
 ```
 
 ```{r, fig.cap = "Predicted response on personality items by condition."}
@@ -97,18 +103,21 @@ means_by_group = item_responses %>%
             s = sd(response))
 
 item_responses %>%
-  ggplot(aes(x = response, fill = format)) +
-  geom_histogram(bins = 6, color = "white") +
-  geom_vline(aes(xintercept = m), data = means_by_group) +
+  ggplot(aes(x = response)) +
+  geom_histogram(aes(fill = block),
+                 position = "dodge",
+                 bins = 6, color = "white") +
+  geom_vline(aes(xintercept = m), 
+             data = means_by_group) +
   geom_text(aes(x = 1, 
-                y = 125, 
+                y = 200, 
                 label = paste("M =", round(m,2), 
                               "\nSD =", round(s,2))), 
             data = means_by_group, 
             hjust =0, 
             vjust = 1) +
   facet_wrap(~format) +
-  guides(fill = F) +
+  #guides(fill = "none") +
   scale_x_continuous(breaks = 1:6) +
   labs(y = "Number of particpants",
        title = "Distribution of responses by format") +
@@ -123,7 +132,8 @@ We can also repeat this analysis separately for each trait.
 mod_by_item = item_responses %>%
   group_by(item) %>%
   nest() %>%
-  mutate(mod = map(data, ~lm(response~format, data = .))) %>%
+  mutate(mod = map(data, ~lmer(response~format + (1|proid), 
+                               data = .))) %>%
   mutate(aov = map(mod, anova)) 
 
 summary_by_item = mod_by_item %>%
@@ -131,7 +141,7 @@ summary_by_item = mod_by_item %>%
   select(item, tidy) %>% 
   unnest(cols = c(tidy)) %>%
   filter(term == "format") %>%
-  select(-term, -df) %>% 
+  select(-term) %>% 
   mutate(p.adj = p.adjust(p.value, method = "holm")) 
 
 summary_by_item %>%
@@ -159,45 +169,45 @@ Then we create models for each adjective. We use the `emmeans` package to perfor
 
 **This code will have to be changed after final data collection. It is not self-adapting!**
 
-
-### Human
+### Careless
 
 ```{r, results = 'asis'}
-human_model = item_responses %>%
-  filter(item == "human") %>%
-  lm(response~format, data = .)
+careless_model = item_responses %>%
+  filter(item == "careless") %>%
+  lmer(response~format + (1|proid), 
+                               data = .)
 
-human_em = emmeans(human_model, "format")
-pairs(human_em, adjust = "holm") %>%
+careless_em = emmeans(careless_model, "format")
+pairs(careless_em, adjust = "holm") %>%
   kable(booktabs = T,
         digits = c(0,2,2,2,2,3),
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
 ```
 
-```{r, fig.cap = "Average response to \"human\" by format" }
-plot_model(human_model, type = "pred", terms = c("format"))
+```{r, fig.cap = "Average response to \"careless\" by format" }
+plot_model(careless_model, type = "pred", terms = c("format"))
 ```
 
-### Talkative
+### Thrifty
 
 ```{r, results = 'asis'}
-talkative_model = item_responses %>%
-  filter(item == "talkative") %>%
-  lm(response~format, data = .)
+thrifty_model = item_responses %>%
+  filter(item == "thrifty") %>%
+  lmer(response~format + (1|proid), 
+                               data = .)
 
-talkative_em = emmeans(talkative_model, "format")
-pairs(talkative_em, adjust = "holm") %>%
+thrifty_em = emmeans(thrifty_model, "format")
+pairs(thrifty_em, adjust = "holm") %>%
   kable(booktabs = T,
         digits = c(0,2,2,2,2,3),
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
 ```
 
-```{r, fig.cap = "Average response to \"talkative\" by format" }
-plot_model(talkative_model, type = "pred", terms = c("format"))
+```{r, fig.cap = "Average response to \"thrifty\" by format" }
+plot_model(thrifty_model, type = "pred", terms = c("format"))
 ```
-
 
 ## Response by Format + Memory
 
@@ -232,7 +242,7 @@ summary_by_item = mod_by_item %>%
   unnest(cols = c(tidy)) %>%
   filter(term == "format") %>%
   select(-term, -df) %>% 
-  mutate(p.adj = p.adjust(p.value, method = "holm")) 
+  mutate(p.adj = p.adjust(p.value, method = "holm"))
 
 summary_by_item %>%
   mutate(across(
@@ -242,6 +252,8 @@ summary_by_item %>%
   kable(digits = 2, booktabs = T) %>%
   kable_styling()
 ```
+
+### Pairwise t-tests for significant ANOVAs
 
 Here we identify the specific items with significant differences.
 
@@ -253,45 +265,26 @@ sig_item = sig_item$item
 sig_item
 ```
 
-**This code will have to be changed after final data collection. It is not self-adapting!**
-
-### Human
+### Careless
 
 ```{r, results = 'asis'}
-human_model = item_responses %>%
-  filter(item == "human") %>%
-  lm(response~format + memory, data = .)
+careless_model = item_responses %>%
+  filter(item == "careless") %>%
+  lmer(response~format + memory + (1|proid), 
+                               data = .)
 
-human_em = emmeans(human_model, "format")
-pairs(human_em, adjust = "holm") %>%
+careless_em = emmeans(careless_model, "format")
+pairs(careless_em, adjust = "holm") %>%
   kable(booktabs = T,
         digits = c(0,2,2,2,2,3),
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
 ```
 
-```{r, fig.cap = "Average response to \"human\" by format" }
-plot_model(human_model, type = "pred", terms = c("format"))
+```{r, fig.cap = "Average response to \"careless\" by format" }
+plot_model(careless_model, type = "pred", terms = c("format"))
 ```
 
-### Talkative
-
-```{r, results = 'asis'}
-talkative_model = item_responses %>%
-  filter(item == "talkative") %>%
-  lm(response~format + memory, data = .)
-
-talkative_em = emmeans(talkative_model, "format")
-pairs(talkative_em, adjust = "holm") %>%
-  kable(booktabs = T,
-        digits = c(0,2,2,2,2,3), 
-        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
-  kable_styling()
-```
-
-```{r, fig.cap = "Average response to \"talkative\" by format" }
-plot_model(talkative_model, type = "pred", terms = c("format"))
-```
 
 <!-- We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. -->
 
@@ -303,5 +296,4 @@ plot_model(talkative_model, type = "pred", terms = c("format"))
 
 ## Questions
 
-  * I only used responses in Block 1 here. Should I merge the two blocks together (see [here](analysis_format2.html) for code that does that)? Or I can repeat the analyses using Block 2? One thing to consider if we merge is that I can't use the simple ANOVA for the item-level analyses (we'll have two responses per person, so back to a nested design).
-  * When looking at individual items, should we use the p-value or the adjusted p-value to determine which to follow up with? To be clear, in supplemental analyses, we should look at all -- do we report all in the manuscript or just the ones significant after the Holm correction?
+* I only used responses in Block 1 here. Should I merge the two blocks together? Or I can repeat the analyses using Block 2? One thing to consider if we merge is that I can't use the simple ANOVA for the item-level analyses (we'll have two responses per person, so back to a nested design).

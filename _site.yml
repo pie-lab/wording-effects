@@ -10,7 +10,11 @@ navbar:
     - text: Analysis
       menu:
         - text: "Does item formatting affect response?"
-          href: analysis_format.html
+          menu: 
+            - text: "Block 1 data only" 
+              href: analysis_format.html
+            - text: "Block 1 and Block 2" 
+              href: analysis_format2.html
         - text: "Partitioning variance in response"
           href: analysis_propVariance
   right:

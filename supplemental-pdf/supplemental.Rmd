@@ -20,7 +20,14 @@ library(here)
 
 # Does item format affect response?
 
+## Using Block 1 Data only
+
 ```{r, child = here("analysis_format.Rmd")}
+```
+
+## Using Block 1 and Block 2
+
+```{r, child = here("analysis_format2.Rmd")}
 ```
 
 \newpage
