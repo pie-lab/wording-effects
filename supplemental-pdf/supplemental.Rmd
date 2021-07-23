@@ -37,4 +37,25 @@ library(here)
 ```{r, child = here("analysis_propVariance.Rmd")}
 ```
 
+\newpage 
+
+# How does format affect timining of responses?
+
+## Using Block 1 Data only
+
+```{r, child = here("timing_format.Rmd")}
+```
+
+## Using Block 1 and Block 2
+
+```{r, child = here("timing_format2.Rmd")}
+```
+
+\newpage
+
+# How does device type affect means and timining of responses?
+
+```{r, child = here("device.Rmd")}
+```
+
 

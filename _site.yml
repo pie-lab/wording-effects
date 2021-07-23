@@ -23,6 +23,8 @@ navbar:
               href: timing_format.html
             - text: "Block 1 and Block 2"
               href: timing_format2.html
+        - text: "Does device type affect response and timing?"
+          href: device.html
   right:
     - icon: fa-github
       href: https://github.com/pie-lab/wording-effects
