@@ -41,7 +41,7 @@ load(here("data/cleaned_data.Rds"))
 
 **We will use between-person analyses to compare responses using group-level data for the different formats.**
 
-First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2-- that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.
+First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 -- that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.
 
 These variable names have one of two formats: `[trait]_[abcd]` (for example, `talkative_a`) or `[trait]_[abcd]_2` (for example, `talkative_a_2`). We search for these items using regular expressions.
 

@@ -11,7 +11,7 @@
 
 
 
-<title>Format effects</title>
+<title>Impact on timing (Blocks 1 and 2)</title>
 
 <script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -376,89 +376,173 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Format effects</h1>
+<h1 class="title toc-ignore">Impact on timing (Blocks 1 and 2)</h1>
 <h4 class="date">Last updated 2021-07-23</h4>
 
 </div>
 
 
-<p>Within-person analyses will model the proportions of variance attributable to item format, stems of the items (i.e., the content of the adjectives), and the respondent-level variance.</p>
+<p>We will further compare seconds times as a function of item format using both within- and between-person data in order to evaluate the presumption that adjective ratings require less time than phrased items.</p>
 <div id="workspace" class="section level2">
 <h2>Workspace</h2>
 <pre class="r"><code>library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
 library(lme4) # for mulitlevel modeling
+library(lmerTest) # for p-values
+library(emmeans) # for comparisons
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables</code></pre>
-</div>
-<div id="data-prep" class="section level2">
-<h2>Data prep</h2>
-<p>First we select the responses to the items of different formats. These variable names all have the same format: <code>[trait]_[abcd]</code> (for example, <code>talkative_a</code>). We search for these items using regular expressions.</p>
-<pre class="r"><code>personality_items = str_subset(
+<p>First, we select the timing to the items of different formats. For this set of analyses, we only use data collected in Blocks 1 and 2 – that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.</p>
+<p>These variable names have one of two formats: <code>t_[trait]_[abcd]_page_submit</code> (for example, <code>t_talkative_a_page_submit</code>) or <code>t_[trait]_[abcd]_2_page_submit</code> (for example, <code>t_talkative_a_2_page_submit</code>). We search for these items using regular expressions.</p>
+<pre class="r"><code>timing_block12 = str_subset(
   names(data),
-  &quot;^([[:alpha:]])+_[abcd]_?2?$&quot;
+  &quot;^t_([[:alpha:]])+_[abcd]_(2_)?page_submit$&quot;
 )
 
-item_responses = data %&gt;%
-  select(proid, all_of(personality_items), memory) </code></pre>
+timing_block12 = data %&gt;%
+  select(proid, all_of(timing_block12), memory)</code></pre>
 <p>Next we reshape these data into long form.</p>
-<pre class="r"><code>item_responses = item_responses %&gt;%
-  gather(item, response, -proid, -memory) %&gt;%
-  mutate(
-    time = ifelse(str_detect(item, &quot;_2&quot;), &quot;2&quot;, &quot;1&quot;),
-    item = str_remove(item, &quot;_2&quot;)) %&gt;%
+<pre class="r"><code>timing_block12 = timing_block12 %&gt;%
+  gather(item, seconds, -proid, -memory) %&gt;%
+  mutate(item = str_remove(item, &quot;^t_&quot;),
+         item = str_remove(item, &quot;_2&quot;),
+         item = str_remove(item, &quot;_page_submit$&quot;)) %&gt;% 
   separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
-  filter(!is.na(response))</code></pre>
+  filter(!is.na(seconds))</code></pre>
 </div>
-<div id="model" class="section level2">
-<h2>Model</h2>
-<p>We estimate variance attributable to particpant (<code>proid</code>), adjective (<code>item</code>), and format (<code>format</code>) using a nested model.</p>
-<pre class="r"><code>mod_within_full = lmer(response ~ 1 
-                  + (1 | item)
-                  + (1 | format)
-                  + (1 |proid),
-                  data = item_responses)
-summary(mod_within_full)</code></pre>
+<div id="timing-by-format" class="section level2">
+<h2>Timing by Format</h2>
+<p>We used a multilevel model, nesting seconds within participant to account for dependence. Our primary predictor was format.</p>
+<pre class="r"><code>timing_block12$format = as.factor(timing_block12$format)
+timing_block12$format = relevel(timing_block12$format, ref = &quot;a&quot;) 
+timing_block12$format = factor(timing_block12$format,
+                               levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
+                               labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;I am someone\nwho tends to be\nAdjective&quot;))
+
+mod.format = lmer(seconds~format + (1|proid), 
+                  data = timing_block12)
+anova(mod.format)</code></pre>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##        Sum Sq Mean Sq NumDF  DenDF F value Pr(&gt;F)
+## format 2076.1  692.02     3 1560.1  1.9518 0.1193</code></pre>
+<pre class="r"><code>plot1 = plot_model(mod.format, type = &quot;pred&quot;) 
+
+plot1$format +
+  labs(x = NULL,
+       y = &quot;Seconds&quot;,
+       title = &quot;Average seconds time by item formatting&quot;) +
+  theme_pubclean()</code></pre>
+<div class="figure">
+<img src="timing_format2_files/figure-html/unnamed-chunk-7-1.png" alt="Predicted seconds on personality items by condition." width="672" />
+<p class="caption">
+Predicted seconds on personality items by condition.
+</p>
+</div>
+<pre class="r"><code>means_by_group = timing_block12 %&gt;%
+  group_by(format) %&gt;% 
+  summarise(m = mean(seconds),
+            s = sd(seconds))
+
+timing_block12 %&gt;%
+  ggplot(aes(x = seconds, fill = format)) +
+  geom_histogram(bins = 100) +
+  geom_vline(aes(xintercept = m), data = means_by_group) +
+  geom_text(aes(x = .1,
+                y = 50,
+                label = paste(&quot;M =&quot;, round(m,2),
+                              &quot;\nSD =&quot;, round(s,2))),
+            data = means_by_group,
+            hjust =0,
+            vjust = 1) +
+  facet_wrap(~format, scales = &quot;free_y&quot;) +
+  guides(fill = &quot;none&quot;) +
+  scale_x_log10() +
+  labs(y = &quot;Number of particpants&quot;,
+       title = &quot;Distribution of seconds by format&quot;,
+       x = &quot;Seconds (logrithmic scale)&quot;) +
+  theme_pubr()</code></pre>
+<div class="figure">
+<img src="timing_format2_files/figure-html/unnamed-chunk-8-1.png" alt="Distribution of secondss by category" width="672" />
+<p class="caption">
+Distribution of secondss by category
+</p>
+</div>
+</div>
+<div id="seconds-by-format-x-memory" class="section level2">
+<h2>Seconds by Format x Memory</h2>
+<pre class="r"><code>mod.format_mem = lmer(seconds~format*memory + (1|proid), 
+                  data = timing_block12)
+anova(mod.format_mem)</code></pre>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##               Sum Sq Mean Sq NumDF   DenDF F value Pr(&gt;F)
+## format        366.37  122.12     3 1633.89  0.3442 0.7934
+## memory        453.69  453.69     1   32.53  1.2786 0.2664
+## format:memory 507.29  169.10     3 1628.00  0.4765 0.6986</code></pre>
+<pre class="r"><code>summary(mod.format_mem)</code></pre>
 <pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 ## lmerModLmerTest]
-## Formula: response ~ 1 + (1 | item) + (1 | format) + (1 | proid)
-##    Data: item_responses
+## Formula: seconds ~ format * memory + (1 | proid)
+##    Data: timing_block12
 ## 
-## REML criterion at convergence: 6724.8
+## REML criterion at convergence: 18925.6
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -4.1453 -0.5052  0.0946  0.6176  3.1789 
+## -0.8463 -0.1500 -0.0679 -0.0025 26.8076 
 ## 
 ## Random effects:
-##  Groups   Name        Variance  Std.Dev.
-##  proid    (Intercept) 0.1622567 0.40281 
-##  item     (Intercept) 0.5149790 0.71762 
-##  format   (Intercept) 0.0005179 0.02276 
-##  Residual             1.1924370 1.09199 
-## Number of obs: 2170, groups:  proid, 35; item, 31; format, 4
+##  Groups   Name        Variance Std.Dev.
+##  proid    (Intercept)  12.58    3.548  
+##  Residual             354.84   18.837  
+## Number of obs: 2170, groups:  proid, 35
 ## 
 ## Fixed effects:
-##             Estimate Std. Error      df t value Pr(&gt;|t|)    
-## (Intercept)   4.5802     0.1481 44.3232   30.93   &lt;2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>variances = VarCorr(mod_within_full, comp=&quot;Variance&quot;)
-var_proid  = variances$proid[[1]]
-var_item   = variances$item[[1]]
-var_format = variances$format[[1]]
-var_resid = attr(variances, &quot;sc&quot;)^2
-var_total = var_proid + var_item + var_format + var_resid</code></pre>
-<p>Participants account for 8.68 percent of the variability in response.</p>
-<p>Items account for 27.54 percent of the variability in response.</p>
-<p>Format accounts for 0.03 percent of the variability in response.</p>
-<p>In total, 36.24 percent of the variability in response is explained.</p>
-<!-- We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. -->
-<!-- We will also consider the effect on retest reliability of performance on the word recall task. -->
-<!-- We will further compare response times as a function of item format using both within- and between-person data in order to evaluate the presumption that adjective ratings require less time than phrased items.  -->
-<!-- Finally, secondary analyses will consider preliminary evidence for differences (e.g., mean response times, mean level of response) based on the type of device used to complete the survey (mobile, desktop, or tablet). -->
+##                                                        Estimate Std. Error
+## (Intercept)                                              1.9198     2.4424
+## formatAm\nAdjective                                      1.9008     2.9089
+## formatTend to be\nAdjective                              0.2748     2.9430
+## formatI am someone\nwho tends to be\nAdjective           2.4565     2.9280
+## memory                                                   0.2482     0.3849
+## formatAm\nAdjective:memory                               0.1501     0.4522
+## formatTend to be\nAdjective:memory                       0.3036     0.4691
+## formatI am someone\nwho tends to be\nAdjective:memory   -0.2304     0.4599
+##                                                              df t value
+## (Intercept)                                            111.6272   0.786
+## formatAm\nAdjective                                   1788.8184   0.653
+## formatTend to be\nAdjective                           1477.2554   0.093
+## formatI am someone\nwho tends to be\nAdjective        1687.5420   0.839
+## memory                                                 113.0304   0.645
+## formatAm\nAdjective:memory                            1703.6493   0.332
+## formatTend to be\nAdjective:memory                    1436.8229   0.647
+## formatI am someone\nwho tends to be\nAdjective:memory 1692.8062  -0.501
+##                                                       Pr(&gt;|t|)
+## (Intercept)                                              0.434
+## formatAm\nAdjective                                      0.514
+## formatTend to be\nAdjective                              0.926
+## formatI am someone\nwho tends to be\nAdjective           0.402
+## memory                                                   0.520
+## formatAm\nAdjective:memory                               0.740
+## formatTend to be\nAdjective:memory                       0.518
+## formatI am someone\nwho tends to be\nAdjective:memory    0.617
+## 
+## Correlation of Fixed Effects:
+##             (Intr) frmtAA frTtbA frIaswttbA memory frmAA: fTtbA:
+## frmtAmAdjct -0.564                                              
+## frmtTndtbAd -0.583  0.473                                       
+## frmIaswttbA -0.573  0.463  0.494                                
+## memory      -0.910  0.517  0.533  0.523                         
+## frmtAAdjct:  0.524 -0.909 -0.439 -0.431     -0.581              
+## frmtTtbAdj:  0.527 -0.428 -0.905 -0.447     -0.581  0.482       
+## frIaswttbA:  0.525 -0.427 -0.453 -0.904     -0.578  0.483  0.495</code></pre>
+<pre class="r"><code>plot_model(mod.format_mem, type = &quot;pred&quot;, term = c(&quot;memory&quot;, &quot;format&quot;))</code></pre>
+<div class="figure">
+<img src="timing_format2_files/figure-html/unnamed-chunk-10-1.png" alt="Predicted seconds on personality items by condition after controlling for memory." width="672" />
+<p class="caption">
+Predicted seconds on personality items by condition after controlling for memory.
+</p>
+</div>
 </div>
 
 

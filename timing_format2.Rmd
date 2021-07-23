@@ -1,0 +1,127 @@
+---
+title: "Impact on timing (Blocks 1 and 2)"
+date: "Last updated `r Sys.Date()`"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+We will further compare seconds times as a function of item format using both within- and between-person data in order to evaluate the presumption that adjective ratings require less time than phrased items.
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(warning = F, message = F)
+```
+
+## Workspace
+
+```{r}
+library(here) # for working with files
+library(tidyverse) # for cleaning
+library(janitor) # for variable names
+library(lme4) # for mulitlevel modeling
+library(lmerTest) # for p-values
+library(emmeans) # for comparisons
+library(sjPlot) # for figures
+library(ggpubr) # for prettier plots
+library(kableExtra) # for nicer tables
+```
+
+```{r, echo = F}
+load(here("data/cleaned_data.Rds"))
+```
+
+
+First, we select the timing to the items of different formats. For this set of analyses, we only use data collected in Blocks 1 and 2 -- that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.
+
+These variable names have one of two formats: `t_[trait]_[abcd]_page_submit` (for example, `t_talkative_a_page_submit`) or `t_[trait]_[abcd]_2_page_submit` (for example, `t_talkative_a_2_page_submit`). We search for these items using regular expressions.
+
+```{r}
+timing_block12 = str_subset(
+  names(data),
+  "^t_([[:alpha:]])+_[abcd]_(2_)?page_submit$"
+)
+
+timing_block12 = data %>%
+  select(proid, all_of(timing_block12), memory)
+```
+
+Next we reshape these data into long form.
+
+```{r}
+timing_block12 = timing_block12 %>%
+  gather(item, seconds, -proid, -memory) %>%
+  mutate(item = str_remove(item, "^t_"),
+         item = str_remove(item, "_2"),
+         item = str_remove(item, "_page_submit$")) %>% 
+  separate(item, into = c("item", "format")) %>%
+  filter(!is.na(seconds))
+```
+
+## Timing by Format
+
+We used a multilevel model, nesting seconds within participant to account for dependence. Our primary predictor was format.
+
+```{r}
+timing_block12$format = as.factor(timing_block12$format)
+timing_block12$format = relevel(timing_block12$format, ref = "a") 
+timing_block12$format = factor(timing_block12$format,
+                               levels = c("a","b","c","d"),
+                               labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective"))
+
+mod.format = lmer(seconds~format + (1|proid), 
+                  data = timing_block12)
+anova(mod.format)
+```
+
+```{r, fig.cap = "Predicted seconds on personality items by condition."}
+plot1 = plot_model(mod.format, type = "pred") 
+
+plot1$format +
+  labs(x = NULL,
+       y = "Seconds",
+       title = "Average seconds time by item formatting") +
+  theme_pubclean()
+```
+
+```{r, fig.cap = "Distribution of secondss by category"}
+means_by_group = timing_block12 %>%
+  group_by(format) %>% 
+  summarise(m = mean(seconds),
+            s = sd(seconds))
+
+timing_block12 %>%
+  ggplot(aes(x = seconds, fill = format)) +
+  geom_histogram(bins = 100) +
+  geom_vline(aes(xintercept = m), data = means_by_group) +
+  geom_text(aes(x = .1,
+                y = 50,
+                label = paste("M =", round(m,2),
+                              "\nSD =", round(s,2))),
+            data = means_by_group,
+            hjust =0,
+            vjust = 1) +
+  facet_wrap(~format, scales = "free_y") +
+  guides(fill = "none") +
+  scale_x_log10() +
+  labs(y = "Number of particpants",
+       title = "Distribution of seconds by format",
+       x = "Seconds (logrithmic scale)") +
+  theme_pubr()
+```
+
+## Seconds by Format x Memory
+
+
+```{r}
+mod.format_mem = lmer(seconds~format*memory + (1|proid), 
+                  data = timing_block12)
+anova(mod.format_mem)
+summary(mod.format_mem)
+```
+
+```{r, fig.cap = "Predicted seconds on personality items by condition after controlling for memory."}
+plot_model(mod.format_mem, type = "pred", term = c("memory", "format"))
+```
+

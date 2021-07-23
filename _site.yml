@@ -17,6 +17,12 @@ navbar:
               href: analysis_format2.html
         - text: "Partitioning variance in response"
           href: analysis_propVariance
+        - text: "Does timing differ across format?"
+          menu:
+            - text: "Block 1 data only"
+              href: timing_format.html
+            - text: "Block 1 and Block 2"
+              href: timing_format2.html
   right:
     - icon: fa-github
       href: https://github.com/pie-lab/wording-effects

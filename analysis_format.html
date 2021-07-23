@@ -348,6 +348,17 @@ div.tocify {
     <li>
       <a href="analysis_propVariance">Partitioning variance in response</a>
     </li>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Does timing differ across format?</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="timing_format.html">Block 1 data only</a>
+        </li>
+        <li>
+          <a href="timing_format2.html">Block 1 and Block 2</a>
+        </li>
+      </ul>
+    </li>
   </ul>
 </li>
       </ul>
@@ -368,7 +379,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Format effects (Block 1 Data)</h1>
-<h4 class="date">Last updated 2021-07-21</h4>
+<h4 class="date">Last updated 2021-07-23</h4>
 
 </div>
 
@@ -1155,16 +1166,16 @@ human_em = emmeans(human_model, &quot;format&quot;)
 pairs(human_em, adjust = &quot;holm&quot;) %&gt;%
   kable(booktabs = T,
         digits = c(0,2,2,2,2,3),
-        colnames = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
+        col.names = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
-contrast
+Contrast
 </th>
 <th style="text-align:right;">
-estimate
+Difference in means
 </th>
 <th style="text-align:right;">
 SE
@@ -1173,10 +1184,10 @@ SE
 df
 </th>
 <th style="text-align:right;">
-t.ratio
+t
 </th>
 <th style="text-align:right;">
-p.value
+p
 </th>
 </tr>
 </thead>
@@ -1321,16 +1332,16 @@ talkative_em = emmeans(talkative_model, &quot;format&quot;)
 pairs(talkative_em, adjust = &quot;holm&quot;) %&gt;%
   kable(booktabs = T,
         digits = c(0,2,2,2,2,3),
-        colnames = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
+        col.names = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
-contrast
+Contrast
 </th>
 <th style="text-align:right;">
-estimate
+Difference in means
 </th>
 <th style="text-align:right;">
 SE
@@ -1339,10 +1350,10 @@ SE
 df
 </th>
 <th style="text-align:right;">
-t.ratio
+t
 </th>
 <th style="text-align:right;">
-p.value
+p
 </th>
 </tr>
 </thead>
@@ -2229,16 +2240,16 @@ human_em = emmeans(human_model, &quot;format&quot;)
 pairs(human_em, adjust = &quot;holm&quot;) %&gt;%
   kable(booktabs = T,
         digits = c(0,2,2,2,2,3),
-        colnames = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
+        col.names = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
-contrast
+Contrast
 </th>
 <th style="text-align:right;">
-estimate
+Difference in means
 </th>
 <th style="text-align:right;">
 SE
@@ -2247,10 +2258,10 @@ SE
 df
 </th>
 <th style="text-align:right;">
-t.ratio
+t
 </th>
 <th style="text-align:right;">
-p.value
+p
 </th>
 </tr>
 </thead>
@@ -2394,17 +2405,17 @@ Average response to “human” by format
 talkative_em = emmeans(talkative_model, &quot;format&quot;)
 pairs(talkative_em, adjust = &quot;holm&quot;) %&gt;%
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
-        colnames = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
+        digits = c(0,2,2,2,2,3), 
+        col.names = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
-contrast
+Contrast
 </th>
 <th style="text-align:right;">
-estimate
+Difference in means
 </th>
 <th style="text-align:right;">
 SE
@@ -2413,10 +2424,10 @@ SE
 df
 </th>
 <th style="text-align:right;">
-t.ratio
+t
 </th>
 <th style="text-align:right;">
-p.value
+p
 </th>
 </tr>
 </thead>

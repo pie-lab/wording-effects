@@ -348,6 +348,17 @@ div.tocify {
     <li>
       <a href="analysis_propVariance">Partitioning variance in response</a>
     </li>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Does timing differ across format?</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="timing_format.html">Block 1 data only</a>
+        </li>
+        <li>
+          <a href="timing_format2.html">Block 1 and Block 2</a>
+        </li>
+      </ul>
+    </li>
   </ul>
 </li>
       </ul>
@@ -368,7 +379,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Format effects (Block 1 and 2 Data)</h1>
-<h4 class="date">Last updated 2021-07-21</h4>
+<h4 class="date">Last updated 2021-07-23</h4>
 
 </div>
 
@@ -391,7 +402,7 @@ library(kableExtra) # for nicer tables</code></pre>
 <div id="data-prep" class="section level2">
 <h2>Data prep</h2>
 <p><strong>We will use between-person analyses to compare responses using group-level data for the different formats.</strong></p>
-<p>First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2– that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.</p>
+<p>First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 – that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.</p>
 <p>These variable names have one of two formats: <code>[trait]_[abcd]</code> (for example, <code>talkative_a</code>) or <code>[trait]_[abcd]_2</code> (for example, <code>talkative_a_2</code>). We search for these items using regular expressions.</p>
 <pre class="r"><code>items_seen_b1b2 = str_subset(
   names(data),
@@ -1357,16 +1368,16 @@ careless_em = emmeans(careless_model, &quot;format&quot;)
 pairs(careless_em, adjust = &quot;holm&quot;) %&gt;%
   kable(booktabs = T,
         digits = c(0,2,2,2,2,3),
-        colnames = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
+        col.names = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
-contrast
+Contrast
 </th>
 <th style="text-align:right;">
-estimate
+Difference in means
 </th>
 <th style="text-align:right;">
 SE
@@ -1375,10 +1386,10 @@ SE
 df
 </th>
 <th style="text-align:right;">
-t.ratio
+t
 </th>
 <th style="text-align:right;">
-p.value
+p
 </th>
 </tr>
 </thead>
@@ -1524,16 +1535,16 @@ thrifty_em = emmeans(thrifty_model, &quot;format&quot;)
 pairs(thrifty_em, adjust = &quot;holm&quot;) %&gt;%
   kable(booktabs = T,
         digits = c(0,2,2,2,2,3),
-        colnames = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
+        col.names = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
-contrast
+Contrast
 </th>
 <th style="text-align:right;">
-estimate
+Difference in means
 </th>
 <th style="text-align:right;">
 SE
@@ -1542,10 +1553,10 @@ SE
 df
 </th>
 <th style="text-align:right;">
-t.ratio
+t
 </th>
 <th style="text-align:right;">
-p.value
+p
 </th>
 </tr>
 </thead>
@@ -2435,16 +2446,16 @@ careless_em = emmeans(careless_model, &quot;format&quot;)
 pairs(careless_em, adjust = &quot;holm&quot;) %&gt;%
   kable(booktabs = T,
         digits = c(0,2,2,2,2,3),
-        colnames = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
+        col.names = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
-contrast
+Contrast
 </th>
 <th style="text-align:right;">
-estimate
+Difference in means
 </th>
 <th style="text-align:right;">
 SE
@@ -2453,10 +2464,10 @@ SE
 df
 </th>
 <th style="text-align:right;">
-t.ratio
+t
 </th>
 <th style="text-align:right;">
-p.value
+p
 </th>
 </tr>
 </thead>
