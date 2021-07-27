@@ -12,7 +12,7 @@ output:
 knitr::opts_chunk$set(warning = F, message = F)
 ```
 
-# Workspace
+## Workspace
 
 ```{r}
 library(here) # for working with files
@@ -31,7 +31,7 @@ load(here("data/cleaned_data.Rds"))
 ```
 
 
-## Data prep: item responses
+### Data prep: item responses
 
 First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 -- that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.
 
@@ -71,7 +71,7 @@ item_responses$format = factor(item_responses$format,
                                labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective"))
 ```
 
-## Data prep: item timing
+### Data prep: item timing
 
 We also prepare a dataframe to examine the amount of time needed to respond to items. These variable names have one of two formats: `t_[trait]_[abcd]_page_submit` (for example, `t_talkative_a_page_submit`) or `t_[trait]_[abcd]_2_page_submit` (for example, `t_talkative_a_2_page_submit`). We search for these items using regular expressions.
 
@@ -126,9 +126,9 @@ item_timing$format = factor(item_timing$format,
                                labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective"))
 ```
 
-# Responses
+## Responses
 
-## Response by device
+### Response by device
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device format
 
@@ -170,7 +170,7 @@ item_responses %>%
   theme_pubr()
 ```
 
-## Device by format
+### Device by format
 
 ```{r}
 mod.response2 = lmer(response~devicetype*format + (1|proid), 
@@ -189,9 +189,9 @@ plot2 +
   theme_pubclean()
 ```
 
-# Timing
+## Timing
 
-## Timing by device
+### Timing by device
 
 We used a multilevel model, nesting seconds within participant to account for dependence. Our primary predictor was format.
 
@@ -230,7 +230,7 @@ item_timing %>%
   theme_pubr()
 ```
 
-## Device by format
+### Device by format
 
 ```{r}
 mod.timing2 = lmer(seconds_log~devicetype*format + (1|proid), 
