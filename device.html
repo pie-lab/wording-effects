@@ -11,7 +11,7 @@
 
 
 
-<title>Format effects (Block 1 and 2 Data)</title>
+<title>Device effects</title>
 
 <script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -332,30 +332,11 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-submenu">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Does item formatting affect response?</a>
-      <ul class="dropdown-menu" role="menu">
-        <li>
-          <a href="analysis_format.html">Block 1 data only</a>
-        </li>
-        <li>
-          <a href="analysis_format2.html">Block 1 and Block 2</a>
-        </li>
-      </ul>
+    <li>
+      <a href="analysis_format.html">Does item formatting affect response?</a>
     </li>
     <li>
-      <a href="analysis_propVariance">Partitioning variance in response</a>
-    </li>
-    <li class="dropdown-submenu">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Does timing differ across format?</a>
-      <ul class="dropdown-menu" role="menu">
-        <li>
-          <a href="timing_format.html">Block 1 data only</a>
-        </li>
-        <li>
-          <a href="timing_format2.html">Block 1 and Block 2</a>
-        </li>
-      </ul>
+      <a href="timing_format.html">Does timing differ across format?</a>
     </li>
     <li>
       <a href="device.html">Does device type affect response and timing?</a>
@@ -379,17 +360,14 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Format effects (Block 1 and 2 Data)</h1>
-<h4 class="date">Last updated 2021-07-23</h4>
+<h1 class="title toc-ignore">Device effects</h1>
+<h4 class="date">Last updated 2021-07-27</h4>
 
 </div>
 
 
-<p>The primary aims of this study are to evaluate the effects of item wording in online, self-report personality assessment. Specifically, we intend to consider the extent to which incremental wording changes may influence differences in the distributions of responses, response times, and psychometric properties of the items. These wording changes will include a progression from using (1) trait-descriptive adjectives by themselves, (2) with the linking verb “to be” (Am…), (3) with the additional verb “to tend” (Tend to be…), and (4) with the pronoun “someone” (Am someone who tends to be…).</p>
-<p>Using a protocol that administers each adjective twice to the same participant (in different combinations of item format administered randomly across participants), we will use between-person analyses to compare responses using group-level data for the different formats.</p>
-<p>These analyses will attempt to account for memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).</p>
-<div id="workspace" class="section level2">
-<h2>Workspace</h2>
+<div id="workspace" class="section level1">
+<h1>Workspace</h1>
 <pre class="r"><code>library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
@@ -399,10 +377,8 @@ library(emmeans) # for pairwise comparisons
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables</code></pre>
-</div>
-<div id="data-prep" class="section level2">
-<h2>Data prep</h2>
-<p><strong>We will use between-person analyses to compare responses using group-level data for the different formats.</strong></p>
+<div id="data-prep-item-responses" class="section level2">
+<h2>Data prep: item responses</h2>
 <p>First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 – that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.</p>
 <p>These variable names have one of two formats: <code>[trait]_[abcd]</code> (for example, <code>talkative_a</code>) or <code>[trait]_[abcd]_2</code> (for example, <code>talkative_a_2</code>). We search for these items using regular expressions.</p>
 <pre class="r"><code>items_seen_b1b2 = str_subset(
@@ -422,33 +398,67 @@ item_responses = data %&gt;%
     item = str_remove(item, &quot;_2&quot;)) %&gt;%  # remove block id from item string
   separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
   filter(!is.na(response))</code></pre>
+<p>We give labels to the formats, to clarify interpretations and aid table and figure construction.</p>
+<pre class="r"><code>item_responses$format = as.factor(item_responses$format)
+item_responses$format = relevel(item_responses$format, ref = &quot;a&quot;) 
+item_responses$format = factor(item_responses$format,
+                               levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
+                               labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;I am someone\nwho tends to be\nAdjective&quot;))</code></pre>
+</div>
+<div id="data-prep-item-timing" class="section level2">
+<h2>Data prep: item timing</h2>
 <p>We also prepare a dataframe to examine the amount of time needed to respond to items. These variable names have one of two formats: <code>t_[trait]_[abcd]_page_submit</code> (for example, <code>t_talkative_a_page_submit</code>) or <code>t_[trait]_[abcd]_2_page_submit</code> (for example, <code>t_talkative_a_2_page_submit</code>). We search for these items using regular expressions.</p>
-<pre class="r"><code>timing_block12 = str_subset(
+<pre class="r"><code>item_timing = str_subset(
   names(data),
   &quot;^t_([[:alpha:]])+_[abcd]_(2_)?page_submit$&quot;
 )
 
-timing_block12 = data %&gt;%
-  select(proid, all_of(timing_block12), devicetype)</code></pre>
+item_timing = data %&gt;%
+  select(proid, all_of(item_timing), devicetype)</code></pre>
 <p>Next we reshape these data into long form.</p>
-<pre class="r"><code>timing_block12 = timing_block12 %&gt;%
+<pre class="r"><code>item_timing = item_timing %&gt;%
   gather(item, seconds, -proid, -devicetype) %&gt;%
   mutate(item = str_remove(item, &quot;^t_&quot;),
          item = str_remove(item, &quot;_2&quot;),
          item = str_remove(item, &quot;_page_submit$&quot;)) %&gt;% 
   separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
   filter(!is.na(seconds))</code></pre>
+<p>Seconds appears to be strongly skewed, so we log-transform this variable.</p>
+<pre class="r"><code>item_timing = item_timing %&gt;% 
+  mutate(seconds_log = log(seconds))
+
+item_timing %&gt;% 
+  select(contains(&quot;seconds&quot;)) %&gt;% 
+  gather(variable, value) %&gt;% 
+  mutate(variable = factor(variable,
+                           levels = c(&quot;seconds&quot;, &quot;seconds_log&quot;),
+                           labels = c(&quot;Seconds (raw)&quot;, &quot;Log Seconds&quot;))) %&gt;% 
+  ggplot(aes(x = value)) +
+  geom_histogram(bins = 100) +
+  facet_wrap(~variable, scales = &quot;free&quot;) +
+  labs(x = NULL, y = &quot;Count&quot;) +
+  theme_pubr()</code></pre>
+<p><img src="device_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>We give labels to the formats, to clarify interpretations and aid table and figure construction.</p>
+<pre class="r"><code>item_timing$format = as.factor(item_timing$format)
+item_timing$format = relevel(item_timing$format, ref = &quot;a&quot;) 
+item_timing$format = factor(item_timing$format,
+                               levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
+                               labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;I am someone\nwho tends to be\nAdjective&quot;))</code></pre>
 </div>
+</div>
+<div id="responses" class="section level1">
+<h1>Responses</h1>
 <div id="response-by-device" class="section level2">
-<h2>Response by Device</h2>
+<h2>Response by device</h2>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device format</p>
-<pre class="r"><code>mod.format = lmer(response~devicetype + (1|proid), 
+<pre class="r"><code>mod.response = lmer(response~devicetype + (1|proid), 
                   data = item_responses)
-anova(mod.format)</code></pre>
+anova(mod.response)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##            Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
 ## devicetype  4.008   2.004     2    32  1.1793 0.3205</code></pre>
-<pre class="r"><code>plot1 = plot_model(mod.format, type = &quot;pred&quot;) 
+<pre class="r"><code>plot1 = plot_model(mod.response, type = &quot;pred&quot;) 
 
 plot1$devicetype +
   labs(x = NULL,
@@ -456,7 +466,7 @@ plot1$devicetype +
        title = &quot;Average responses by device&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-9-1.png" alt="Predicted response on personality items by condition." width="672" />
+<img src="device_files/figure-html/unnamed-chunk-12-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
 Predicted response on personality items by condition.
 </p>
@@ -480,40 +490,69 @@ item_responses %&gt;%
        title = &quot;Distribution of responses by format&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-10-1.png" alt="Distribution of responses by category" width="672" />
+<img src="device_files/figure-html/unnamed-chunk-13-1.png" alt="Distribution of responses by category" width="672" />
 <p class="caption">
 Distribution of responses by category
 </p>
 </div>
 </div>
+<div id="device-by-format" class="section level2">
+<h2>Device by format</h2>
+<pre class="r"><code>mod.response2 = lmer(response~devicetype*format + (1|proid), 
+                  data = item_responses)
+anova(mod.response2)</code></pre>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##                    Sum Sq Mean Sq NumDF   DenDF F value  Pr(&gt;F)  
+## devicetype         2.4435  1.2217     2   33.06  0.7204 0.49405  
+## format             5.0203  1.6734     3 2030.62  0.9867 0.39803  
+## devicetype:format 18.9498  3.1583     6 2033.40  1.8622 0.08374 .
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>plot2 = plot_model(mod.response2, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;devicetype&quot;)) 
+
+plot2 +
+  labs(x = NULL,
+       y = &quot;Average response&quot;,
+       title = &quot;Average responses by device&quot;) +
+  theme_pubclean()</code></pre>
+<div class="figure">
+<img src="device_files/figure-html/unnamed-chunk-15-1.png" alt="Predicted response on personality items by condition." width="672" />
+<p class="caption">
+Predicted response on personality items by condition.
+</p>
+</div>
+</div>
+</div>
+<div id="timing" class="section level1">
+<h1>Timing</h1>
 <div id="timing-by-device" class="section level2">
 <h2>Timing by device</h2>
 <p>We used a multilevel model, nesting seconds within participant to account for dependence. Our primary predictor was format.</p>
-<pre class="r"><code>mod.format = lmer(seconds~devicetype + (1|proid), 
-                  data = timing_block12)
-anova(mod.format)</code></pre>
+<pre class="r"><code>mod.timing = lmer(seconds_log~devicetype + (1|proid), 
+                  data = item_timing)
+anova(mod.timing)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##            Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
-## devicetype 286.48  143.24     2    32  0.4036 0.6712</code></pre>
-<pre class="r"><code>plot1 = plot_model(mod.format, type = &quot;pred&quot;) 
+## devicetype 2.8619  1.4309     2    32  2.0649 0.1434</code></pre>
+<pre class="r"><code>plot1 = plot_model(mod.timing, type = &quot;pred&quot;) 
 
 plot1$devicetype +
   labs(x = NULL,
-       y = &quot;Seconds&quot;,
+       y = &quot;Seconds (log)&quot;,
        title = &quot;Average seconds time by device type&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-12-1.png" alt="Predicted seconds on personality items by condition." width="672" />
+<img src="device_files/figure-html/unnamed-chunk-17-1.png" alt="Predicted seconds on personality items by condition." width="672" />
 <p class="caption">
 Predicted seconds on personality items by condition.
 </p>
 </div>
-<pre class="r"><code>means_by_group = timing_block12 %&gt;%
+<pre class="r"><code>means_by_group = item_timing %&gt;%
   group_by(devicetype) %&gt;% 
   summarise(m = mean(seconds),
             s = sd(seconds))
 
-timing_block12 %&gt;%
+item_timing %&gt;%
   ggplot(aes(x = seconds, fill = devicetype)) +
   geom_histogram(bins = 100) +
   geom_vline(aes(xintercept = m), data = means_by_group) +
@@ -525,10 +564,37 @@ timing_block12 %&gt;%
        x = &quot;Seconds (logrithmic scale)&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-13-1.png" alt="Distribution of secondss by category" width="672" />
+<img src="device_files/figure-html/unnamed-chunk-18-1.png" alt="Distribution of secondss by category" width="672" />
 <p class="caption">
 Distribution of secondss by category
 </p>
+</div>
+</div>
+<div id="device-by-format-1" class="section level2">
+<h2>Device by format</h2>
+<pre class="r"><code>mod.timing2 = lmer(seconds_log~devicetype*format + (1|proid), 
+                  data = item_timing)
+anova(mod.timing2)</code></pre>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##                    Sum Sq Mean Sq NumDF   DenDF F value    Pr(&gt;F)    
+## devicetype         3.4339  1.7170     2   32.31  2.5424 0.0943136 .  
+## format            12.5878  4.1959     3 2138.42  6.2132 0.0003366 ***
+## devicetype:format 14.5245  2.4208     6 2142.58  3.5846 0.0015414 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>plot1 = plot_model(mod.timing2, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;devicetype&quot;)) 
+
+plot1 +
+  labs(x = NULL,
+       y = &quot;Seconds (log)&quot;,
+       title = &quot;Average seconds time by device type&quot;) +
+  theme_pubclean()</code></pre>
+<div class="figure">
+<img src="device_files/figure-html/unnamed-chunk-20-1.png" alt="Predicted seconds on personality items by condition." width="672" />
+<p class="caption">
+Predicted seconds on personality items by condition.
+</p>
+</div>
 </div>
 </div>
 

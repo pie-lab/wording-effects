@@ -332,30 +332,11 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-submenu">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Does item formatting affect response?</a>
-      <ul class="dropdown-menu" role="menu">
-        <li>
-          <a href="analysis_format.html">Block 1 data only</a>
-        </li>
-        <li>
-          <a href="analysis_format2.html">Block 1 and Block 2</a>
-        </li>
-      </ul>
+    <li>
+      <a href="analysis_format.html">Does item formatting affect response?</a>
     </li>
     <li>
-      <a href="analysis_propVariance">Partitioning variance in response</a>
-    </li>
-    <li class="dropdown-submenu">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Does timing differ across format?</a>
-      <ul class="dropdown-menu" role="menu">
-        <li>
-          <a href="timing_format.html">Block 1 data only</a>
-        </li>
-        <li>
-          <a href="timing_format2.html">Block 1 and Block 2</a>
-        </li>
-      </ul>
+      <a href="timing_format.html">Does timing differ across format?</a>
     </li>
     <li>
       <a href="device.html">Does device type affect response and timing?</a>
@@ -380,7 +361,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Format effects</h1>
-<h4 class="date">Last updated 2021-07-23</h4>
+<h4 class="date">Last updated 2021-07-27</h4>
 
 </div>
 
@@ -458,10 +439,15 @@ var_total = var_proid + var_item + var_format + var_resid</code></pre>
 <p>Items account for 27.54 percent of the variability in response.</p>
 <p>Format accounts for 0.03 percent of the variability in response.</p>
 <p>In total, 36.24 percent of the variability in response is explained.</p>
-<!-- We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. -->
-<!-- We will also consider the effect on retest reliability of performance on the word recall task. -->
-<!-- We will further compare response times as a function of item format using both within- and between-person data in order to evaluate the presumption that adjective ratings require less time than phrased items.  -->
-<!-- Finally, secondary analyses will consider preliminary evidence for differences (e.g., mean response times, mean level of response) based on the type of device used to complete the survey (mobile, desktop, or tablet). -->
+</div>
+<div id="significance-tests" class="section level2">
+<h2>Significance tests</h2>
+<p>To test whether each of these factors accounts for a significant amount of variance, we create a model without nesting and test the difference in fits using log likelihood.</p>
+<pre class="r"><code>mod_within_item = lmer(response ~ 1 
+                  + (1 | item)
+                  + (1 | format)
+                  + (1 | proid),
+                  data = item_responses)</code></pre>
 </div>
 
 

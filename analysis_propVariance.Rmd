@@ -87,12 +87,15 @@ Format accounts for `r round(100*var_format/var_total, 2)` percent of the variab
 
 In total, `r round(100*(var_proid+var_item+var_format)/var_total, 2)` percent of the variability in response is explained.
 
+## Significance tests
 
-<!-- We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. -->
+To test whether each of these factors accounts for a significant amount of variance, we create a model without nesting and test the difference in fits using log likelihood.
 
-<!-- We will also consider the effect on retest reliability of performance on the word recall task. -->
-
-<!-- We will further compare response times as a function of item format using both within- and between-person data in order to evaluate the presumption that adjective ratings require less time than phrased items.  -->
-
-<!-- Finally, secondary analyses will consider preliminary evidence for differences (e.g., mean response times, mean level of response) based on the type of device used to complete the survey (mobile, desktop, or tablet). -->
+```{r}
+mod_within_item = lmer(response ~ 1 
+                  + (1 | item)
+                  + (1 | format)
+                  + (1 | proid),
+                  data = item_responses)
+```
 

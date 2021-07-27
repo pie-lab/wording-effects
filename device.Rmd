@@ -1,5 +1,5 @@
 ---
-title: "Format effects (Block 1 and 2 Data)"
+title: "Device effects"
 date: "Last updated `r Sys.Date()`"
 output: 
   html_document:
@@ -7,18 +7,12 @@ output:
     toc_float: TRUE
 ---
 
-The primary aims of this study are to evaluate the effects of item wording in online, self-report personality assessment. Specifically, we intend to consider the extent to which incremental wording changes may influence differences in the distributions of responses, response times, and psychometric properties of the items. These wording changes will include a progression from using (1) trait-descriptive adjectives by themselves, (2) with the linking verb “to be” (Am…), (3) with the additional verb “to tend” (Tend to be...), and (4) with the pronoun “someone” (Am someone who tends to be…). 
-
-Using a protocol that administers each adjective twice to the same participant (in different combinations of item format administered randomly across participants), we will use between-person analyses to compare responses using group-level data for the different formats. 
-
-These analyses will attempt to account for memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).
-
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(warning = F, message = F)
 ```
 
-## Workspace
+# Workspace
 
 ```{r}
 library(here) # for working with files
@@ -37,9 +31,7 @@ load(here("data/cleaned_data.Rds"))
 ```
 
 
-## Data prep
-
-**We will use between-person analyses to compare responses using group-level data for the different formats.**
+## Data prep: item responses
 
 First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 -- that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.
 
@@ -69,22 +61,34 @@ item_responses = item_responses %>%
   filter(!is.na(response))
 ```
 
+We give labels to the formats, to clarify interpretations and aid table and figure construction.
+
+```{r}
+item_responses$format = as.factor(item_responses$format)
+item_responses$format = relevel(item_responses$format, ref = "a") 
+item_responses$format = factor(item_responses$format,
+                               levels = c("a","b","c","d"),
+                               labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective"))
+```
+
+## Data prep: item timing
+
 We also prepare a dataframe to examine the amount of time needed to respond to items. These variable names have one of two formats: `t_[trait]_[abcd]_page_submit` (for example, `t_talkative_a_page_submit`) or `t_[trait]_[abcd]_2_page_submit` (for example, `t_talkative_a_2_page_submit`). We search for these items using regular expressions.
 
 ```{r}
-timing_block12 = str_subset(
+item_timing = str_subset(
   names(data),
   "^t_([[:alpha:]])+_[abcd]_(2_)?page_submit$"
 )
 
-timing_block12 = data %>%
-  select(proid, all_of(timing_block12), devicetype)
+item_timing = data %>%
+  select(proid, all_of(item_timing), devicetype)
 ```
 
 Next we reshape these data into long form.
 
 ```{r}
-timing_block12 = timing_block12 %>%
+item_timing = item_timing %>%
   gather(item, seconds, -proid, -devicetype) %>%
   mutate(item = str_remove(item, "^t_"),
          item = str_remove(item, "_2"),
@@ -93,19 +97,50 @@ timing_block12 = timing_block12 %>%
   filter(!is.na(seconds))
 ```
 
-## Response by Device
+Seconds appears to be strongly skewed, so we log-transform this variable.
+
+```{r}
+item_timing = item_timing %>% 
+  mutate(seconds_log = log(seconds))
+
+item_timing %>% 
+  select(contains("seconds")) %>% 
+  gather(variable, value) %>% 
+  mutate(variable = factor(variable,
+                           levels = c("seconds", "seconds_log"),
+                           labels = c("Seconds (raw)", "Log Seconds"))) %>% 
+  ggplot(aes(x = value)) +
+  geom_histogram(bins = 100) +
+  facet_wrap(~variable, scales = "free") +
+  labs(x = NULL, y = "Count") +
+  theme_pubr()
+```
+
+We give labels to the formats, to clarify interpretations and aid table and figure construction.
+
+```{r}
+item_timing$format = as.factor(item_timing$format)
+item_timing$format = relevel(item_timing$format, ref = "a") 
+item_timing$format = factor(item_timing$format,
+                               levels = c("a","b","c","d"),
+                               labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective"))
+```
+
+# Responses
+
+## Response by device
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device format
 
 ```{r}
-mod.format = lmer(response~devicetype + (1|proid), 
+mod.response = lmer(response~devicetype + (1|proid), 
                   data = item_responses)
-anova(mod.format)
+anova(mod.response)
 
 ```
 
 ```{r, fig.cap = "Predicted response on personality items by condition."}
-plot1 = plot_model(mod.format, type = "pred") 
+plot1 = plot_model(mod.response, type = "pred") 
 
 plot1$devicetype +
   labs(x = NULL,
@@ -135,36 +170,54 @@ item_responses %>%
   theme_pubr()
 ```
 
+## Device by format
+
+```{r}
+mod.response2 = lmer(response~devicetype*format + (1|proid), 
+                  data = item_responses)
+anova(mod.response2)
+
+```
+
+```{r, fig.cap = "Predicted response on personality items by condition."}
+plot2 = plot_model(mod.response2, type = "pred", terms = c("format", "devicetype")) 
+
+plot2 +
+  labs(x = NULL,
+       y = "Average response",
+       title = "Average responses by device") +
+  theme_pubclean()
+```
+
+# Timing
+
 ## Timing by device
-
-
 
 We used a multilevel model, nesting seconds within participant to account for dependence. Our primary predictor was format.
 
 ```{r}
-
-mod.format = lmer(seconds~devicetype + (1|proid), 
-                  data = timing_block12)
-anova(mod.format)
+mod.timing = lmer(seconds_log~devicetype + (1|proid), 
+                  data = item_timing)
+anova(mod.timing)
 ```
 
 ```{r, fig.cap = "Predicted seconds on personality items by condition."}
-plot1 = plot_model(mod.format, type = "pred") 
+plot1 = plot_model(mod.timing, type = "pred") 
 
 plot1$devicetype +
   labs(x = NULL,
-       y = "Seconds",
+       y = "Seconds (log)",
        title = "Average seconds time by device type") +
   theme_pubclean()
 ```
 
 ```{r, fig.cap = "Distribution of secondss by category"}
-means_by_group = timing_block12 %>%
+means_by_group = item_timing %>%
   group_by(devicetype) %>% 
   summarise(m = mean(seconds),
             s = sd(seconds))
 
-timing_block12 %>%
+item_timing %>%
   ggplot(aes(x = seconds, fill = devicetype)) +
   geom_histogram(bins = 100) +
   geom_vline(aes(xintercept = m), data = means_by_group) +
@@ -175,4 +228,22 @@ timing_block12 %>%
        title = "Distribution of seconds by format",
        x = "Seconds (logrithmic scale)") +
   theme_pubr()
+```
+
+## Device by format
+
+```{r}
+mod.timing2 = lmer(seconds_log~devicetype*format + (1|proid), 
+                  data = item_timing)
+anova(mod.timing2)
+```
+
+```{r, fig.cap = "Predicted seconds on personality items by condition."}
+plot1 = plot_model(mod.timing2, type = "pred", terms = c("format", "devicetype")) 
+
+plot1 +
+  labs(x = NULL,
+       y = "Seconds (log)",
+       title = "Average seconds time by device type") +
+  theme_pubclean()
 ```

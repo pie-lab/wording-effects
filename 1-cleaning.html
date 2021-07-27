@@ -334,30 +334,11 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-submenu">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Does item formatting affect response?</a>
-      <ul class="dropdown-menu" role="menu">
-        <li>
-          <a href="analysis_format.html">Block 1 data only</a>
-        </li>
-        <li>
-          <a href="analysis_format2.html">Block 1 and Block 2</a>
-        </li>
-      </ul>
+    <li>
+      <a href="analysis_format.html">Does item formatting affect response?</a>
     </li>
     <li>
-      <a href="analysis_propVariance">Partitioning variance in response</a>
-    </li>
-    <li class="dropdown-submenu">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Does timing differ across format?</a>
-      <ul class="dropdown-menu" role="menu">
-        <li>
-          <a href="timing_format.html">Block 1 data only</a>
-        </li>
-        <li>
-          <a href="timing_format2.html">Block 1 and Block 2</a>
-        </li>
-      </ul>
+      <a href="timing_format.html">Does timing differ across format?</a>
     </li>
     <li>
       <a href="device.html">Does device type affect response and timing?</a>
@@ -382,7 +363,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2021-07-23</h4>
+<h4 class="date">Last updated 2021-07-27</h4>
 
 </div>
 
@@ -954,6 +935,17 @@ Relationship between immediate and delayed recall
 </p>
 </div>
 </div>
+</div>
+<div id="change-labels-of-device-variable" class="section level2">
+<h2>Change labels of device variable</h2>
+<p>These labels are too long!</p>
+<pre class="r"><code>data = data %&gt;% 
+  mutate(devicetype = factor(
+    devicetype,
+    levels = c(&quot;Desktop or laptop computer&quot;, &quot;Mobile&quot;, 
+               &quot;Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)&quot;), #what is this?!
+    labels = c(&quot;Computer&quot;, &quot;Mobile&quot;, &quot;Tablet&quot;)
+  ))</code></pre>
 </div>
 <div id="save-data" class="section level2">
 <h2>Save data</h2>

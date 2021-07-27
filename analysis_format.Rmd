@@ -1,5 +1,5 @@
 ---
-title: "Format effects (Block  1 Data)"
+title: "Does item format impact response?"
 date: "Last updated `r Sys.Date()`"
 output: 
   html_document:
@@ -11,7 +11,7 @@ The primary aims of this study are to evaluate the effects of item wording in on
 
 Using a protocol that administers each adjective twice to the same participant (in different combinations of item format administered randomly across participants), we will use between-person analyses to compare responses using group-level data for the different formats. 
 
-These analyses will attempt to account for memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).
+These analyses will attempt to account for delayed_memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a delayed_memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).
 
 
 ```{r, include = FALSE}
@@ -39,34 +39,35 @@ load(here("data/cleaned_data.Rds"))
 
 ## Data prep
 
-**We will use between-person analyses to compare responses using group-level data for the different formats.**
+First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 -- that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.
 
-First we select the responses to the items of different formats. For this set of analyses, we only use data collected in Block 1 -- that is, each participant saw the same format for every item. 
-
-These variable names all have the same format: `[trait]_[abcd]` (for example, `talkative_a`). We search for these items using regular expressions.
+These variable names have one of two formats: `[trait]_[abcd]` (for example, `talkative_a`) or `[trait]_[abcd]_2` (for example, `talkative_a_2`). We search for these items using regular expressions.
 
 ```{r}
-items_seen_first = str_subset(
+items_seen_b1b2 = str_subset(
   names(data),
-  "^([[:alpha:]])+_[abcd]$"
+  "^([[:alpha:]])+_[abcd](_2)?$"
 )
 
 item_responses = data %>%
-  select(proid, all_of(items_seen_first), memory)
+  select(proid, all_of(items_seen_b1b2), delayed_memory)
 ```
 
 Next we reshape these data into long form.
 
 ```{r}
 item_responses = item_responses %>%
-  gather(item, response, -proid, -memory) %>%
+  gather(item, response, -proid, -delayed_memory) %>%
+  mutate(
+    block = case_when(             # which block is the item from?
+      str_detect(item, "_2") ~ "2",
+      TRUE ~ "1"),
+    item = str_remove(item, "_2")) %>%  # remove block id from item string
   separate(item, into = c("item", "format")) %>%
   filter(!is.na(response))
 ```
 
-## Response by Format
-
-We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format.
+We give labels to the formats, to clarify interpretations and aid table and figure construction.
 
 ```{r}
 item_responses$format = as.factor(item_responses$format)
@@ -74,29 +75,38 @@ item_responses$format = relevel(item_responses$format, ref = "a")
 item_responses$format = factor(item_responses$format,
                                levels = c("a","b","c","d"),
                                labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective"))
-
-mod.format = lmer(response~format + (1|proid), 
-                  data = item_responses)
-anova(mod.format)
 ```
 
-```{r, fig.cap = "Predicted response on personality items by condition."}
-plot1 = plot_model(mod.format, type = "pred") 
 
-plot1$format +
+## Analysis: Block 1 data only
+
+We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data.
+
+```{r}
+item_block1 = filter(item_responses, block == "1")
+
+mod.format_b1 = lmer(response~format + (1|proid), 
+                  data = item_block1)
+anova(mod.format_b1)
+```
+
+```{r, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
+plot_b1 = plot_model(mod.format_b1, type = "pred") 
+
+plot_b1$format +
   labs(x = NULL,
        y = "Average response",
-       title = "Average responses by item formatting") +
+       title = "Average responses by item formatting (Block 1 Data)") +
   theme_pubclean()
 ```
 
-```{r, fig.cap = "Distribution of responses by category"}
-means_by_group = item_responses %>%
+```{r, fig.cap = "Distribution of responses by category, block 1 data only"}
+means_by_group = item_block1 %>%
   group_by(format) %>% 
   summarise(m = mean(response),
             s = sd(response))
 
-item_responses %>%
+item_block1 %>%
   ggplot(aes(x = response, fill = format)) +
   geom_histogram(bins = 6, color = "white") +
   geom_vline(aes(xintercept = m), data = means_by_group) +
@@ -108,10 +118,10 @@ item_responses %>%
             hjust =0, 
             vjust = 1) +
   facet_wrap(~format) +
-  guides(fill = F) +
+  guides(fill = "none") +
   scale_x_continuous(breaks = 1:6) +
   labs(y = "Number of particpants",
-       title = "Distribution of responses by format") +
+       title = "Distribution of responses by format (Block 1 data)") +
   theme_pubr()
 ```
 
@@ -120,13 +130,13 @@ item_responses %>%
 We can also repeat this analysis separately for each trait. 
 
 ```{r, results = 'asis'}
-mod_by_item = item_responses %>%
+mod_by_item_b1 = item_block1 %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~lm(response~format, data = .))) %>%
   mutate(aov = map(mod, anova)) 
 
-summary_by_item = mod_by_item %>%
+summary_by_item_b1 = mod_by_item_b1 %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
   select(item, tidy) %>% 
   unnest(cols = c(tidy)) %>%
@@ -134,7 +144,242 @@ summary_by_item = mod_by_item %>%
   select(-term, -df) %>% 
   mutate(p.adj = p.adjust(p.value, method = "holm")) 
 
-summary_by_item %>%
+summary_by_item_b1 %>%
+  mutate(across(
+    starts_with("p"),
+    papaja::printnum
+  )) %>%
+  kable(digits = 2, booktabs = T, caption = "Format effects on response by item (block 1 data only)") %>%
+  kable_styling()
+```
+
+### Pairwise t-tests for significant ANOVAs
+
+Here we identify the specific items with significant differences.
+
+```{r}
+sig_item_b1 = summary_by_item_b1 %>%
+  filter(p.value < .05) 
+
+sig_item_b1 = sig_item_b1$item
+sig_item_b1
+```
+
+Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean. 
+
+**This code will have to be changed after final data collection. It is not self-adapting!**
+
+
+### Human
+
+```{r, results = 'asis'}
+human_model_b1 = item_responses %>%
+  filter(item == "human") %>%
+  lm(response~format, data = .)
+
+human_em_b1 = emmeans(human_model_b1, "format")
+pairs(human_em_b1, adjust = "holm") %>%
+  kable(booktabs = T,
+        digits = c(0,2,2,2,2,3),
+        caption = "Differences in response to Human by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r, fig.cap = "Average response to \"human\" by format (block 1 data only)" }
+plot_model(human_model_b1, type = "pred", terms = c("format"))
+```
+
+### Talkative
+
+```{r, results = 'asis'}
+talkative_model_b1 = item_block1 %>%
+  filter(item == "talkative") %>%
+  lm(response~format, data = .)
+
+talkative_em_b1 = emmeans(talkative_model_b1, "format")
+pairs(talkative_em_b1, adjust = "holm") %>%
+  kable(booktabs = T,
+        digits = c(0,2,2,2,2,3),
+        caption = "Differences in response to Talkative by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r, fig.cap = "Average response to \"talkative\" by format (block 1 data only)" }
+plot_model(talkative_model_b1, type = "pred", terms = c("format"))
+```
+
+## Analysis: Block 1 and Block 2
+
+We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data.
+
+```{r}
+mod.format_b2 = lmer(response~format + (1|proid), 
+                  data = item_responses)
+anova(mod.format_b2)
+```
+
+```{r, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
+plot_b2 = plot_model(mod.format_b2, type = "pred") 
+
+plot_b2$format +
+  labs(x = NULL,
+       y = "Average response",
+       title = "Average responses by item formatting (Block 1 and Block 2)") +
+  theme_pubclean()
+```
+
+```{r, fig.cap = "Distribution of responses by category, block 1 and block 2"}
+means_by_group = item_responses %>%
+  group_by(format) %>% 
+  summarise(m = mean(response),
+            s = sd(response))
+
+item_responses %>%
+  ggplot(aes(x = response, fill = format)) +
+  geom_histogram(bins = 6, color = "white") +
+  geom_vline(aes(xintercept = m), data = means_by_group) +
+  geom_text(aes(x = 1, 
+                y = 200, 
+                label = paste("M =", round(m,2), 
+                              "\nSD =", round(s,2))), 
+            data = means_by_group, 
+            hjust =0, 
+            vjust = 1) +
+  facet_wrap(~format) +
+  guides(fill = "none") +
+  scale_x_continuous(breaks = 1:6) +
+  labs(y = "Number of particpants",
+       title = "Distribution of responses by format (Block 1 and Block 2)") +
+  theme_pubr()
+```
+
+### One model for each adjective
+
+We can also repeat this analysis separately for each trait. 
+
+```{r, results = 'asis'}
+mod_by_item_b2 = item_responses %>%
+  group_by(item) %>%
+  nest() %>%
+  mutate(mod = map(data, ~lmer(response~format + (1|proid), data = .))) %>%
+  mutate(aov = map(mod, anova)) 
+
+summary_by_item_b2 = mod_by_item_b2 %>%
+  mutate(tidy = map(aov, broom::tidy)) %>%
+  select(item, tidy) %>% 
+  unnest(cols = c(tidy)) %>%
+  filter(term == "format") %>%
+  select(-term) %>% 
+  mutate(p.adj = p.adjust(p.value, method = "holm")) 
+
+summary_by_item_b2 %>%
+  mutate(across(
+    starts_with("p"),
+    papaja::printnum
+  )) %>%
+  kable(digits = 2, booktabs = T, caption = "Format effects on response by item (block 1 data only)") %>%
+  kable_styling()
+```
+
+### Pairwise t-tests for significant ANOVAs
+
+Here we identify the specific items with significant differences.
+
+```{r}
+sig_item_b2 = summary_by_item_b2 %>%
+  filter(p.value < .05) 
+
+sig_item_b2 = sig_item_b2$item
+sig_item_b2
+```
+
+Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean. 
+
+**This code will have to be changed after final data collection. It is not self-adapting!**
+
+### Careless
+
+```{r, results = 'asis'}
+careless_model_b2 = item_responses %>%
+  filter(item == "careless") %>%
+  lmer(response~format + (1|proid), 
+                               data = .)
+
+careless_em_b2 = emmeans(careless_model_b2, "format")
+pairs(careless_em_b2, adjust = "holm") %>%
+  kable(booktabs = T,
+        digits = c(0,2,2,2,2,3),
+        caption = "Differences in response to Careless by format (Block 1 and Block 2)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r, fig.cap = "Average response to \"careless\" by format (Block 1 and Block 2)" }
+plot_model(careless_model_b2, type = "pred", terms = c("format"))
+```
+
+### Thrifty
+
+```{r, results = 'asis'}
+thrifty_model_b2 = item_responses %>%
+  filter(item == "thrifty") %>%
+  lmer(response~format + (1|proid), 
+                               data = .)
+
+thrifty_em_b2 = emmeans(thrifty_model_b2, "format")
+pairs(thrifty_em_b2, adjust = "holm") %>%
+  kable(booktabs = T,
+        digits = c(0,2,2,2,2,3),
+        caption = "Differences in response to Thifty by format (Block 1 and Block 2)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r, fig.cap = "Average response to \"thrifty\" by format (Block 1 and Block 2)" }
+plot_model(thrifty_model_b2, type = "pred", terms = c("format"))
+```
+
+## Analysis: Account for memory effects
+
+
+```{r}
+mod.format_mem = lmer(response~format*delayed_memory + (1|proid), 
+                  data = item_responses)
+anova(mod.format_mem)
+summary(mod.format_mem)
+```
+
+```{r, fig.cap = "Predicted response on personality items by condition after controlling for delayed_memory."}
+plot_model(mod.format_mem, 
+           type = "pred", 
+           term = c("format", "delayed_memory[meansd]")) +
+  geom_line() +
+  labs(x = NULL, 
+       y = "Average response") +
+  scale_color_discrete("Memory", labels = c("-1SD", "Mean", "+1SD"))+
+  theme_pubclean()
+```
+
+### One model for each adjective
+
+```{r, results = 'asis'}
+mod_by_item_mem = item_responses %>%
+  group_by(item) %>%
+  nest() %>%
+  mutate(mod = map(data, ~lm(response~format*delayed_memory, data = .))) %>%
+  mutate(aov = map(mod, anova)) 
+
+summary_by_item_mem = mod_by_item_mem %>%
+  mutate(tidy = map(aov, broom::tidy)) %>%
+  select(item, tidy) %>% 
+  unnest(cols = c(tidy)) %>%
+  filter(term == "format:delayed_memory") %>%
+  select(-term, -df) %>% 
+  mutate(p.adj = p.adjust(p.value, method = "holm"))
+
+summary_by_item_mem %>%
   mutate(across(
     starts_with("p"),
     papaja::printnum
@@ -148,160 +393,9 @@ summary_by_item %>%
 Here we identify the specific items with significant differences.
 
 ```{r}
-sig_item = summary_by_item %>%
+sig_item_mem = summary_by_item_mem %>%
   filter(p.value < .05) 
 
-sig_item = sig_item$item
-sig_item
+sig_item_mem = sig_item_mem$item
+sig_item_mem
 ```
-
-Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean. 
-
-**This code will have to be changed after final data collection. It is not self-adapting!**
-
-
-### Human
-
-```{r, results = 'asis'}
-human_model = item_responses %>%
-  filter(item == "human") %>%
-  lm(response~format, data = .)
-
-human_em = emmeans(human_model, "format")
-pairs(human_em, adjust = "holm") %>%
-  kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
-        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
-  kable_styling()
-```
-
-```{r, fig.cap = "Average response to \"human\" by format" }
-plot_model(human_model, type = "pred", terms = c("format"))
-```
-
-### Talkative
-
-```{r, results = 'asis'}
-talkative_model = item_responses %>%
-  filter(item == "talkative") %>%
-  lm(response~format, data = .)
-
-talkative_em = emmeans(talkative_model, "format")
-pairs(talkative_em, adjust = "holm") %>%
-  kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
-        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
-  kable_styling()
-```
-
-```{r, fig.cap = "Average response to \"talkative\" by format" }
-plot_model(talkative_model, type = "pred", terms = c("format"))
-```
-
-
-## Response by Format + Memory
-
-
-```{r}
-mod.format_mem = lmer(response~format + memory + (1|proid), 
-                  data = item_responses)
-anova(mod.format_mem)
-summary(mod.format_mem)
-```
-
-```{r, fig.cap = "Predicted response on personality items by condition after controlling for memory."}
-plot_model(mod.format_mem, type = "pred", term = c("format"))
-```
-
-```{r, fig.cap = "Predicted response on personality items by memory."}
-plot_model(mod.format_mem, type = "pred", term = c("memory"))
-```
-
-### One model for each adjective
-
-```{r, results = 'asis'}
-mod_by_item = item_responses %>%
-  group_by(item) %>%
-  nest() %>%
-  mutate(mod = map(data, ~lm(response~format + memory, data = .))) %>%
-  mutate(aov = map(mod, anova)) 
-
-summary_by_item = mod_by_item %>%
-  mutate(tidy = map(aov, broom::tidy)) %>%
-  select(item, tidy) %>% 
-  unnest(cols = c(tidy)) %>%
-  filter(term == "format") %>%
-  select(-term, -df) %>% 
-  mutate(p.adj = p.adjust(p.value, method = "holm")) 
-
-summary_by_item %>%
-  mutate(across(
-    starts_with("p"),
-    papaja::printnum
-  )) %>%
-  kable(digits = 2, booktabs = T) %>%
-  kable_styling()
-```
-
-Here we identify the specific items with significant differences.
-
-```{r}
-sig_item = summary_by_item %>%
-  filter(p.value < .05) 
-
-sig_item = sig_item$item
-sig_item
-```
-
-**This code will have to be changed after final data collection. It is not self-adapting!**
-
-### Human
-
-```{r, results = 'asis'}
-human_model = item_responses %>%
-  filter(item == "human") %>%
-  lm(response~format + memory, data = .)
-
-human_em = emmeans(human_model, "format")
-pairs(human_em, adjust = "holm") %>%
-  kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
-        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
-  kable_styling()
-```
-
-```{r, fig.cap = "Average response to \"human\" by format" }
-plot_model(human_model, type = "pred", terms = c("format"))
-```
-
-### Talkative
-
-```{r, results = 'asis'}
-talkative_model = item_responses %>%
-  filter(item == "talkative") %>%
-  lm(response~format + memory, data = .)
-
-talkative_em = emmeans(talkative_model, "format")
-pairs(talkative_em, adjust = "holm") %>%
-  kable(booktabs = T,
-        digits = c(0,2,2,2,2,3), 
-        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
-  kable_styling()
-```
-
-```{r, fig.cap = "Average response to \"talkative\" by format" }
-plot_model(talkative_model, type = "pred", terms = c("format"))
-```
-
-<!-- We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. -->
-
-<!-- We will also consider the effect on retest reliability of performance on the word recall task. -->
-
-<!-- We will further compare response times as a function of item format using both within- and between-person data in order to evaluate the presumption that adjective ratings require less time than phrased items.  -->
-
-<!-- Finally, secondary analyses will consider preliminary evidence for differences (e.g., mean response times, mean level of response) based on the type of device used to complete the survey (mobile, desktop, or tablet). -->
-
-## Questions
-
-  * I only used responses in Block 1 here. Should I merge the two blocks together (see [here](analysis_format2.html) for code that does that)? Or I can repeat the analyses using Block 2? One thing to consider if we merge is that I can't use the simple ANOVA for the item-level analyses (we'll have two responses per person, so back to a nested design).
-  * When looking at individual items, should we use the p-value or the adjusted p-value to determine which to follow up with? To be clear, in supplemental analyses, we should look at all -- do we report all in the manuscript or just the ones significant after the Holm correction?

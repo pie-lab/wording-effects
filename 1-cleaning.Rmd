@@ -554,6 +554,20 @@ data %>%
   theme_pubr() 
 ```
 
+## Change labels of device variable
+
+These labels are too long!
+
+```{r}
+data = data %>% 
+  mutate(devicetype = factor(
+    devicetype,
+    levels = c("Desktop or laptop computer", "Mobile", 
+               "Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)"), #what is this?!
+    labels = c("Computer", "Mobile", "Tablet")
+  ))
+```
+
 
 ## Save data
 
