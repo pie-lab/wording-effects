@@ -345,6 +345,9 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li>
+  <a href="power.html">Power analysis</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -363,36 +366,15 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Descriptive statistics</h1>
-<h4 class="date">Last updated 2021-07-27</h4>
+<h4 class="date">Last updated 2021-07-30</h4>
 
 </div>
 
 
-<div id="workspace" class="section level2">
-<h2>Workspace</h2>
-<pre class="r"><code>library(here) # for working with files
-library(tidyverse) # for cleaning
-library(sjPlot) # for figures
-library(ggpubr) # for prettier plots
-library(kableExtra) # for nicer tables
-library(papaja) # for pretty numbers</code></pre>
-</div>
 <div id="block-1-personality" class="section level2">
 <h2>Block 1 personality</h2>
-<p>First we select the responses to the items of different formats. These variable names all have the same format: <code>[trait]_[abcd]</code> (for example, <code>talkative_a</code>). We search for these items using regular expressions.</p>
-<pre class="r"><code>items_seen_first = str_subset(
-  names(data),
-  &quot;^([[:alpha:]])+_[abcd]$&quot;
-)
-
-item_responses = data %&gt;%
-  select(proid, all_of(items_seen_first), memory)</code></pre>
-<p>Next we reshape these data into long form.</p>
-<pre class="r"><code>item_responses = item_responses %&gt;%
-  gather(item, response, -proid, -memory) %&gt;%
-  separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
-  filter(!is.na(response))</code></pre>
-<pre class="r"><code>item_responses %&gt;%
+<pre class="r"><code>items_df %&gt;%
+  filter(block == &quot;1&quot;) %&gt;% 
   group_by(format) %&gt;%
   summarise(
     mean = mean(response),
@@ -434,10 +416,70 @@ N_participants
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only
+NA
 </td>
 <td style="text-align:right;">
-4.67
+4.70
+</td>
+<td style="text-align:right;">
+1.30
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+319
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+4.48
+</td>
+<td style="text-align:right;">
+1.34
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+261
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+4.61
+</td>
+<td style="text-align:right;">
+1.24
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+232
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+4.71
 </td>
 <td style="text-align:right;">
 1.35
@@ -446,67 +488,7 @@ Adjective Only
 5
 </td>
 <td style="text-align:right;">
-341
-</td>
-<td style="text-align:right;">
-11
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am Adjective
-</td>
-<td style="text-align:right;">
-4.46
-</td>
-<td style="text-align:right;">
-1.37
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-279
-</td>
-<td style="text-align:right;">
-9
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Tend to be Adjective
-</td>
-<td style="text-align:right;">
-4.56
-</td>
-<td style="text-align:right;">
-1.28
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-248
-</td>
-<td style="text-align:right;">
-8
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
-<td style="text-align:right;">
-4.69
-</td>
-<td style="text-align:right;">
-1.39
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-217
+203
 </td>
 <td style="text-align:right;">
 7
@@ -514,7 +496,8 @@ I am someone who tends to be Adjective
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>item_responses %&gt;%
+<pre class="r"><code>items_df %&gt;%
+  filter(block == &quot;1&quot;) %&gt;% 
   group_by(item, format) %&gt;%
   summarise(
     mean = mean(response),
@@ -524,11 +507,6 @@ I am someone who tends to be Adjective
     printnum(mean), &quot; (&quot;, printnum(sd), &quot;)&quot;
   )) %&gt;%
   select(-mean, -sd) %&gt;%
-  mutate(format = factor(
-    format,
-    levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
-    labels = c(&quot;Adjective Only&quot;, &quot;Am Adjective&quot;, &quot;Tend to be Adjective&quot;, &quot;I am someone who tends to be Adjective&quot;)
-  )) %&gt;% 
   spread(format, value) %&gt;% 
   kable(booktabs = T) %&gt;%
   kable_styling()</code></pre>
@@ -585,23 +563,6 @@ adventurous
 </td>
 <td style="text-align:left;">
 4.57 (1.40)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-asleep
-</td>
-<td style="text-align:left;">
-2.64 (1.50)
-</td>
-<td style="text-align:left;">
-3.00 (1.73)
-</td>
-<td style="text-align:left;">
-2.62 (1.19)
-</td>
-<td style="text-align:left;">
-2.86 (1.57)
 </td>
 </tr>
 <tr>
@@ -755,23 +716,6 @@ helpful
 </td>
 <td style="text-align:left;">
 5.29 (1.11)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-human
-</td>
-<td style="text-align:left;">
-5.82 (0.40)
-</td>
-<td style="text-align:left;">
-5.33 (0.87)
-</td>
-<td style="text-align:left;">
-5.00 (0.93)
-</td>
-<td style="text-align:left;">
-5.86 (0.38)
 </td>
 </tr>
 <tr>
@@ -1085,21 +1029,8 @@ worrying
 </div>
 <div id="block-2-personality" class="section level2">
 <h2>Block 2 personality</h2>
-<p>First we select the responses to the items of different formats. These variable names all have the same format: <code>[trait]_[abcd]_2</code> (for example, <code>talkative_a_2</code>). We search for these items using regular expressions.</p>
-<pre class="r"><code>items_seen_second = str_subset(
-  names(data),
-  &quot;^([[:alpha:]])+_[abcd]_2$&quot;
-)
-
-item_responses2 = data %&gt;%
-  select(proid, all_of(items_seen_second), memory)</code></pre>
-<p>Next we reshape these data into long form.</p>
-<pre class="r"><code>item_responses2 = item_responses2 %&gt;%
-  gather(item, response, -proid, -memory) %&gt;%
-  mutate(item = str_remove(item, &quot;_2&quot;)) %&gt;% 
-  separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
-  filter(!is.na(response))</code></pre>
-<pre class="r"><code>item_responses2 %&gt;%
+<pre class="r"><code>items_df %&gt;%
+  filter(block == &quot;2&quot;) %&gt;% 
   group_by(format) %&gt;%
   summarise(
     mean = mean(response),
@@ -1108,11 +1039,6 @@ item_responses2 = data %&gt;%
     N_responses = n(),
     N_participants = length(unique(proid))
   ) %&gt;%
-  mutate(format = factor(
-    format,
-    levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
-    labels = c(&quot;Adjective Only&quot;, &quot;Am Adjective&quot;, &quot;Tend to be Adjective&quot;, &quot;I am someone who tends to be Adjective&quot;)
-  )) %&gt;% 
   kable(booktabs = T, digits = c(0,2,2,0,0,0)) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
@@ -1144,16 +1070,16 @@ N_participants
 Adjective Only
 </td>
 <td style="text-align:right;">
-4.61
+4.66
 </td>
 <td style="text-align:right;">
-1.22
+1.14
 </td>
 <td style="text-align:right;">
 5
 </td>
 <td style="text-align:right;">
-275
+258
 </td>
 <td style="text-align:right;">
 35
@@ -1164,16 +1090,16 @@ Adjective Only
 Am Adjective
 </td>
 <td style="text-align:right;">
-4.51
+4.57
 </td>
 <td style="text-align:right;">
-1.51
+1.44
 </td>
 <td style="text-align:right;">
 5
 </td>
 <td style="text-align:right;">
-281
+260
 </td>
 <td style="text-align:right;">
 35
@@ -1184,16 +1110,16 @@ Am Adjective
 Tend to be Adjective
 </td>
 <td style="text-align:right;">
-4.62
+4.64
 </td>
 <td style="text-align:right;">
-1.39
+1.34
 </td>
 <td style="text-align:right;">
 5
 </td>
 <td style="text-align:right;">
-265
+250
 </td>
 <td style="text-align:right;">
 35
@@ -1204,16 +1130,16 @@ Tend to be Adjective
 I am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
-4.54
+4.59
 </td>
 <td style="text-align:right;">
-1.37
+1.33
 </td>
 <td style="text-align:right;">
 5
 </td>
 <td style="text-align:right;">
-264
+247
 </td>
 <td style="text-align:right;">
 35
@@ -1221,7 +1147,8 @@ I am someone who tends to be Adjective
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>item_responses2 %&gt;%
+<pre class="r"><code>items_df %&gt;%
+  filter(block == &quot;2&quot;) %&gt;%
   group_by(item, format) %&gt;%
   summarise(
     mean = mean(response),
@@ -1231,11 +1158,6 @@ I am someone who tends to be Adjective
     printnum(mean), &quot; (&quot;, printnum(sd), &quot;)&quot;
   )) %&gt;%
   select(-mean, -sd) %&gt;%
-  mutate(format = factor(
-    format,
-    levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
-    labels = c(&quot;Adjective Only&quot;, &quot;Am Adjective&quot;, &quot;Tend to be Adjective&quot;, &quot;I am someone who tends to be Adjective&quot;)
-  )) %&gt;% 
   spread(format, value) %&gt;% 
   kable(booktabs = T) %&gt;%
   kable_styling()</code></pre>
@@ -1292,23 +1214,6 @@ adventurous
 </td>
 <td style="text-align:left;">
 4.11 (1.36)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-asleep
-</td>
-<td style="text-align:left;">
-2.38 (1.77)
-</td>
-<td style="text-align:left;">
-2.27 (1.49)
-</td>
-<td style="text-align:left;">
-2.57 (1.90)
-</td>
-<td style="text-align:left;">
-2.56 (1.24)
 </td>
 </tr>
 <tr>
@@ -1462,23 +1367,6 @@ helpful
 </td>
 <td style="text-align:left;">
 5.56 (0.73)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-human
-</td>
-<td style="text-align:left;">
-5.44 (0.53)
-</td>
-<td style="text-align:left;">
-5.50 (0.85)
-</td>
-<td style="text-align:left;">
-5.50 (0.76)
-</td>
-<td style="text-align:left;">
-5.12 (0.99)
 </td>
 </tr>
 <tr>

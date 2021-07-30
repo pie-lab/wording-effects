@@ -343,6 +343,9 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li>
+  <a href="power.html">Power analysis</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -361,13 +364,13 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Device effects</h1>
-<h4 class="date">Last updated 2021-07-27</h4>
+<h4 class="date">Last updated 2021-07-30</h4>
 
 </div>
 
 
-<div id="workspace" class="section level1">
-<h1>Workspace</h1>
+<div id="workspace" class="section level2">
+<h2>Workspace</h2>
 <pre class="r"><code>library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
@@ -377,8 +380,8 @@ library(emmeans) # for pairwise comparisons
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables</code></pre>
-<div id="data-prep-item-responses" class="section level2">
-<h2>Data prep: item responses</h2>
+<div id="data-prep-item-responses" class="section level3">
+<h3>Data prep: item responses</h3>
 <p>First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 – that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.</p>
 <p>These variable names have one of two formats: <code>[trait]_[abcd]</code> (for example, <code>talkative_a</code>) or <code>[trait]_[abcd]_2</code> (for example, <code>talkative_a_2</code>). We search for these items using regular expressions.</p>
 <pre class="r"><code>items_seen_b1b2 = str_subset(
@@ -405,8 +408,8 @@ item_responses$format = factor(item_responses$format,
                                levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
                                labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;I am someone\nwho tends to be\nAdjective&quot;))</code></pre>
 </div>
-<div id="data-prep-item-timing" class="section level2">
-<h2>Data prep: item timing</h2>
+<div id="data-prep-item-timing" class="section level3">
+<h3>Data prep: item timing</h3>
 <p>We also prepare a dataframe to examine the amount of time needed to respond to items. These variable names have one of two formats: <code>t_[trait]_[abcd]_page_submit</code> (for example, <code>t_talkative_a_page_submit</code>) or <code>t_[trait]_[abcd]_2_page_submit</code> (for example, <code>t_talkative_a_2_page_submit</code>). We search for these items using regular expressions.</p>
 <pre class="r"><code>item_timing = str_subset(
   names(data),
@@ -447,10 +450,10 @@ item_timing$format = factor(item_timing$format,
                                labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;I am someone\nwho tends to be\nAdjective&quot;))</code></pre>
 </div>
 </div>
-<div id="responses" class="section level1">
-<h1>Responses</h1>
-<div id="response-by-device" class="section level2">
-<h2>Response by device</h2>
+<div id="responses" class="section level2">
+<h2>Responses</h2>
+<div id="response-by-device" class="section level3">
+<h3>Response by device</h3>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device format</p>
 <pre class="r"><code>mod.response = lmer(response~devicetype + (1|proid), 
                   data = item_responses)
@@ -496,8 +499,8 @@ Distribution of responses by category
 </p>
 </div>
 </div>
-<div id="device-by-format" class="section level2">
-<h2>Device by format</h2>
+<div id="device-by-format" class="section level3">
+<h3>Device by format</h3>
 <pre class="r"><code>mod.response2 = lmer(response~devicetype*format + (1|proid), 
                   data = item_responses)
 anova(mod.response2)</code></pre>
@@ -523,10 +526,10 @@ Predicted response on personality items by condition.
 </div>
 </div>
 </div>
-<div id="timing" class="section level1">
-<h1>Timing</h1>
-<div id="timing-by-device" class="section level2">
-<h2>Timing by device</h2>
+<div id="timing" class="section level2">
+<h2>Timing</h2>
+<div id="timing-by-device" class="section level3">
+<h3>Timing by device</h3>
 <p>We used a multilevel model, nesting seconds within participant to account for dependence. Our primary predictor was format.</p>
 <pre class="r"><code>mod.timing = lmer(seconds_log~devicetype + (1|proid), 
                   data = item_timing)
@@ -570,8 +573,8 @@ Distribution of secondss by category
 </p>
 </div>
 </div>
-<div id="device-by-format-1" class="section level2">
-<h2>Device by format</h2>
+<div id="device-by-format-1" class="section level3">
+<h3>Device by format</h3>
 <pre class="r"><code>mod.timing2 = lmer(seconds_log~devicetype*format + (1|proid), 
                   data = item_timing)
 anova(mod.timing2)</code></pre>

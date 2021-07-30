@@ -18,6 +18,7 @@ library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
 library(lme4) # for multilevel modeling
+library(lmerTest) # for p-values
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
@@ -568,10 +569,105 @@ data = data %>%
   ))
 ```
 
+## Long-form dataset
 
-## Save data
+```{r, echo = F}
+#oops
+names(data) = str_replace(names(data), "responsbile", "responsible")
+```
+
+
+### Item responses
+
+We need one dataset that contains the responses to and timing of the personality items in long form. This will be used for nearly all the statistical models, which will nest items within person. To create this, we first select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 -- that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.
+
+These variable names have one of two formats: `[trait]_[abcd]` (for example, `talkative_a`) or `[trait]_[abcd]_2` (for example, `talkative_a_2`). We search for these items using regular expressions.
+
+```{r}
+item_responses = str_subset(
+  names(data),
+  "^([[:alpha:]])+_[abcd](_2)?$"
+)
+```
+
+Similarly, we'll need to know how long it took participants to respond to these items. These variable names have one of two formats: `t_[trait]_[abcd]_page_submit` (for example, `t_talkative_a_page_submit`) or `t_[trait]_[abcd]_2_page_submit` (for example, `t_talkative_a_2_page_submit`). We search for these items using regular expressions.
+
+```{r}
+item_timing = str_subset(
+  names(data),
+  "^t_([[:alpha:]])+_[abcd]_(2_)?page_submit$"
+)
+```
+
+We extract just the participant IDs, delayed memory, and these variables. 
+
+```{r}
+items_df = data %>% 
+  select(proid, delayed_memory, all_of(item_responses), all_of(item_timing))
+```
+
+Next we reshape these data into long form. This requires several steps. We'll need to identify whether each value is a response or timing; we can use the presence of the string `t_` for this. Next, we'll identify the block based on whether the string contains `_2`. Then, we identify the condition based on which letter (`a`, `b`, `c`, or `d`) follows an underscore. Throughout, we'll strip the item string of extraneous information until we're left with only the adjective assessed. Finally, we'll use spread to create separate columns for the response and the timing variables.
+
+```{r}
+items_df = items_df %>%
+  gather(item, value, all_of(item_responses), all_of(item_timing)) %>%
+  filter(!is.na(value)) %>% 
+  # identify whether timing or response
+  mutate(variable = ifelse(str_detect(item, "^t_"), "timing", "response"),
+         item = str_remove(item, "^t_"),
+         item = str_remove(item, "_page_submit$")) %>% 
+  #identify block
+  mutate(block = ifelse(str_detect(item, "_2"), "2", "1"),
+         item = str_remove(item, "_2")) %>% 
+  separate(item, into = c("item", "format")) %>%
+  spread(variable, value)
+```
+
+We also remove responses to the adjectives "human" and "asleep", as these are not personality items per-se and included for the purpose of attention checks.
+
+```{r}
+items_df = items_df %>% 
+  filter(item != "human") %>% 
+  filter(item != "asleep")
+```
+
+
+We give labels to the formats, to clarify interpretations and aid table and figure construction.
+
+```{r}
+items_df$format = as.factor(items_df$format)
+items_df$format = relevel(items_df$format, ref = "a") 
+items_df$format = factor(items_df$format,
+                               levels = c("a","b","c","d"),
+                               labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective"))
+```
+
+### Transform seconds
+
+The variable `seconds` appears to have a very severe right skew. We log-transform this variable for later analyses.
+
+```{r}
+items_df = items_df %>% 
+  mutate(seconds_log = log(timing))
+```
+
+```{r, fig.cap= "Distribution of seconds, raw and transformed."}
+items_df %>% 
+  gather(variable, value, timing, seconds_log) %>% 
+  mutate(variable = factor(variable,
+                           levels = c("timing", "seconds_log"),
+                           labels = c("Seconds (raw)", "Seconds (log)"))) %>% 
+  ggplot(aes(x = value)) +
+  geom_histogram(bins = 100) +
+  facet_wrap(~variable, scales = "free") +
+  labs(x = NULL, y = "Number of participants") +
+  theme_pubr()
+```
+
+
 
 ```{r, echo = F}
 save(data, file = here("data/cleaned_data.Rds"))
+save(items_df, file = here("data/items_df.Rds"))
 ```
 

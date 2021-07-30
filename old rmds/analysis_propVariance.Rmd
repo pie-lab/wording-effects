@@ -13,9 +13,7 @@ Within-person analyses will model the proportions of variance attributable to it
 knitr::opts_chunk$set(warning = F, message = F)
 ```
 
-## Workspace
-
-```{r}
+```{r, echo = F}
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
@@ -26,35 +24,9 @@ library(kableExtra) # for nicer tables
 ```
 
 ```{r, echo = F}
-load(here("data/cleaned_data.Rds"))
+load(here("data/item_responses.Rds"))
 ```
 
-
-## Data prep
-
-First we select the responses to the items of different formats. These variable names all have the same format: `[trait]_[abcd]` (for example, `talkative_a`). We search for these items using regular expressions.
-
-```{r}
-personality_items = str_subset(
-  names(data),
-  "^([[:alpha:]])+_[abcd]_?2?$"
-)
-
-item_responses = data %>%
-  select(proid, all_of(personality_items), memory) 
-```
-
-Next we reshape these data into long form.
-
-```{r}
-item_responses = item_responses %>%
-  gather(item, response, -proid, -memory) %>%
-  mutate(
-    time = ifelse(str_detect(item, "_2"), "2", "1"),
-    item = str_remove(item, "_2")) %>%
-  separate(item, into = c("item", "format")) %>%
-  filter(!is.na(response))
-```
 
 ## Model
 

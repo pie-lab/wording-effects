@@ -345,6 +345,9 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li>
+  <a href="power.html">Power analysis</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -363,7 +366,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2021-07-27</h4>
+<h4 class="date">Last updated 2021-07-30</h4>
 
 </div>
 
@@ -374,6 +377,7 @@ div.tocify {
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
 library(lme4) # for multilevel modeling
+library(lmerTest) # for p-values
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
@@ -947,8 +951,70 @@ Relationship between immediate and delayed recall
     labels = c(&quot;Computer&quot;, &quot;Mobile&quot;, &quot;Tablet&quot;)
   ))</code></pre>
 </div>
-<div id="save-data" class="section level2">
-<h2>Save data</h2>
+<div id="long-form-dataset" class="section level2">
+<h2>Long-form dataset</h2>
+<div id="item-responses" class="section level3">
+<h3>Item responses</h3>
+<p>We need one dataset that contains the responses to and timing of the personality items in long form. This will be used for nearly all the statistical models, which will nest items within person. To create this, we first select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 – that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.</p>
+<p>These variable names have one of two formats: <code>[trait]_[abcd]</code> (for example, <code>talkative_a</code>) or <code>[trait]_[abcd]_2</code> (for example, <code>talkative_a_2</code>). We search for these items using regular expressions.</p>
+<pre class="r"><code>item_responses = str_subset(
+  names(data),
+  &quot;^([[:alpha:]])+_[abcd](_2)?$&quot;
+)</code></pre>
+<p>Similarly, we’ll need to know how long it took participants to respond to these items. These variable names have one of two formats: <code>t_[trait]_[abcd]_page_submit</code> (for example, <code>t_talkative_a_page_submit</code>) or <code>t_[trait]_[abcd]_2_page_submit</code> (for example, <code>t_talkative_a_2_page_submit</code>). We search for these items using regular expressions.</p>
+<pre class="r"><code>item_timing = str_subset(
+  names(data),
+  &quot;^t_([[:alpha:]])+_[abcd]_(2_)?page_submit$&quot;
+)</code></pre>
+<p>We extract just the participant IDs, delayed memory, and these variables.</p>
+<pre class="r"><code>items_df = data %&gt;% 
+  select(proid, delayed_memory, all_of(item_responses), all_of(item_timing))</code></pre>
+<p>Next we reshape these data into long form. This requires several steps. We’ll need to identify whether each value is a response or timing; we can use the presence of the string <code>t_</code> for this. Next, we’ll identify the block based on whether the string contains <code>_2</code>. Then, we identify the condition based on which letter (<code>a</code>, <code>b</code>, <code>c</code>, or <code>d</code>) follows an underscore. Throughout, we’ll strip the item string of extraneous information until we’re left with only the adjective assessed. Finally, we’ll use spread to create separate columns for the response and the timing variables.</p>
+<pre class="r"><code>items_df = items_df %&gt;%
+  gather(item, value, all_of(item_responses), all_of(item_timing)) %&gt;%
+  filter(!is.na(value)) %&gt;% 
+  # identify whether timing or response
+  mutate(variable = ifelse(str_detect(item, &quot;^t_&quot;), &quot;timing&quot;, &quot;response&quot;),
+         item = str_remove(item, &quot;^t_&quot;),
+         item = str_remove(item, &quot;_page_submit$&quot;)) %&gt;% 
+  #identify block
+  mutate(block = ifelse(str_detect(item, &quot;_2&quot;), &quot;2&quot;, &quot;1&quot;),
+         item = str_remove(item, &quot;_2&quot;)) %&gt;% 
+  separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
+  spread(variable, value)</code></pre>
+<p>We also remove responses to the adjectives “human” and “asleep”, as these are not personality items per-se and included for the purpose of attention checks.</p>
+<pre class="r"><code>items_df = items_df %&gt;% 
+  filter(item != &quot;human&quot;) %&gt;% 
+  filter(item != &quot;asleep&quot;)</code></pre>
+<p>We give labels to the formats, to clarify interpretations and aid table and figure construction.</p>
+<pre class="r"><code>items_df$format = as.factor(items_df$format)
+items_df$format = relevel(items_df$format, ref = &quot;a&quot;) 
+items_df$format = factor(items_df$format,
+                               levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
+                               labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;I am someone\nwho tends to be\nAdjective&quot;))</code></pre>
+</div>
+<div id="transform-seconds" class="section level3">
+<h3>Transform seconds</h3>
+<p>The variable <code>seconds</code> appears to have a very severe right skew. We log-transform this variable for later analyses.</p>
+<pre class="r"><code>items_df = items_df %&gt;% 
+  mutate(seconds_log = log(timing))</code></pre>
+<pre class="r"><code>items_df %&gt;% 
+  gather(variable, value, timing, seconds_log) %&gt;% 
+  mutate(variable = factor(variable,
+                           levels = c(&quot;timing&quot;, &quot;seconds_log&quot;),
+                           labels = c(&quot;Seconds (raw)&quot;, &quot;Seconds (log)&quot;))) %&gt;% 
+  ggplot(aes(x = value)) +
+  geom_histogram(bins = 100) +
+  facet_wrap(~variable, scales = &quot;free&quot;) +
+  labs(x = NULL, y = &quot;Number of participants&quot;) +
+  theme_pubr()</code></pre>
+<div class="figure">
+<img src="1-cleaning_files/figure-html/unnamed-chunk-46-1.png" alt="Distribution of seconds, raw and transformed." width="672" />
+<p class="caption">
+Distribution of seconds, raw and transformed.
+</p>
+</div>
+</div>
 </div>
 
 

@@ -18,9 +18,7 @@ These analyses will attempt to account for delayed_memory effects by collecting 
 knitr::opts_chunk$set(warning = F, message = F)
 ```
 
-## Workspace
-
-```{r}
+```{r, echo = F}
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
@@ -33,62 +31,26 @@ library(kableExtra) # for nicer tables
 ```
 
 ```{r, echo = F}
-load(here("data/cleaned_data.Rds"))
+load(here("data/items_df.Rds"))
 ```
-
-
-## Data prep
-
-First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 -- that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.
-
-These variable names have one of two formats: `[trait]_[abcd]` (for example, `talkative_a`) or `[trait]_[abcd]_2` (for example, `talkative_a_2`). We search for these items using regular expressions.
-
-```{r}
-items_seen_b1b2 = str_subset(
-  names(data),
-  "^([[:alpha:]])+_[abcd](_2)?$"
-)
-
-item_responses = data %>%
-  select(proid, all_of(items_seen_b1b2), delayed_memory)
-```
-
-Next we reshape these data into long form.
-
-```{r}
-item_responses = item_responses %>%
-  gather(item, response, -proid, -delayed_memory) %>%
-  mutate(
-    block = case_when(             # which block is the item from?
-      str_detect(item, "_2") ~ "2",
-      TRUE ~ "1"),
-    item = str_remove(item, "_2")) %>%  # remove block id from item string
-  separate(item, into = c("item", "format")) %>%
-  filter(!is.na(response))
-```
-
-We give labels to the formats, to clarify interpretations and aid table and figure construction.
-
-```{r}
-item_responses$format = as.factor(item_responses$format)
-item_responses$format = relevel(item_responses$format, ref = "a") 
-item_responses$format = factor(item_responses$format,
-                               levels = c("a","b","c","d"),
-                               labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective"))
-```
-
 
 ## Analysis: Block 1 data only
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data.
 
 ```{r}
-item_block1 = filter(item_responses, block == "1")
+item_block1 = filter(items_df, block == "1")
 
 mod.format_b1 = lmer(response~format + (1|proid), 
                   data = item_block1)
 anova(mod.format_b1)
 ```
+
+```{r, echo = F}
+# save for power analysis
+save(mod.format_b1, file = here("objects/mod_format_b1.Rdata"))
+```
+
 
 ```{r, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
 plot_b1 = plot_model(mod.format_b1, type = "pred") 
@@ -169,27 +131,6 @@ Then we create models for each adjective. We use the `emmeans` package to perfor
 
 **This code will have to be changed after final data collection. It is not self-adapting!**
 
-
-### Human
-
-```{r, results = 'asis'}
-human_model_b1 = item_responses %>%
-  filter(item == "human") %>%
-  lm(response~format, data = .)
-
-human_em_b1 = emmeans(human_model_b1, "format")
-pairs(human_em_b1, adjust = "holm") %>%
-  kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
-        caption = "Differences in response to Human by format (Block 1 data only)",
-        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
-  kable_styling()
-```
-
-```{r, fig.cap = "Average response to \"human\" by format (block 1 data only)" }
-plot_model(human_model_b1, type = "pred", terms = c("format"))
-```
-
 ### Talkative
 
 ```{r, results = 'asis'}
@@ -216,9 +157,15 @@ We used a multilevel model, nesting response within participant to account for d
 
 ```{r}
 mod.format_b2 = lmer(response~format + (1|proid), 
-                  data = item_responses)
+                  data = items_df)
 anova(mod.format_b2)
 ```
+
+```{r, echo = F}
+# save for power analysis
+save(mod.format_b2, file = here("objects/mod_format_b2.Rdata"))
+```
+
 
 ```{r, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
 plot_b2 = plot_model(mod.format_b2, type = "pred") 
@@ -231,12 +178,12 @@ plot_b2$format +
 ```
 
 ```{r, fig.cap = "Distribution of responses by category, block 1 and block 2"}
-means_by_group = item_responses %>%
+means_by_group = items_df %>%
   group_by(format) %>% 
   summarise(m = mean(response),
             s = sd(response))
 
-item_responses %>%
+items_df %>%
   ggplot(aes(x = response, fill = format)) +
   geom_histogram(bins = 6, color = "white") +
   geom_vline(aes(xintercept = m), data = means_by_group) +
@@ -260,7 +207,7 @@ item_responses %>%
 We can also repeat this analysis separately for each trait. 
 
 ```{r, results = 'asis'}
-mod_by_item_b2 = item_responses %>%
+mod_by_item_b2 = items_df %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~lmer(response~format + (1|proid), data = .))) %>%
@@ -302,7 +249,7 @@ Then we create models for each adjective. We use the `emmeans` package to perfor
 ### Careless
 
 ```{r, results = 'asis'}
-careless_model_b2 = item_responses %>%
+careless_model_b2 = items_df %>%
   filter(item == "careless") %>%
   lmer(response~format + (1|proid), 
                                data = .)
@@ -323,7 +270,7 @@ plot_model(careless_model_b2, type = "pred", terms = c("format"))
 ### Thrifty
 
 ```{r, results = 'asis'}
-thrifty_model_b2 = item_responses %>%
+thrifty_model_b2 = items_df %>%
   filter(item == "thrifty") %>%
   lmer(response~format + (1|proid), 
                                data = .)
@@ -346,10 +293,11 @@ plot_model(thrifty_model_b2, type = "pred", terms = c("format"))
 
 ```{r}
 mod.format_mem = lmer(response~format*delayed_memory + (1|proid), 
-                  data = item_responses)
+                  data = items_df)
 anova(mod.format_mem)
 summary(mod.format_mem)
 ```
+
 
 ```{r, fig.cap = "Predicted response on personality items by condition after controlling for delayed_memory."}
 plot_model(mod.format_mem, 
@@ -365,7 +313,7 @@ plot_model(mod.format_mem,
 ### One model for each adjective
 
 ```{r, results = 'asis'}
-mod_by_item_mem = item_responses %>%
+mod_by_item_mem = items_df %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~lm(response~format*delayed_memory, data = .))) %>%
