@@ -369,98 +369,17 @@ div.tocify {
 </div>
 
 
-<div id="workspace" class="section level2">
-<h2>Workspace</h2>
-<pre class="r"><code>library(here) # for working with files
-library(tidyverse) # for cleaning
-library(janitor) # for variable names
-library(lme4) # for mulitlevel modeling
-library(lmerTest) # for df and p-values
-library(emmeans) # for pairwise comparisons
-library(sjPlot) # for figures
-library(ggpubr) # for prettier plots
-library(kableExtra) # for nicer tables</code></pre>
-<div id="data-prep-item-responses" class="section level3">
-<h3>Data prep: item responses</h3>
-<p>First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 – that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.</p>
-<p>These variable names have one of two formats: <code>[trait]_[abcd]</code> (for example, <code>talkative_a</code>) or <code>[trait]_[abcd]_2</code> (for example, <code>talkative_a_2</code>). We search for these items using regular expressions.</p>
-<pre class="r"><code>items_seen_b1b2 = str_subset(
-  names(data),
-  &quot;^([[:alpha:]])+_[abcd](_2)?$&quot;
-)
-
-item_responses = data %&gt;%
-  select(proid, all_of(items_seen_b1b2), devicetype)</code></pre>
-<p>Next we reshape these data into long form.</p>
-<pre class="r"><code>item_responses = item_responses %&gt;%
-  gather(item, response, -proid, -devicetype) %&gt;%
-  mutate(
-    block = case_when(             # which block is the item from?
-      str_detect(item, &quot;_2&quot;) ~ &quot;2&quot;,
-      TRUE ~ &quot;1&quot;),
-    item = str_remove(item, &quot;_2&quot;)) %&gt;%  # remove block id from item string
-  separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
-  filter(!is.na(response))</code></pre>
-<p>We give labels to the formats, to clarify interpretations and aid table and figure construction.</p>
-<pre class="r"><code>item_responses$format = as.factor(item_responses$format)
-item_responses$format = relevel(item_responses$format, ref = &quot;a&quot;) 
-item_responses$format = factor(item_responses$format,
-                               levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
-                               labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;I am someone\nwho tends to be\nAdjective&quot;))</code></pre>
-</div>
-<div id="data-prep-item-timing" class="section level3">
-<h3>Data prep: item timing</h3>
-<p>We also prepare a dataframe to examine the amount of time needed to respond to items. These variable names have one of two formats: <code>t_[trait]_[abcd]_page_submit</code> (for example, <code>t_talkative_a_page_submit</code>) or <code>t_[trait]_[abcd]_2_page_submit</code> (for example, <code>t_talkative_a_2_page_submit</code>). We search for these items using regular expressions.</p>
-<pre class="r"><code>item_timing = str_subset(
-  names(data),
-  &quot;^t_([[:alpha:]])+_[abcd]_(2_)?page_submit$&quot;
-)
-
-item_timing = data %&gt;%
-  select(proid, all_of(item_timing), devicetype)</code></pre>
-<p>Next we reshape these data into long form.</p>
-<pre class="r"><code>item_timing = item_timing %&gt;%
-  gather(item, seconds, -proid, -devicetype) %&gt;%
-  mutate(item = str_remove(item, &quot;^t_&quot;),
-         item = str_remove(item, &quot;_2&quot;),
-         item = str_remove(item, &quot;_page_submit$&quot;)) %&gt;% 
-  separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
-  filter(!is.na(seconds))</code></pre>
-<p>Seconds appears to be strongly skewed, so we log-transform this variable.</p>
-<pre class="r"><code>item_timing = item_timing %&gt;% 
-  mutate(seconds_log = log(seconds))
-
-item_timing %&gt;% 
-  select(contains(&quot;seconds&quot;)) %&gt;% 
-  gather(variable, value) %&gt;% 
-  mutate(variable = factor(variable,
-                           levels = c(&quot;seconds&quot;, &quot;seconds_log&quot;),
-                           labels = c(&quot;Seconds (raw)&quot;, &quot;Log Seconds&quot;))) %&gt;% 
-  ggplot(aes(x = value)) +
-  geom_histogram(bins = 100) +
-  facet_wrap(~variable, scales = &quot;free&quot;) +
-  labs(x = NULL, y = &quot;Count&quot;) +
-  theme_pubr()</code></pre>
-<p><img src="device_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>We give labels to the formats, to clarify interpretations and aid table and figure construction.</p>
-<pre class="r"><code>item_timing$format = as.factor(item_timing$format)
-item_timing$format = relevel(item_timing$format, ref = &quot;a&quot;) 
-item_timing$format = factor(item_timing$format,
-                               levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
-                               labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;I am someone\nwho tends to be\nAdjective&quot;))</code></pre>
-</div>
-</div>
 <div id="responses" class="section level2">
 <h2>Responses</h2>
 <div id="response-by-device" class="section level3">
 <h3>Response by device</h3>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device format</p>
 <pre class="r"><code>mod.response = lmer(response~devicetype + (1|proid), 
-                  data = item_responses)
+                  data = items_df)
 anova(mod.response)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##            Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
-## devicetype  4.008   2.004     2    32  1.1793 0.3205</code></pre>
+## devicetype 3.1474  1.5737     2    32  1.0194 0.3722</code></pre>
 <pre class="r"><code>plot1 = plot_model(mod.response, type = &quot;pred&quot;) 
 
 plot1$devicetype +
@@ -469,17 +388,17 @@ plot1$devicetype +
        title = &quot;Average responses by device&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-12-1.png" alt="Predicted response on personality items by condition." width="672" />
+<img src="device_files/figure-html/unnamed-chunk-5-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
 Predicted response on personality items by condition.
 </p>
 </div>
-<pre class="r"><code>means_by_group = item_responses %&gt;%
+<pre class="r"><code>means_by_group = items_df %&gt;%
   group_by(devicetype) %&gt;% 
   summarise(m = mean(response),
             s = sd(response))
 
-item_responses %&gt;%
+items_df %&gt;%
   ggplot(aes(x = response)) +
   geom_histogram(aes(fill = block),
                  position = &quot;dodge&quot;,
@@ -493,7 +412,7 @@ item_responses %&gt;%
        title = &quot;Distribution of responses by format&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-13-1.png" alt="Distribution of responses by category" width="672" />
+<img src="device_files/figure-html/unnamed-chunk-6-1.png" alt="Distribution of responses by category" width="672" />
 <p class="caption">
 Distribution of responses by category
 </p>
@@ -502,15 +421,13 @@ Distribution of responses by category
 <div id="device-by-format" class="section level3">
 <h3>Device by format</h3>
 <pre class="r"><code>mod.response2 = lmer(response~devicetype*format + (1|proid), 
-                  data = item_responses)
+                  data = items_df)
 anova(mod.response2)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##                    Sum Sq Mean Sq NumDF   DenDF F value  Pr(&gt;F)  
-## devicetype         2.4435  1.2217     2   33.06  0.7204 0.49405  
-## format             5.0203  1.6734     3 2030.62  0.9867 0.39803  
-## devicetype:format 18.9498  3.1583     6 2033.40  1.8622 0.08374 .
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+##                    Sum Sq Mean Sq NumDF   DenDF F value Pr(&gt;F)
+## devicetype         1.8811 0.94055     2   32.87  0.6102 0.5493
+## format             5.9073 1.96910     3 1960.37  1.2774 0.2805
+## devicetype:format 14.9750 2.49584     6 1962.03  1.6191 0.1378</code></pre>
 <pre class="r"><code>plot2 = plot_model(mod.response2, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;devicetype&quot;)) 
 
 plot2 +
@@ -519,7 +436,7 @@ plot2 +
        title = &quot;Average responses by device&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-15-1.png" alt="Predicted response on personality items by condition." width="672" />
+<img src="device_files/figure-html/unnamed-chunk-8-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
 Predicted response on personality items by condition.
 </p>
@@ -530,44 +447,44 @@ Predicted response on personality items by condition.
 <h2>Timing</h2>
 <div id="timing-by-device" class="section level3">
 <h3>Timing by device</h3>
-<p>We used a multilevel model, nesting seconds within participant to account for dependence. Our primary predictor was format.</p>
+<p>We used a multilevel model, nesting timing within participant to account for dependence. Our primary predictor was format.</p>
 <pre class="r"><code>mod.timing = lmer(seconds_log~devicetype + (1|proid), 
-                  data = item_timing)
+                  data = items_df)
 anova(mod.timing)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##            Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
-## devicetype 2.8619  1.4309     2    32  2.0649 0.1434</code></pre>
+## devicetype 2.7595  1.3798     2    32  2.0181 0.1495</code></pre>
 <pre class="r"><code>plot1 = plot_model(mod.timing, type = &quot;pred&quot;) 
 
 plot1$devicetype +
   labs(x = NULL,
-       y = &quot;Seconds (log)&quot;,
-       title = &quot;Average seconds time by device type&quot;) +
+       y = &quot;timing (log)&quot;,
+       title = &quot;Average timing time by device type&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-17-1.png" alt="Predicted seconds on personality items by condition." width="672" />
+<img src="device_files/figure-html/unnamed-chunk-10-1.png" alt="Predicted timing on personality items by condition." width="672" />
 <p class="caption">
-Predicted seconds on personality items by condition.
+Predicted timing on personality items by condition.
 </p>
 </div>
-<pre class="r"><code>means_by_group = item_timing %&gt;%
+<pre class="r"><code>means_by_group = items_df %&gt;%
   group_by(devicetype) %&gt;% 
-  summarise(m = mean(seconds),
-            s = sd(seconds))
+  summarise(m = mean(timing),
+            s = sd(timing))
 
-item_timing %&gt;%
-  ggplot(aes(x = seconds, fill = devicetype)) +
+items_df %&gt;%
+  ggplot(aes(x = timing, fill = devicetype)) +
   geom_histogram(bins = 100) +
   geom_vline(aes(xintercept = m), data = means_by_group) +
   facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
   guides(fill = &quot;none&quot;) +
   scale_x_log10() +
   labs(y = &quot;Number of particpants&quot;,
-       title = &quot;Distribution of seconds by format&quot;,
-       x = &quot;Seconds (logrithmic scale)&quot;) +
+       title = &quot;Distribution of timing by format&quot;,
+       x = &quot;timing (logrithmic scale)&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-18-1.png" alt="Distribution of secondss by category" width="672" />
+<img src="device_files/figure-html/unnamed-chunk-11-1.png" alt="Distribution of secondss by category" width="672" />
 <p class="caption">
 Distribution of secondss by category
 </p>
@@ -576,26 +493,26 @@ Distribution of secondss by category
 <div id="device-by-format-1" class="section level3">
 <h3>Device by format</h3>
 <pre class="r"><code>mod.timing2 = lmer(seconds_log~devicetype*format + (1|proid), 
-                  data = item_timing)
+                  data = items_df)
 anova(mod.timing2)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##                    Sum Sq Mean Sq NumDF   DenDF F value    Pr(&gt;F)    
-## devicetype         3.4339  1.7170     2   32.31  2.5424 0.0943136 .  
-## format            12.5878  4.1959     3 2138.42  6.2132 0.0003366 ***
-## devicetype:format 14.5245  2.4208     6 2142.58  3.5846 0.0015414 ** 
+##                    Sum Sq Mean Sq NumDF  DenDF F value   Pr(&gt;F)   
+## devicetype         3.2291  1.6146     2   32.3  2.4193 0.104943   
+## format            10.3707  3.4569     3 2004.2  5.1798 0.001447 **
+## devicetype:format 13.3817  2.2303     6 2007.5  3.3418 0.002802 **
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>plot1 = plot_model(mod.timing2, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;devicetype&quot;)) 
 
 plot1 +
   labs(x = NULL,
-       y = &quot;Seconds (log)&quot;,
-       title = &quot;Average seconds time by device type&quot;) +
+       y = &quot;timing (log)&quot;,
+       title = &quot;Average timing time by device type&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-20-1.png" alt="Predicted seconds on personality items by condition." width="672" />
+<img src="device_files/figure-html/unnamed-chunk-13-1.png" alt="Predicted timing on personality items by condition." width="672" />
 <p class="caption">
-Predicted seconds on personality items by condition.
+Predicted timing on personality items by condition.
 </p>
 </div>
 </div>

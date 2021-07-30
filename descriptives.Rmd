@@ -39,12 +39,8 @@ items_df %>%
     N_responses = n(),
     N_participants = length(unique(proid))
   ) %>%
-  mutate(format = factor(
-    format,
-    levels = c("a","b","c","d"),
-    labels = c("Adjective Only", "Am Adjective", "Tend to be Adjective", "I am someone who tends to be Adjective")
-  )) %>% 
-  kable(booktabs = T, digits = c(0,2,2,0,0,0)) %>%
+  kable(booktabs = T, digits = c(0,2,2,0,0,0),
+        caption = "Descriptives of responses to Block 1") %>%
   kable_styling()
 ```
 
@@ -80,7 +76,8 @@ items_df %>%
     N_responses = n(),
     N_participants = length(unique(proid))
   ) %>%
-  kable(booktabs = T, digits = c(0,2,2,0,0,0)) %>%
+  kable(booktabs = T, digits = c(0,2,2,0,0,0),
+        caption = "Descriptives of responses to Block 2") %>%
   kable_styling()
 ```
 

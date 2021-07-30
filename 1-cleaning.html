@@ -953,8 +953,6 @@ Relationship between immediate and delayed recall
 </div>
 <div id="long-form-dataset" class="section level2">
 <h2>Long-form dataset</h2>
-<div id="item-responses" class="section level3">
-<h3>Item responses</h3>
 <p>We need one dataset that contains the responses to and timing of the personality items in long form. This will be used for nearly all the statistical models, which will nest items within person. To create this, we first select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 – that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.</p>
 <p>These variable names have one of two formats: <code>[trait]_[abcd]</code> (for example, <code>talkative_a</code>) or <code>[trait]_[abcd]_2</code> (for example, <code>talkative_a_2</code>). We search for these items using regular expressions.</p>
 <pre class="r"><code>item_responses = str_subset(
@@ -968,7 +966,7 @@ Relationship between immediate and delayed recall
 )</code></pre>
 <p>We extract just the participant IDs, delayed memory, and these variables.</p>
 <pre class="r"><code>items_df = data %&gt;% 
-  select(proid, delayed_memory, all_of(item_responses), all_of(item_timing))</code></pre>
+  select(proid, delayed_memory, devicetype, all_of(item_responses), all_of(item_timing))</code></pre>
 <p>Next we reshape these data into long form. This requires several steps. We’ll need to identify whether each value is a response or timing; we can use the presence of the string <code>t_</code> for this. Next, we’ll identify the block based on whether the string contains <code>_2</code>. Then, we identify the condition based on which letter (<code>a</code>, <code>b</code>, <code>c</code>, or <code>d</code>) follows an underscore. Throughout, we’ll strip the item string of extraneous information until we’re left with only the adjective assessed. Finally, we’ll use spread to create separate columns for the response and the timing variables.</p>
 <pre class="r"><code>items_df = items_df %&gt;%
   gather(item, value, all_of(item_responses), all_of(item_timing)) %&gt;%
@@ -992,7 +990,6 @@ items_df$format = relevel(items_df$format, ref = &quot;a&quot;)
 items_df$format = factor(items_df$format,
                                levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
                                labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;I am someone\nwho tends to be\nAdjective&quot;))</code></pre>
-</div>
 <div id="transform-seconds" class="section level3">
 <h3>Transform seconds</h3>
 <p>The variable <code>seconds</code> appears to have a very severe right skew. We log-transform this variable for later analyses.</p>

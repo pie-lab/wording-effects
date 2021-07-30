@@ -383,14 +383,13 @@ div.tocify {
     N_responses = n(),
     N_participants = length(unique(proid))
   ) %&gt;%
-  mutate(format = factor(
-    format,
-    levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
-    labels = c(&quot;Adjective Only&quot;, &quot;Am Adjective&quot;, &quot;Tend to be Adjective&quot;, &quot;I am someone who tends to be Adjective&quot;)
-  )) %&gt;% 
-  kable(booktabs = T, digits = c(0,2,2,0,0,0)) %&gt;%
+  kable(booktabs = T, digits = c(0,2,2,0,0,0),
+        caption = &quot;Descriptives of responses to Block 1&quot;) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Descriptives of responses to Block 1
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -416,7 +415,7 @@ N_participants
 <tbody>
 <tr>
 <td style="text-align:left;">
-NA
+Adjective Only
 </td>
 <td style="text-align:right;">
 4.70
@@ -436,7 +435,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-NA
+Am Adjective
 </td>
 <td style="text-align:right;">
 4.48
@@ -456,7 +455,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-NA
+Tend to be Adjective
 </td>
 <td style="text-align:right;">
 4.61
@@ -476,7 +475,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-NA
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 4.71
@@ -1039,9 +1038,13 @@ worrying
     N_responses = n(),
     N_participants = length(unique(proid))
   ) %&gt;%
-  kable(booktabs = T, digits = c(0,2,2,0,0,0)) %&gt;%
+  kable(booktabs = T, digits = c(0,2,2,0,0,0),
+        caption = &quot;Descriptives of responses to Block 2&quot;) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Descriptives of responses to Block 2
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">

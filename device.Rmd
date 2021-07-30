@@ -12,9 +12,7 @@ output:
 knitr::opts_chunk$set(warning = F, message = F)
 ```
 
-## Workspace
-
-```{r}
+```{r, echo = F}
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
@@ -27,104 +25,9 @@ library(kableExtra) # for nicer tables
 ```
 
 ```{r, echo = F}
-load(here("data/cleaned_data.Rds"))
+load(here("data/items_df.Rds"))
 ```
 
-
-### Data prep: item responses
-
-First we select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 -- that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.
-
-These variable names have one of two formats: `[trait]_[abcd]` (for example, `talkative_a`) or `[trait]_[abcd]_2` (for example, `talkative_a_2`). We search for these items using regular expressions.
-
-```{r}
-items_seen_b1b2 = str_subset(
-  names(data),
-  "^([[:alpha:]])+_[abcd](_2)?$"
-)
-
-item_responses = data %>%
-  select(proid, all_of(items_seen_b1b2), devicetype)
-```
-
-Next we reshape these data into long form.
-
-```{r}
-item_responses = item_responses %>%
-  gather(item, response, -proid, -devicetype) %>%
-  mutate(
-    block = case_when(             # which block is the item from?
-      str_detect(item, "_2") ~ "2",
-      TRUE ~ "1"),
-    item = str_remove(item, "_2")) %>%  # remove block id from item string
-  separate(item, into = c("item", "format")) %>%
-  filter(!is.na(response))
-```
-
-We give labels to the formats, to clarify interpretations and aid table and figure construction.
-
-```{r}
-item_responses$format = as.factor(item_responses$format)
-item_responses$format = relevel(item_responses$format, ref = "a") 
-item_responses$format = factor(item_responses$format,
-                               levels = c("a","b","c","d"),
-                               labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective"))
-```
-
-### Data prep: item timing
-
-We also prepare a dataframe to examine the amount of time needed to respond to items. These variable names have one of two formats: `t_[trait]_[abcd]_page_submit` (for example, `t_talkative_a_page_submit`) or `t_[trait]_[abcd]_2_page_submit` (for example, `t_talkative_a_2_page_submit`). We search for these items using regular expressions.
-
-```{r}
-item_timing = str_subset(
-  names(data),
-  "^t_([[:alpha:]])+_[abcd]_(2_)?page_submit$"
-)
-
-item_timing = data %>%
-  select(proid, all_of(item_timing), devicetype)
-```
-
-Next we reshape these data into long form.
-
-```{r}
-item_timing = item_timing %>%
-  gather(item, seconds, -proid, -devicetype) %>%
-  mutate(item = str_remove(item, "^t_"),
-         item = str_remove(item, "_2"),
-         item = str_remove(item, "_page_submit$")) %>% 
-  separate(item, into = c("item", "format")) %>%
-  filter(!is.na(seconds))
-```
-
-Seconds appears to be strongly skewed, so we log-transform this variable.
-
-```{r}
-item_timing = item_timing %>% 
-  mutate(seconds_log = log(seconds))
-
-item_timing %>% 
-  select(contains("seconds")) %>% 
-  gather(variable, value) %>% 
-  mutate(variable = factor(variable,
-                           levels = c("seconds", "seconds_log"),
-                           labels = c("Seconds (raw)", "Log Seconds"))) %>% 
-  ggplot(aes(x = value)) +
-  geom_histogram(bins = 100) +
-  facet_wrap(~variable, scales = "free") +
-  labs(x = NULL, y = "Count") +
-  theme_pubr()
-```
-
-We give labels to the formats, to clarify interpretations and aid table and figure construction.
-
-```{r}
-item_timing$format = as.factor(item_timing$format)
-item_timing$format = relevel(item_timing$format, ref = "a") 
-item_timing$format = factor(item_timing$format,
-                               levels = c("a","b","c","d"),
-                               labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective"))
-```
 
 ## Responses
 
@@ -134,7 +37,7 @@ We used a multilevel model, nesting response within participant to account for d
 
 ```{r}
 mod.response = lmer(response~devicetype + (1|proid), 
-                  data = item_responses)
+                  data = items_df)
 anova(mod.response)
 
 ```
@@ -150,12 +53,12 @@ plot1$devicetype +
 ```
 
 ```{r, fig.cap = "Distribution of responses by category"}
-means_by_group = item_responses %>%
+means_by_group = items_df %>%
   group_by(devicetype) %>% 
   summarise(m = mean(response),
             s = sd(response))
 
-item_responses %>%
+items_df %>%
   ggplot(aes(x = response)) +
   geom_histogram(aes(fill = block),
                  position = "dodge",
@@ -174,7 +77,7 @@ item_responses %>%
 
 ```{r}
 mod.response2 = lmer(response~devicetype*format + (1|proid), 
-                  data = item_responses)
+                  data = items_df)
 anova(mod.response2)
 
 ```
@@ -193,40 +96,40 @@ plot2 +
 
 ### Timing by device
 
-We used a multilevel model, nesting seconds within participant to account for dependence. Our primary predictor was format.
+We used a multilevel model, nesting timing within participant to account for dependence. Our primary predictor was format.
 
 ```{r}
 mod.timing = lmer(seconds_log~devicetype + (1|proid), 
-                  data = item_timing)
+                  data = items_df)
 anova(mod.timing)
 ```
 
-```{r, fig.cap = "Predicted seconds on personality items by condition."}
+```{r, fig.cap = "Predicted timing on personality items by condition."}
 plot1 = plot_model(mod.timing, type = "pred") 
 
 plot1$devicetype +
   labs(x = NULL,
-       y = "Seconds (log)",
-       title = "Average seconds time by device type") +
+       y = "timing (log)",
+       title = "Average timing time by device type") +
   theme_pubclean()
 ```
 
 ```{r, fig.cap = "Distribution of secondss by category"}
-means_by_group = item_timing %>%
+means_by_group = items_df %>%
   group_by(devicetype) %>% 
-  summarise(m = mean(seconds),
-            s = sd(seconds))
+  summarise(m = mean(timing),
+            s = sd(timing))
 
-item_timing %>%
-  ggplot(aes(x = seconds, fill = devicetype)) +
+items_df %>%
+  ggplot(aes(x = timing, fill = devicetype)) +
   geom_histogram(bins = 100) +
   geom_vline(aes(xintercept = m), data = means_by_group) +
   facet_wrap(~devicetype, scales = "free_y") +
   guides(fill = "none") +
   scale_x_log10() +
   labs(y = "Number of particpants",
-       title = "Distribution of seconds by format",
-       x = "Seconds (logrithmic scale)") +
+       title = "Distribution of timing by format",
+       x = "timing (logrithmic scale)") +
   theme_pubr()
 ```
 
@@ -234,16 +137,16 @@ item_timing %>%
 
 ```{r}
 mod.timing2 = lmer(seconds_log~devicetype*format + (1|proid), 
-                  data = item_timing)
+                  data = items_df)
 anova(mod.timing2)
 ```
 
-```{r, fig.cap = "Predicted seconds on personality items by condition."}
+```{r, fig.cap = "Predicted timing on personality items by condition."}
 plot1 = plot_model(mod.timing2, type = "pred", terms = c("format", "devicetype")) 
 
 plot1 +
   labs(x = NULL,
-       y = "Seconds (log)",
-       title = "Average seconds time by device type") +
+       y = "timing (log)",
+       title = "Average timing time by device type") +
   theme_pubclean()
 ```

@@ -107,11 +107,7 @@ summary_by_item_b1 = mod_by_item_b1 %>%
   mutate(p.adj = p.adjust(p.value, method = "holm")) 
 
 summary_by_item_b1 %>%
-  mutate(across(
-    starts_with("p"),
-    papaja::printnum
-  )) %>%
-  kable(digits = 2, booktabs = T, caption = "Format effects on response by item (block 1 data only)") %>%
+  kable(digits = c(0,2,2,2,3,3), booktabs = T, caption = "Format effects on response by item (block 1 data only)") %>%
   kable_styling()
 ```
 
@@ -222,11 +218,7 @@ summary_by_item_b2 = mod_by_item_b2 %>%
   mutate(p.adj = p.adjust(p.value, method = "holm")) 
 
 summary_by_item_b2 %>%
-  mutate(across(
-    starts_with("p"),
-    papaja::printnum
-  )) %>%
-  kable(digits = 2, booktabs = T, caption = "Format effects on response by item (block 1 data only)") %>%
+  kable(digits = c(0,2,2,0,2,2,3,3), booktabs = T, caption = "Format effects on response by item (block 1 data only)") %>%
   kable_styling()
 ```
 
@@ -324,15 +316,11 @@ summary_by_item_mem = mod_by_item_mem %>%
   select(item, tidy) %>% 
   unnest(cols = c(tidy)) %>%
   filter(term == "format:delayed_memory") %>%
-  select(-term, -df) %>% 
+  select(-term) %>% 
   mutate(p.adj = p.adjust(p.value, method = "holm"))
 
 summary_by_item_mem %>%
-  mutate(across(
-    starts_with("p"),
-    papaja::printnum
-  )) %>%
-  kable(digits = 2, booktabs = T) %>%
+  kable(digits = c(0,0,2,2,2,3,3), booktabs = T) %>%
   kable_styling()
 ```
 

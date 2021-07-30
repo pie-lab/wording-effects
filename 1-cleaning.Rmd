@@ -577,8 +577,6 @@ names(data) = str_replace(names(data), "responsbile", "responsible")
 ```
 
 
-### Item responses
-
 We need one dataset that contains the responses to and timing of the personality items in long form. This will be used for nearly all the statistical models, which will nest items within person. To create this, we first select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 -- that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.
 
 These variable names have one of two formats: `[trait]_[abcd]` (for example, `talkative_a`) or `[trait]_[abcd]_2` (for example, `talkative_a_2`). We search for these items using regular expressions.
@@ -603,7 +601,7 @@ We extract just the participant IDs, delayed memory, and these variables.
 
 ```{r}
 items_df = data %>% 
-  select(proid, delayed_memory, all_of(item_responses), all_of(item_timing))
+  select(proid, delayed_memory, devicetype, all_of(item_responses), all_of(item_timing))
 ```
 
 Next we reshape these data into long form. This requires several steps. We'll need to identify whether each value is a response or timing; we can use the presence of the string `t_` for this. Next, we'll identify the block based on whether the string contains `_2`. Then, we identify the condition based on which letter (`a`, `b`, `c`, or `d`) follows an underscore. Throughout, we'll strip the item string of extraneous information until we're left with only the adjective assessed. Finally, we'll use spread to create separate columns for the response and the timing variables.

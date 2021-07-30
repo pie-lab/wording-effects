@@ -16,6 +16,13 @@ library(here)
 ```{r, child = here("1-cleaning.Rmd")}
 ```
 
+# Descriptives
+
+\newpage
+
+```{r, child = here("descriptives.Rmd")}
+```
+
 \newpage
 
 # Does item format affect response?
@@ -42,7 +49,6 @@ library(here)
 
 ```{r, child = here("device.Rmd")}
 ```
-
 
 \newpage
 
