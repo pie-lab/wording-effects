@@ -1035,7 +1035,7 @@ We extract just the participant IDs, delayed memory, and these variables.
 
 ```{r 1-cleaning-72}
 items_df = data %>% 
-  select(proid, condition, 
+  select(proid, condition, time2, 
          memory, delayed_memory, very_delayed_memory,
          devicetype, 
          all_of(item_responses), all_of(item_timing))

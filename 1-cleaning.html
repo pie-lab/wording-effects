@@ -1337,7 +1337,7 @@ Relationship between immediate and delayed recall
 <pre class="r"><code>item_timing = str_subset(names(data), &quot;t_([[:alpha:]])+_[abcd](_2)?(_3)?(i)?_page_submit$&quot;)</code></pre>
 <p>We extract just the participant IDs, delayed memory, and these variables.</p>
 <pre class="r"><code>items_df = data %&gt;% 
-  select(proid, condition, 
+  select(proid, condition, time2, 
          memory, delayed_memory, very_delayed_memory,
          devicetype, 
          all_of(item_responses), all_of(item_timing))</code></pre>

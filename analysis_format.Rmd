@@ -287,7 +287,6 @@ plot_model(thrifty_model_b2, type = "pred", terms = c("format"))
 
 ## Analysis: Account for memory effects
 
-
 ```{r}
 mod.format_mem = lmer(response~format*delayed_memory + (1|proid), 
                   data = items_12)
@@ -339,4 +338,57 @@ sig_item_mem = summary_by_item_mem %>%
 
 sig_item_mem = sig_item_mem$item
 sig_item_mem
+```
+
+## Analysis: Block 1 and Block 3
+
+We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word "I". Here, we use data from blocks 1 and 3.
+
+```{r}
+items_13 = items_df %>% 
+  filter(block %in% c("1","3")) %>% 
+  filter(time2 == "yes")
+```
+
+
+```{r}
+mod.format_b3 = lmer(response~format*i + (1|proid), 
+                  data = items_13)
+anova(mod.format_b3)
+```
+
+
+```{r, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
+plot_b3 = plot_model(mod.format_b3, type = "pred", terms = c("format", "i")) 
+plot_b3 +
+  geom_line() +
+  labs(x = NULL,
+       y = "Average response",
+       title = "Average responses by item formatting (Block 1 and Block 2)") +
+  theme_pubclean()
+```
+
+```{r, fig.cap = "Distribution of responses by category, block 1 and block 2"}
+means_by_group = items_13 %>%
+  group_by(format, i) %>% 
+  summarise(m = mean(response),
+            s = sd(response))
+
+items_13 %>%
+  ggplot(aes(x = response, fill = i)) +
+  geom_histogram(bins = 6, color = "white") +
+  geom_vline(aes(xintercept = m), data = means_by_group) +
+  geom_text(aes(x = 1, 
+                y = 200, 
+                label = paste("M =", round(m,2), 
+                              "\nSD =", round(s,2))), 
+            data = means_by_group, 
+            hjust =0, 
+            vjust = 1) +
+  facet_grid(format~i) +
+  guides(fill = "none") +
+  scale_x_continuous(breaks = 1:6) +
+  labs(y = "Number of particpants",
+       title = "Distribution of responses by format (Block 1 and Block 2)") +
+  theme_pubr()
 ```
