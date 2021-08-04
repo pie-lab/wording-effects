@@ -29,6 +29,7 @@ library(here)
 
 ```{r, child = here("analysis_format.Rmd")}
 ```
+
 <!-- \newpage -->
 
 <!-- # How is variance in response attributable to participant, adjective, and format? -->
@@ -36,7 +37,14 @@ library(here)
 <!-- ```{r, child = here("analysis_propVariance.Rmd")} -->
 <!-- ``` -->
 
-\newpage 
+\newpage
+
+# Does the test-retest reliability of personality items change as a function of item wording?
+
+```{r, child = here("test_retest.Rmd")}
+```
+
+\newpage
 
 # How does format affect timining of responses?
 

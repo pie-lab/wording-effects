@@ -1,0 +1,2784 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Test-retest reliability</title>
+
+<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">On item wording effects</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="1-cleaning.html">Data cleaning</a>
+</li>
+<li>
+  <a href="descriptives.html">Descriptives</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="analysis_format.html">Does item formatting affect response?</a>
+    </li>
+    <li>
+      <a href="test_retest.html">Does item formatting affect test-retest reliability?</a>
+    </li>
+    <li>
+      <a href="timing_format.html">Does timing differ across format?</a>
+    </li>
+    <li>
+      <a href="device.html">Does device type affect response and timing?</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="power.html">Power analysis</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/pie-lab/wording-effects">
+    <span class="fas fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Test-retest reliability</h1>
+<h4 class="date">Last updated 2021-08-04</h4>
+
+</div>
+
+
+<p>We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific – formats #3 and #4 above vs the use of adjectives alone. In other words, we expect equal or lower retest reliability for the adjectives than for longer phrases. We will also consider the effect of performance on the word recall task on retest reliability .</p>
+<div id="prep-dataset" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Prep dataset</h2>
+<p>The data structure needed for these analsyes is in wide-format. That is, we require one column for each time point. In addition, we hope to examine reliability <em>within</em> format, which requires selecting only the response options which match the original, Block 1, assessment.</p>
+<pre class="r"><code>items_df = items_df %&gt;% 
+  mutate(condition = tolower(condition)) %&gt;% 
+  mutate(condition = factor(condition, 
+                            levels = c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;),
+                            labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;I am someone\nwho tends to be\nAdjective&quot;)))
+
+items_matchb1 = items_df %&gt;% 
+  filter(format == condition) %&gt;% 
+  mutate(block = paste0(&quot;block_&quot;, block)) %&gt;% 
+  select(-timing, -seconds_log, -i) %&gt;% 
+  spread(block, response)</code></pre>
+<p>Finally, we standardize responses within each block – this allows us to use a regression framework yet interpret the slopes as correlations.</p>
+<pre class="r"><code>items_matchb1 = items_matchb1 %&gt;% 
+  mutate(across(
+    starts_with(&quot;block&quot;), ~(.-mean(., na.rm=T))/sd(., na.rm = T)
+  ))</code></pre>
+</div>
+<div id="test-retest-reliability-all-items-pooled" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Test-retest reliability (all items pooled)</h2>
+<p>To estimate the reliability coefficients, we use a multilevel model, predicting the latter block from the earlier one. These models nest responses within participant, allowing us to estimate standard errors which account for the dependency of scores.</p>
+<pre class="r"><code>tr_mod1_b1b2 = lmer(block_2 ~ block_1 + (1 |proid), data = items_matchb1)
+tr_mod1_b1b3 = lmer(block_3 ~ block_1 + (1 |proid), data = items_matchb1)
+tr_mod1_b2b3 = lmer(block_3 ~ block_2 + (1 |proid), data = items_matchb1)
+
+tab_model(tr_mod1_b1b2, tr_mod1_b1b3, tr_mod1_b2b3, show.re.var = F)</code></pre>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+block 2
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+block 3
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+block 3
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col7">
+p
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col8">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col9">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  0">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.02
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.14 – 0.09
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.678
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.07
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.20 – 0.07
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.347
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-0.09
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-0.28 – 0.10
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.340
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+block_1
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.77
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.69 – 0.85
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.65
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.57 – 0.73
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+<strong>&lt;0.001</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+block_2
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.81
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+0.65 – 0.96
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ICC
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.15
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.08
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.09
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+35 <sub>proid</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+14 <sub>proid</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+14 <sub>proid</sub>
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+237
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+406
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+98
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.599 / 0.658
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.396 / 0.443
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.525 / 0.567
+</td>
+</tr>
+</table>
+</div>
+<div id="test-retest-reliability-all-items-pooled-by-format" class="section level2" number="0.3">
+<h2><span class="header-section-number">0.3</span> Test-retest reliability (all items pooled, by format)</h2>
+<p>We fit these same models, except now we moderate by format, to determine whether the test-retest reliabilty differs as a function of item wording.</p>
+<pre class="r"><code>tr_mod2_b1b2 = lmer(block_2 ~ block_1*condition + (1 |proid),
+                    data = items_matchb1)
+tr_mod2_b1b3 = lmer(block_3 ~ block_1*condition + (1 |proid),
+                    data = items_matchb1)
+tr_mod2_b2b3 = lmer(block_3 ~ block_2*condition + (1 |proid),
+                    data = items_matchb1)
+
+tab_model(tr_mod2_b1b2, tr_mod2_b1b3, tr_mod2_b2b3, show.re.var = F)</code></pre>
+<p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
+<div id="block-1block-2" class="section level3" number="0.3.1">
+<h3><span class="header-section-number">0.3.1</span> Block 1/Block 2</h3>
+<pre class="r"><code>emtrends(tr_mod2_b1b2, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
+<pre><code>## $emtrends
+##   condition                               block_1.trend     SE  df lower.CL
+##  Adjective\nOnly                                  0.605 0.0728 213    0.462
+##  Am\nAdjective                                    0.850 0.0710 224    0.710
+##  Tend to be\nAdjective                            0.809 0.0869 227    0.637
+##  I am someone\nwho tends to be\nAdjective         0.877 0.1044 189    0.671
+##  upper.CL
+##     0.749
+##     0.990
+##     0.980
+##     1.083
+## 
+## Degrees-of-freedom method: kenward-roger 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##    contrast                                                       estimate
+##  Adjective\nOnly - Am\nAdjective                                   -0.2452
+##  Adjective\nOnly - Tend to be\nAdjective                           -0.2036
+##  Adjective\nOnly - I am someone\nwho tends to be\nAdjective        -0.2720
+##  Am\nAdjective - Tend to be\nAdjective                              0.0416
+##  Am\nAdjective - I am someone\nwho tends to be\nAdjective          -0.0268
+##  Tend to be\nAdjective - I am someone\nwho tends to be\nAdjective  -0.0684
+##     SE  df t.ratio p.value
+##  0.102 219 -2.413  0.0777 
+##  0.113 228 -1.796  0.2777 
+##  0.127 219 -2.137  0.1448 
+##  0.112 229  0.371  0.9825 
+##  0.126 214 -0.212  0.9966 
+##  0.136 210 -0.503  0.9582 
+## 
+## Degrees-of-freedom method: kenward-roger 
+## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
+</div>
+<div id="block-1block-3" class="section level3" number="0.3.2">
+<h3><span class="header-section-number">0.3.2</span> Block 1/Block 3</h3>
+<pre class="r"><code>emtrends(tr_mod2_b1b3, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
+<pre><code>## $emtrends
+##   condition                               block_1.trend     SE  df lower.CL
+##  Adjective\nOnly                                  0.660 0.0660 396    0.530
+##  Tend to be\nAdjective                            0.670 0.0692 224    0.534
+##  I am someone\nwho tends to be\nAdjective         0.607 0.0762 400    0.457
+##  upper.CL
+##     0.789
+##     0.806
+##     0.757
+## 
+## Degrees-of-freedom method: kenward-roger 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##    contrast                                                       estimate
+##  Adjective\nOnly - Tend to be\nAdjective                           -0.0102
+##  Adjective\nOnly - I am someone\nwho tends to be\nAdjective         0.0529
+##  Tend to be\nAdjective - I am someone\nwho tends to be\nAdjective   0.0631
+##      SE  df t.ratio p.value
+##  0.0956 319 -0.106  0.9938 
+##  0.1008 399  0.525  0.8590 
+##  0.1029 348  0.613  0.8130 
+## 
+## Degrees-of-freedom method: kenward-roger 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+</div>
+<div id="block-2block-3" class="section level3" number="0.3.3">
+<h3><span class="header-section-number">0.3.3</span> Block 2/Block 3</h3>
+<pre class="r"><code>emtrends(tr_mod2_b2b3, pairwise ~ condition, var = &quot;block_2&quot;)</code></pre>
+<pre><code>## $emtrends
+##   condition                               block_2.trend    SE   df lower.CL
+##  Adjective\nOnly                                  0.893 0.137 88.3    0.620
+##  Tend to be\nAdjective                            0.719 0.119 89.9    0.482
+##  I am someone\nwho tends to be\nAdjective         0.936 0.191 91.6    0.555
+##  upper.CL
+##     1.166
+##     0.955
+##     1.316
+## 
+## Degrees-of-freedom method: kenward-roger 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##    contrast                                                       estimate
+##  Adjective\nOnly - Tend to be\nAdjective                            0.1741
+##  Adjective\nOnly - I am someone\nwho tends to be\nAdjective        -0.0428
+##  Tend to be\nAdjective - I am someone\nwho tends to be\nAdjective  -0.2169
+##     SE   df t.ratio p.value
+##  0.182 91.7  0.959  0.6047 
+##  0.236 91.9 -0.182  0.9820 
+##  0.225 91.3 -0.963  0.6023 
+## 
+## Degrees-of-freedom method: kenward-roger 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+</div>
+</div>
+<div id="test-retest-reliability-items-separated-by-format" class="section level2" number="0.4">
+<h2><span class="header-section-number">0.4</span> Test-retest reliability (items separated, by format)</h2>
+<p>To assess test-retest reliability for each item, we can rely on more simple correlation analyses, as each participant only contributed one response to each item in each block. We first not the sample size coverage for these comparisons:</p>
+<pre class="r"><code>items_matchb1 %&gt;%
+  group_by(item, condition) %&gt;%
+  count() %&gt;%
+  ungroup() %&gt;%
+  full_join(expand_grid(item = unique(items_matchb1$item),
+                        condition = unique(items_matchb1$condition))) %&gt;%
+  mutate(n = ifelse(is.na(n), 0, n)) %&gt;%
+  summarise(
+    min = min(n),
+     max = max(n),
+    mean = mean(n),
+    median = median(n)
+  )</code></pre>
+<pre><code>## # A tibble: 1 x 4
+##     min   max  mean median
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1     0    11   8.5      8</code></pre>
+<pre class="r"><code>items_matchb1 %&gt;%
+  group_by(item, condition) %&gt;%
+  count() %&gt;%
+  ungroup() %&gt;%
+  full_join(expand_grid(item = unique(items_matchb1$item),
+                        condition = unique(items_matchb1$condition))) %&gt;%
+  mutate(n = ifelse(is.na(n), 0, n)) %&gt;%
+  ggplot(aes(x = n)) +
+  geom_histogram(bins = 50) +
+  labs(x = &quot;Sample size&quot;,
+       y = &quot;Number of tests&quot;) +
+  facet_wrap(~condition)</code></pre>
+<div class="figure"><span id="fig:testre"></span><span id="fig:testre"></span>
+<img src="test_retest_files/figure-html/testre-1.png" alt=" Sample sizes for item-level test-retest correlations." width="672" />
+<p class="caption">
+Figure 1: Figure 1:  Sample sizes for item-level test-retest correlations.
+</p>
+</div>
+<pre class="r"><code>items_cors = items_matchb1 %&gt;%
+  select(item, condition, contains(&quot;block&quot;)) %&gt;%
+  group_by(item, condition) %&gt;%
+  nest() %&gt;%
+   mutate(cors = map(data, psych::corr.test, use = &quot;pairwise&quot;),
+         cors = map(cors, print, short = F),
+         cors = map(cors, ~.x %&gt;% mutate(comp = rownames(.)))) %&gt;%
+  select(item, condition, cors) %&gt;%
+  unnest(cols = c(cors))</code></pre>
+<pre class="r"><code>items_cors %&gt;%
+  mutate(raw.r = printnum(raw.r),
+         raw.r = case_when(
+           is.na(raw.p) ~ NA_character_,
+           raw.p &lt; .05 ~ paste0(raw.r, &quot;*&quot;),
+           TRUE ~ raw.r)) %&gt;%
+  select(item, condition, comp, raw.r) %&gt;%
+  spread(comp, raw.r) %&gt;%
+  kable(caption = &quot;Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.&quot;,
+        booktabs = T) %&gt;%
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-13">Table 1: </span>Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+item
+</th>
+<th style="text-align:left;">
+condition
+</th>
+<th style="text-align:left;">
+blc_1-blc_2
+</th>
+<th style="text-align:left;">
+blc_1-blc_3
+</th>
+<th style="text-align:left;">
+blc_2-blc_3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+active
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+-0.25
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+active
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+0.93
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+active
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+1.00*
+</td>
+<td style="text-align:left;">
+0.75
+</td>
+<td style="text-align:left;">
+0.63
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+active
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.50
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+adventurous
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+0.50
+</td>
+<td style="text-align:left;">
+-0.13
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+adventurous
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+adventurous
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.17
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+adventurous
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+0.97
+</td>
+<td style="text-align:left;">
+-0.87
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calm
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+0.58
+</td>
+<td style="text-align:left;">
+0.61
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calm
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calm
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.40
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calm
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.19
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+careless
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+0.15
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+careless
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+0.69
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+careless
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.16
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+careless
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+caring
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+-0.50
+</td>
+<td style="text-align:left;">
+0.92*
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+caring
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+caring
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+1.00*
+</td>
+<td style="text-align:left;">
+0.34
+</td>
+<td style="text-align:left;">
+0.50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+caring
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cautious
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.64
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cautious
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cautious
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.42
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cautious
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.91
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creative
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+0.53
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creative
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+1.00*
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creative
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+0.50
+</td>
+<td style="text-align:left;">
+0.71
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creative
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+curious
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.71
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+curious
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+0.30
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+curious
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.55
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+curious
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friendly
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.67
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friendly
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friendly
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.54
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friendly
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+1.00*
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hardworking
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.25
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hardworking
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hardworking
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.50
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hardworking
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+helpful
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+0.00
+</td>
+<td style="text-align:left;">
+0.00
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+helpful
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+1.00*
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+helpful
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.25
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+helpful
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+imaginative
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+0.90
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+imaginative
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+imaginative
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+0.98
+</td>
+<td style="text-align:left;">
+0.87*
+</td>
+<td style="text-align:left;">
+0.98
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+imaginative
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+impulsive
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.75
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+impulsive
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+impulsive
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+0.96
+</td>
+<td style="text-align:left;">
+0.87*
+</td>
+<td style="text-align:left;">
+0.69
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+impulsive
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.62
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+impusive
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+intelligent
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.80
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+intelligent
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+intelligent
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.70
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+intelligent
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.50
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lively
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.98*
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lively
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lively
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.69
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lively
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+moody
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+0.79
+</td>
+<td style="text-align:left;">
+0.94*
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+moody
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+moody
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.10
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+moody
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.84
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nervous
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.54
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nervous
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+-1.00*
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nervous
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.58
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nervous
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.87
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+organized
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+0.97*
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+0.97
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+organized
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+organized
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.98*
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+organized
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+outgoing
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.88
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+outgoing
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+0.77
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+outgoing
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.95*
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+outgoing
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+reckless
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+0.94*
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+reckless
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+reckless
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+-0.18
+</td>
+<td style="text-align:left;">
+-0.08
+</td>
+<td style="text-align:left;">
+0.98
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+reckless
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.87
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+responsible
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+1.00*
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+responsible
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+responsible
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.48
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+responsible
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.50
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+softhearted
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.94*
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+softhearted
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+softhearted
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.49
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+softhearted
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.98
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sophisticated
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+1.00*
+</td>
+<td style="text-align:left;">
+-0.40
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sophisticated
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+0.96*
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sophisticated
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.62
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sophisticated
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.97
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sympathetic
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.53
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sympathetic
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+0.50
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sympathetic
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+0.50
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sympathetic
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+0.43
+</td>
+<td style="text-align:left;">
+1.00*
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+talkative
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.12
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+talkative
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+talkative
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.90*
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+talkative
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.19
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thorough
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.76
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thorough
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+0.50
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thorough
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+0.50
+</td>
+<td style="text-align:left;">
+0.81
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thorough
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.50
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thrifty
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+0.93
+</td>
+<td style="text-align:left;">
+0.69
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thrifty
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+0.91
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thrifty
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.90*
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thrifty
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.00
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+warm
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+1.00*
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+warm
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+warm
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.81
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+warm
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.50
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+worrying
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:left;">
+0.00
+</td>
+<td style="text-align:left;">
+0.96*
+</td>
+<td style="text-align:left;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+worrying
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+worrying
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.80
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+worrying
+</td>
+<td style="text-align:left;">
+I am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>items_cors %&gt;%
+  mutate(comp_num = case_when(
+    comp == &quot;blc_1-blc_2&quot; ~ 1,
+    comp == &quot;blc_1-blc_3&quot; ~ 2,
+    comp == &quot;blc_2-blc_3&quot; ~ 3,
+  )) %&gt;%
+  ggplot(aes(x = comp_num, y = raw.r, color = condition)) +
+  geom_jitter(width = .1) +
+  scale_x_continuous(breaks = c(1:3),
+                     labels = c(&quot;1-2&quot;, &quot;1-3&quot;, &quot;2-3&quot;)) +
+  labs(x = NULL, y = &quot;Correlation&quot;) +
+  theme_pubclean()</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-14"></span>
+<img src="test_retest_files/figure-html/unnamed-chunk-14-1.png" alt="Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item." width="672" />
+<p class="caption">
+Figure 2: Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item.
+</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

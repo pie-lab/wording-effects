@@ -338,6 +338,9 @@ div.tocify {
       <a href="analysis_format.html">Does item formatting affect response?</a>
     </li>
     <li>
+      <a href="test_retest.html">Does item formatting affect test-retest reliability?</a>
+    </li>
+    <li>
       <a href="timing_format.html">Does timing differ across format?</a>
     </li>
     <li>
@@ -366,7 +369,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact response?</h1>
-<h4 class="date">Last updated 2021-07-30</h4>
+<h4 class="date">Last updated 2021-08-04</h4>
 
 </div>
 
@@ -1241,9 +1244,10 @@ Average response to “talkative” by format (block 1 data only)
 </div>
 <div id="analysis-block-1-and-block-2" class="section level2">
 <h2>Analysis: Block 1 and Block 2</h2>
-<p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data.</p>
+<p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2.</p>
+<pre class="r"><code>items_12 = items_df %&gt;% filter(block %in% c(&quot;1&quot;,&quot;2&quot;))</code></pre>
 <pre class="r"><code>mod.format_b2 = lmer(response~format + (1|proid), 
-                  data = items_df)
+                  data = items_12)
 anova(mod.format_b2)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##        Sum Sq Mean Sq NumDF  DenDF F value Pr(&gt;F)
@@ -1256,17 +1260,17 @@ plot_b2$format +
        title = &quot;Average responses by item formatting (Block 1 and Block 2)&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-14-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
+<img src="analysis_format_files/figure-html/unnamed-chunk-15-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
 <p class="caption">
 Predicted response on personality items by condition, using only Block 1 data.
 </p>
 </div>
-<pre class="r"><code>means_by_group = items_df %&gt;%
+<pre class="r"><code>means_by_group = items_12 %&gt;%
   group_by(format) %&gt;% 
   summarise(m = mean(response),
             s = sd(response))
 
-items_df %&gt;%
+items_12 %&gt;%
   ggplot(aes(x = response, fill = format)) +
   geom_histogram(bins = 6, color = &quot;white&quot;) +
   geom_vline(aes(xintercept = m), data = means_by_group) +
@@ -1284,7 +1288,7 @@ items_df %&gt;%
        title = &quot;Distribution of responses by format (Block 1 and Block 2)&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-15-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
+<img src="analysis_format_files/figure-html/unnamed-chunk-16-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
 <p class="caption">
 Distribution of responses by category, block 1 and block 2
 </p>
@@ -1292,7 +1296,7 @@ Distribution of responses by category, block 1 and block 2
 <div id="one-model-for-each-adjective-1" class="section level3">
 <h3>One model for each adjective</h3>
 <p>We can also repeat this analysis separately for each trait.</p>
-<pre class="r"><code>mod_by_item_b2 = items_df %&gt;%
+<pre class="r"><code>mod_by_item_b2 = items_12 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
   mutate(mod = map(data, ~lmer(response~format + (1|proid), data = .))) %&gt;%
@@ -2113,7 +2117,7 @@ sig_item_b2</code></pre>
 </div>
 <div id="careless" class="section level3">
 <h3>Careless</h3>
-<pre class="r"><code>careless_model_b2 = items_df %&gt;%
+<pre class="r"><code>careless_model_b2 = items_12 %&gt;%
   filter(item == &quot;careless&quot;) %&gt;%
   lmer(response~format + (1|proid), 
                                data = .)
@@ -2276,7 +2280,7 @@ Tend to be Adjective - I am someone who tends to be Adjective
 </table>
 <pre class="r"><code>plot_model(careless_model_b2, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-19-1.png" alt="Average response to &quot;careless&quot; by format (Block 1 and Block 2)" width="672" />
+<img src="analysis_format_files/figure-html/unnamed-chunk-20-1.png" alt="Average response to &quot;careless&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
 Average response to “careless” by format (Block 1 and Block 2)
 </p>
@@ -2284,7 +2288,7 @@ Average response to “careless” by format (Block 1 and Block 2)
 </div>
 <div id="thrifty" class="section level3">
 <h3>Thrifty</h3>
-<pre class="r"><code>thrifty_model_b2 = items_df %&gt;%
+<pre class="r"><code>thrifty_model_b2 = items_12 %&gt;%
   filter(item == &quot;thrifty&quot;) %&gt;%
   lmer(response~format + (1|proid), 
                                data = .)
@@ -2447,7 +2451,7 @@ Tend to be Adjective - I am someone who tends to be Adjective
 </table>
 <pre class="r"><code>plot_model(thrifty_model_b2, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-21-1.png" alt="Average response to &quot;thrifty&quot; by format (Block 1 and Block 2)" width="672" />
+<img src="analysis_format_files/figure-html/unnamed-chunk-22-1.png" alt="Average response to &quot;thrifty&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
 Average response to “thrifty” by format (Block 1 and Block 2)
 </p>
@@ -2457,7 +2461,7 @@ Average response to “thrifty” by format (Block 1 and Block 2)
 <div id="analysis-account-for-memory-effects" class="section level2">
 <h2>Analysis: Account for memory effects</h2>
 <pre class="r"><code>mod.format_mem = lmer(response~format*delayed_memory + (1|proid), 
-                  data = items_df)
+                  data = items_12)
 anova(mod.format_mem)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##                       Sum Sq Mean Sq NumDF   DenDF F value Pr(&gt;F)
@@ -2468,7 +2472,7 @@ anova(mod.format_mem)</code></pre>
 <pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 ## lmerModLmerTest]
 ## Formula: response ~ format * delayed_memory + (1 | proid)
-##    Data: items_df
+##    Data: items_12
 ## 
 ## REML criterion at convergence: 6740.6
 ## 
@@ -2549,14 +2553,14 @@ anova(mod.format_mem)</code></pre>
   scale_color_discrete(&quot;Memory&quot;, labels = c(&quot;-1SD&quot;, &quot;Mean&quot;, &quot;+1SD&quot;))+
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-23-1.png" alt="Predicted response on personality items by condition after controlling for delayed_memory." width="672" />
+<img src="analysis_format_files/figure-html/unnamed-chunk-24-1.png" alt="Predicted response on personality items by condition after controlling for delayed_memory." width="672" />
 <p class="caption">
 Predicted response on personality items by condition after controlling for delayed_memory.
 </p>
 </div>
 <div id="one-model-for-each-adjective-2" class="section level3">
 <h3>One model for each adjective</h3>
-<pre class="r"><code>mod_by_item_mem = items_df %&gt;%
+<pre class="r"><code>mod_by_item_mem = items_12 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
   mutate(mod = map(data, ~lm(response~format*delayed_memory, data = .))) %&gt;%

@@ -336,6 +336,9 @@ div.tocify {
       <a href="analysis_format.html">Does item formatting affect response?</a>
     </li>
     <li>
+      <a href="test_retest.html">Does item formatting affect test-retest reliability?</a>
+    </li>
+    <li>
       <a href="timing_format.html">Does timing differ across format?</a>
     </li>
     <li>
@@ -364,7 +367,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Device effects</h1>
-<h4 class="date">Last updated 2021-07-30</h4>
+<h4 class="date">Last updated 2021-08-04</h4>
 
 </div>
 
@@ -373,9 +376,10 @@ div.tocify {
 <h2>Responses</h2>
 <div id="response-by-device" class="section level3">
 <h3>Response by device</h3>
-<p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device format</p>
+<p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device format. Here, we use data from blocks 1 and 2.</p>
+<pre class="r"><code>items_12 = items_df %&gt;% filter(block %in% c(&quot;1&quot;,&quot;2&quot;))</code></pre>
 <pre class="r"><code>mod.response = lmer(response~devicetype + (1|proid), 
-                  data = items_df)
+                  data = items_12)
 anova(mod.response)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##            Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
@@ -388,17 +392,17 @@ plot1$devicetype +
        title = &quot;Average responses by device&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-5-1.png" alt="Predicted response on personality items by condition." width="672" />
+<img src="device_files/figure-html/unnamed-chunk-6-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
 Predicted response on personality items by condition.
 </p>
 </div>
-<pre class="r"><code>means_by_group = items_df %&gt;%
+<pre class="r"><code>means_by_group = items_12 %&gt;%
   group_by(devicetype) %&gt;% 
   summarise(m = mean(response),
             s = sd(response))
 
-items_df %&gt;%
+items_12 %&gt;%
   ggplot(aes(x = response)) +
   geom_histogram(aes(fill = block),
                  position = &quot;dodge&quot;,
@@ -412,7 +416,7 @@ items_df %&gt;%
        title = &quot;Distribution of responses by format&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-6-1.png" alt="Distribution of responses by category" width="672" />
+<img src="device_files/figure-html/unnamed-chunk-7-1.png" alt="Distribution of responses by category" width="672" />
 <p class="caption">
 Distribution of responses by category
 </p>
@@ -421,7 +425,7 @@ Distribution of responses by category
 <div id="device-by-format" class="section level3">
 <h3>Device by format</h3>
 <pre class="r"><code>mod.response2 = lmer(response~devicetype*format + (1|proid), 
-                  data = items_df)
+                  data = items_12)
 anova(mod.response2)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##                    Sum Sq Mean Sq NumDF   DenDF F value Pr(&gt;F)
@@ -436,7 +440,7 @@ plot2 +
        title = &quot;Average responses by device&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-8-1.png" alt="Predicted response on personality items by condition." width="672" />
+<img src="device_files/figure-html/unnamed-chunk-9-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
 Predicted response on personality items by condition.
 </p>
@@ -449,7 +453,7 @@ Predicted response on personality items by condition.
 <h3>Timing by device</h3>
 <p>We used a multilevel model, nesting timing within participant to account for dependence. Our primary predictor was format.</p>
 <pre class="r"><code>mod.timing = lmer(seconds_log~devicetype + (1|proid), 
-                  data = items_df)
+                  data = items_12)
 anova(mod.timing)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##            Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
@@ -462,17 +466,17 @@ plot1$devicetype +
        title = &quot;Average timing time by device type&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-10-1.png" alt="Predicted timing on personality items by condition." width="672" />
+<img src="device_files/figure-html/unnamed-chunk-11-1.png" alt="Predicted timing on personality items by condition." width="672" />
 <p class="caption">
 Predicted timing on personality items by condition.
 </p>
 </div>
-<pre class="r"><code>means_by_group = items_df %&gt;%
+<pre class="r"><code>means_by_group = items_12 %&gt;%
   group_by(devicetype) %&gt;% 
   summarise(m = mean(timing),
             s = sd(timing))
 
-items_df %&gt;%
+items_12 %&gt;%
   ggplot(aes(x = timing, fill = devicetype)) +
   geom_histogram(bins = 100) +
   geom_vline(aes(xintercept = m), data = means_by_group) +
@@ -484,7 +488,7 @@ items_df %&gt;%
        x = &quot;timing (logrithmic scale)&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-11-1.png" alt="Distribution of secondss by category" width="672" />
+<img src="device_files/figure-html/unnamed-chunk-12-1.png" alt="Distribution of secondss by category" width="672" />
 <p class="caption">
 Distribution of secondss by category
 </p>
@@ -493,7 +497,7 @@ Distribution of secondss by category
 <div id="device-by-format-1" class="section level3">
 <h3>Device by format</h3>
 <pre class="r"><code>mod.timing2 = lmer(seconds_log~devicetype*format + (1|proid), 
-                  data = items_df)
+                  data = items_12)
 anova(mod.timing2)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##                    Sum Sq Mean Sq NumDF  DenDF F value   Pr(&gt;F)   
@@ -510,7 +514,7 @@ plot1 +
        title = &quot;Average timing time by device type&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-13-1.png" alt="Predicted timing on personality items by condition." width="672" />
+<img src="device_files/figure-html/unnamed-chunk-14-1.png" alt="Predicted timing on personality items by condition." width="672" />
 <p class="caption">
 Predicted timing on personality items by condition.
 </p>

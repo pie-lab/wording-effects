@@ -1,0 +1,147 @@
+---
+title: "Test-retest reliability"
+date: "Last updated `r Sys.Date()`"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. In other words, we expect equal or lower retest reliability for the adjectives than for longer phrases. We will also consider the effect of performance on the word recall task on retest reliability .
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(warning = F, message = F)
+options(knitr.kable.NA = '')
+```
+
+```{r, echo = F}
+library(here) # for working with files
+library(tidyverse) # for cleaning
+library(janitor) # for variable names
+library(lme4) # for mulitlevel modeling
+library(lmerTest) # for p-values
+library(emmeans) # for comparisons
+library(sjPlot) # for figures
+library(ggpubr) # for prettier plots
+library(kableExtra) # for nicer tables
+library(papaja) # for number formatting
+library(psych) # for correlation tests
+```
+
+```{r, echo = F}
+load(here("data/items_df.Rds"))
+```
+
+## Prep dataset
+
+The data structure needed for these analsyes is in wide-format. That is, we require one column for each time point. In addition, we hope to examine reliability _within_ format, which requires selecting only the response options which match the original, Block 1, assessment. 
+
+```{r}
+items_df = items_df %>% 
+  mutate(condition = tolower(condition)) %>% 
+  mutate(condition = factor(condition, 
+                            levels = c("a", "b", "c", "d"),
+                            labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective")))
+
+items_matchb1 = items_df %>% 
+  filter(format == condition) %>% 
+  mutate(block = paste0("block_", block)) %>% 
+  select(-timing, -seconds_log, -i) %>% 
+  spread(block, response)
+```
+
+## Test-retest reliability (all items pooled)
+
+```{r}
+items_matchb1 %>% 
+  select(contains("block")) %>% 
+  psych::corr.test(use = "pairwise") %>% 
+  print(short = F)
+```
+
+## Test-retest reliability (all items pooled, by format)
+
+```{r, results = 'hide'}
+condition_cors = items_matchb1 %>% 
+  select(condition, contains("block")) %>% 
+  group_by(condition) %>% 
+  nest() %>% 
+   mutate(cors = map(data, psych::corr.test, use = "pairwise"),
+         cors = map(cors, print, short = F),
+         cors = map(cors, ~.x %>% mutate(comp = rownames(.)))) %>% 
+  select(condition, cors) %>% 
+  unnest(cols = c(cors)) 
+```
+
+```{r, results = 'asis'}
+condition_cors %>% 
+  select(condition, comp, raw.r, raw.lower, raw.upper, raw.p) %>% 
+  kable(digits = c(0,0,2,2,2,3),
+        caption = "Test-retest correlations for each condition.",
+        booktabs = T) %>% 
+  kable_styling()
+```
+
+```{r}
+condition_cors %>% 
+  mutate(comp_num = case_when(
+    comp == "blc_1-blc_2" ~ 1,
+    comp == "blc_1-blc_3" ~ 2,
+    comp == "blc_2-blc_3" ~ 3,
+  )) %>% 
+  ggplot(aes(x = comp_num, y = raw.r, color = condition)) +
+  geom_line(position = position_dodge(.5)) +
+  geom_point(position = position_dodge(.5)) + 
+  geom_errorbar(aes(ymin = raw.lower, ymax = raw.upper), 
+                position = position_dodge(.5), 
+                width = .5) +
+  scale_x_continuous(breaks = c(1:3), 
+                     labels = c("1-2", "1-3", "2-3")) +
+  labs(x = NULL, y = "Correlation") +
+  theme_pubclean()
+```
+
+
+## Test-retest reliability (items separated, by format)
+
+```{r, results = 'hide'}
+items_cors = items_matchb1 %>% 
+  select(item, condition, contains("block")) %>% 
+  group_by(item, condition) %>% 
+  nest() %>% 
+   mutate(cors = map(data, psych::corr.test, use = "pairwise"),
+         cors = map(cors, print, short = F),
+         cors = map(cors, ~.x %>% mutate(comp = rownames(.)))) %>% 
+  select(item, condition, cors) %>% 
+  unnest(cols = c(cors)) 
+```
+
+```{r, results = 'asis'}
+items_cors %>% 
+  mutate(raw.r = printnum(raw.r),
+         raw.r = case_when(
+           raw.p < .05 ~ paste0(raw.r, "*"),
+           TRUE ~ raw.r)) %>% 
+  select(item, condition, comp, raw.r) %>% 
+  spread(comp, raw.r) %>% 
+  kable(caption = "Test-retest correlations for each item and condition.",
+        booktabs = T) %>% 
+  kable_styling()
+```
+
+```{r, fig.cap = "Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item."}
+items_cors %>% 
+  mutate(comp_num = case_when(
+    comp == "blc_1-blc_2" ~ 1,
+    comp == "blc_1-blc_3" ~ 2,
+    comp == "blc_2-blc_3" ~ 3,
+  )) %>% 
+  ggplot(aes(x = comp_num, y = raw.r, color = condition)) +
+  geom_jitter(width = .1) +
+  scale_x_continuous(breaks = c(1:3), 
+                     labels = c("1-2", "1-3", "2-3")) +
+  labs(x = NULL, y = "Correlation") +
+  theme_pubclean()
+```
+

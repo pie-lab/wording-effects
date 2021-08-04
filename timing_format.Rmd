@@ -95,6 +95,15 @@ item_block1 %>%
   theme_pubr()
 ```
 
+#### Pairwise comparisons
+
+```{r, results = 'asis'}
+pairs(emmeans(mod.format_b1, "format"), adjust = "holm") %>% 
+  kable(booktabs = T, digits = c(0, 2,2,1,2,3)) %>% 
+  kable_styling()
+```
+
+
 ### One model for each adjective
 
 We can also repeat this analysis separately for each trait. 
@@ -263,11 +272,16 @@ plot_model(adventurous_model_b1, type = "pred", terms = c("format"))
 
 ## Analysis: Block 1 and Block 2
 
-We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data.
+We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2.
+
+```{r}
+items_12 = items_df %>% filter(block %in% c("1","2"))
+```
+
 
 ```{r}
 mod.format_b2 = lmer(seconds_log~format + (1|proid), 
-                  data = items_df)
+                  data = items_12)
 anova(mod.format_b2)
 ```
 
@@ -300,12 +314,12 @@ plot_b2$format$data %>%
 ```
 
 ```{r, fig.cap = "Distribution of log-seconds by category, block 1 and block 2"}
-means_by_group = items_df %>%
+means_by_group = items_12 %>%
   group_by(format) %>% 
   summarise(m = mean(seconds_log),
             s = sd(seconds_log))
 
-items_df %>%
+items_12 %>%
   ggplot(aes(x = seconds_log, fill = format)) +
   geom_histogram(bins = 100, color = "white") +
   geom_vline(aes(xintercept = m), data = means_by_group) +
@@ -323,12 +337,20 @@ items_df %>%
   theme_pubr()
 ```
 
+#### Pairwise comparisons
+
+```{r, results = 'asis'}
+pairs(emmeans(mod.format_b2, "format"), adjust = "holm") %>% 
+  kable(booktabs = T, digits = c(0, 2,2,1,2,3)) %>% 
+  kable_styling()
+```
+
 ### One model for each adjective
 
 We can also repeat this analysis separately for each trait. 
 
 ```{r, results = 'asis'}
-mod_by_item_b2 = items_df %>%
+mod_by_item_b2 = items_12 %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~lmer(seconds_log~format + (1|proid), data = .))) %>%
@@ -370,7 +392,7 @@ Then we create models for each adjective. We use the `emmeans` package to perfor
 ### Helfpul
 
 ```{r, results = 'asis'}
-helpful_model_b2 = items_df %>%
+helpful_model_b2 = items_12 %>%
   filter(item == "helpful") %>%
   lmer(seconds_log~format + (1|proid), 
                                data = .)
@@ -391,7 +413,7 @@ plot_model(helpful_model_b2, type = "pred", terms = c("format"))
 ### Caring
 
 ```{r, results = 'asis'}
-caring_model_b2 = items_df %>%
+caring_model_b2 = items_12 %>%
   filter(item == "caring") %>%
   lmer(seconds_log~format + (1|proid), 
                                data = .)
@@ -413,7 +435,7 @@ plot_model(caring_model_b2, type = "pred", terms = c("format"))
 ### Adventurous
 
 ```{r, results = 'asis'}
-adventurous_model_b2 = items_df %>%
+adventurous_model_b2 = items_12 %>%
   filter(item == "adventurous") %>%
   lmer(seconds_log~format + (1|proid), 
                                data = .)
@@ -435,7 +457,7 @@ plot_model(adventurous_model_b2, type = "pred", terms = c("format"))
 
 ```{r}
 mod.format_mem = lmer(seconds_log~format*delayed_memory + (1|proid), 
-                  data = items_df)
+                  data = items_12)
 anova(mod.format_mem)
 summary(mod.format_mem)
 ```
@@ -476,7 +498,7 @@ plot_mem$data %>% as_tibble %>%
 ### One model for each adjective
 
 ```{r, results = 'asis'}
-mod_by_item_mem = items_df %>%
+mod_by_item_mem = items_12 %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~lmer(seconds_log~format*delayed_memory + (1|proid), data = .))) %>%
@@ -514,7 +536,7 @@ sig_item_mem
 ### Outgoing
 
 ```{r, results = 'asis'}
-outgoing_model_mem = items_df %>%
+outgoing_model_mem = items_12 %>%
   filter(item == "outgoing") %>%
   lmer(seconds_log~format*delayed_memory + (1|proid), 
                                data = .)
@@ -527,7 +549,7 @@ plot_model(outgoing_model_mem, type = "pred", terms = c("format", "delayed_memor
 ### Warm
 
 ```{r, results = 'asis'}
-warm_model_mem = items_df %>%
+warm_model_mem = items_12 %>%
   filter(item == "warm") %>%
   lmer(seconds_log~format*delayed_memory + (1|proid), 
                                data = .)
@@ -540,7 +562,7 @@ plot_model(warm_model_mem, type = "pred", terms = c("format", "delayed_memory[me
 ### Responsible
 
 ```{r, results = 'asis'}
-responsible_model_mem = items_df %>%
+responsible_model_mem = items_12 %>%
   filter(item == "responsible") %>%
   lmer(seconds_log~format*delayed_memory + (1|proid), 
                                data = .)
@@ -553,7 +575,7 @@ plot_model(responsible_model_mem, type = "pred", terms = c("format", "delayed_me
 ### Imaginative
 
 ```{r, results = 'asis'}
-imaginative_model_mem = items_df %>%
+imaginative_model_mem = items_12 %>%
   filter(item == "imaginative") %>%
   lmer(seconds_log~format*delayed_memory + (1|proid), 
                                data = .)
@@ -566,7 +588,7 @@ plot_model(imaginative_model_mem, type = "pred", terms = c("format", "delayed_me
 ### Talkative
 
 ```{r, results = 'asis'}
-talkative_model_mem = items_df %>%
+talkative_model_mem = items_12 %>%
   filter(item == "talkative") %>%
   lmer(seconds_log~format*delayed_memory + (1|proid), 
                                data = .)
@@ -579,7 +601,7 @@ plot_model(talkative_model_mem, type = "pred", terms = c("format", "delayed_memo
 ### Sophisticated
 
 ```{r, results = 'asis'}
-sophisticated_model_mem = items_df %>%
+sophisticated_model_mem = items_12 %>%
   filter(item == "sophisticated") %>%
   lmer(seconds_log~format*delayed_memory + (1|proid), 
                                data = .)

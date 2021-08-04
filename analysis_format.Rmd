@@ -149,11 +149,16 @@ plot_model(talkative_model_b1, type = "pred", terms = c("format"))
 
 ## Analysis: Block 1 and Block 2
 
-We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data.
+We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2.
+
+```{r}
+items_12 = items_df %>% filter(block %in% c("1","2"))
+```
+
 
 ```{r}
 mod.format_b2 = lmer(response~format + (1|proid), 
-                  data = items_df)
+                  data = items_12)
 anova(mod.format_b2)
 ```
 
@@ -174,12 +179,12 @@ plot_b2$format +
 ```
 
 ```{r, fig.cap = "Distribution of responses by category, block 1 and block 2"}
-means_by_group = items_df %>%
+means_by_group = items_12 %>%
   group_by(format) %>% 
   summarise(m = mean(response),
             s = sd(response))
 
-items_df %>%
+items_12 %>%
   ggplot(aes(x = response, fill = format)) +
   geom_histogram(bins = 6, color = "white") +
   geom_vline(aes(xintercept = m), data = means_by_group) +
@@ -203,7 +208,7 @@ items_df %>%
 We can also repeat this analysis separately for each trait. 
 
 ```{r, results = 'asis'}
-mod_by_item_b2 = items_df %>%
+mod_by_item_b2 = items_12 %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~lmer(response~format + (1|proid), data = .))) %>%
@@ -241,7 +246,7 @@ Then we create models for each adjective. We use the `emmeans` package to perfor
 ### Careless
 
 ```{r, results = 'asis'}
-careless_model_b2 = items_df %>%
+careless_model_b2 = items_12 %>%
   filter(item == "careless") %>%
   lmer(response~format + (1|proid), 
                                data = .)
@@ -262,7 +267,7 @@ plot_model(careless_model_b2, type = "pred", terms = c("format"))
 ### Thrifty
 
 ```{r, results = 'asis'}
-thrifty_model_b2 = items_df %>%
+thrifty_model_b2 = items_12 %>%
   filter(item == "thrifty") %>%
   lmer(response~format + (1|proid), 
                                data = .)
@@ -285,7 +290,7 @@ plot_model(thrifty_model_b2, type = "pred", terms = c("format"))
 
 ```{r}
 mod.format_mem = lmer(response~format*delayed_memory + (1|proid), 
-                  data = items_df)
+                  data = items_12)
 anova(mod.format_mem)
 summary(mod.format_mem)
 ```
@@ -305,7 +310,7 @@ plot_model(mod.format_mem,
 ### One model for each adjective
 
 ```{r, results = 'asis'}
-mod_by_item_mem = items_df %>%
+mod_by_item_mem = items_12 %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~lm(response~format*delayed_memory, data = .))) %>%

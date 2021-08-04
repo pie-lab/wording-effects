@@ -336,6 +336,9 @@ div.tocify {
       <a href="analysis_format.html">Does item formatting affect response?</a>
     </li>
     <li>
+      <a href="test_retest.html">Does item formatting affect test-retest reliability?</a>
+    </li>
+    <li>
       <a href="timing_format.html">Does timing differ across format?</a>
     </li>
     <li>
@@ -364,7 +367,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Power analysis</h1>
-<h4 class="date">Last updated 2021-07-30</h4>
+<h4 class="date">Last updated 2021-08-04</h4>
 
 </div>
 
@@ -444,7 +447,7 @@ power_df_min = power_df %&gt;%
   filter(power &gt; .95)
 
 N_min = min(power_df_min$N)</code></pre>
-<p>The simulation suggests that power would be over the threshold of .95 with a sample size of 125 participants per condition.</p>
+<p>The simulation suggests that power would be over the threshold of .95 with a sample size of 150 participants per condition.</p>
 </div>
 <div id="model-2" class="section level2">
 <h2>Model 2</h2>
@@ -537,8 +540,7 @@ power_df2_min = power_df_2 %&gt;%
   filter(power &gt; .95)
 
 N_min2 = min(power_df2_min$N)</code></pre>
-<pre><code>## Warning in min(power_df2_min$N): no non-missing arguments to min; returning Inf</code></pre>
-<p>The simulation suggests that power would be over the threshold of .95 with a sample size of  participants per condition.</p>
+<p>The simulation suggests that power would be over the threshold of .95 with a sample size of 75 participants per condition.</p>
 </div>
 
 
