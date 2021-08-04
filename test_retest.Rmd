@@ -52,12 +52,21 @@ items_matchb1 = items_df %>%
   spread(block, response)
 ```
 
-Finally, we standardize responses within each block -- this allows us to use a regression framework yet interpret the slopes as correlations. 
+We standardize responses within each block -- this allows us to use a regression framework yet interpret the slopes as correlations. 
 
 ```{r}
 items_matchb1 = items_matchb1 %>% 
   mutate(across(
     starts_with("block"), ~(.-mean(., na.rm=T))/sd(., na.rm = T)
+  ))
+```
+
+We also standardize the memory scores for ease of interpretation. 
+
+```{r}
+items_matchb1 = items_matchb1 %>% 
+  mutate(across(
+    ends_with("memory"), ~(.-mean(., na.rm=T))/sd(., na.rm = T)
   ))
 ```
 
@@ -69,9 +78,8 @@ To estimate the reliability coefficients, we use a multilevel model, predicting 
 ```{r}
 tr_mod1_b1b2 = lmer(block_2 ~ block_1 + (1 |proid), data = items_matchb1)
 tr_mod1_b1b3 = lmer(block_3 ~ block_1 + (1 |proid), data = items_matchb1)
-tr_mod1_b2b3 = lmer(block_3 ~ block_2 + (1 |proid), data = items_matchb1)
 
-tab_model(tr_mod1_b1b2, tr_mod1_b1b3, tr_mod1_b2b3, show.re.var = F)
+tab_model(tr_mod1_b1b2, tr_mod1_b1b3, show.re.var = F)
 ```
 
 
@@ -84,10 +92,8 @@ tr_mod2_b1b2 = lmer(block_2 ~ block_1*condition + (1 |proid),
                     data = items_matchb1)
 tr_mod2_b1b3 = lmer(block_3 ~ block_1*condition + (1 |proid),
                     data = items_matchb1)
-tr_mod2_b2b3 = lmer(block_3 ~ block_2*condition + (1 |proid),
-                    data = items_matchb1)
 
-tab_model(tr_mod2_b1b2, tr_mod2_b1b3, tr_mod2_b2b3, show.re.var = F)
+tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)
 ```
 
 We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.
@@ -104,10 +110,47 @@ emtrends(tr_mod2_b1b2, pairwise ~ condition, var = "block_1")
 emtrends(tr_mod2_b1b3, pairwise ~ condition, var = "block_1")
 ```
 
-### Block 2/Block 3
+## Test-retest reliability (all items pooled, by format and memory)
+
+Here we fit models moderated by memory -- that it, perhaps the test-retest coefficient is affected by the memory of the participant.
+
+```{r, results = 'hide'}
+tr_mod3_b1b2 = lmer(block_2 ~ block_1*condition*delayed_memory + 
+                      (1 |proid),
+                    data = items_matchb1)
+tr_mod3_b1b3 = lmer(block_3 ~ block_1*condition*very_delayed_memory + 
+                      (1 |proid),
+                    data = items_matchb1)
+
+tab_model(tr_mod3_b1b2, tr_mod3_b1b3, show.re.var = F)
+```
+
+We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.
+
+### Block 1/Block 2
 
 ```{r}
-emtrends(tr_mod2_b2b3, pairwise ~ condition, var = "block_2")
+mem_list = list(delayed_memory = c(-1,0,1), 
+                condition = unique(items_df$condition))
+
+emtrends(tr_mod3_b1b2, 
+         pairwise~condition|delayed_memory, 
+         var = "block_1", 
+         at = mem_list)
+```
+
+### Block 1/Block 3
+
+**This chunk is turned off due to low coverage. Be sure to turn on with real data.**
+
+```{r, eval = F}
+mem_list = list(very_delayed_memory = c(-1,0,1), 
+                condition = unique(items_df$condition))
+
+emtrends(tr_mod3_b1b3, 
+         pairwise~condition|very_delayed_memory, 
+         var = "block_1", 
+         at = mem_list)
 ```
 
 
@@ -168,6 +211,7 @@ items_cors %>%
            TRUE ~ raw.r)) %>%
   select(item, condition, comp, raw.r) %>%
   spread(comp, raw.r) %>%
+  select(-`blc_2-blc_3`) %>% 
   kable(caption = "Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.",
         booktabs = T) %>%
   kable_styling()
@@ -178,12 +222,13 @@ items_cors %>%
   mutate(comp_num = case_when(
     comp == "blc_1-blc_2" ~ 1,
     comp == "blc_1-blc_3" ~ 2,
-    comp == "blc_2-blc_3" ~ 3,
+    comp == "blc_2-blc_3" ~ NA_real_,
   )) %>%
+  filter(!is.na(comp_num)) %>% 
   ggplot(aes(x = comp_num, y = raw.r, color = condition)) +
   geom_jitter(width = .1) +
-  scale_x_continuous(breaks = c(1:3),
-                     labels = c("1-2", "1-3", "2-3")) +
+  scale_x_continuous(breaks = c(1:2),
+                     labels = c("1-2", "1-3")) +
   labs(x = NULL, y = "Correlation") +
   theme_pubclean()
 ```

@@ -389,10 +389,15 @@ items_matchb1 = items_df %&gt;%
   mutate(block = paste0(&quot;block_&quot;, block)) %&gt;% 
   select(-timing, -seconds_log, -i) %&gt;% 
   spread(block, response)</code></pre>
-<p>Finally, we standardize responses within each block – this allows us to use a regression framework yet interpret the slopes as correlations.</p>
+<p>We standardize responses within each block – this allows us to use a regression framework yet interpret the slopes as correlations.</p>
 <pre class="r"><code>items_matchb1 = items_matchb1 %&gt;% 
   mutate(across(
     starts_with(&quot;block&quot;), ~(.-mean(., na.rm=T))/sd(., na.rm = T)
+  ))</code></pre>
+<p>We also standardize the memory scores for ease of interpretation.</p>
+<pre class="r"><code>items_matchb1 = items_matchb1 %&gt;% 
+  mutate(across(
+    ends_with(&quot;memory&quot;), ~(.-mean(., na.rm=T))/sd(., na.rm = T)
   ))</code></pre>
 </div>
 <div id="test-retest-reliability-all-items-pooled" class="section level2" number="0.2">
@@ -400,9 +405,8 @@ items_matchb1 = items_df %&gt;%
 <p>To estimate the reliability coefficients, we use a multilevel model, predicting the latter block from the earlier one. These models nest responses within participant, allowing us to estimate standard errors which account for the dependency of scores.</p>
 <pre class="r"><code>tr_mod1_b1b2 = lmer(block_2 ~ block_1 + (1 |proid), data = items_matchb1)
 tr_mod1_b1b3 = lmer(block_3 ~ block_1 + (1 |proid), data = items_matchb1)
-tr_mod1_b2b3 = lmer(block_3 ~ block_2 + (1 |proid), data = items_matchb1)
 
-tab_model(tr_mod1_b1b2, tr_mod1_b1b3, tr_mod1_b2b3, show.re.var = F)</code></pre>
+tab_model(tr_mod1_b1b2, tr_mod1_b1b3, show.re.var = F)</code></pre>
 <table style="border-collapse:collapse; border:none;">
 <tr>
 <th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
@@ -410,9 +414,6 @@ tab_model(tr_mod1_b1b2, tr_mod1_b1b3, tr_mod1_b2b3, show.re.var = F)</code></pre
 </th>
 <th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
 block 2
-</th>
-<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
-block 3
 </th>
 <th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
 block 3
@@ -440,15 +441,6 @@ CI
 <td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col7">
 p
 </td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col8">
-Estimates
-</td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col9">
-CI
-</td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  0">
-p
-</td>
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
@@ -471,15 +463,6 @@ p
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
 0.347
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
--0.09
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
--0.28 – 0.10
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
-0.340
 </td>
 </tr>
 <tr>
@@ -504,38 +487,6 @@ block_1
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
 <strong>&lt;0.001</strong>
 </td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-block_2
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
-0.81
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
-0.65 – 0.96
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
-<strong>&lt;0.001</strong>
-</td>
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
@@ -547,18 +498,12 @@ ICC
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
 0.08
 </td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.09
-</td>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
 N
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
 35 <sub>proid</sub>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-14 <sub>proid</sub>
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
 14 <sub>proid</sub>
@@ -573,9 +518,6 @@ Observations
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
 406
 </td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
-98
-</td>
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
@@ -587,9 +529,6 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
 0.396 / 0.443
 </td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.525 / 0.567
-</td>
 </tr>
 </table>
 </div>
@@ -600,10 +539,8 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
                     data = items_matchb1)
 tr_mod2_b1b3 = lmer(block_3 ~ block_1*condition + (1 |proid),
                     data = items_matchb1)
-tr_mod2_b2b3 = lmer(block_3 ~ block_2*condition + (1 |proid),
-                    data = items_matchb1)
 
-tab_model(tr_mod2_b1b2, tr_mod2_b1b3, tr_mod2_b2b3, show.re.var = F)</code></pre>
+tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)</code></pre>
 <p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
 <div id="block-1block-2" class="section level3" number="0.3.1">
 <h3><span class="header-section-number">0.3.1</span> Block 1/Block 2</h3>
@@ -671,38 +608,134 @@ tab_model(tr_mod2_b1b2, tr_mod2_b1b3, tr_mod2_b2b3, show.re.var = F)</code></pre
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
-<div id="block-2block-3" class="section level3" number="0.3.3">
-<h3><span class="header-section-number">0.3.3</span> Block 2/Block 3</h3>
-<pre class="r"><code>emtrends(tr_mod2_b2b3, pairwise ~ condition, var = &quot;block_2&quot;)</code></pre>
+</div>
+<div id="test-retest-reliability-all-items-pooled-by-format-and-memory" class="section level2" number="0.4">
+<h2><span class="header-section-number">0.4</span> Test-retest reliability (all items pooled, by format and memory)</h2>
+<p>Here we fit models moderated by memory – that it, perhaps the test-retest coefficient is affected by the memory of the participant.</p>
+<pre class="r"><code>tr_mod3_b1b2 = lmer(block_2 ~ block_1*condition*delayed_memory + 
+                      (1 |proid),
+                    data = items_matchb1)
+tr_mod3_b1b3 = lmer(block_3 ~ block_1*condition*very_delayed_memory + 
+                      (1 |proid),
+                    data = items_matchb1)
+
+tab_model(tr_mod3_b1b2, tr_mod3_b1b3, show.re.var = F)</code></pre>
+<p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
+<div id="block-1block-2-1" class="section level3" number="0.4.1">
+<h3><span class="header-section-number">0.4.1</span> Block 1/Block 2</h3>
+<pre class="r"><code>mem_list = list(delayed_memory = c(-1,0,1), 
+                condition = unique(items_df$condition))
+
+emtrends(tr_mod3_b1b2, 
+         pairwise~condition|delayed_memory, 
+         var = &quot;block_1&quot;, 
+         at = mem_list)</code></pre>
 <pre><code>## $emtrends
-##   condition                               block_2.trend    SE   df lower.CL
-##  Adjective\nOnly                                  0.893 0.137 88.3    0.620
-##  Tend to be\nAdjective                            0.719 0.119 89.9    0.482
-##  I am someone\nwho tends to be\nAdjective         0.936 0.191 91.6    0.555
+## delayed_memory = -1:
+##   condition                               block_1.trend     SE  df lower.CL
+##  Adjective\nOnly                                  0.461 0.1206 217  0.22371
+##  Am\nAdjective                                    0.959 0.0981 217  0.76610
+##  Tend to be\nAdjective                            0.982 0.1442 200  0.69786
+##  I am someone\nwho tends to be\nAdjective         0.874 0.1309 221  0.61567
 ##  upper.CL
-##     1.166
-##     0.955
-##     1.316
+##     0.699
+##     1.153
+##     1.267
+##     1.132
+## 
+## delayed_memory =  0:
+##   condition                               block_1.trend     SE  df lower.CL
+##  Adjective\nOnly                                  0.648 0.0755 215  0.49936
+##  Am\nAdjective                                    0.858 0.0711 220  0.71782
+##  Tend to be\nAdjective                            0.712 0.0970 211  0.52096
+##  I am someone\nwho tends to be\nAdjective         0.915 0.1205 162  0.67673
+##  upper.CL
+##     0.797
+##     0.998
+##     0.904
+##     1.153
+## 
+## delayed_memory =  1:
+##   condition                               block_1.trend     SE  df lower.CL
+##  Adjective\nOnly                                  0.835 0.1538 214  0.53198
+##  Am\nAdjective                                    0.757 0.0920 212  0.57528
+##  Tend to be\nAdjective                            0.442 0.2215 195  0.00534
+##  I am someone\nwho tends to be\nAdjective         0.956 0.2134 183  0.53464
+##  upper.CL
+##     1.138
+##     0.938
+##     0.879
+##     1.377
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
+## delayed_memory = -1:
 ##    contrast                                                       estimate
-##  Adjective\nOnly - Tend to be\nAdjective                            0.1741
-##  Adjective\nOnly - I am someone\nwho tends to be\nAdjective        -0.0428
-##  Tend to be\nAdjective - I am someone\nwho tends to be\nAdjective  -0.2169
-##     SE   df t.ratio p.value
-##  0.182 91.7  0.959  0.6047 
-##  0.236 91.9 -0.182  0.9820 
-##  0.225 91.3 -0.963  0.6023 
+##  Adjective\nOnly - Am\nAdjective                                   -0.4980
+##  Adjective\nOnly - Tend to be\nAdjective                           -0.5209
+##  Adjective\nOnly - I am someone\nwho tends to be\nAdjective        -0.4123
+##  Am\nAdjective - Tend to be\nAdjective                             -0.0229
+##  Am\nAdjective - I am someone\nwho tends to be\nAdjective           0.0857
+##  Tend to be\nAdjective - I am someone\nwho tends to be\nAdjective   0.1086
+##     SE  df t.ratio p.value
+##  0.155 221 -3.204  0.0084 
+##  0.188 217 -2.770  0.0307 
+##  0.178 220 -2.316  0.0975 
+##  0.174 207 -0.131  0.9992 
+##  0.164 220  0.524  0.9532 
+##  0.195 214  0.558  0.9444 
+## 
+## delayed_memory =  0:
+##    contrast                                                       estimate
+##  Adjective\nOnly - Am\nAdjective                                   -0.2098
+##  Adjective\nOnly - Tend to be\nAdjective                           -0.0640
+##  Adjective\nOnly - I am someone\nwho tends to be\nAdjective        -0.2664
+##  Am\nAdjective - Tend to be\nAdjective                              0.1458
+##  Am\nAdjective - I am someone\nwho tends to be\nAdjective          -0.0567
+##  Tend to be\nAdjective - I am someone\nwho tends to be\nAdjective  -0.2024
+##     SE  df t.ratio p.value
+##  0.104 218 -2.022  0.1832 
+##  0.123 220 -0.520  0.9541 
+##  0.142 193 -1.873  0.2429 
+##  0.120 218  1.212  0.6202 
+##  0.140 187 -0.405  0.9775 
+##  0.155 184 -1.308  0.5587 
+## 
+## delayed_memory =  1:
+##    contrast                                                       estimate
+##  Adjective\nOnly - Am\nAdjective                                    0.0785
+##  Adjective\nOnly - Tend to be\nAdjective                            0.3929
+##  Adjective\nOnly - I am someone\nwho tends to be\nAdjective        -0.1206
+##  Am\nAdjective - Tend to be\nAdjective                              0.3144
+##  Am\nAdjective - I am someone\nwho tends to be\nAdjective          -0.1991
+##  Tend to be\nAdjective - I am someone\nwho tends to be\nAdjective  -0.5135
+##     SE  df t.ratio p.value
+##  0.179 220  0.438  0.9718 
+##  0.270 203  1.457  0.4655 
+##  0.263 196 -0.459  0.9679 
+##  0.240 205  1.311  0.5571 
+##  0.232 197 -0.857  0.8271 
+##  0.308 190 -1.669  0.3428 
 ## 
 ## Degrees-of-freedom method: kenward-roger 
-## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
+</div>
+<div id="block-1block-3-1" class="section level3" number="0.4.2">
+<h3><span class="header-section-number">0.4.2</span> Block 1/Block 3</h3>
+<p><strong>This chunk is turned off due to low coverage. Be sure to turn on with real data.</strong></p>
+<pre class="r"><code>mem_list = list(very_delayed_memory = c(-1,0,1), 
+                condition = unique(items_df$condition))
+
+emtrends(tr_mod3_b1b3, 
+         pairwise~condition|very_delayed_memory, 
+         var = &quot;block_1&quot;, 
+         at = mem_list)</code></pre>
 </div>
 </div>
-<div id="test-retest-reliability-items-separated-by-format" class="section level2" number="0.4">
-<h2><span class="header-section-number">0.4</span> Test-retest reliability (items separated, by format)</h2>
+<div id="test-retest-reliability-items-separated-by-format" class="section level2" number="0.5">
+<h2><span class="header-section-number">0.5</span> Test-retest reliability (items separated, by format)</h2>
 <p>To assess test-retest reliability for each item, we can rely on more simple correlation analyses, as each participant only contributed one response to each item in each block. We first not the sample size coverage for these comparisons:</p>
 <pre class="r"><code>items_matchb1 %&gt;%
   group_by(item, condition) %&gt;%
@@ -756,12 +789,13 @@ Figure 1: Figure 1:  Sample sizes for item-level test-retest correlations.
            TRUE ~ raw.r)) %&gt;%
   select(item, condition, comp, raw.r) %&gt;%
   spread(comp, raw.r) %&gt;%
+  select(-`blc_2-blc_3`) %&gt;% 
   kable(caption = &quot;Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.&quot;,
         booktabs = T) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-13">Table 1: </span>Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.
+<span id="tab:unnamed-chunk-16">Table 1: </span>Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.
 </caption>
 <thead>
 <tr>
@@ -776,9 +810,6 @@ blc_1-blc_2
 </th>
 <th style="text-align:left;">
 blc_1-blc_3
-</th>
-<th style="text-align:left;">
-blc_2-blc_3
 </th>
 </tr>
 </thead>
@@ -797,8 +828,6 @@ Only
 <td style="text-align:left;">
 -0.25
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -810,8 +839,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 0.93
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -830,9 +857,6 @@ Adjective
 <td style="text-align:left;">
 0.75
 </td>
-<td style="text-align:left;">
-0.63
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -847,8 +871,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 -0.50
-</td>
-<td style="text-align:left;">
 </td>
 </tr>
 <tr>
@@ -865,8 +887,6 @@ Only
 <td style="text-align:left;">
 -0.13
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -875,8 +895,6 @@ adventurous
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -896,8 +914,6 @@ Adjective
 <td style="text-align:left;">
 0.17
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -914,8 +930,6 @@ Adjective
 <td style="text-align:left;">
 -0.87
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -931,8 +945,6 @@ Only
 <td style="text-align:left;">
 0.61
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -941,8 +953,6 @@ calm
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -962,8 +972,6 @@ Adjective
 <td style="text-align:left;">
 0.40
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -978,8 +986,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 -0.19
-</td>
-<td style="text-align:left;">
 </td>
 </tr>
 <tr>
@@ -996,8 +1002,6 @@ Only
 <td style="text-align:left;">
 0.15
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1009,8 +1013,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 0.69
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1028,8 +1030,6 @@ Adjective
 <td style="text-align:left;">
 0.16
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1039,8 +1039,6 @@ careless
 I am someone
 who tends to be
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1061,8 +1059,6 @@ Only
 <td style="text-align:left;">
 0.92*
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1071,8 +1067,6 @@ caring
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1093,9 +1087,6 @@ Adjective
 <td style="text-align:left;">
 0.34
 </td>
-<td style="text-align:left;">
-0.50
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1105,8 +1096,6 @@ caring
 I am someone
 who tends to be
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1126,8 +1115,6 @@ Only
 <td style="text-align:left;">
 0.64
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1136,8 +1123,6 @@ cautious
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1157,8 +1142,6 @@ Adjective
 <td style="text-align:left;">
 -0.42
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1173,8 +1156,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 0.91
-</td>
-<td style="text-align:left;">
 </td>
 </tr>
 <tr>
@@ -1191,8 +1172,6 @@ Only
 <td style="text-align:left;">
 0.53
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1204,8 +1183,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 1.00*
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1224,8 +1201,6 @@ Adjective
 <td style="text-align:left;">
 0.71
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1235,8 +1210,6 @@ creative
 I am someone
 who tends to be
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1256,8 +1229,6 @@ Only
 <td style="text-align:left;">
 0.71
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1269,8 +1240,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 0.30
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1288,8 +1257,6 @@ Adjective
 <td style="text-align:left;">
 0.55
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1305,8 +1272,6 @@ Adjective
 <td style="text-align:left;">
 0.87
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1321,8 +1286,6 @@ Only
 <td style="text-align:left;">
 0.67
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1331,8 +1294,6 @@ friendly
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1352,8 +1313,6 @@ Adjective
 <td style="text-align:left;">
 -0.54
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1366,8 +1325,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 1.00*
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1385,8 +1342,6 @@ Only
 <td style="text-align:left;">
 -0.25
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1395,8 +1350,6 @@ hardworking
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1416,8 +1369,6 @@ Adjective
 <td style="text-align:left;">
 0.50
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1427,8 +1378,6 @@ hardworking
 I am someone
 who tends to be
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1449,8 +1398,6 @@ Only
 <td style="text-align:left;">
 0.00
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1462,8 +1409,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 1.00*
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1481,8 +1426,6 @@ Adjective
 <td style="text-align:left;">
 0.25
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1492,8 +1435,6 @@ helpful
 I am someone
 who tends to be
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1514,8 +1455,6 @@ Only
 <td style="text-align:left;">
 0.87
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1524,8 +1463,6 @@ imaginative
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1546,9 +1483,6 @@ Adjective
 <td style="text-align:left;">
 0.87*
 </td>
-<td style="text-align:left;">
-0.98
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1558,8 +1492,6 @@ imaginative
 I am someone
 who tends to be
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1579,8 +1511,6 @@ Only
 <td style="text-align:left;">
 0.75
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1589,8 +1519,6 @@ impulsive
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1611,9 +1539,6 @@ Adjective
 <td style="text-align:left;">
 0.87*
 </td>
-<td style="text-align:left;">
-0.69
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1629,8 +1554,6 @@ Adjective
 <td style="text-align:left;">
 0.62
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1639,8 +1562,6 @@ impusive
 <td style="text-align:left;">
 Adjective
 Only
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1660,8 +1581,6 @@ Only
 <td style="text-align:left;">
 0.80
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1670,8 +1589,6 @@ intelligent
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1691,8 +1608,6 @@ Adjective
 <td style="text-align:left;">
 0.70
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1708,8 +1623,6 @@ Adjective
 <td style="text-align:left;">
 0.50
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1724,8 +1637,6 @@ Only
 <td style="text-align:left;">
 0.98*
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1734,8 +1645,6 @@ lively
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1755,8 +1664,6 @@ Adjective
 <td style="text-align:left;">
 0.69
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1766,8 +1673,6 @@ lively
 I am someone
 who tends to be
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1788,8 +1693,6 @@ Only
 <td style="text-align:left;">
 0.94*
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1798,8 +1701,6 @@ moody
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1819,8 +1720,6 @@ Adjective
 <td style="text-align:left;">
 0.10
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1836,8 +1735,6 @@ Adjective
 <td style="text-align:left;">
 0.84
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1852,8 +1749,6 @@ Only
 <td style="text-align:left;">
 0.54
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1865,8 +1760,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 -1.00*
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1884,8 +1777,6 @@ Adjective
 <td style="text-align:left;">
 -0.58
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1900,8 +1791,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 -0.87
-</td>
-<td style="text-align:left;">
 </td>
 </tr>
 <tr>
@@ -1918,9 +1807,6 @@ Only
 <td style="text-align:left;">
 0.87
 </td>
-<td style="text-align:left;">
-0.97
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1929,8 +1815,6 @@ organized
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1950,8 +1834,6 @@ Adjective
 <td style="text-align:left;">
 0.98*
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1961,8 +1843,6 @@ organized
 I am someone
 who tends to be
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1982,8 +1862,6 @@ Only
 <td style="text-align:left;">
 0.88
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1995,8 +1873,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 0.77
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -2014,8 +1890,6 @@ Adjective
 <td style="text-align:left;">
 0.95*
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2025,8 +1899,6 @@ outgoing
 I am someone
 who tends to be
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -2047,8 +1919,6 @@ Only
 <td style="text-align:left;">
 0.94*
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2057,8 +1927,6 @@ reckless
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -2079,9 +1947,6 @@ Adjective
 <td style="text-align:left;">
 -0.08
 </td>
-<td style="text-align:left;">
-0.98
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2097,8 +1962,6 @@ Adjective
 <td style="text-align:left;">
 -0.87
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2113,8 +1976,6 @@ Only
 <td style="text-align:left;">
 1.00*
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2123,8 +1984,6 @@ responsible
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -2144,8 +2003,6 @@ Adjective
 <td style="text-align:left;">
 0.48
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2161,8 +2018,6 @@ Adjective
 <td style="text-align:left;">
 -0.50
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2177,8 +2032,6 @@ Only
 <td style="text-align:left;">
 0.94*
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2187,8 +2040,6 @@ softhearted
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -2208,8 +2059,6 @@ Adjective
 <td style="text-align:left;">
 0.49
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2224,8 +2073,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 0.98
-</td>
-<td style="text-align:left;">
 </td>
 </tr>
 <tr>
@@ -2242,8 +2089,6 @@ Only
 <td style="text-align:left;">
 -0.40
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2255,8 +2100,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 0.96*
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -2274,8 +2117,6 @@ Adjective
 <td style="text-align:left;">
 0.62
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2291,8 +2132,6 @@ Adjective
 <td style="text-align:left;">
 0.97
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2306,8 +2145,6 @@ Only
 </td>
 <td style="text-align:left;">
 0.53
-</td>
-<td style="text-align:left;">
 </td>
 </tr>
 <tr>
@@ -2323,8 +2160,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2336,8 +2171,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 0.50
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -2357,8 +2190,6 @@ Adjective
 <td style="text-align:left;">
 1.00*
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2373,8 +2204,6 @@ Only
 <td style="text-align:left;">
 0.12
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2383,8 +2212,6 @@ talkative
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -2403,8 +2230,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 0.90*
-</td>
-<td style="text-align:left;">
 </td>
 </tr>
 <tr>
@@ -2421,8 +2246,6 @@ Adjective
 <td style="text-align:left;">
 -0.19
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2437,8 +2260,6 @@ Only
 <td style="text-align:left;">
 0.76
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2450,8 +2271,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 0.50
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -2470,8 +2289,6 @@ Adjective
 <td style="text-align:left;">
 0.81
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2486,8 +2303,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 -0.50
-</td>
-<td style="text-align:left;">
 </td>
 </tr>
 <tr>
@@ -2504,8 +2319,6 @@ Only
 <td style="text-align:left;">
 0.69
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2517,8 +2330,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 0.91
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -2536,8 +2347,6 @@ Adjective
 <td style="text-align:left;">
 0.90*
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2553,8 +2362,6 @@ Adjective
 <td style="text-align:left;">
 0.00
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2569,8 +2376,6 @@ Only
 <td style="text-align:left;">
 1.00*
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2579,8 +2384,6 @@ warm
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -2600,8 +2403,6 @@ Adjective
 <td style="text-align:left;">
 0.81
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2616,8 +2417,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 -0.50
-</td>
-<td style="text-align:left;">
 </td>
 </tr>
 <tr>
@@ -2634,9 +2433,6 @@ Only
 <td style="text-align:left;">
 0.96*
 </td>
-<td style="text-align:left;">
-0.00
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2645,8 +2441,6 @@ worrying
 <td style="text-align:left;">
 Am
 Adjective
-</td>
-<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -2666,8 +2460,6 @@ Adjective
 <td style="text-align:left;">
 0.80
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2682,8 +2474,6 @@ Adjective
 </td>
 <td style="text-align:left;">
 </td>
-<td style="text-align:left;">
-</td>
 </tr>
 </tbody>
 </table>
@@ -2691,16 +2481,17 @@ Adjective
   mutate(comp_num = case_when(
     comp == &quot;blc_1-blc_2&quot; ~ 1,
     comp == &quot;blc_1-blc_3&quot; ~ 2,
-    comp == &quot;blc_2-blc_3&quot; ~ 3,
+    comp == &quot;blc_2-blc_3&quot; ~ NA_real_,
   )) %&gt;%
+  filter(!is.na(comp_num)) %&gt;% 
   ggplot(aes(x = comp_num, y = raw.r, color = condition)) +
   geom_jitter(width = .1) +
-  scale_x_continuous(breaks = c(1:3),
-                     labels = c(&quot;1-2&quot;, &quot;1-3&quot;, &quot;2-3&quot;)) +
+  scale_x_continuous(breaks = c(1:2),
+                     labels = c(&quot;1-2&quot;, &quot;1-3&quot;)) +
   labs(x = NULL, y = &quot;Correlation&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure"><span id="fig:unnamed-chunk-14"></span>
-<img src="test_retest_files/figure-html/unnamed-chunk-14-1.png" alt="Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item." width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-17"></span>
+<img src="test_retest_files/figure-html/unnamed-chunk-17-1.png" alt="Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item." width="672" />
 <p class="caption">
 Figure 2: Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item.
 </p>

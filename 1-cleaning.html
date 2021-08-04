@@ -385,7 +385,8 @@ library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
 library(stringdist) # for scoring memory task
-library(papaja) # for pretty numbers</code></pre>
+library(papaja) # for pretty numbers
+library(psych) # for correlatin tests</code></pre>
 </div>
 <div id="time-1" class="section level2">
 <h2>Time 1</h2>
@@ -938,7 +939,8 @@ Distribution of average time to respond to personality items in Block 3.
 <div id="merge-all-datasets-together" class="section level3">
 <h3>Merge all datasets together</h3>
 <pre class="r"><code>data_2 = data_2 %&gt;% 
-  select(proid, contains(&quot;_3&quot;))
+  select(proid, very_delayed_recall, contains(&quot;_3&quot;)) %&gt;% 
+  mutate(time2 = &quot;yes&quot;)
 
 data = data %&gt;% full_join(data_2)</code></pre>
 </div>
@@ -1199,7 +1201,7 @@ mem2 = mem2 %&gt;%
   group_by(proid) %&gt;%
   filter(delayed_memory == max(delayed_memory)) %&gt;%
   filter(row_number() == 1 ) %&gt;% 
-  select(-delayed_recall, -variable)
+  select(-delayed_recall, -variable, -newid)
 
 data = inner_join(data, mem2)</code></pre>
 <pre class="r"><code>data %&gt;%
@@ -1229,6 +1231,88 @@ Relationship between immediate and delayed recall
 </p>
 </div>
 </div>
+<div id="very-delayed-recall" class="section level4">
+<h4>Very-delayed recall</h4>
+<p>Finally, we score the memory challenge posed at Time 2.</p>
+<pre class="r"><code>mem3 = data %&gt;%
+  filter(time2 == &quot;yes&quot;) %&gt;% 
+  select(proid, mem_condition, very_delayed_recall) %&gt;%
+  mutate(newid = 1:nrow(.))
+
+mem3 = mem3 %&gt;%
+  mutate(
+    very_delayed_recall1 = map(very_delayed_recall, ~sapply(., amatch, correct1, maxDist = distance)),
+    very_delayed_recall2 = map(very_delayed_recall, ~sapply(., amatch, correct2, maxDist = distance)),
+    very_delayed_recall3 = map(very_delayed_recall, ~sapply(., amatch, correct3, maxDist = distance)),
+    very_delayed_recall4 = map(very_delayed_recall, ~sapply(., amatch, correct4, maxDist = distance))
+    ) %&gt;%
+  gather(variable, very_delayed_memory, very_delayed_recall1:very_delayed_recall4)
+
+mem3 = mem3 %&gt;%
+  mutate(
+      very_delayed_memory = map(very_delayed_memory, sapply, 
+                  FUN = function(x) ifelse(x &gt;0, 1, 0)),
+      # count the number of correct answers
+      very_delayed_memory = map_dbl(very_delayed_memory, sum, na.rm=T))
+
+mem3 = mem3 %&gt;%
+  group_by(proid) %&gt;%
+  filter(very_delayed_memory == max(very_delayed_memory)) %&gt;%
+  filter(row_number() == 1 ) %&gt;% 
+  select(-very_delayed_recall, -variable, -newid) 
+
+data = full_join(data, mem3)</code></pre>
+<pre class="r"><code>data %&gt;%
+  ggplot(aes(x = very_delayed_memory)) +
+  geom_histogram(color = &quot;white&quot;, bins = 11) +
+  scale_x_continuous(&quot;Number correct&quot;, breaks = c(0:10)) +
+  labs(y = &quot;Number of participants&quot;) +
+  theme_pubr() </code></pre>
+<div class="figure">
+<img src="1-cleaning_files/figure-html/1-cleaning-66b-1.png" alt="Distribution of delayed memory scores" width="672" />
+<p class="caption">
+Distribution of delayed memory scores
+</p>
+</div>
+<pre class="r"><code>data %&gt;%
+  ggplot(aes(x = memory, y = very_delayed_memory)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;) +
+  scale_x_continuous(&quot;Immediate number correct&quot;, breaks = c(0:10)) +
+  scale_y_continuous(&quot;Very delayed number correct&quot;, breaks = c(0:10)) +
+  labs(title = paste0(&quot;r = &quot;, printnum(cor(data$memory, data$delayed_memory, use = &quot;pairwise&quot;)))) +
+  theme_pubr() </code></pre>
+<div class="figure">
+<img src="1-cleaning_files/figure-html/1-cleaning-67b-1.png" alt="Relationship between immediate and delayed recall" width="672" />
+<p class="caption">
+Relationship between immediate and delayed recall
+</p>
+</div>
+</div>
+<div id="correlations" class="section level4">
+<h4>Correlations</h4>
+<pre class="r"><code>data %&gt;% 
+  select(matches(&quot;memory$&quot;)) %&gt;% 
+  corr.test</code></pre>
+<pre><code>## Call:corr.test(x = .)
+## Correlation matrix 
+##                     memory delayed_memory very_delayed_memory
+## memory                1.00           0.84               -0.06
+## delayed_memory        0.84           1.00               -0.06
+## very_delayed_memory  -0.06          -0.06                1.00
+## Sample Size 
+##                     memory delayed_memory very_delayed_memory
+## memory                  35             35                  14
+## delayed_memory          35             35                  14
+## very_delayed_memory     14             14                  14
+## Probability values (Entries above the diagonal are adjusted for multiple tests.) 
+##                     memory delayed_memory very_delayed_memory
+## memory                0.00           0.00                   1
+## delayed_memory        0.00           0.00                   1
+## very_delayed_memory   0.85           0.84                   0
+## 
+##  To see confidence intervals of the correlations, print with the short=FALSE option</code></pre>
+</div>
 </div>
 <div id="change-labels-of-device-variable" class="section level3">
 <h3>Change labels of device variable</h3>
@@ -1253,7 +1337,9 @@ Relationship between immediate and delayed recall
 <pre class="r"><code>item_timing = str_subset(names(data), &quot;t_([[:alpha:]])+_[abcd](_2)?(_3)?(i)?_page_submit$&quot;)</code></pre>
 <p>We extract just the participant IDs, delayed memory, and these variables.</p>
 <pre class="r"><code>items_df = data %&gt;% 
-  select(proid, condition, memory, delayed_memory, devicetype, 
+  select(proid, condition, 
+         memory, delayed_memory, very_delayed_memory,
+         devicetype, 
          all_of(item_responses), all_of(item_timing))</code></pre>
 <p>Next we reshape these data into long form. This requires several steps. We’ll need to identify whether each value is a response or timing; we can use the presence of the string <code>t_</code> for this. Next, we’ll identify the block based on whether the string contains <code>_2</code> or <code>_3</code>. We also identify whether it ends with <code>i</code>, indicating the item in block 3 started with “I”. Then, we identify the condition based on which letter (<code>a</code>, <code>b</code>, <code>c</code>, or <code>d</code>) follows an underscore. Throughout, we’ll strip the item string of extraneous information until we’re left with only the adjective assessed. Finally, we’ll use spread to create separate columns for the response and the timing variables.</p>
 <pre class="r"><code>items_df = items_df %&gt;%

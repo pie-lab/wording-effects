@@ -24,6 +24,7 @@ library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
 library(stringdist) # for scoring memory task
 library(papaja) # for pretty numbers
+library(psych) # for correlatin tests
 ```
 
 ## Time 1
@@ -720,7 +721,8 @@ data_2 = inner_join(data_2, filter(timing_data_2, remove == "Keep")) %>%
 
 ```{r 1-cleaning-56}
 data_2 = data_2 %>% 
-  select(proid, contains("_3"))
+  select(proid, very_delayed_recall, contains("_3")) %>% 
+  mutate(time2 = "yes")
 
 data = data %>% full_join(data_2)
 ```
@@ -899,7 +901,7 @@ mem2 = mem2 %>%
   group_by(proid) %>%
   filter(delayed_memory == max(delayed_memory)) %>%
   filter(row_number() == 1 ) %>% 
-  select(-delayed_recall, -variable)
+  select(-delayed_recall, -variable, -newid)
 
 data = inner_join(data, mem2)
 ```
@@ -924,6 +926,71 @@ data %>%
   labs(title = paste0("r = ", printnum(cor(data$memory, data$delayed_memory, use = "pairwise")))) +
   theme_pubr() 
 ```
+
+#### Very-delayed recall
+
+Finally, we score the memory challenge posed at Time 2. 
+
+```{r}
+mem3 = data %>%
+  filter(time2 == "yes") %>% 
+  select(proid, mem_condition, very_delayed_recall) %>%
+  mutate(newid = 1:nrow(.))
+
+mem3 = mem3 %>%
+  mutate(
+    very_delayed_recall1 = map(very_delayed_recall, ~sapply(., amatch, correct1, maxDist = distance)),
+    very_delayed_recall2 = map(very_delayed_recall, ~sapply(., amatch, correct2, maxDist = distance)),
+    very_delayed_recall3 = map(very_delayed_recall, ~sapply(., amatch, correct3, maxDist = distance)),
+    very_delayed_recall4 = map(very_delayed_recall, ~sapply(., amatch, correct4, maxDist = distance))
+    ) %>%
+  gather(variable, very_delayed_memory, very_delayed_recall1:very_delayed_recall4)
+
+mem3 = mem3 %>%
+  mutate(
+      very_delayed_memory = map(very_delayed_memory, sapply, 
+                  FUN = function(x) ifelse(x >0, 1, 0)),
+      # count the number of correct answers
+      very_delayed_memory = map_dbl(very_delayed_memory, sum, na.rm=T))
+
+mem3 = mem3 %>%
+  group_by(proid) %>%
+  filter(very_delayed_memory == max(very_delayed_memory)) %>%
+  filter(row_number() == 1 ) %>% 
+  select(-very_delayed_recall, -variable, -newid) 
+
+data = full_join(data, mem3)
+```
+
+```{r 1-cleaning-66b, fig.cap = "Distribution of delayed memory scores"}
+data %>%
+  ggplot(aes(x = very_delayed_memory)) +
+  geom_histogram(color = "white", bins = 11) +
+  scale_x_continuous("Number correct", breaks = c(0:10)) +
+  labs(y = "Number of participants") +
+  theme_pubr() 
+```
+
+
+```{r 1-cleaning-67b, fig.cap = "Relationship between immediate and delayed recall"}
+data %>%
+  ggplot(aes(x = memory, y = very_delayed_memory)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  scale_x_continuous("Immediate number correct", breaks = c(0:10)) +
+  scale_y_continuous("Very delayed number correct", breaks = c(0:10)) +
+  labs(title = paste0("r = ", printnum(cor(data$memory, data$delayed_memory, use = "pairwise")))) +
+  theme_pubr() 
+```
+
+#### Correlations
+
+```{r}
+data %>% 
+  select(matches("memory$")) %>% 
+  corr.test
+```
+
 
 ### Change labels of device variable
 
@@ -968,7 +1035,9 @@ We extract just the participant IDs, delayed memory, and these variables.
 
 ```{r 1-cleaning-72}
 items_df = data %>% 
-  select(proid, condition, memory, delayed_memory, devicetype, 
+  select(proid, condition, 
+         memory, delayed_memory, very_delayed_memory,
+         devicetype, 
          all_of(item_responses), all_of(item_timing))
 ```
 
