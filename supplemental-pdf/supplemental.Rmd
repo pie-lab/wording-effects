@@ -2,7 +2,7 @@
 title: "Supplemental file"
 date: "Last updated `r Sys.Date()`"
 output: 
-  pdf_document:
+  bookdown::pdf_document2:
     toc: TRUE
 ---
 
@@ -10,6 +10,8 @@ output:
 library(here)
 ```
 
+
+\newpage
 
 # Cleaning
 

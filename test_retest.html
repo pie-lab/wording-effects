@@ -369,14 +369,14 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Test-retest reliability</h1>
-<h4 class="date">Last updated 2021-08-04</h4>
+<h4 class="date">Last updated 2021-08-09</h4>
 
 </div>
 
 
 <p>We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific – formats #3 and #4 above vs the use of adjectives alone. In other words, we expect equal or lower retest reliability for the adjectives than for longer phrases. We will also consider the effect of performance on the word recall task on retest reliability .</p>
-<div id="prep-dataset" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Prep dataset</h2>
+<div id="prep-dataset" class="section level2">
+<h2>Prep dataset</h2>
 <p>The data structure needed for these analsyes is in wide-format. That is, we require one column for each time point. In addition, we hope to examine reliability <em>within</em> format, which requires selecting only the response options which match the original, Block 1, assessment.</p>
 <pre class="r"><code>items_df = items_df %&gt;% 
   mutate(condition = tolower(condition)) %&gt;% 
@@ -400,8 +400,8 @@ items_matchb1 = items_df %&gt;%
     ends_with(&quot;memory&quot;), ~(.-mean(., na.rm=T))/sd(., na.rm = T)
   ))</code></pre>
 </div>
-<div id="test-retest-reliability-all-items-pooled" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Test-retest reliability (all items pooled)</h2>
+<div id="test-retest-reliability-all-items-pooled" class="section level2">
+<h2>Test-retest reliability (all items pooled)</h2>
 <p>To estimate the reliability coefficients, we use a multilevel model, predicting the latter block from the earlier one. These models nest responses within participant, allowing us to estimate standard errors which account for the dependency of scores.</p>
 <pre class="r"><code>tr_mod1_b1b2 = lmer(block_2 ~ block_1 + (1 |proid), data = items_matchb1)
 tr_mod1_b1b3 = lmer(block_3 ~ block_1 + (1 |proid), data = items_matchb1)
@@ -532,8 +532,8 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </tr>
 </table>
 </div>
-<div id="test-retest-reliability-all-items-pooled-by-format" class="section level2" number="0.3">
-<h2><span class="header-section-number">0.3</span> Test-retest reliability (all items pooled, by format)</h2>
+<div id="test-retest-reliability-all-items-pooled-by-format" class="section level2">
+<h2>Test-retest reliability (all items pooled, by format)</h2>
 <p>We fit these same models, except now we moderate by format, to determine whether the test-retest reliabilty differs as a function of item wording.</p>
 <pre class="r"><code>tr_mod2_b1b2 = lmer(block_2 ~ block_1*condition + (1 |proid),
                     data = items_matchb1)
@@ -542,8 +542,8 @@ tr_mod2_b1b3 = lmer(block_3 ~ block_1*condition + (1 |proid),
 
 tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)</code></pre>
 <p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
-<div id="block-1block-2" class="section level3" number="0.3.1">
-<h3><span class="header-section-number">0.3.1</span> Block 1/Block 2</h3>
+<div id="block-1block-2" class="section level3">
+<h3>Block 1/Block 2</h3>
 <pre class="r"><code>emtrends(tr_mod2_b1b2, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
 <pre><code>## $emtrends
 ##   condition                               block_1.trend     SE  df lower.CL
@@ -579,8 +579,8 @@ tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)</code></pre>
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 </div>
-<div id="block-1block-3" class="section level3" number="0.3.2">
-<h3><span class="header-section-number">0.3.2</span> Block 1/Block 3</h3>
+<div id="block-1block-3" class="section level3">
+<h3>Block 1/Block 3</h3>
 <pre class="r"><code>emtrends(tr_mod2_b1b3, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
 <pre><code>## $emtrends
 ##   condition                               block_1.trend     SE  df lower.CL
@@ -609,8 +609,8 @@ tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)</code></pre>
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
 </div>
-<div id="test-retest-reliability-all-items-pooled-by-format-and-memory" class="section level2" number="0.4">
-<h2><span class="header-section-number">0.4</span> Test-retest reliability (all items pooled, by format and memory)</h2>
+<div id="test-retest-reliability-all-items-pooled-by-format-and-memory" class="section level2">
+<h2>Test-retest reliability (all items pooled, by format and memory)</h2>
 <p>Here we fit models moderated by memory – that it, perhaps the test-retest coefficient is affected by the memory of the participant.</p>
 <pre class="r"><code>tr_mod3_b1b2 = lmer(block_2 ~ block_1*condition*delayed_memory + 
                       (1 |proid),
@@ -621,8 +621,8 @@ tr_mod3_b1b3 = lmer(block_3 ~ block_1*condition*very_delayed_memory +
 
 tab_model(tr_mod3_b1b2, tr_mod3_b1b3, show.re.var = F)</code></pre>
 <p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
-<div id="block-1block-2-1" class="section level3" number="0.4.1">
-<h3><span class="header-section-number">0.4.1</span> Block 1/Block 2</h3>
+<div id="block-1block-2-1" class="section level3">
+<h3>Block 1/Block 2</h3>
 <pre class="r"><code>mem_list = list(delayed_memory = c(-1,0,1), 
                 condition = unique(items_df$condition))
 
@@ -722,8 +722,8 @@ emtrends(tr_mod3_b1b2,
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 </div>
-<div id="block-1block-3-1" class="section level3" number="0.4.2">
-<h3><span class="header-section-number">0.4.2</span> Block 1/Block 3</h3>
+<div id="block-1block-3-1" class="section level3">
+<h3>Block 1/Block 3</h3>
 <p><strong>This chunk is turned off due to low coverage. Be sure to turn on with real data.</strong></p>
 <pre class="r"><code>mem_list = list(very_delayed_memory = c(-1,0,1), 
                 condition = unique(items_df$condition))
@@ -734,8 +734,8 @@ emtrends(tr_mod3_b1b3,
          at = mem_list)</code></pre>
 </div>
 </div>
-<div id="test-retest-reliability-items-separated-by-format" class="section level2" number="0.5">
-<h2><span class="header-section-number">0.5</span> Test-retest reliability (items separated, by format)</h2>
+<div id="test-retest-reliability-items-separated-by-format" class="section level2">
+<h2>Test-retest reliability (items separated, by format)</h2>
 <p>To assess test-retest reliability for each item, we can rely on more simple correlation analyses, as each participant only contributed one response to each item in each block. We first not the sample size coverage for these comparisons:</p>
 <pre class="r"><code>items_matchb1 %&gt;%
   group_by(item, condition) %&gt;%
@@ -766,10 +766,10 @@ emtrends(tr_mod3_b1b3,
   labs(x = &quot;Sample size&quot;,
        y = &quot;Number of tests&quot;) +
   facet_wrap(~condition)</code></pre>
-<div class="figure"><span id="fig:testre"></span><span id="fig:testre"></span>
-<img src="test_retest_files/figure-html/testre-1.png" alt=" Sample sizes for item-level test-retest correlations." width="672" />
+<div class="figure">
+<img src="test_retest_files/figure-html/testre-1.png" alt="(#fig:testre) Sample sizes for item-level test-retest correlations." width="672" />
 <p class="caption">
-Figure 1: Figure 1:  Sample sizes for item-level test-retest correlations.
+(#fig:testre) Sample sizes for item-level test-retest correlations.
 </p>
 </div>
 <pre class="r"><code>items_cors = items_matchb1 %&gt;%
@@ -795,7 +795,7 @@ Figure 1: Figure 1:  Sample sizes for item-level test-retest correlations.
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-16">Table 1: </span>Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.
+Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.
 </caption>
 <thead>
 <tr>
@@ -819,8 +819,7 @@ blc_1-blc_3
 active
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 0.87
@@ -834,8 +833,7 @@ Only
 active
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 0.93
@@ -848,8 +846,7 @@ Adjective
 active
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 1.00*
@@ -863,9 +860,7 @@ Adjective
 active
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -878,8 +873,7 @@ Adjective
 adventurous
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 0.50
@@ -893,8 +887,7 @@ Only
 adventurous
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -906,8 +899,7 @@ Adjective
 adventurous
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -920,9 +912,7 @@ Adjective
 adventurous
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 0.97
@@ -936,8 +926,7 @@ Adjective
 calm
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 0.58
@@ -951,8 +940,7 @@ Only
 calm
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -964,8 +952,7 @@ Adjective
 calm
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -978,9 +965,7 @@ Adjective
 calm
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -993,8 +978,7 @@ Adjective
 careless
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 0.87
@@ -1008,8 +992,7 @@ Only
 careless
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 0.69
@@ -1022,8 +1005,7 @@ Adjective
 careless
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1036,9 +1018,7 @@ Adjective
 careless
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1050,8 +1030,7 @@ Adjective
 caring
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 -0.50
@@ -1065,8 +1044,7 @@ Only
 caring
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1078,8 +1056,7 @@ Adjective
 caring
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 1.00*
@@ -1093,9 +1070,7 @@ Adjective
 caring
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1107,8 +1082,7 @@ Adjective
 cautious
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -1121,8 +1095,7 @@ Only
 cautious
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1134,8 +1107,7 @@ Adjective
 cautious
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1148,9 +1120,7 @@ Adjective
 cautious
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1163,8 +1133,7 @@ Adjective
 creative
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 0.87
@@ -1178,8 +1147,7 @@ Only
 creative
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 1.00*
@@ -1192,8 +1160,7 @@ Adjective
 creative
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 0.50
@@ -1207,9 +1174,7 @@ Adjective
 creative
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1221,8 +1186,7 @@ Adjective
 curious
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -1235,8 +1199,7 @@ Only
 curious
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 0.30
@@ -1249,8 +1212,7 @@ Adjective
 curious
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1263,9 +1225,7 @@ Adjective
 curious
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1278,8 +1238,7 @@ Adjective
 friendly
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -1292,8 +1251,7 @@ Only
 friendly
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1305,8 +1263,7 @@ Adjective
 friendly
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1319,9 +1276,7 @@ Adjective
 friendly
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 1.00*
@@ -1334,8 +1289,7 @@ Adjective
 hardworking
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -1348,8 +1302,7 @@ Only
 hardworking
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1361,8 +1314,7 @@ Adjective
 hardworking
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1375,9 +1327,7 @@ Adjective
 hardworking
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1389,8 +1339,7 @@ Adjective
 helpful
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 0.00
@@ -1404,8 +1353,7 @@ Only
 helpful
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 1.00*
@@ -1418,8 +1366,7 @@ Adjective
 helpful
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1432,9 +1379,7 @@ Adjective
 helpful
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1446,8 +1391,7 @@ Adjective
 imaginative
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 0.90
@@ -1461,8 +1405,7 @@ Only
 imaginative
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1474,8 +1417,7 @@ Adjective
 imaginative
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 0.98
@@ -1489,9 +1431,7 @@ Adjective
 imaginative
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1503,8 +1443,7 @@ Adjective
 impulsive
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -1517,8 +1456,7 @@ Only
 impulsive
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1530,8 +1468,7 @@ Adjective
 impulsive
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 0.96
@@ -1545,9 +1482,7 @@ Adjective
 impulsive
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1560,8 +1495,7 @@ Adjective
 impusive
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -1573,8 +1507,7 @@ Only
 intelligent
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -1587,8 +1520,7 @@ Only
 intelligent
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1600,8 +1532,7 @@ Adjective
 intelligent
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1614,9 +1545,7 @@ Adjective
 intelligent
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1629,8 +1558,7 @@ Adjective
 lively
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -1643,8 +1571,7 @@ Only
 lively
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1656,8 +1583,7 @@ Adjective
 lively
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1670,9 +1596,7 @@ Adjective
 lively
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1684,8 +1608,7 @@ Adjective
 moody
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 0.79
@@ -1699,8 +1622,7 @@ Only
 moody
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1712,8 +1634,7 @@ Adjective
 moody
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1726,9 +1647,7 @@ Adjective
 moody
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1741,8 +1660,7 @@ Adjective
 nervous
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -1755,8 +1673,7 @@ Only
 nervous
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 -1.00*
@@ -1769,8 +1686,7 @@ Adjective
 nervous
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1783,9 +1699,7 @@ Adjective
 nervous
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1798,8 +1712,7 @@ Adjective
 organized
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 0.97*
@@ -1813,8 +1726,7 @@ Only
 organized
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1826,8 +1738,7 @@ Adjective
 organized
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1840,9 +1751,7 @@ Adjective
 organized
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1854,8 +1763,7 @@ Adjective
 outgoing
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -1868,8 +1776,7 @@ Only
 outgoing
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 0.77
@@ -1882,8 +1789,7 @@ Adjective
 outgoing
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1896,9 +1802,7 @@ Adjective
 outgoing
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1910,8 +1814,7 @@ Adjective
 reckless
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 0.87
@@ -1925,8 +1828,7 @@ Only
 reckless
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1938,8 +1840,7 @@ Adjective
 reckless
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 -0.18
@@ -1953,9 +1854,7 @@ Adjective
 reckless
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1968,8 +1867,7 @@ Adjective
 responsible
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -1982,8 +1880,7 @@ Only
 responsible
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1995,8 +1892,7 @@ Adjective
 responsible
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2009,9 +1905,7 @@ Adjective
 responsible
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2024,8 +1918,7 @@ Adjective
 softhearted
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -2038,8 +1931,7 @@ Only
 softhearted
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2051,8 +1943,7 @@ Adjective
 softhearted
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2065,9 +1956,7 @@ Adjective
 softhearted
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2080,8 +1969,7 @@ Adjective
 sophisticated
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 1.00*
@@ -2095,8 +1983,7 @@ Only
 sophisticated
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 0.96*
@@ -2109,8 +1996,7 @@ Adjective
 sophisticated
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2123,9 +2009,7 @@ Adjective
 sophisticated
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2138,8 +2022,7 @@ Adjective
 sympathetic
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -2152,8 +2035,7 @@ Only
 sympathetic
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 0.50
@@ -2166,8 +2048,7 @@ Adjective
 sympathetic
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 0.50
@@ -2180,9 +2061,7 @@ Adjective
 sympathetic
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 0.43
@@ -2196,8 +2075,7 @@ Adjective
 talkative
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -2210,8 +2088,7 @@ Only
 talkative
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2223,8 +2100,7 @@ Adjective
 talkative
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2237,9 +2113,7 @@ Adjective
 talkative
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2252,8 +2126,7 @@ Adjective
 thorough
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -2266,8 +2139,7 @@ Only
 thorough
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 0.50
@@ -2280,8 +2152,7 @@ Adjective
 thorough
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 0.50
@@ -2295,9 +2166,7 @@ Adjective
 thorough
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2310,8 +2179,7 @@ Adjective
 thrifty
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 0.93
@@ -2325,8 +2193,7 @@ Only
 thrifty
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 0.91
@@ -2339,8 +2206,7 @@ Adjective
 thrifty
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2353,9 +2219,7 @@ Adjective
 thrifty
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2368,8 +2232,7 @@ Adjective
 warm
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 </td>
@@ -2382,8 +2245,7 @@ Only
 warm
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2395,8 +2257,7 @@ Adjective
 warm
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2409,9 +2270,7 @@ Adjective
 warm
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2424,8 +2283,7 @@ Adjective
 worrying
 </td>
 <td style="text-align:left;">
-Adjective
-Only
+Adjective Only
 </td>
 <td style="text-align:left;">
 0.00
@@ -2439,8 +2297,7 @@ Only
 worrying
 </td>
 <td style="text-align:left;">
-Am
-Adjective
+Am Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2452,8 +2309,7 @@ Adjective
 worrying
 </td>
 <td style="text-align:left;">
-Tend to be
-Adjective
+Tend to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2466,9 +2322,7 @@ Adjective
 worrying
 </td>
 <td style="text-align:left;">
-I am someone
-who tends to be
-Adjective
+I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2490,10 +2344,10 @@ Adjective
                      labels = c(&quot;1-2&quot;, &quot;1-3&quot;)) +
   labs(x = NULL, y = &quot;Correlation&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure"><span id="fig:unnamed-chunk-17"></span>
+<div class="figure">
 <img src="test_retest_files/figure-html/unnamed-chunk-17-1.png" alt="Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item." width="672" />
 <p class="caption">
-Figure 2: Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item.
+Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item.
 </p>
 </div>
 </div>

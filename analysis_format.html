@@ -369,7 +369,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact response?</h1>
-<h4 class="date">Last updated 2021-08-04</h4>
+<h4 class="date">Last updated 2021-08-09</h4>
 
 </div>
 
@@ -3283,6 +3283,62 @@ worrying
 sig_item_mem = sig_item_mem$item
 sig_item_mem</code></pre>
 <pre><code>## character(0)</code></pre>
+</div>
+</div>
+<div id="analysis-block-1-and-block-3" class="section level2">
+<h2>Analysis: Block 1 and Block 3</h2>
+<p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word “I”. Here, we use data from blocks 1 and 3.</p>
+<pre class="r"><code>items_13 = items_df %&gt;% 
+  filter(block %in% c(&quot;1&quot;,&quot;3&quot;)) %&gt;% 
+  filter(time2 == &quot;yes&quot;)</code></pre>
+<pre class="r"><code>mod.format_b3 = lmer(response~format*i + (1|proid), 
+                  data = items_13)
+anova(mod.format_b3)</code></pre>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##           Sum Sq Mean Sq NumDF  DenDF F value Pr(&gt;F)
+## format   2.84607 1.42304     2  11.76  0.9208 0.4251
+## i        0.64667 0.64667     1 797.30  0.4185 0.5179
+## format:i 1.09557 1.09557     1 797.30  0.7089 0.4000</code></pre>
+<pre class="r"><code>plot_b3 = plot_model(mod.format_b3, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;i&quot;)) 
+plot_b3 +
+  geom_line() +
+  labs(x = NULL,
+       y = &quot;Average response&quot;,
+       title = &quot;Average responses by item formatting (Block 1 and Block 2)&quot;) +
+  theme_pubclean()</code></pre>
+<div class="figure">
+<img src="analysis_format_files/figure-html/unnamed-chunk-29-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
+<p class="caption">
+Predicted response on personality items by condition, using only Block 1 data.
+</p>
+</div>
+<pre class="r"><code>means_by_group = items_13 %&gt;%
+  group_by(format, i) %&gt;% 
+  summarise(m = mean(response),
+            s = sd(response))
+
+items_13 %&gt;%
+  ggplot(aes(x = response, fill = i)) +
+  geom_histogram(bins = 6, color = &quot;white&quot;) +
+  geom_vline(aes(xintercept = m), data = means_by_group) +
+  geom_text(aes(x = 1, 
+                y = 200, 
+                label = paste(&quot;M =&quot;, round(m,2), 
+                              &quot;\nSD =&quot;, round(s,2))), 
+            data = means_by_group, 
+            hjust =0, 
+            vjust = 1) +
+  facet_grid(format~i) +
+  guides(fill = &quot;none&quot;) +
+  scale_x_continuous(breaks = 1:6) +
+  labs(y = &quot;Number of particpants&quot;,
+       title = &quot;Distribution of responses by format (Block 1 and Block 2)&quot;) +
+  theme_pubr()</code></pre>
+<div class="figure">
+<img src="analysis_format_files/figure-html/unnamed-chunk-30-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
+<p class="caption">
+Distribution of responses by category, block 1 and block 2
+</p>
 </div>
 </div>
 

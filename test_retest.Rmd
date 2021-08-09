@@ -2,7 +2,7 @@
 title: "Test-retest reliability"
 date: "Last updated `r Sys.Date()`"
 output: 
-  bookdown::html_document2:
+  html_document:
     toc: TRUE
     toc_float: TRUE
 ---
