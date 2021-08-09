@@ -377,8 +377,8 @@ div.tocify {
 <p>The primary aims of this study are to evaluate the effects of item wording in online, self-report personality assessment. Specifically, we intend to consider the extent to which incremental wording changes may influence differences in the distributions of responses, response times, and psychometric properties of the items. These wording changes will include a progression from using (1) trait-descriptive adjectives by themselves, (2) with the linking verb “to be” (Am…), (3) with the additional verb “to tend” (Tend to be…), and (4) with the pronoun “someone” (Am someone who tends to be…).</p>
 <p>Using a protocol that administers each adjective twice to the same participant (in different combinations of item format administered randomly across participants), we will use between-person analyses to compare responses using group-level data for the different formats.</p>
 <p>These analyses will attempt to account for delayed_memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a delayed_memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).</p>
-<div id="analysis-block-1-data-only" class="section level2">
-<h2>Analysis: Block 1 data only</h2>
+<div id="effect-of-format-block-1-data" class="section level2">
+<h2>Effect of format (Block 1 data)</h2>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data.</p>
 <pre class="r"><code>item_block1 = filter(items_df, block == &quot;1&quot;)
 
@@ -1242,8 +1242,8 @@ Average response to “talkative” by format (block 1 data only)
 </div>
 </div>
 </div>
-<div id="analysis-block-1-and-block-2" class="section level2">
-<h2>Analysis: Block 1 and Block 2</h2>
+<div id="effect-of-format-block-1-and-2" class="section level2">
+<h2>Effect of format (Block 1 and 2)</h2>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2.</p>
 <pre class="r"><code>items_12 = items_df %&gt;% filter(block %in% c(&quot;1&quot;,&quot;2&quot;))</code></pre>
 <pre class="r"><code>mod.format_b2 = lmer(response~format + (1|proid), 
@@ -2458,8 +2458,8 @@ Average response to “thrifty” by format (Block 1 and Block 2)
 </div>
 </div>
 </div>
-<div id="analysis-account-for-memory-effects" class="section level2">
-<h2>Analysis: Account for memory effects</h2>
+<div id="account-for-memory-effects-blocks-1-and-2" class="section level2">
+<h2>Account for memory effects (Blocks 1 and 2)</h2>
 <pre class="r"><code>mod.format_mem = lmer(response~format*delayed_memory + (1|proid), 
                   data = items_12)
 anova(mod.format_mem)</code></pre>
@@ -3285,8 +3285,8 @@ sig_item_mem</code></pre>
 <pre><code>## character(0)</code></pre>
 </div>
 </div>
-<div id="analysis-block-1-and-block-3" class="section level2">
-<h2>Analysis: Block 1 and Block 3</h2>
+<div id="inclusion-of-i-block-1-and-block-3" class="section level2">
+<h2>Inclusion of “I” (Block 1 and Block 3)</h2>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word “I”. Here, we use data from blocks 1 and 3.</p>
 <pre class="r"><code>items_13 = items_df %&gt;% 
   filter(block %in% c(&quot;1&quot;,&quot;3&quot;)) %&gt;% 

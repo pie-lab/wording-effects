@@ -34,7 +34,7 @@ library(kableExtra) # for nicer tables
 load(here("data/items_df.Rds"))
 ```
 
-## Analysis: Block 1 data only
+## Effect of format (Block 1 data)
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data.
 
@@ -147,7 +147,7 @@ pairs(talkative_em_b1, adjust = "holm") %>%
 plot_model(talkative_model_b1, type = "pred", terms = c("format"))
 ```
 
-## Analysis: Block 1 and Block 2
+## Effect of format (Block 1 and 2)
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2.
 
@@ -285,7 +285,7 @@ pairs(thrifty_em_b2, adjust = "holm") %>%
 plot_model(thrifty_model_b2, type = "pred", terms = c("format"))
 ```
 
-## Analysis: Account for memory effects
+## Account for memory effects (Blocks 1 and 2)
 
 ```{r}
 mod.format_mem = lmer(response~format*delayed_memory + (1|proid), 
@@ -340,7 +340,7 @@ sig_item_mem = sig_item_mem$item
 sig_item_mem
 ```
 
-## Analysis: Block 1 and Block 3
+## Inclusion of "I" (Block 1 and Block 3)
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word "I". Here, we use data from blocks 1 and 3.
 
