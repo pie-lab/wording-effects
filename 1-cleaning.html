@@ -369,7 +369,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2021-08-09</h4>
+<h4 class="date">Last updated 2021-08-10</h4>
 
 </div>
 
@@ -379,6 +379,7 @@ div.tocify {
 <pre class="r"><code>library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
+library(stringi) # for generating random strings
 library(lme4) # for multilevel modeling
 library(lmerTest) # for p-values
 library(sjPlot) # for figures
@@ -386,7 +387,8 @@ library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
 library(stringdist) # for scoring memory task
 library(papaja) # for pretty numbers
-library(psych) # for correlatin tests</code></pre>
+library(psych) # for correlation tests
+library(broom.mixed) # for tidying mulitievel models</code></pre>
 </div>
 <div id="time-1" class="section level2">
 <h2>Time 1</h2>
@@ -617,23 +619,7 @@ Average response to inattention check items
 <p>Next we gather into long form and remove missing timing values</p>
 <pre class="r"><code>timing_data = timing_data %&gt;%
   gather(variable, timing, -proid) %&gt;%
-  filter(!is.na(timing))
-
-timing_data</code></pre>
-<pre><code>## # A tibble: 2,170 x 3
-##    proid                    variable                 timing
-##    &lt;chr&gt;                    &lt;chr&gt;                     &lt;dbl&gt;
-##  1 5f0227ae81bf2f3a4618c8c7 t_outgoing_a_page_submit   4.47
-##  2 60eb3434de863fc43f563b0e t_outgoing_a_page_submit   4.52
-##  3 60eb31222e8b2fb8dc904432 t_outgoing_a_page_submit   4.86
-##  4 60e49d66c9c4f08ce7a3b789 t_outgoing_a_page_submit   4.16
-##  5 60ea7b0e32a76a57b4a34664 t_outgoing_a_page_submit   4.20
-##  6 60e950d879a14636c5fc286d t_outgoing_a_page_submit   4.49
-##  7 60e781742748ec6401b79f86 t_outgoing_a_page_submit   4.5 
-##  8 60e9521961c670e718bcc4df t_outgoing_a_page_submit  85.7 
-##  9 60e777356e13630d745eeb49 t_outgoing_a_page_submit   2.47
-## 10 60e99999b101ef725cb0b8a2 t_outgoing_a_page_submit   4.45
-## # … with 2,160 more rows</code></pre>
+  filter(!is.na(timing))</code></pre>
 <p>To check, each participant should have the same number of responses: 62.</p>
 <pre class="r"><code>timing_data %&gt;%
   group_by(proid) %&gt;%
@@ -693,16 +679,17 @@ data_2A = read_csv(data_path_2A,
                 col_names = names(data_labels_2A))
 rm(data_labels_2A)
 data_2A = clean_names(data_2A)</code></pre>
-<pre class="r"><code>data_path_2B = here(&quot;data/Wording 2B_July 29, 2021_14.52.text (1).csv&quot;)
+<pre class="r"><code>data_path_2B = here(&quot;data/Wording 2B_August 4, 2021_18.49.text.csv&quot;)
 
 data_labels_2B = read_csv(data_path_2B)
 
 data_2B = read_csv(data_path_2B,
                 skip = 3, 
                 col_names = names(data_labels_2B))
+
 rm(data_labels_2B)
 data_2B = clean_names(data_2B)</code></pre>
-<pre class="r"><code>names(data_2B) = str_replace(names(data_2B), &quot;caring_b_3_1&quot;, &quot;caring_b_3i&quot;)</code></pre>
+<pre class="r"><code>names(data_2B) = str_replace(names(data_2B), &quot;q763&quot;, &quot;proid&quot;)</code></pre>
 <pre class="r"><code>data_path_2C = here(&quot;data/Wording 2C_August 3, 2021_18.02.csv&quot;)
 
 data_labels_2C = read_csv(data_path_2C)
@@ -738,6 +725,8 @@ data_2D = clean_names(data_2D)</code></pre>
          -starts_with(&quot;recipient&quot;),
          -starts_with(&quot;location&quot;),
          -starts_with(&quot;meta_info&quot;))</code></pre>
+<pre class="r"><code>data_2 = data_2 %&gt;% 
+  select(-contains(&quot;outgoing_b_3i&quot;))</code></pre>
 <div id="recode-personality-item-responses-to-numeric-1" class="section level3">
 <h3>Recode personality item responses to numeric</h3>
 <p>We recode the responses to personality items, which we downloaded as text strings. Here, all items end with <code>_3</code> and sometimes with <code>i</code>.</p>
@@ -760,7 +749,7 @@ data_2 = full_join(data_2, personality_items_2)</code></pre>
 <p>We also check that the ID in time 2 matches an ID in time 1.</p>
 <pre class="r"><code>data_2 = data_2 %&gt;% 
   filter(proid %in% data$proid)</code></pre>
-<p>We removed 87 participants without valid Prolific IDs.</p>
+<p>We removed 13 participants without valid Prolific IDs.</p>
 <pre class="r"><code>data_2 = data_2 %&gt;%
   mutate(proid = str_remove(proid, &quot;Value will be set from panel or URL&quot;),
          proid = str_remove(proid, &quot;Value will be set from panel or UR&quot;),
@@ -791,7 +780,7 @@ block3 = block3 %&gt;%
   gather(item, response, -proid) %&gt;%
   filter(!is.na(response)) %&gt;%
   mutate(item = str_remove(item, &quot;_3(i)?$&quot;)) %&gt;% 
-  separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
+  separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;% 
   #select(-format) %&gt;%
   spread(item, response)
 
@@ -885,23 +874,7 @@ Average response to inattention check items
 <p>Next we gather into long form and remove missing timing values</p>
 <pre class="r"><code>timing_data_2 = timing_data_2 %&gt;%
   gather(variable, timing, -proid) %&gt;%
-  filter(!is.na(timing))
-
-timing_data_2</code></pre>
-<pre><code>## # A tibble: 434 x 3
-##    proid                    variable                   timing
-##    &lt;chr&gt;                    &lt;chr&gt;                       &lt;dbl&gt;
-##  1 60e99999b101ef725cb0b8a2 t_outgoing_a_3_page_submit   1.50
-##  2 60eb31222e8b2fb8dc904432 t_outgoing_a_3_page_submit   9.00
-##  3 60e6ad3f60b76cf6ce4be887 t_outgoing_a_3_page_submit   9.76
-##  4 60eb3434de863fc43f563b0e t_outgoing_a_3_page_submit   2.8 
-##  5 60e777356e13630d745eeb49 t_outgoing_a_3_page_submit   1.52
-##  6 60e99999b101ef725cb0b8a2 t_helpful_a_3_page_submit    1.17
-##  7 60eb31222e8b2fb8dc904432 t_helpful_a_3_page_submit    2.61
-##  8 60e6ad3f60b76cf6ce4be887 t_helpful_a_3_page_submit    1.90
-##  9 60eb3434de863fc43f563b0e t_helpful_a_3_page_submit    1.75
-## 10 60e777356e13630d745eeb49 t_helpful_a_3_page_submit    1.64
-## # … with 424 more rows</code></pre>
+  filter(!is.na(timing))</code></pre>
 <p>To check, each participant should have the same number of responses: 62.</p>
 <pre class="r"><code>timing_data_2 %&gt;%
   group_by(proid) %&gt;%
@@ -958,6 +931,8 @@ data = data %&gt;% full_join(data_2)</code></pre>
     across(matches(&quot;^nervous&quot;),   ~(.x*-1)+7),
     across(matches(&quot;^careless&quot;),  ~(.x*-1)+7),
     across(matches(&quot;^impulsive&quot;), ~(.x*-1)+7))</code></pre>
+<p>We also create a vector noting the items that are reverse scored. We use this later in tables, to help identify patterns when looking at analyses within-adjective.</p>
+<pre class="r"><code>reverse = c(&quot;reckless&quot;, &quot;moody&quot;, &quot;worrying&quot;, &quot;nervous&quot;, &quot;careless&quot;, &quot;impulsive&quot;)</code></pre>
 </div>
 <div id="score-memory-task" class="section level3">
 <h3>Score memory task</h3>
@@ -1297,19 +1272,19 @@ Relationship between immediate and delayed recall
 <pre><code>## Call:corr.test(x = .)
 ## Correlation matrix 
 ##                     memory delayed_memory very_delayed_memory
-## memory                1.00           0.84               -0.06
-## delayed_memory        0.84           1.00               -0.06
-## very_delayed_memory  -0.06          -0.06                1.00
+## memory                1.00           0.84                0.05
+## delayed_memory        0.84           1.00                0.05
+## very_delayed_memory   0.05           0.05                1.00
 ## Sample Size 
 ##                     memory delayed_memory very_delayed_memory
-## memory                  35             35                  14
-## delayed_memory          35             35                  14
-## very_delayed_memory     14             14                  14
+## memory                  35             35                  19
+## delayed_memory          35             35                  19
+## very_delayed_memory     19             19                  19
 ## Probability values (Entries above the diagonal are adjusted for multiple tests.) 
 ##                     memory delayed_memory very_delayed_memory
 ## memory                0.00           0.00                   1
 ## delayed_memory        0.00           0.00                   1
-## very_delayed_memory   0.85           0.84                   0
+## very_delayed_memory   0.82           0.83                   0
 ## 
 ##  To see confidence intervals of the correlations, print with the short=FALSE option</code></pre>
 </div>
@@ -1321,7 +1296,7 @@ Relationship between immediate and delayed recall
   mutate(devicetype = factor(
     devicetype,
     levels = c(&quot;Desktop or laptop computer&quot;, &quot;Mobile&quot;, 
-               &quot;Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)&quot;), #what is this?!
+               &quot;Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)&quot;), 
     labels = c(&quot;Computer&quot;, &quot;Mobile&quot;, &quot;Tablet&quot;)
   ))</code></pre>
 </div>
@@ -1363,16 +1338,22 @@ Relationship between immediate and delayed recall
     item = str_remove(item, &quot;i$&quot;)) %&gt;% 
   separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
   spread(variable, value)</code></pre>
+<div id="remove-human-and-asleep" class="section level4">
+<h4>Remove ‘human’ and ‘asleep’</h4>
 <p>We also remove responses to the adjectives “human” and “asleep”, as these are not personality items per-se and included for the purpose of attention checks.</p>
 <pre class="r"><code>items_df = items_df %&gt;% 
   filter(item != &quot;human&quot;) %&gt;% 
   filter(item != &quot;asleep&quot;)</code></pre>
+</div>
+<div id="label-formatting-conditions" class="section level4">
+<h4>Label formatting conditions</h4>
 <p>We give labels to the formats, to clarify interpretations and aid table and figure construction.</p>
 <pre class="r"><code>items_df$format = as.factor(items_df$format)
 items_df$format = relevel(items_df$format, ref = &quot;a&quot;) 
 items_df$format = factor(items_df$format,
                                levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
-                               labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;I am someone\nwho tends to be\nAdjective&quot;))</code></pre>
+                               labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;Am someone\nwho tends to be\nAdjective&quot;))</code></pre>
+</div>
 <div id="transform-seconds" class="section level4">
 <h4>Transform seconds</h4>
 <p>The variable <code>seconds</code> appears to have a very severe right skew. We log-transform this variable for later analyses.</p>
@@ -1394,6 +1375,18 @@ items_df$format = factor(items_df$format,
 Distribution of seconds, raw and transformed.
 </p>
 </div>
+</div>
+<div id="new-id-numbers" class="section level4">
+<h4>New id numbers</h4>
+<p>We replace the Prolific ID numbers with randomly generated numbers. This allows us to share the data without the risk of identifying participants or breaking their confidentiality.</p>
+<pre class="r"><code>set.seed(202108)
+original_id = unique(data$proid)
+new_id = stri_rand_strings(n = length(original_id), length = 10)
+
+for(i in 1:length(original_id)){
+  data$proid[data$proid == original_id[i]] = new_id[i]
+  items_df$proid[data$proid == original_id[i]] = new_id[i]
+}</code></pre>
 </div>
 </div>
 </div>

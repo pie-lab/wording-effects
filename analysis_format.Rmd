@@ -28,10 +28,12 @@ library(emmeans) # for comparisons
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
+library(broom.mixed) # for tidying mulitievel models
 ```
 
 ```{r, echo = F}
 load(here("data/items_df.Rds"))
+load(here("data/reverse_vector.Rds"))
 ```
 
 ## Effect of format (Block 1 data)
@@ -99,15 +101,23 @@ mod_by_item_b1 = item_block1 %>%
   mutate(aov = map(mod, anova)) 
 
 summary_by_item_b1 = mod_by_item_b1 %>%
+  ungroup() %>% 
   mutate(tidy = map(aov, broom::tidy)) %>%
   select(item, tidy) %>% 
   unnest(cols = c(tidy)) %>%
   filter(term == "format") %>%
-  select(-term, -df) %>% 
+  mutate(reverse = case_when(
+    item %in% reverse ~ "Y",
+    TRUE ~ "N"
+  )) %>% 
   mutate(p.adj = p.adjust(p.value, method = "holm")) 
 
 summary_by_item_b1 %>%
-  kable(digits = c(0,2,2,2,3,3), booktabs = T, caption = "Format effects on response by item (block 1 data only)") %>%
+  arrange(reverse, item) %>% 
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>% 
+  kable(digits = c(0,0,2,2,2,2,3,3), booktabs = T, 
+         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "F", "raw", "adj"),
+        caption = "Format effects on response by item (block 1 data only)") %>%
   kable_styling()
 ```
 
@@ -205,7 +215,7 @@ items_12 %>%
 
 ### One model for each adjective
 
-We can also repeat this analysis separately for each trait. 
+We can also repeat this analysis separately for each trait. We use the `anova` function to estimate the variability due to format and print the corresponding _F_-test.
 
 ```{r, results = 'asis'}
 mod_by_item_b2 = items_12 %>%
@@ -213,18 +223,30 @@ mod_by_item_b2 = items_12 %>%
   nest() %>%
   mutate(mod = map(data, ~lmer(response~format + (1|proid), data = .))) %>%
   mutate(aov = map(mod, anova)) 
+```
 
+To present these results, we use the `tidy` function to summarise the findings and extract just the _F_-test associated with the format variable. We calculate adjusted _p_-values using a Holm correction. We also create a column that indicates whether the item was reverse-scored; we use this to sort the table, in case a pattern emerges.
+```{r}
 summary_by_item_b2 = mod_by_item_b2 %>%
+  ungroup() %>% 
   mutate(tidy = map(aov, broom::tidy)) %>%
   select(item, tidy) %>% 
   unnest(cols = c(tidy)) %>%
   filter(term == "format") %>%
-  select(-term) %>% 
+  mutate(reverse = case_when(
+    item %in% reverse ~ "Y",
+    TRUE ~ "N"
+  )) %>% 
   mutate(p.adj = p.adjust(p.value, method = "holm")) 
 
 summary_by_item_b2 %>%
-  kable(digits = c(0,2,2,0,2,2,3,3), booktabs = T, caption = "Format effects on response by item (block 1 data only)") %>%
-  kable_styling()
+  arrange(reverse, item) %>% 
+  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
+  kable(digits = c(0,0,2,2,0,2,2,3,3), 
+        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df1", "df2", "F", "raw", "adj"),
+        booktabs = T, caption = "Format effects on response by item (block 1 data only)") %>%
+  kable_styling() %>% 
+    add_header_above(c(" " = 7, "p-value" = 2))
 ```
 
 ### Pairwise t-tests for significant ANOVAs
@@ -316,16 +338,25 @@ mod_by_item_mem = items_12 %>%
   mutate(aov = map(mod, anova)) 
 
 summary_by_item_mem = mod_by_item_mem %>%
+  ungroup() %>% 
   mutate(tidy = map(aov, broom::tidy)) %>%
   select(item, tidy) %>% 
   unnest(cols = c(tidy)) %>%
   filter(term == "format:delayed_memory") %>%
-  select(-term) %>% 
+  mutate(reverse = case_when(
+    item %in% reverse ~ "Y",
+    TRUE ~ "N"
+  )) %>% 
   mutate(p.adj = p.adjust(p.value, method = "holm"))
 
 summary_by_item_mem %>%
-  kable(digits = c(0,0,2,2,2,3,3), booktabs = T) %>%
-  kable_styling()
+  arrange(reverse, item) %>% 
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>% 
+  kable(digits = c(0,0,2,2,2,2,3,3), 
+         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "F", "raw", "adj"),
+        booktabs = T) %>%
+  kable_styling() %>% 
+  add_header_above(c(" " = 6, "p-value" = 2))
 ```
 
 ### Pairwise t-tests for significant ANOVAs
@@ -347,9 +378,9 @@ We used a multilevel model, nesting response within participant to account for d
 ```{r}
 items_13 = items_df %>% 
   filter(block %in% c("1","3")) %>% 
+  filter(condition != "A") %>% 
   filter(time2 == "yes")
 ```
-
 
 ```{r}
 mod.format_b3 = lmer(response~format*i + (1|proid), 
@@ -379,16 +410,171 @@ items_13 %>%
   geom_histogram(bins = 6, color = "white") +
   geom_vline(aes(xintercept = m), data = means_by_group) +
   geom_text(aes(x = 1, 
-                y = 200, 
+                y = 100, 
                 label = paste("M =", round(m,2), 
                               "\nSD =", round(s,2))), 
             data = means_by_group, 
             hjust =0, 
             vjust = 1) +
-  facet_grid(format~i) +
+  facet_grid(i~format, scales = "free") +
   guides(fill = "none") +
   scale_x_continuous(breaks = 1:6) +
   labs(y = "Number of particpants",
        title = "Distribution of responses by format (Block 1 and Block 2)") +
   theme_pubr()
+```
+
+### One model for each adjective
+
+```{r, results = 'asis'}
+mod_by_item_i = items_13 %>%
+  group_by(item) %>%
+  nest() %>%
+  mutate(mod = map(data, ~lmer(response~format*i + (1|proid), data = .))) %>%
+  mutate(aov = map(mod, anova)) 
+
+summary_by_item_i = mod_by_item_i %>%
+  ungroup() %>% 
+  mutate(tidy = map(aov, broom::tidy)) %>%
+  select(item, tidy) %>% 
+  unnest(cols = c(tidy)) %>%
+  filter(term == "format:i") %>%
+  mutate(reverse = case_when(
+    item %in% reverse ~ "Y",
+    TRUE ~ "N"
+  )) %>% 
+  mutate(p.adj = p.adjust(p.value, method = "holm"))
+
+summary_by_item_i %>%
+  arrange(reverse, item) %>% 
+  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
+  kable(digits = c(0,0,2,2,0,2,2,3,3), 
+        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df1", "df2", "F", "raw", "adj"),
+        booktabs = T, caption = "Interaction of format and \"I\" (block 1 and 3 data)") %>%
+  kable_styling() %>% 
+    add_header_above(c(" " = 7, "p-value" = 2))
+```
+
+### Pairwise t-tests for significant ANOVAs
+
+Here we identify the specific items with significant differences.
+
+```{r}
+sig_item_i = summary_by_item_i %>%
+  filter(p.value < .05) 
+
+sig_item_i = sig_item_i$item
+sig_item_i
+```
+
+### Curious
+
+```{r, results = 'asis'}
+curious_model_i = items_13 %>%
+  filter(item == "curious") %>%
+  lmer(response~format*i + (1|proid), 
+                               data = .)
+
+curious_model_i %>%
+  tidy() %>% 
+  mutate(term = str_replace(term, "\n", " "),
+         term = str_replace(term, "format", ""),
+         term = str_replace(term, "iPresent", "I")) %>% 
+  filter(is.na(group)) %>% 
+  select(-effect, -group) %>% 
+  kable(booktabs = T,
+        digits = c(0,2,2,2,2,3),
+        caption = "Interaction of format and \"I\"",
+        col.names = c("Term", "Estimate", "SE",  "t", "df", "p")) %>%
+  kable_styling()
+```
+
+```{r}
+plot_model(curious_model_i, type = "pred", 
+           terms = c("format", "i")) +
+  geom_line()
+```
+
+### Lively
+
+```{r, results = 'asis'}
+lively_model_i = items_13 %>%
+  filter(item == "lively") %>%
+  lmer(response~format*i + (1|proid), 
+                               data = .)
+
+lively_model_i %>%
+  tidy() %>% 
+  mutate(term = str_replace(term, "\n", " "),
+         term = str_replace(term, "format", ""),
+         term = str_replace(term, "iPresent", "I")) %>% 
+  filter(is.na(group)) %>% 
+  select(-effect, -group) %>% 
+  kable(booktabs = T,
+        digits = c(0,2,2,2,2,3),
+        caption = "Interaction of format and \"I\"",
+        col.names = c("Term", "Estimate", "SE",  "t", "df", "p")) %>%
+  kable_styling()
+```
+
+```{r}
+plot_model(lively_model_i, type = "pred", 
+           terms = c("format", "i")) +
+  geom_line()
+```
+
+### Responsible
+
+```{r, results = 'asis'}
+responsible_model_i = items_13 %>%
+  filter(item == "responsible") %>%
+  lmer(response~format*i + (1|proid), 
+                               data = .)
+
+responsible_model_i %>%
+  tidy() %>% 
+  mutate(term = str_replace(term, "\n", " "),
+         term = str_replace(term, "format", ""),
+         term = str_replace(term, "iPresent", "I")) %>% 
+  filter(is.na(group)) %>% 
+  select(-effect, -group) %>% 
+  kable(booktabs = T,
+        digits = c(0,2,2,2,2,3),
+        caption = "Interaction of format and \"I\"",
+        col.names = c("Term", "Estimate", "SE",  "t", "df", "p")) %>%
+  kable_styling()
+```
+
+```{r}
+plot_model(responsible_model_i, type = "pred", 
+           terms = c("format", "i")) +
+  geom_line()
+```
+
+### Sympathetic
+
+```{r, results = 'asis'}
+sympathetic_model_i = items_13 %>%
+  filter(item == "sympathetic") %>%
+  lmer(response~format*i + (1|proid), 
+                               data = .)
+
+sympathetic_model_i %>%
+  tidy() %>% 
+  mutate(term = str_replace(term, "\n", " "),
+         term = str_replace(term, "format", ""),
+         term = str_replace(term, "iPresent", "I")) %>% 
+  filter(is.na(group)) %>% 
+  select(-effect, -group) %>% 
+  kable(booktabs = T,
+        digits = c(0,2,2,2,2,3),
+        caption = "Interaction of format and \"I\"",
+        col.names = c("Term", "Estimate", "SE",  "t", "df", "p")) %>%
+  kable_styling()
+```
+
+```{r}
+plot_model(sympathetic_model_i, type = "pred", 
+           terms = c("format", "i")) +
+  geom_line()
 ```

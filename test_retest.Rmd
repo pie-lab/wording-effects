@@ -32,6 +32,7 @@ options(knitr.kable.NA = '')
 
 ```{r, echo = F}
 load(here("data/items_df.Rds"))
+load(here("data/reverse_vector.Rds"))
 ```
 
 ## Prep dataset
@@ -43,7 +44,7 @@ items_df = items_df %>%
   mutate(condition = tolower(condition)) %>% 
   mutate(condition = factor(condition, 
                             levels = c("a", "b", "c", "d"),
-                            labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective")))
+                            labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "Am someone\nwho tends to be\nAdjective")))
 
 items_matchb1 = items_df %>% 
   filter(format == condition) %>% 
@@ -110,15 +111,15 @@ emtrends(tr_mod2_b1b2, pairwise ~ condition, var = "block_1")
 emtrends(tr_mod2_b1b3, pairwise ~ condition, var = "block_1")
 ```
 
-## Test-retest reliability (all items pooled, by format and memory)
+## Test-retest reliability (all items pooled, by memory)
 
 Here we fit models moderated by memory -- that it, perhaps the test-retest coefficient is affected by the memory of the participant.
 
 ```{r, results = 'hide'}
-tr_mod3_b1b2 = lmer(block_2 ~ block_1*condition*delayed_memory + 
+tr_mod3_b1b2 = lmer(block_2 ~ block_1*delayed_memory + 
                       (1 |proid),
                     data = items_matchb1)
-tr_mod3_b1b3 = lmer(block_3 ~ block_1*condition*very_delayed_memory + 
+tr_mod3_b1b3 = lmer(block_3 ~ block_1*very_delayed_memory + 
                       (1 |proid),
                     data = items_matchb1)
 
@@ -130,11 +131,10 @@ We also extract the simple slopes estimates of these models, which allow us to m
 ### Block 1/Block 2
 
 ```{r}
-mem_list = list(delayed_memory = c(-1,0,1), 
-                condition = unique(items_df$condition))
+mem_list = list(delayed_memory = c(-1,0,1))
 
 emtrends(tr_mod3_b1b2, 
-         pairwise~condition|delayed_memory, 
+         pairwise~delayed_memory, 
          var = "block_1", 
          at = mem_list)
 ```
@@ -143,12 +143,11 @@ emtrends(tr_mod3_b1b2,
 
 **This chunk is turned off due to low coverage. Be sure to turn on with real data.**
 
-```{r, eval = F}
-mem_list = list(very_delayed_memory = c(-1,0,1), 
-                condition = unique(items_df$condition))
+```{r}
+mem_list = list(very_delayed_memory = c(-1,0,1))
 
 emtrends(tr_mod3_b1b3, 
-         pairwise~condition|very_delayed_memory, 
+         pairwise~very_delayed_memory, 
          var = "block_1", 
          at = mem_list)
 ```
@@ -210,11 +209,26 @@ items_cors %>%
            raw.p < .05 ~ paste0(raw.r, "*"),
            TRUE ~ raw.r)) %>%
   select(item, condition, comp, raw.r) %>%
+  mutate(reverse = case_when(
+    item %in% reverse ~ "Y",
+    TRUE ~ "N"
+  )) %>% 
+  filter(comp != "blc_2-blc_3") %>% 
+  mutate(condition = case_when(
+    condition == "Adjective\nOnly" ~ "a",
+    condition == "Am\nAdjective" ~ "b",
+    condition == "Tend to be\nAdjective" ~ "c",
+    condition == "Am someone\nwho tends to be\nAdjective" ~ "d"
+  )) %>% 
+  unite(comp, condition, comp) %>% 
   spread(comp, raw.r) %>%
-  select(-`blc_2-blc_3`) %>% 
+  arrange(reverse, item) %>% 
   kable(caption = "Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.",
+        col.names = c("Item", "Reverse scored?", rep(c("5 min", "2 weeks"), 4)),
         booktabs = T) %>%
-  kable_styling()
+  kable_styling() %>% 
+  add_header_above(c(" " = 2, "Adjective Only" = 2, "Am Adjective" = 2,
+                     "Tend to be" = 2, "Am someone who tends to be" = 2))
 ```
 
 ```{r, fig.cap = "Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item."}

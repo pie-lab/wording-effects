@@ -17,6 +17,7 @@ knitr::opts_chunk$set(warning = F, message = F)
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
+library(stringi) # for generating random strings
 library(lme4) # for multilevel modeling
 library(lmerTest) # for p-values
 library(sjPlot) # for figures
@@ -24,7 +25,8 @@ library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
 library(stringdist) # for scoring memory task
 library(papaja) # for pretty numbers
-library(psych) # for correlatin tests
+library(psych) # for correlation tests
+library(broom.mixed) # for tidying mulitievel models
 ```
 
 ## Time 1
@@ -322,8 +324,6 @@ Next we gather into long form and remove missing timing values
 timing_data = timing_data %>%
   gather(variable, timing, -proid) %>%
   filter(!is.na(timing))
-
-timing_data
 ```
 
 To check, each participant should have the same number of responses: 62.
@@ -350,13 +350,11 @@ timing_data = timing_data %>%
 ```
 
 ```{r timing_dist, fig.cap = "Distribution of average time to respond to personality items."}
-
 timing_data %>%
   ggplot(aes(x = m_time, fill = remove)) +
   geom_histogram(color = "white") +
   labs(x = "Average response time (seconds)", y = "Number of participants") +
   theme_pubr()
-
 ```
 
 ```{r 1-cleaning-25, echo = F}
@@ -405,19 +403,20 @@ data_2A = clean_names(data_2A)
 ```
 
 ```{r 1-cleaning-30}
-data_path_2B = here("data/Wording 2B_July 29, 2021_14.52.text (1).csv")
+data_path_2B = here("data/Wording 2B_August 4, 2021_18.49.text.csv")
 
 data_labels_2B = read_csv(data_path_2B)
 
 data_2B = read_csv(data_path_2B,
                 skip = 3, 
                 col_names = names(data_labels_2B))
+
 rm(data_labels_2B)
 data_2B = clean_names(data_2B)
 ```
 
-```{r 1-cleaning-31}
-names(data_2B) = str_replace(names(data_2B), "caring_b_3_1", "caring_b_3i")
+```{r}
+names(data_2B) = str_replace(names(data_2B), "q763", "proid")
 ```
 
 
@@ -470,9 +469,15 @@ data_2 = data_2 %>%
          -starts_with("meta_info"))
 ```
 
+```{r}
+data_2 = data_2 %>% 
+  select(-contains("outgoing_b_3i"))
+```
+
+
 ### Recode personality item responses to numeric
 
-We recode the responses to personality items, which we downloaded as text strings. Here, all items end with `_3` and sometimes with `i`. 
+We recode the responses to personality items, which we downloaded as text strings. Here, all items end with `_3` and sometimes with `i`.
 
 ```{r 1-cleaning-36}
 p_items_2 = str_extract(names(data_2), "^[[:alpha:]]*_[abcd]_3(i)?$")
@@ -519,6 +524,13 @@ data_2 = data_2 %>%
   filter(proid %in% data$proid)
 ```
 
+```{r, echo = F}
+data_2 = data_2 %>% 
+  group_by(proid) %>% 
+  filter(row_number() == 1) %>% 
+  ungroup()
+```
+
 
 We removed `r nrow(olddata_2)-nrow(data_2)` participants without valid Prolific IDs.
 
@@ -555,7 +567,7 @@ block3 = block3 %>%
   gather(item, response, -proid) %>%
   filter(!is.na(response)) %>%
   mutate(item = str_remove(item, "_3(i)?$")) %>% 
-  separate(item, into = c("item", "format")) %>%
+  separate(item, into = c("item", "format")) %>% 
   #select(-format) %>%
   spread(item, response)
 
@@ -671,8 +683,6 @@ Next we gather into long form and remove missing timing values
 timing_data_2 = timing_data_2 %>%
   gather(variable, timing, -proid) %>%
   filter(!is.na(timing))
-
-timing_data_2
 ```
 
 To check, each participant should have the same number of responses: 62.
@@ -699,13 +709,11 @@ timing_data_2 = timing_data_2 %>%
 ```
 
 ```{r timing_dist_2, fig.cap = "Distribution of average time to respond to personality items in Block 3."}
-
 timing_data_2 %>%
   ggplot(aes(x = m_time, fill = remove)) +
   geom_histogram(color = "white") +
   labs(x = "Average response time (seconds)", y = "Number of participants") +
   theme_pubr()
-
 ```
 
 ```{r 1-cleaning-54, echo = F}
@@ -742,7 +750,12 @@ data = data %>%
     across(matches("^nervous"),   ~(.x*-1)+7),
     across(matches("^careless"),  ~(.x*-1)+7),
     across(matches("^impulsive"), ~(.x*-1)+7))
-  
+```
+
+We also create a vector noting the items that are reverse scored. We use this later in tables, to help identify patterns when looking at analyses within-adjective.
+
+```{r}
+reverse = c("reckless", "moody", "worrying", "nervous", "careless", "impulsive")
 ```
 
 
@@ -1001,7 +1014,7 @@ data = data %>%
   mutate(devicetype = factor(
     devicetype,
     levels = c("Desktop or laptop computer", "Mobile", 
-               "Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)"), #what is this?!
+               "Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)"), 
     labels = c("Computer", "Mobile", "Tablet")
   ))
 ```
@@ -1067,6 +1080,8 @@ items_df = items_df %>%
   spread(variable, value)
 ```
 
+#### Remove 'human' and 'asleep'
+
 We also remove responses to the adjectives "human" and "asleep", as these are not personality items per-se and included for the purpose of attention checks.
 
 ```{r 1-cleaning-74}
@@ -1075,6 +1090,7 @@ items_df = items_df %>%
   filter(item != "asleep")
 ```
 
+#### Label formatting conditions
 
 We give labels to the formats, to clarify interpretations and aid table and figure construction.
 
@@ -1083,7 +1099,7 @@ items_df$format = as.factor(items_df$format)
 items_df$format = relevel(items_df$format, ref = "a") 
 items_df$format = factor(items_df$format,
                                levels = c("a","b","c","d"),
-                               labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "I am someone\nwho tends to be\nAdjective"))
+                               labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "Am someone\nwho tends to be\nAdjective"))
 ```
 
 #### Transform seconds
@@ -1108,9 +1124,25 @@ items_df %>%
   theme_pubr()
 ```
 
+#### New id numbers
+
+We replace the Prolific ID numbers with randomly generated numbers. This allows us to share the data without the risk of identifying participants or breaking their confidentiality.
+
+```{r}
+set.seed(202108)
+original_id = unique(data$proid)
+new_id = stri_rand_strings(n = length(original_id), length = 10)
+
+for(i in 1:length(original_id)){
+  data$proid[data$proid == original_id[i]] = new_id[i]
+  items_df$proid[data$proid == original_id[i]] = new_id[i]
+}
+```
+
 
 
 ```{r 1-cleaning-78, echo = F}
+save(reverse, file = here("data/reverse_vector.Rds"))
 save(data, file = here("data/cleaned_data.Rds"))
 save(items_df, file = here("data/items_df.Rds"))
 ```

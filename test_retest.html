@@ -369,7 +369,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Test-retest reliability</h1>
-<h4 class="date">Last updated 2021-08-09</h4>
+<h4 class="date">Last updated 2021-08-10</h4>
 
 </div>
 
@@ -382,7 +382,7 @@ div.tocify {
   mutate(condition = tolower(condition)) %&gt;% 
   mutate(condition = factor(condition, 
                             levels = c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;),
-                            labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;I am someone\nwho tends to be\nAdjective&quot;)))
+                            labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;Am someone\nwho tends to be\nAdjective&quot;)))
 
 items_matchb1 = items_df %&gt;% 
   filter(format == condition) %&gt;% 
@@ -456,13 +456,13 @@ p
 0.678
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.07
+-0.04
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.20 – 0.07
+-0.15 – 0.06
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
-0.347
+0.450
 </td>
 </tr>
 <tr>
@@ -479,10 +479,10 @@ block_1
 <strong>&lt;0.001</strong>
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.65
+0.67
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.57 – 0.73
+0.60 – 0.73
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
 <strong>&lt;0.001</strong>
@@ -496,7 +496,7 @@ ICC
 0.15
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.08
+0.06
 </td>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
@@ -506,7 +506,7 @@ N
 35 <sub>proid</sub>
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-14 <sub>proid</sub>
+19 <sub>proid</sub>
 </td>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
@@ -516,7 +516,7 @@ Observations
 237
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
-406
+551
 </td>
 </tr>
 <tr>
@@ -527,7 +527,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 0.599 / 0.658
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.396 / 0.443
+0.421 / 0.456
 </td>
 </tr>
 </table>
@@ -546,11 +546,11 @@ tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)</code></pre>
 <h3>Block 1/Block 2</h3>
 <pre class="r"><code>emtrends(tr_mod2_b1b2, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
 <pre><code>## $emtrends
-##   condition                               block_1.trend     SE  df lower.CL
-##  Adjective\nOnly                                  0.605 0.0728 213    0.462
-##  Am\nAdjective                                    0.850 0.0710 224    0.710
-##  Tend to be\nAdjective                            0.809 0.0869 227    0.637
-##  I am someone\nwho tends to be\nAdjective         0.877 0.1044 189    0.671
+##   condition                             block_1.trend     SE  df lower.CL
+##  Adjective\nOnly                                0.605 0.0728 213    0.462
+##  Am\nAdjective                                  0.850 0.0710 224    0.710
+##  Tend to be\nAdjective                          0.809 0.0869 227    0.637
+##  Am someone\nwho tends to be\nAdjective         0.877 0.1044 189    0.671
 ##  upper.CL
 ##     0.749
 ##     0.990
@@ -561,20 +561,20 @@ tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)</code></pre>
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
-##    contrast                                                       estimate
-##  Adjective\nOnly - Am\nAdjective                                   -0.2452
-##  Adjective\nOnly - Tend to be\nAdjective                           -0.2036
-##  Adjective\nOnly - I am someone\nwho tends to be\nAdjective        -0.2720
-##  Am\nAdjective - Tend to be\nAdjective                              0.0416
-##  Am\nAdjective - I am someone\nwho tends to be\nAdjective          -0.0268
-##  Tend to be\nAdjective - I am someone\nwho tends to be\nAdjective  -0.0684
-##     SE  df t.ratio p.value
-##  0.102 219 -2.413  0.0777 
-##  0.113 228 -1.796  0.2777 
-##  0.127 219 -2.137  0.1448 
-##  0.112 229  0.371  0.9825 
-##  0.126 214 -0.212  0.9966 
-##  0.136 210 -0.503  0.9582 
+##    contrast                                                     estimate    SE
+##  Adjective\nOnly - Am\nAdjective                                 -0.2452 0.102
+##  Adjective\nOnly - Tend to be\nAdjective                         -0.2036 0.113
+##  Adjective\nOnly - Am someone\nwho tends to be\nAdjective        -0.2720 0.127
+##  Am\nAdjective - Tend to be\nAdjective                            0.0416 0.112
+##  Am\nAdjective - Am someone\nwho tends to be\nAdjective          -0.0268 0.126
+##  Tend to be\nAdjective - Am someone\nwho tends to be\nAdjective  -0.0684 0.136
+##   df t.ratio p.value
+##  219 -2.413  0.0777 
+##  228 -1.796  0.2777 
+##  219 -2.137  0.1448 
+##  229  0.371  0.9825 
+##  214 -0.212  0.9966 
+##  210 -0.503  0.9582 
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
@@ -583,39 +583,47 @@ tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)</code></pre>
 <h3>Block 1/Block 3</h3>
 <pre class="r"><code>emtrends(tr_mod2_b1b3, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
 <pre><code>## $emtrends
-##   condition                               block_1.trend     SE  df lower.CL
-##  Adjective\nOnly                                  0.660 0.0660 396    0.530
-##  Tend to be\nAdjective                            0.670 0.0692 224    0.534
-##  I am someone\nwho tends to be\nAdjective         0.607 0.0762 400    0.457
+##   condition                             block_1.trend     SE  df lower.CL
+##  Adjective\nOnly                                0.677 0.0649 535    0.550
+##  Am\nAdjective                                  0.659 0.0621 539    0.537
+##  Tend to be\nAdjective                          0.683 0.0673 278    0.550
+##  Am someone\nwho tends to be\nAdjective         0.621 0.0751 543    0.473
 ##  upper.CL
-##     0.789
-##     0.806
-##     0.757
+##     0.805
+##     0.781
+##     0.815
+##     0.768
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
-##    contrast                                                       estimate
-##  Adjective\nOnly - Tend to be\nAdjective                           -0.0102
-##  Adjective\nOnly - I am someone\nwho tends to be\nAdjective         0.0529
-##  Tend to be\nAdjective - I am someone\nwho tends to be\nAdjective   0.0631
-##      SE  df t.ratio p.value
-##  0.0956 319 -0.106  0.9938 
-##  0.1008 399  0.525  0.8590 
-##  0.1029 348  0.613  0.8130 
+##    contrast                                                     estimate     SE
+##  Adjective\nOnly - Am\nAdjective                                 0.01849 0.0899
+##  Adjective\nOnly - Tend to be\nAdjective                        -0.00562 0.0935
+##  Adjective\nOnly - Am someone\nwho tends to be\nAdjective        0.05634 0.0993
+##  Am\nAdjective - Tend to be\nAdjective                          -0.02411 0.0916
+##  Am\nAdjective - Am someone\nwho tends to be\nAdjective          0.03785 0.0975
+##  Tend to be\nAdjective - Am someone\nwho tends to be\nAdjective  0.06196 0.1009
+##   df t.ratio p.value
+##  543  0.206  0.9969 
+##  413 -0.060  0.9999 
+##  541  0.567  0.9417 
+##  441 -0.263  0.9936 
+##  543  0.388  0.9801 
+##  457  0.614  0.9275 
 ## 
 ## Degrees-of-freedom method: kenward-roger 
-## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 </div>
 </div>
-<div id="test-retest-reliability-all-items-pooled-by-format-and-memory" class="section level2">
-<h2>Test-retest reliability (all items pooled, by format and memory)</h2>
+<div id="test-retest-reliability-all-items-pooled-by-memory" class="section level2">
+<h2>Test-retest reliability (all items pooled, by memory)</h2>
 <p>Here we fit models moderated by memory – that it, perhaps the test-retest coefficient is affected by the memory of the participant.</p>
-<pre class="r"><code>tr_mod3_b1b2 = lmer(block_2 ~ block_1*condition*delayed_memory + 
+<pre class="r"><code>tr_mod3_b1b2 = lmer(block_2 ~ block_1*delayed_memory + 
                       (1 |proid),
                     data = items_matchb1)
-tr_mod3_b1b3 = lmer(block_3 ~ block_1*condition*very_delayed_memory + 
+tr_mod3_b1b3 = lmer(block_3 ~ block_1*very_delayed_memory + 
                       (1 |proid),
                     data = items_matchb1)
 
@@ -623,115 +631,56 @@ tab_model(tr_mod3_b1b2, tr_mod3_b1b3, show.re.var = F)</code></pre>
 <p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
 <div id="block-1block-2-1" class="section level3">
 <h3>Block 1/Block 2</h3>
-<pre class="r"><code>mem_list = list(delayed_memory = c(-1,0,1), 
-                condition = unique(items_df$condition))
+<pre class="r"><code>mem_list = list(delayed_memory = c(-1,0,1))
 
 emtrends(tr_mod3_b1b2, 
-         pairwise~condition|delayed_memory, 
+         pairwise~delayed_memory, 
          var = &quot;block_1&quot;, 
          at = mem_list)</code></pre>
 <pre><code>## $emtrends
-## delayed_memory = -1:
-##   condition                               block_1.trend     SE  df lower.CL
-##  Adjective\nOnly                                  0.461 0.1206 217  0.22371
-##  Am\nAdjective                                    0.959 0.0981 217  0.76610
-##  Tend to be\nAdjective                            0.982 0.1442 200  0.69786
-##  I am someone\nwho tends to be\nAdjective         0.874 0.1309 221  0.61567
-##  upper.CL
-##     0.699
-##     1.153
-##     1.267
-##     1.132
-## 
-## delayed_memory =  0:
-##   condition                               block_1.trend     SE  df lower.CL
-##  Adjective\nOnly                                  0.648 0.0755 215  0.49936
-##  Am\nAdjective                                    0.858 0.0711 220  0.71782
-##  Tend to be\nAdjective                            0.712 0.0970 211  0.52096
-##  I am someone\nwho tends to be\nAdjective         0.915 0.1205 162  0.67673
-##  upper.CL
-##     0.797
-##     0.998
-##     0.904
-##     1.153
-## 
-## delayed_memory =  1:
-##   condition                               block_1.trend     SE  df lower.CL
-##  Adjective\nOnly                                  0.835 0.1538 214  0.53198
-##  Am\nAdjective                                    0.757 0.0920 212  0.57528
-##  Tend to be\nAdjective                            0.442 0.2215 195  0.00534
-##  I am someone\nwho tends to be\nAdjective         0.956 0.2134 183  0.53464
-##  upper.CL
-##     1.138
-##     0.938
-##     0.879
-##     1.377
+##  delayed_memory block_1.trend     SE  df lower.CL upper.CL
+##              -1         0.811 0.0580 232    0.697    0.925
+##               0         0.762 0.0418 231    0.679    0.844
+##               1         0.712 0.0690 231    0.576    0.848
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
-## delayed_memory = -1:
-##    contrast                                                       estimate
-##  Adjective\nOnly - Am\nAdjective                                   -0.4980
-##  Adjective\nOnly - Tend to be\nAdjective                           -0.5209
-##  Adjective\nOnly - I am someone\nwho tends to be\nAdjective        -0.4123
-##  Am\nAdjective - Tend to be\nAdjective                             -0.0229
-##  Am\nAdjective - I am someone\nwho tends to be\nAdjective           0.0857
-##  Tend to be\nAdjective - I am someone\nwho tends to be\nAdjective   0.1086
-##     SE  df t.ratio p.value
-##  0.155 221 -3.204  0.0084 
-##  0.188 217 -2.770  0.0307 
-##  0.178 220 -2.316  0.0975 
-##  0.174 207 -0.131  0.9992 
-##  0.164 220  0.524  0.9532 
-##  0.195 214  0.558  0.9444 
-## 
-## delayed_memory =  0:
-##    contrast                                                       estimate
-##  Adjective\nOnly - Am\nAdjective                                   -0.2098
-##  Adjective\nOnly - Tend to be\nAdjective                           -0.0640
-##  Adjective\nOnly - I am someone\nwho tends to be\nAdjective        -0.2664
-##  Am\nAdjective - Tend to be\nAdjective                              0.1458
-##  Am\nAdjective - I am someone\nwho tends to be\nAdjective          -0.0567
-##  Tend to be\nAdjective - I am someone\nwho tends to be\nAdjective  -0.2024
-##     SE  df t.ratio p.value
-##  0.104 218 -2.022  0.1832 
-##  0.123 220 -0.520  0.9541 
-##  0.142 193 -1.873  0.2429 
-##  0.120 218  1.212  0.6202 
-##  0.140 187 -0.405  0.9775 
-##  0.155 184 -1.308  0.5587 
-## 
-## delayed_memory =  1:
-##    contrast                                                       estimate
-##  Adjective\nOnly - Am\nAdjective                                    0.0785
-##  Adjective\nOnly - Tend to be\nAdjective                            0.3929
-##  Adjective\nOnly - I am someone\nwho tends to be\nAdjective        -0.1206
-##  Am\nAdjective - Tend to be\nAdjective                              0.3144
-##  Am\nAdjective - I am someone\nwho tends to be\nAdjective          -0.1991
-##  Tend to be\nAdjective - I am someone\nwho tends to be\nAdjective  -0.5135
-##     SE  df t.ratio p.value
-##  0.179 220  0.438  0.9718 
-##  0.270 203  1.457  0.4655 
-##  0.263 196 -0.459  0.9679 
-##  0.240 205  1.311  0.5571 
-##  0.232 197 -0.857  0.8271 
-##  0.308 190 -1.669  0.3428 
+##  contrast estimate     SE  df t.ratio p.value
+##  (-1) - 0   0.0495 0.0481 232 1.029   0.5592 
+##  (-1) - 1   0.0990 0.0962 232 1.029   0.5592 
+##  0 - 1      0.0495 0.0481 232 1.029   0.5592 
 ## 
 ## Degrees-of-freedom method: kenward-roger 
-## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
 <div id="block-1block-3-1" class="section level3">
 <h3>Block 1/Block 3</h3>
 <p><strong>This chunk is turned off due to low coverage. Be sure to turn on with real data.</strong></p>
-<pre class="r"><code>mem_list = list(very_delayed_memory = c(-1,0,1), 
-                condition = unique(items_df$condition))
+<pre class="r"><code>mem_list = list(very_delayed_memory = c(-1,0,1))
 
 emtrends(tr_mod3_b1b3, 
-         pairwise~condition|very_delayed_memory, 
+         pairwise~very_delayed_memory, 
          var = &quot;block_1&quot;, 
          at = mem_list)</code></pre>
+<pre><code>## $emtrends
+##  very_delayed_memory block_1.trend     SE  df lower.CL upper.CL
+##                   -1         0.678 0.0485 545    0.582    0.773
+##                    0         0.665 0.0341 546    0.598    0.732
+##                    1         0.653 0.0553 547    0.544    0.762
+## 
+## Degrees-of-freedom method: kenward-roger 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast estimate     SE  df t.ratio p.value
+##  (-1) - 0   0.0123 0.0393 547 0.312   0.9478 
+##  (-1) - 1   0.0245 0.0786 547 0.312   0.9478 
+##  0 - 1      0.0123 0.0393 547 0.312   0.9478 
+## 
+## Degrees-of-freedom method: kenward-roger 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
 </div>
 <div id="test-retest-reliability-items-separated-by-format" class="section level2">
@@ -788,28 +737,85 @@ emtrends(tr_mod3_b1b3,
            raw.p &lt; .05 ~ paste0(raw.r, &quot;*&quot;),
            TRUE ~ raw.r)) %&gt;%
   select(item, condition, comp, raw.r) %&gt;%
+  mutate(reverse = case_when(
+    item %in% reverse ~ &quot;Y&quot;,
+    TRUE ~ &quot;N&quot;
+  )) %&gt;% 
+  filter(comp != &quot;blc_2-blc_3&quot;) %&gt;% 
+  mutate(condition = case_when(
+    condition == &quot;Adjective\nOnly&quot; ~ &quot;a&quot;,
+    condition == &quot;Am\nAdjective&quot; ~ &quot;b&quot;,
+    condition == &quot;Tend to be\nAdjective&quot; ~ &quot;c&quot;,
+    condition == &quot;Am someone\nwho tends to be\nAdjective&quot; ~ &quot;d&quot;
+  )) %&gt;% 
+  unite(comp, condition, comp) %&gt;% 
   spread(comp, raw.r) %&gt;%
-  select(-`blc_2-blc_3`) %&gt;% 
+  arrange(reverse, item) %&gt;% 
   kable(caption = &quot;Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.&quot;,
+        col.names = c(&quot;Item&quot;, &quot;Reverse scored?&quot;, rep(c(&quot;5 min&quot;, &quot;2 weeks&quot;), 4)),
         booktabs = T) %&gt;%
-  kable_styling()</code></pre>
+  kable_styling() %&gt;% 
+  add_header_above(c(&quot; &quot; = 2, &quot;Adjective Only&quot; = 2, &quot;Am Adjective&quot; = 2,
+                     &quot;Tend to be&quot; = 2, &quot;Am someone who tends to be&quot; = 2))</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.
 </caption>
 <thead>
 <tr>
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="2">
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Adjective Only
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Am Adjective
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Tend to be
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Am someone who tends to be
+</div>
+</th>
+</tr>
+<tr>
 <th style="text-align:left;">
-item
+Item
 </th>
 <th style="text-align:left;">
-condition
+Reverse scored?
 </th>
 <th style="text-align:left;">
-blc_1-blc_2
+5 min
 </th>
 <th style="text-align:left;">
-blc_1-blc_3
+2 weeks
+</th>
+<th style="text-align:left;">
+5 min
+</th>
+<th style="text-align:left;">
+2 weeks
+</th>
+<th style="text-align:left;">
+5 min
+</th>
+<th style="text-align:left;">
+2 weeks
+</th>
+<th style="text-align:left;">
+5 min
+</th>
+<th style="text-align:left;">
+2 weeks
 </th>
 </tr>
 </thead>
@@ -819,7 +825,7 @@ blc_1-blc_3
 active
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 0.87
@@ -827,40 +833,17 @@ Adjective Only
 <td style="text-align:left;">
 -0.25
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-active
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 0.93
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-active
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.96*
 </td>
 <td style="text-align:left;">
 1.00*
 </td>
 <td style="text-align:left;">
 0.75
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-active
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -873,7 +856,7 @@ I am someone who tends to be Adjective
 adventurous
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 0.50
@@ -881,38 +864,15 @@ Adjective Only
 <td style="text-align:left;">
 -0.13
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-adventurous
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-adventurous
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.00
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.17
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-adventurous
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 0.97
@@ -926,7 +886,7 @@ I am someone who tends to be Adjective
 calm
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 0.58
@@ -934,38 +894,15 @@ Adjective Only
 <td style="text-align:left;">
 0.61
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-calm
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-calm
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.87
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.40
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-calm
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -975,62 +912,10 @@ I am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-careless
-</td>
-<td style="text-align:left;">
-Adjective Only
-</td>
-<td style="text-align:left;">
-0.87
-</td>
-<td style="text-align:left;">
-0.15
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-careless
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
-<td style="text-align:left;">
-0.69
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-careless
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-0.16
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-careless
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 caring
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 -0.50
@@ -1038,25 +923,10 @@ Adjective Only
 <td style="text-align:left;">
 0.92*
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-caring
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-caring
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+-0.61
 </td>
 <td style="text-align:left;">
 1.00*
@@ -1064,14 +934,6 @@ Tend to be Adjective
 <td style="text-align:left;">
 0.34
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-caring
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
@@ -1082,45 +944,22 @@ I am someone who tends to be Adjective
 cautious
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.64
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-cautious
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-cautious
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.32
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 -0.42
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-cautious
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1133,7 +972,7 @@ I am someone who tends to be Adjective
 creative
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 0.87
@@ -1141,26 +980,11 @@ Adjective Only
 <td style="text-align:left;">
 0.53
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-creative
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 1.00*
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-creative
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.50
 </td>
 <td style="text-align:left;">
 0.50
@@ -1168,14 +992,6 @@ Tend to be Adjective
 <td style="text-align:left;">
 0.71
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-creative
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
@@ -1186,46 +1002,23 @@ I am someone who tends to be Adjective
 curious
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.71
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-curious
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 0.30
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-curious
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.17
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.55
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-curious
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1238,46 +1031,23 @@ I am someone who tends to be Adjective
 friendly
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.67
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-friendly
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-friendly
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.61
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 -0.54
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-friendly
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
 <td style="text-align:left;">
 1.00*
 </td>
@@ -1289,97 +1059,51 @@ I am someone who tends to be Adjective
 hardworking
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 -0.25
 </td>
-</tr>
-<tr>
 <td style="text-align:left;">
-hardworking
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-hardworking
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-0.50
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-hardworking
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-helpful
-</td>
-<td style="text-align:left;">
-Adjective Only
-</td>
-<td style="text-align:left;">
-0.00
-</td>
-<td style="text-align:left;">
-0.00
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-helpful
-</td>
-<td style="text-align:left;">
-Am Adjective
 </td>
 <td style="text-align:left;">
 1.00*
 </td>
 <td style="text-align:left;">
 </td>
+<td style="text-align:left;">
+0.50
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 helpful
 </td>
 <td style="text-align:left;">
-Tend to be Adjective
+N
+</td>
+<td style="text-align:left;">
+0.00
+</td>
+<td style="text-align:left;">
+0.00
+</td>
+<td style="text-align:left;">
+1.00*
+</td>
+<td style="text-align:left;">
+0.41
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.25
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-helpful
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1391,7 +1115,7 @@ I am someone who tends to be Adjective
 imaginative
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 0.90
@@ -1399,25 +1123,10 @@ Adjective Only
 <td style="text-align:left;">
 0.87
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-imaginative
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-imaginative
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.25
 </td>
 <td style="text-align:left;">
 0.98
@@ -1425,69 +1134,9 @@ Tend to be Adjective
 <td style="text-align:left;">
 0.87*
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-imaginative
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-impulsive
-</td>
-<td style="text-align:left;">
-Adjective Only
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-0.75
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-impulsive
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-impulsive
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
-</td>
-<td style="text-align:left;">
-0.96
-</td>
-<td style="text-align:left;">
-0.87*
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-impulsive
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-0.62
 </td>
 </tr>
 <tr>
@@ -1495,7 +1144,19 @@ I am someone who tends to be Adjective
 impusive
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 </td>
@@ -1507,45 +1168,22 @@ Adjective Only
 intelligent
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.80
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-intelligent
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-intelligent
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.61
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.70
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-intelligent
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1558,153 +1196,26 @@ I am someone who tends to be Adjective
 lively
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.98*
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-lively
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-lively
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.66
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.69
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-lively
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-moody
-</td>
-<td style="text-align:left;">
-Adjective Only
-</td>
-<td style="text-align:left;">
-0.79
-</td>
-<td style="text-align:left;">
-0.94*
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-moody
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-moody
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-0.10
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-moody
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-0.84
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-nervous
-</td>
-<td style="text-align:left;">
-Adjective Only
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-0.54
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-nervous
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
-<td style="text-align:left;">
--1.00*
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-nervous
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
--0.58
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-nervous
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
--0.87
 </td>
 </tr>
 <tr>
@@ -1712,7 +1223,7 @@ I am someone who tends to be Adjective
 organized
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 0.97*
@@ -1720,39 +1231,16 @@ Adjective Only
 <td style="text-align:left;">
 0.87
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-organized
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-organized
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.42
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.98*
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-organized
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
@@ -1763,103 +1251,27 @@ I am someone who tends to be Adjective
 outgoing
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.88
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-outgoing
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 0.77
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-outgoing
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.80
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.95*
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-outgoing
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-reckless
-</td>
-<td style="text-align:left;">
-Adjective Only
-</td>
-<td style="text-align:left;">
-0.87
-</td>
-<td style="text-align:left;">
-0.94*
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-reckless
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-reckless
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
-</td>
-<td style="text-align:left;">
--0.18
-</td>
-<td style="text-align:left;">
--0.08
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-reckless
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
--0.87
 </td>
 </tr>
 <tr>
@@ -1867,45 +1279,22 @@ I am someone who tends to be Adjective
 responsible
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 1.00*
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-responsible
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-responsible
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.61
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.48
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-responsible
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1918,45 +1307,22 @@ I am someone who tends to be Adjective
 softhearted
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.94*
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-softhearted
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-softhearted
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.91*
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.49
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-softhearted
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -1969,7 +1335,7 @@ I am someone who tends to be Adjective
 sophisticated
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 1.00*
@@ -1977,39 +1343,16 @@ Adjective Only
 <td style="text-align:left;">
 -0.40
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sophisticated
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 0.96*
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sophisticated
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.61
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.62
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sophisticated
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2022,46 +1365,23 @@ I am someone who tends to be Adjective
 sympathetic
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.53
 </td>
-</tr>
-<tr>
 <td style="text-align:left;">
-sympathetic
+0.50
 </td>
 <td style="text-align:left;">
-Am Adjective
+0.69
 </td>
 <td style="text-align:left;">
 0.50
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sympathetic
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
-</td>
-<td style="text-align:left;">
-0.50
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sympathetic
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 0.43
@@ -2075,45 +1395,22 @@ I am someone who tends to be Adjective
 talkative
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.12
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-talkative
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-talkative
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.91*
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.90*
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-talkative
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2126,47 +1423,24 @@ I am someone who tends to be Adjective
 thorough
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.76
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-thorough
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 0.50
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-thorough
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+-0.13
 </td>
 <td style="text-align:left;">
 0.50
 </td>
 <td style="text-align:left;">
 0.81
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-thorough
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2179,7 +1453,7 @@ I am someone who tends to be Adjective
 thrifty
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 0.93
@@ -2187,39 +1461,16 @@ Adjective Only
 <td style="text-align:left;">
 0.69
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-thrifty
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 0.91
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-thrifty
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.71
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.90*
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-thrifty
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2232,45 +1483,22 @@ I am someone who tends to be Adjective
 warm
 </td>
 <td style="text-align:left;">
-Adjective Only
+N
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 1.00*
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-warm
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-warm
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+-0.65
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.81
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-warm
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
@@ -2280,10 +1508,156 @@ I am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
+careless
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+0.15
+</td>
+<td style="text-align:left;">
+0.69
+</td>
+<td style="text-align:left;">
+0.89*
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.16
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+impulsive
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.75
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.78
+</td>
+<td style="text-align:left;">
+0.96
+</td>
+<td style="text-align:left;">
+0.87*
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.62
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+moody
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+0.79
+</td>
+<td style="text-align:left;">
+0.94*
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.10
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.84
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nervous
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.54
+</td>
+<td style="text-align:left;">
+-1.00*
+</td>
+<td style="text-align:left;">
+0.59
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.58
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.87
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+reckless
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+0.94*
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.59
+</td>
+<td style="text-align:left;">
+-0.18
+</td>
+<td style="text-align:left;">
+-0.08
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+-0.87
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 worrying
 </td>
 <td style="text-align:left;">
-Adjective Only
+Y
 </td>
 <td style="text-align:left;">
 0.00
@@ -2291,38 +1665,15 @@ Adjective Only
 <td style="text-align:left;">
 0.96*
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-worrying
-</td>
-<td style="text-align:left;">
-Am Adjective
-</td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-worrying
-</td>
-<td style="text-align:left;">
-Tend to be Adjective
+0.64
 </td>
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
 0.80
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-worrying
-</td>
-<td style="text-align:left;">
-I am someone who tends to be Adjective
 </td>
 <td style="text-align:left;">
 </td>
