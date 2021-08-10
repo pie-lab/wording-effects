@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.8.4)  9 AUG 2021 15:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.8.4)  10 AUG 2021 16:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -639,7 +639,7 @@ LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [3]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 219.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 221.
 [4] [5]
 <supplemental_files/figure-latex/1-cleaning-16-1.pdf, id=193, 463.7325pt x 315.
 1775pt>
@@ -647,13 +647,13 @@ File: supplemental_files/figure-latex/1-cleaning-16-1.pdf Graphic file (type pd
 f)
 <use supplemental_files/figure-latex/1-cleaning-16-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-16-1.pdf  u
-sed on input line 411.
+sed on input line 413.
 (pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
 [6] [7pdfTeX warning (ext4): destination with the same identifier (name{figure.
 1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.417 \begin{Shaded}
+l.419 \begin{Shaded}
                      <./supplemental_files/figure-latex/1-cleaning-16-1.pdf>]
 <supplemental_files/figure-latex/1-cleaning-19-1.pdf, id=211, 458.71375pt x 315
 .1775pt>
@@ -661,100 +661,98 @@ File: supplemental_files/figure-latex/1-cleaning-19-1.pdf Graphic file (type pd
 f)
 <use supplemental_files/figure-latex/1-cleaning-19-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-19-1.pdf  u
-sed on input line 465.
+sed on input line 467.
 (pdftex.def)             Requested size: 458.73363pt x 315.19115pt.
 [8] [9pdfTeX warning (ext4): destination with the same identifier (name{figure.
 2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.490 \end{Shaded}
-                   <./supplemental_files/figure-latex/1-cleaning-19-1.pdf>] [10
-]
-<supplemental_files/figure-latex/timing_dist-1.pdf, id=237, 463.7325pt x 308.15
+l.492 \end{Shaded}
+                   <./supplemental_files/figure-latex/1-cleaning-19-1.pdf>]
+<supplemental_files/figure-latex/timing_dist-1.pdf, id=233, 463.7325pt x 308.15
 125pt>
 File: supplemental_files/figure-latex/timing_dist-1.pdf Graphic file (type pdf)
 
 <use supplemental_files/figure-latex/timing_dist-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/timing_dist-1.pdf  use
-d on input line 567.
+d on input line 550.
 (pdftex.def)             Requested size: 463.73842pt x 308.15518pt.
-[11pdfTeX warning (ext4): destination with the same identifier (name{figure.3})
- has been already used, duplicate ignored
+[10] [11pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.596 \begin{Shaded}
-                     <./supplemental_files/figure-latex/timing_dist-1.pdf>] [12
-] [13] [14]
+l.575 \end{Shaded}
+                   <./supplemental_files/figure-latex/timing_dist-1.pdf>] [12] 
+[13] [14]
 <supplemental_files/figure-latex/1-cleaning-45-1.pdf, id=272, 463.7325pt x 315.
 1775pt>
 File: supplemental_files/figure-latex/1-cleaning-45-1.pdf Graphic file (type pd
 f)
 <use supplemental_files/figure-latex/1-cleaning-45-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-45-1.pdf  u
-sed on input line 837.
+sed on input line 828.
 (pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
-[15pdfTeX warning (ext4): destination with the same identifier (name{figure.4})
- has been already used, duplicate ignored
+[15] [16pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.852 \end{Shaded}
+l.866 \end{Shaded}
                    <./supplemental_files/figure-latex/1-cleaning-45-1.pdf>]
-<supplemental_files/figure-latex/1-cleaning-48-1.pdf, id=285, 458.71375pt x 315
+<supplemental_files/figure-latex/1-cleaning-48-1.pdf, id=291, 458.71375pt x 315
 .1775pt>
 File: supplemental_files/figure-latex/1-cleaning-48-1.pdf Graphic file (type pd
 f)
 <use supplemental_files/figure-latex/1-cleaning-48-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-48-1.pdf  u
-sed on input line 891.
+sed on input line 882.
 (pdftex.def)             Requested size: 458.73363pt x 315.19115pt.
-[16] [17pdfTeX warning (ext4): destination with the same identifier (name{figur
-e.5}) has been already used, duplicate ignored
+[17pdfTeX warning (ext4): destination with the same identifier (name{figure.5})
+ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.916 \end{Shaded}
-                   <./supplemental_files/figure-latex/1-cleaning-48-1.pdf>] [18
-]
-<supplemental_files/figure-latex/timing_dist_2-1.pdf, id=311, 463.7325pt x 308.
+l.888 \begin{Shaded}
+                     <./supplemental_files/figure-latex/1-cleaning-48-1.pdf>]
+<supplemental_files/figure-latex/timing_dist_2-1.pdf, id=305, 463.7325pt x 308.
 15125pt>
 File: supplemental_files/figure-latex/timing_dist_2-1.pdf Graphic file (type pd
 f)
 <use supplemental_files/figure-latex/timing_dist_2-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/timing_dist_2-1.pdf  u
-sed on input line 993.
+sed on input line 965.
 (pdftex.def)             Requested size: 463.73842pt x 308.15518pt.
-[19pdfTeX warning (ext4): destination with the same identifier (name{figure.6})
- has been already used, duplicate ignored
+[18] [19pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1024 
-        <./supplemental_files/figure-latex/timing_dist_2-1.pdf>] [20] [21]
+l.974 \end{Shaded}
+                   <./supplemental_files/figure-latex/timing_dist_2-1.pdf>] [20
+] [21]
 <supplemental_files/figure-latex/1-cleaning-63-1.pdf, id=342, 458.71375pt x 315
 .1775pt>
 File: supplemental_files/figure-latex/1-cleaning-63-1.pdf Graphic file (type pd
 f)
 <use supplemental_files/figure-latex/1-cleaning-63-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-63-1.pdf  u
-sed on input line 1163.
+sed on input line 1143.
 (pdftex.def)             Requested size: 458.73363pt x 315.19115pt.
-[22pdfTeX warning (ext4): destination with the same identifier (name{figure.7})
- has been already used, duplicate ignored
+[22] [23pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.7}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1184 \end{Shaded}
-                    <./supplemental_files/figure-latex/1-cleaning-63-1.pdf>] [2
-3pdfTeX warning (ext4): destination with the same identifier (name{table.1}) ha
-s been already used, duplicate ignored
+l.1217 \end{Shaded}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1248 \end{Shaded}
-                   ]
+l.1217 \end{Shaded}
+                    <./supplemental_files/figure-latex/1-cleaning-63-1.pdf>]
 <supplemental_files/figure-latex/1-cleaning-66-1.pdf, id=364, 463.7325pt x 315.
 1775pt>
 File: supplemental_files/figure-latex/1-cleaning-66-1.pdf Graphic file (type pd
 f)
 <use supplemental_files/figure-latex/1-cleaning-66-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-66-1.pdf  u
-sed on input line 1252.
+sed on input line 1232.
 (pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
 <supplemental_files/figure-latex/1-cleaning-67-1.pdf, id=365, 463.7325pt x 315.
 1775pt>
@@ -762,903 +760,961 @@ File: supplemental_files/figure-latex/1-cleaning-67-1.pdf Graphic file (type pd
 f)
 <use supplemental_files/figure-latex/1-cleaning-67-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-67-1.pdf  u
-sed on input line 1271.
+sed on input line 1251.
 (pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
-[24pdfTeX warning (ext4): destination with the same identifier (name{figure.8})
- has been already used, duplicate ignored
+[24] [25pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.8}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1311 \end{Shaded}
+l.1291 \end{Shaded}
                     <./supplemental_files/figure-latex/1-cleaning-66-1.pdf>] [2
-5pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) h
+6pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1311 \end{Shaded}
+l.1291 \end{Shaded}
                     <./supplemental_files/figure-latex/1-cleaning-67-1.pdf>]
-<supplemental_files/figure-latex/1-cleaning-66b-1.pdf, id=396, 463.7325pt x 315
+<supplemental_files/figure-latex/1-cleaning-66b-1.pdf, id=400, 463.7325pt x 315
 .1775pt>
 File: supplemental_files/figure-latex/1-cleaning-66b-1.pdf Graphic file (type p
 df)
 <use supplemental_files/figure-latex/1-cleaning-66b-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-66b-1.pdf  
-used on input line 1326.
+used on input line 1306.
 (pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
-<supplemental_files/figure-latex/1-cleaning-67b-1.pdf, id=397, 463.7325pt x 315
+<supplemental_files/figure-latex/1-cleaning-67b-1.pdf, id=401, 463.7325pt x 315
 .1775pt>
 File: supplemental_files/figure-latex/1-cleaning-67b-1.pdf Graphic file (type p
 df)
 <use supplemental_files/figure-latex/1-cleaning-67b-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-67b-1.pdf  
-used on input line 1345.
+used on input line 1325.
 (pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
-[26] [27pdfTeX warning (ext4): destination with the same identifier (name{figur
+[27] [28pdfTeX warning (ext4): destination with the same identifier (name{figur
 e.10}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1379 \end{verbatim}
+l.1359 \end{verbatim}
                       <./supplemental_files/figure-latex/1-cleaning-66b-1.pdf>]
-[28pdfTeX warning (ext4): destination with the same identifier (name{figure.11}
+[29pdfTeX warning (ext4): destination with the same identifier (name{figure.11}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1379 \end{verbatim}
+l.1359 \end{verbatim}
                       <./supplemental_files/figure-latex/1-cleaning-67b-1.pdf>]
 
-Underfull \hbox (badness 2088) in paragraph at lines 1403--1404
+Underfull \hbox (badness 2088) in paragraph at lines 1383--1384
 []\T1/lmr/m/n/10 These vari-able names have one of four for-mats: \T1/lmtt/m/n/
 10 [trait]_[abcd] \T1/lmr/m/n/10 (for ex-am-ple, \T1/lmtt/m/n/10 talkative_a\T1
 /lmr/m/n/10 ),
  []
 
 
-Underfull \hbox (badness 3471) in paragraph at lines 1403--1404
+Underfull \hbox (badness 3471) in paragraph at lines 1383--1384
 \T1/lmtt/m/n/10 [trait]_[abcd]_2 \T1/lmr/m/n/10 (for ex-am-ple, \T1/lmtt/m/n/10
  talkative_a_2\T1/lmr/m/n/10 ), \T1/lmtt/m/n/10 [trait]_[abcd]_3 \T1/lmr/m/n/10
  (e.g., \T1/lmtt/m/n/10 talkative_a_3\T1/lmr/m/n/10 ), or
  []
 
-[29] [30]
-<supplemental_files/figure-latex/1-cleaning-77-1.pdf, id=445, 463.7325pt x 312.
+[30] [31]
+<supplemental_files/figure-latex/1-cleaning-77-1.pdf, id=454, 463.7325pt x 312.
 16624pt>
 File: supplemental_files/figure-latex/1-cleaning-77-1.pdf Graphic file (type pd
 f)
 <use supplemental_files/figure-latex/1-cleaning-77-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-77-1.pdf  u
-sed on input line 1513.
+sed on input line 1499.
 (pdftex.def)             Requested size: 463.73842pt x 312.17024pt.
-[31pdfTeX warning (ext4): destination with the same identifier (name{figure.12}
+[32pdfTeX warning (ext4): destination with the same identifier (name{figure.12}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1520 \newpage
-                <./supplemental_files/figure-latex/1-cleaning-77-1.pdf>]
-Overfull \hbox (42.69005pt too wide) in paragraph at lines 1585--1630
+l.1519 \end{Shaded}
+                    <./supplemental_files/figure-latex/1-cleaning-77-1.pdf>] [3
+3]
+Overfull \hbox (38.24573pt too wide) in paragraph at lines 1589--1634
  [][] 
  []
 
-[32pdfTeX warning (ext4): destination with the same identifier (name{table.2}) 
+[34pdfTeX warning (ext4): destination with the same identifier (name{table.2}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1651 \end{Shaded}
-                   ] [33]
-Overfull \hbox (42.69005pt too wide) in paragraph at lines 1695--1740
+l.1655 \end{Shaded}
+                   ] [35]
+Overfull \hbox (38.24573pt too wide) in paragraph at lines 1699--1744
  [][] 
  []
 
-[34pdfTeX warning (ext4): destination with the same identifier (name{table.3}) 
+[36pdfTeX warning (ext4): destination with the same identifier (name{table.3}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1742 \newpage
-               ] [35]
-<supplemental_files/figure-latex/unnamed-chunk-24-1.pdf, id=481, 468.75125pt x 
+l.1746 \newpage
+               ] [37]
+<supplemental_files/figure-latex/unnamed-chunk-29-1.pdf, id=496, 468.75125pt x 
 315.1775pt>
-File: supplemental_files/figure-latex/unnamed-chunk-24-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-24-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-24-1.pdf
-  used on input line 1788.
-(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
-[36] [37pdfTeX warning (ext4): destination with the same identifier (name{figur
-e.13}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1817 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-24-1.pdf>]
-<supplemental_files/figure-latex/unnamed-chunk-25-1.pdf, id=501, 463.7325pt x 3
-14.17375pt>
-File: supplemental_files/figure-latex/unnamed-chunk-25-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-25-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-25-1.pdf
-  used on input line 1821.
-(pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
-[38pdfTeX warning (ext4): destination with the same identifier (name{figure.14}
-) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1850 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-25-1.pdf>]
-[39pdfTeX warning (ext4): destination with the same identifier (name{table.4}) 
-has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1903 \begin{Shaded}
-                     ]
-Overfull \hbox (39.79973pt too wide) in paragraph at lines 1944--1972
- [][] 
- []
-
-<supplemental_files/figure-latex/unnamed-chunk-29-1.pdf, id=523, 462.72874pt x 
-313.17pt>
 File: supplemental_files/figure-latex/unnamed-chunk-29-1.pdf Graphic file (type
  pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-29-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-29-1.pdf
-  used on input line 1982.
-(pdftex.def)             Requested size: 462.73466pt x 313.174pt.
-[40pdfTeX warning (ext4): destination with the same identifier (name{table.5}) 
-has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1995 \end{Shaded}
-                   ] [41pdfTeX warning (ext4): destination with the same identi
-fier (name{figure.15}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1995 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-29-1.pdf>]
-<supplemental_files/figure-latex/unnamed-chunk-33-1.pdf, id=544, 468.75125pt x 
-315.1775pt>
-File: supplemental_files/figure-latex/unnamed-chunk-33-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-33-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-33-1.pdf
-  used on input line 2025.
+  used on input line 1792.
 (pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
-[42pdfTeX warning (ext4): destination with the same identifier (name{figure.16}
+[38] [39pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.13}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1821 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-29-1.pdf>]
+<supplemental_files/figure-latex/unnamed-chunk-30-1.pdf, id=515, 463.7325pt x 3
+14.17375pt>
+File: supplemental_files/figure-latex/unnamed-chunk-30-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-30-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-30-1.pdf
+  used on input line 1825.
+(pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
+[40pdfTeX warning (ext4): destination with the same identifier (name{figure.14}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2054 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-33-1.pdf>]
-<supplemental_files/figure-latex/unnamed-chunk-34-1.pdf, id=557, 463.7325pt x 3
-14.17375pt>
+l.1862 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-30-1.pdf>]
+
+Overfull \hbox (35.35541pt too wide) in paragraph at lines 1957--1985
+ [][] 
+ []
+
+[41] [42pdfTeX warning (ext4): destination with the same identifier (name{table
+.4}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1987 \begin{Shaded}
+                     pdfTeX warning (ext4): destination with the same identifie
+r (name{table.5}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1987 \begin{Shaded}
+                     ]
+<supplemental_files/figure-latex/unnamed-chunk-34-1.pdf, id=544, 462.72874pt x 
+313.17pt>
 File: supplemental_files/figure-latex/unnamed-chunk-34-1.pdf Graphic file (type
  pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-34-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-34-1.pdf
-  used on input line 2058.
-(pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
-[43pdfTeX warning (ext4): destination with the same identifier (name{figure.17}
+  used on input line 1995.
+(pdftex.def)             Requested size: 462.73466pt x 313.174pt.
+[43pdfTeX warning (ext4): destination with the same identifier (name{figure.15}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2067 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-34-1.pdf
->]
-Overfull \hbox (52.57748pt too wide) in paragraph at lines 2182--2210
- [][] 
- []
-
-[44] [45pdfTeX warning (ext4): destination with the same identifier (name{table
-.6}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2212 \begin{Shaded}
-                     pdfTeX warning (ext4): destination with the same identifie
-r (name{table.7}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2212 \begin{Shaded}
-                     ]
-<supplemental_files/figure-latex/unnamed-chunk-38-1.pdf, id=588, 462.72874pt x 
-313.17pt>
+l.2034 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-34-1.pdf>]
+<supplemental_files/figure-latex/unnamed-chunk-38-1.pdf, id=559, 468.75125pt x 
+315.1775pt>
 File: supplemental_files/figure-latex/unnamed-chunk-38-1.pdf Graphic file (type
  pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-38-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-38-1.pdf
-  used on input line 2220.
-(pdftex.def)             Requested size: 462.73466pt x 313.174pt.
-
-Overfull \hbox (52.57748pt too wide) in paragraph at lines 2248--2276
- [][] 
- []
-
-<supplemental_files/figure-latex/unnamed-chunk-40-1.pdf, id=589, 462.72874pt x 
-313.17pt>
-File: supplemental_files/figure-latex/unnamed-chunk-40-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-40-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-40-1.pdf
-  used on input line 2286.
-(pdftex.def)             Requested size: 462.73466pt x 313.174pt.
-[46pdfTeX warning (ext4): destination with the same identifier (name{figure.18}
+  used on input line 2038.
+(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
+[44pdfTeX warning (ext4): destination with the same identifier (name{figure.16}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2293 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-38-1.pdf
->] [47pdfTeX warning (ext4): destination with the same identifier (name{table.8
-}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2293 \begin{Shaded}
-                     pdfTeX warning (ext4): destination with the same identifie
-r (name{figure.19}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2293 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-40-1.pdf
->] [48]
-<supplemental_files/figure-latex/unnamed-chunk-42-1.pdf, id=622, 468.75125pt x 
-315.1775pt>
-File: supplemental_files/figure-latex/unnamed-chunk-42-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-42-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-42-1.pdf
-  used on input line 2408.
-(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
-[49] [50pdfTeX warning (ext4): destination with the same identifier (name{figur
-e.20}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2435 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-42-1.pdf>]
-[51]
-<supplemental_files/figure-latex/unnamed-chunk-47-1.pdf, id=647, 468.75125pt x 
-315.1775pt>
-File: supplemental_files/figure-latex/unnamed-chunk-47-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-47-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-47-1.pdf
-  used on input line 2543.
-(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
-[52] [53pdfTeX warning (ext4): destination with the same identifier (name{figur
-e.21}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2572 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-47-1.pdf>]
-<supplemental_files/figure-latex/unnamed-chunk-48-1.pdf, id=666, 463.7325pt x 3
+l.2067 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-38-1.pdf>]
+<supplemental_files/figure-latex/unnamed-chunk-39-1.pdf, id=573, 463.7325pt x 3
 14.17375pt>
+File: supplemental_files/figure-latex/unnamed-chunk-39-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-39-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-39-1.pdf
+  used on input line 2071.
+(pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
+[45pdfTeX warning (ext4): destination with the same identifier (name{figure.17}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2115 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-39-1.pdf>]
+[46] [47pdfTeX warning (ext4): destination with the same identifier (name{table
+.6}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2207 \end{Shaded}
+                   ]
+Overfull \hbox (48.13316pt too wide) in paragraph at lines 2213--2241
+ [][] 
+ []
+
+<supplemental_files/figure-latex/unnamed-chunk-44-1.pdf, id=601, 462.72874pt x 
+313.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-44-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-44-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-44-1.pdf
+  used on input line 2251.
+(pdftex.def)             Requested size: 462.73466pt x 313.174pt.
+[48pdfTeX warning (ext4): destination with the same identifier (name{table.7}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2258 \begin{Shaded}
+                     pdfTeX warning (ext4): destination with the same identifie
+r (name{figure.18}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2258 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-44-1.pdf
+>]
+Overfull \hbox (48.13316pt too wide) in paragraph at lines 2279--2307
+ [][] 
+ []
+
+<supplemental_files/figure-latex/unnamed-chunk-46-1.pdf, id=616, 462.72874pt x 
+313.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-46-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-46-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-46-1.pdf
+  used on input line 2317.
+(pdftex.def)             Requested size: 462.73466pt x 313.174pt.
+[49pdfTeX warning (ext4): destination with the same identifier (name{table.8}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2413 \end{verbatim}
+                     ] [50pdfTeX warning (ext4): destination with the same iden
+tifier (name{figure.19}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2413 \end{verbatim}
+                      <./supplemental_files/figure-latex/unnamed-chunk-46-1.pdf
+>] [51]
+<supplemental_files/figure-latex/unnamed-chunk-48-1.pdf, id=641, 468.75125pt x 
+315.1775pt>
 File: supplemental_files/figure-latex/unnamed-chunk-48-1.pdf Graphic file (type
  pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-48-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-48-1.pdf
-  used on input line 2576.
-(pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
-[54pdfTeX warning (ext4): destination with the same identifier (name{figure.22}
+  used on input line 2430.
+(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
+[52pdfTeX warning (ext4): destination with the same identifier (name{figure.20}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2580 \newpage
-                <./supplemental_files/figure-latex/unnamed-chunk-48-1.pdf>] [55
-] [56] [57] [58] [59] [60]
-<supplemental_files/figure-latex/testre-1.pdf, id=718, 463.7325pt x 316.18124pt
+l.2466 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-48-1.pdf>]
+[53] [54]
+<supplemental_files/figure-latex/unnamed-chunk-53-1.pdf, id=667, 468.75125pt x 
+315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-53-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-53-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-53-1.pdf
+  used on input line 2578.
+(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
+[55pdfTeX warning (ext4): destination with the same identifier (name{figure.21}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2607 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-53-1.pdf>]
+<supplemental_files/figure-latex/unnamed-chunk-54-1.pdf, id=681, 463.7325pt x 3
+14.17375pt>
+File: supplemental_files/figure-latex/unnamed-chunk-54-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-54-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-54-1.pdf
+  used on input line 2611.
+(pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
+[56pdfTeX warning (ext4): destination with the same identifier (name{figure.22}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2618 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-54-1.pdf
+>] [57] [58pdfTeX warning (ext4): destination with the same identifier (name{ta
+ble.9}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2740 \end{Shaded}
+                   ]
+<supplemental_files/figure-latex/unnamed-chunk-58-1.pdf, id=710, 451.6875pt x 3
+13.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-58-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-58-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-58-1.pdf
+  used on input line 2771.
+(pdftex.def)             Requested size: 451.70016pt x 313.17877pt.
+[59pdfTeX warning (ext4): destination with the same identifier (name{table.10})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2774 \subsubsection{Lively}\label{lively}}
+                                            ]
+<supplemental_files/figure-latex/unnamed-chunk-60-1.pdf, id=716, 451.6875pt x 3
+13.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-60-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-60-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-60-1.pdf
+  used on input line 2827.
+(pdftex.def)             Requested size: 451.70016pt x 313.17877pt.
+[60 <./supplemental_files/figure-latex/unnamed-chunk-58-1.pdf>] [61pdfTeX warni
+ng (ext4): destination with the same identifier (name{table.11}) has been alrea
+dy used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2852 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-60-1.pdf>]
+<supplemental_files/figure-latex/unnamed-chunk-62-1.pdf, id=745, 451.6875pt x 3
+13.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-62-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-62-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-62-1.pdf
+  used on input line 2883.
+(pdftex.def)             Requested size: 451.70016pt x 313.17877pt.
+[62pdfTeX warning (ext4): destination with the same identifier (name{table.12})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2888 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-62-1.pdf
+>]
+<supplemental_files/figure-latex/unnamed-chunk-64-1.pdf, id=759, 451.6875pt x 3
+13.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-64-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-64-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-64-1.pdf
+  used on input line 2939.
+(pdftex.def)             Requested size: 451.70016pt x 313.17877pt.
+[63pdfTeX warning (ext4): destination with the same identifier (name{table.13})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2941 \newpage
+               ] [64 <./supplemental_files/figure-latex/unnamed-chunk-64-1.pdf>
+] [65] [66] [67] [68] [69]
+<supplemental_files/figure-latex/testre-1.pdf, id=811, 463.7325pt x 316.18124pt
 >
 File: supplemental_files/figure-latex/testre-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/testre-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/testre-1.pdf  used on 
-input line 3011.
+input line 3324.
 (pdftex.def)             Requested size: 463.73842pt x 316.18529pt.
-[61] [62pdfTeX warning (ext4): destination with the same identifier (name{figur
+[70] [71pdfTeX warning (ext4): destination with the same identifier (name{figur
 e.23}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3027 \end{Shaded}
+l.3340 \end{Shaded}
                     <./supplemental_files/figure-latex/testre-1.pdf>]
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-3039.
-(/Users/sweston2/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
-File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
+Overfull \hbox (69.77203pt too wide) in paragraph at lines 3378--3421
+ [][] 
+ []
 
-LaTeX Warning: Float too large for page by 944.60022pt on input line 3342.
-
-<supplemental_files/figure-latex/unnamed-chunk-65-1.pdf, id=737, 457.71pt x 307
+<supplemental_files/figure-latex/unnamed-chunk-81-1.pdf, id=830, 457.71pt x 307
 .1475pt>
-File: supplemental_files/figure-latex/unnamed-chunk-65-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-65-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-65-1.pdf
-  used on input line 3364.
-(pdftex.def)             Requested size: 457.72984pt x 307.1608pt.
-[63] [64pdfTeX warning (ext4): destination with the same identifier (name{table
-.9}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3368 \newpage
-               ] [65pdfTeX warning (ext4): destination with the same identifier
- (name{figure.24}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3368 \newpage
-                <./supplemental_files/figure-latex/unnamed-chunk-65-1.pdf>]
-<supplemental_files/figure-latex/unnamed-chunk-70-1.pdf, id=760, 468.75125pt x 
-315.1775pt>
-File: supplemental_files/figure-latex/unnamed-chunk-70-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-70-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-70-1.pdf
-  used on input line 3410.
-(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
-<supplemental_files/figure-latex/unnamed-chunk-71-1.pdf, id=761, 457.71pt x 315
-.1775pt>
-File: supplemental_files/figure-latex/unnamed-chunk-71-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-71-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-71-1.pdf
-  used on input line 3435.
-(pdftex.def)             Requested size: 457.72984pt x 315.19115pt.
-[66] [67pdfTeX warning (ext4): destination with the same identifier (name{figur
-e.25}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3464 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-70-1.pdf>]
-[68pdfTeX warning (ext4): destination with the same identifier (name{figure.26}
-) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3464 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-71-1.pdf>]
-<supplemental_files/figure-latex/unnamed-chunk-72-1.pdf, id=793, 463.7325pt x 3
-14.17375pt>
-File: supplemental_files/figure-latex/unnamed-chunk-72-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-72-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-72-1.pdf
-  used on input line 3468.
-(pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
-
-Overfull \hbox (4.93945pt too wide) in paragraph at lines 3485--3513
- [][] 
- []
-
-[69pdfTeX warning (ext4): destination with the same identifier (name{figure.27}
-) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3520 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-72-1.pdf
->] [70] [71pdfTeX warning (ext4): destination with the same identifier (name{ta
-ble.10}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3619 \begin{Shaded}
-                     ]
-Overfull \hbox (39.79973pt too wide) in paragraph at lines 3639--3667
- [][] 
- []
-
-<supplemental_files/figure-latex/unnamed-chunk-77-1.pdf, id=823, 468.75125pt x 
-313.17pt>
-File: supplemental_files/figure-latex/unnamed-chunk-77-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-77-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-77-1.pdf
-  used on input line 3677.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-
-Overfull \hbox (39.79973pt too wide) in paragraph at lines 3704--3732
- [][] 
- []
-
-<supplemental_files/figure-latex/unnamed-chunk-79-1.pdf, id=824, 468.75125pt x 
-313.17pt>
-File: supplemental_files/figure-latex/unnamed-chunk-79-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-79-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-79-1.pdf
-  used on input line 3742.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[72pdfTeX warning (ext4): destination with the same identifier (name{table.11})
- has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3763 \end{Shaded}
-                   ] [73pdfTeX warning (ext4): destination with the same identi
-fier (name{figure.28}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3763 \end{Shaded}
-                   pdfTeX warning (ext4): destination with the same identifier 
-(name{table.12}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3763 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-77-1.pdf>]
-[74pdfTeX warning (ext4): destination with the same identifier (name{figure.29}
-) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3763 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-79-1.pdf>]
-
-Overfull \hbox (39.79973pt too wide) in paragraph at lines 3769--3797
- [][] 
- []
-
-<supplemental_files/figure-latex/unnamed-chunk-81-1.pdf, id=861, 468.75125pt x 
-313.17pt>
 File: supplemental_files/figure-latex/unnamed-chunk-81-1.pdf Graphic file (type
  pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-81-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-81-1.pdf
-  used on input line 3807.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-
-Overfull \hbox (39.79973pt too wide) in paragraph at lines 3834--3862
- [][] 
- []
-
-<supplemental_files/figure-latex/unnamed-chunk-83-1.pdf, id=862, 468.75125pt x 
-313.17pt>
-File: supplemental_files/figure-latex/unnamed-chunk-83-1.pdf Graphic file (type
+  used on input line 3443.
+(pdftex.def)             Requested size: 457.72984pt x 307.1608pt.
+[72] [73pdfTeX warning (ext4): destination with the same identifier (name{table
+.14}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3447 \newpage
+               ] [74pdfTeX warning (ext4): destination with the same identifier
+ (name{figure.24}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3447 \newpage
+                <./supplemental_files/figure-latex/unnamed-chunk-81-1.pdf>]
+<supplemental_files/figure-latex/unnamed-chunk-86-1.pdf, id=853, 468.75125pt x 
+315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-86-1.pdf Graphic file (type
  pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-83-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-83-1.pdf
-  used on input line 3872.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[75pdfTeX warning (ext4): destination with the same identifier (name{table.13})
- has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3893 \end{Shaded}
-                   ] [76pdfTeX warning (ext4): destination with the same identi
-fier (name{figure.30}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3893 \end{Shaded}
-                   pdfTeX warning (ext4): destination with the same identifier 
-(name{table.14}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3893 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-81-1.pdf>]
-[77pdfTeX warning (ext4): destination with the same identifier (name{figure.31}
-) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3893 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-83-1.pdf>]
-
-Overfull \hbox (39.79973pt too wide) in paragraph at lines 3899--3927
- [][] 
- []
-
-<supplemental_files/figure-latex/unnamed-chunk-85-1.pdf, id=897, 468.75125pt x 
-313.17pt>
-File: supplemental_files/figure-latex/unnamed-chunk-85-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-85-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-85-1.pdf
-  used on input line 3937.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-
-Overfull \hbox (39.79973pt too wide) in paragraph at lines 3964--3992
- [][] 
- []
-
-<supplemental_files/figure-latex/unnamed-chunk-87-1.pdf, id=898, 468.75125pt x 
-313.17pt>
+<use supplemental_files/figure-latex/unnamed-chunk-86-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-86-1.pdf
+  used on input line 3489.
+(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
+<supplemental_files/figure-latex/unnamed-chunk-87-1.pdf, id=854, 457.71pt x 315
+.1775pt>
 File: supplemental_files/figure-latex/unnamed-chunk-87-1.pdf Graphic file (type
  pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-87-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-87-1.pdf
-  used on input line 4002.
+  used on input line 3514.
+(pdftex.def)             Requested size: 457.72984pt x 315.19115pt.
+[75] [76pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.25}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3543 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-86-1.pdf>]
+[77pdfTeX warning (ext4): destination with the same identifier (name{figure.26}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3543 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-87-1.pdf>]
+<supplemental_files/figure-latex/unnamed-chunk-88-1.pdf, id=885, 463.7325pt x 3
+14.17375pt>
+File: supplemental_files/figure-latex/unnamed-chunk-88-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-88-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-88-1.pdf
+  used on input line 3547.
+(pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
+[78pdfTeX warning (ext4): destination with the same identifier (name{figure.27}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3599 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-88-1.pdf
+>] [79] [80pdfTeX warning (ext4): destination with the same identifier (name{ta
+ble.15}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3698 \begin{Shaded}
+                     ]
+Overfull \hbox (35.35541pt too wide) in paragraph at lines 3718--3746
+ [][] 
+ []
+
+<supplemental_files/figure-latex/unnamed-chunk-93-1.pdf, id=915, 468.75125pt x 
+313.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-93-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-93-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-93-1.pdf
+  used on input line 3756.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[78pdfTeX warning (ext4): destination with the same identifier (name{table.15})
+
+Overfull \hbox (35.35541pt too wide) in paragraph at lines 3783--3811
+ [][] 
+ []
+
+<supplemental_files/figure-latex/unnamed-chunk-95-1.pdf, id=916, 468.75125pt x 
+313.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-95-1.pdf Graphic file (type
+ pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-95-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-95-1.pdf
+  used on input line 3821.
+(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
+[81pdfTeX warning (ext4): destination with the same identifier (name{table.16})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4011 \begin{Shaded}
-                     ] [79pdfTeX warning (ext4): destination with the same iden
-tifier (name{figure.32}) has been already used, duplicate ignored
+l.3842 \end{Shaded}
+                   ] [82pdfTeX warning (ext4): destination with the same identi
+fier (name{figure.28}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4011 \begin{Shaded}
-                     pdfTeX warning (ext4): destination with the same identifie
-r (name{table.16}) has been already used, duplicate ignored
+l.3842 \end{Shaded}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.17}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4011 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-85-1.pdf
->] [80pdfTeX warning (ext4): destination with the same identifier (name{figure.
-33}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4011 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-87-1.pdf
->]
-<supplemental_files/figure-latex/unnamed-chunk-90-1.pdf, id=933, 468.75125pt x 
-315.1775pt>
-File: supplemental_files/figure-latex/unnamed-chunk-90-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-90-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-90-1.pdf
-  used on input line 4047.
-(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
-[81pdfTeX warning (ext4): destination with the same identifier (name{figure.34}
+l.3842 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-93-1.pdf>]
+[83pdfTeX warning (ext4): destination with the same identifier (name{figure.29}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4068 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-90-1.pdf>]
-<supplemental_files/figure-latex/unnamed-chunk-91-1.pdf, id=946, 456.70625pt x 
-315.1775pt>
-File: supplemental_files/figure-latex/unnamed-chunk-91-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-91-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-91-1.pdf
-  used on input line 4072.
-(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
-[82pdfTeX warning (ext4): destination with the same identifier (name{figure.35}
-) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4100 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-91-1.pdf>]
-<supplemental_files/figure-latex/unnamed-chunk-92-1.pdf, id=960, 463.7325pt x 3
-14.17375pt>
-File: supplemental_files/figure-latex/unnamed-chunk-92-1.pdf Graphic file (type
- pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-92-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-92-1.pdf
-  used on input line 4104.
-(pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
+l.3842 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-95-1.pdf>]
 
-Overfull \hbox (22.71721pt too wide) in paragraph at lines 4121--4149
+Overfull \hbox (35.35541pt too wide) in paragraph at lines 3848--3876
  [][] 
  []
 
-[83pdfTeX warning (ext4): destination with the same identifier (name{figure.36}
-) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4156 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-92-1.pdf
->] [84] [85pdfTeX warning (ext4): destination with the same identifier (name{ta
-ble.17}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4254 \begin{Shaded}
-                     ]
-Overfull \hbox (52.57748pt too wide) in paragraph at lines 4275--4303
- [][] 
- []
-
-<supplemental_files/figure-latex/unnamed-chunk-97-1.pdf, id=990, 468.75125pt x 
+<supplemental_files/figure-latex/unnamed-chunk-97-1.pdf, id=952, 468.75125pt x 
 313.17pt>
 File: supplemental_files/figure-latex/unnamed-chunk-97-1.pdf Graphic file (type
  pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-97-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-97-1.pdf
-  used on input line 4313.
+  used on input line 3886.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
 
-Overfull \hbox (52.57748pt too wide) in paragraph at lines 4341--4369
+Overfull \hbox (35.35541pt too wide) in paragraph at lines 3913--3941
  [][] 
  []
 
-<supplemental_files/figure-latex/unnamed-chunk-99-1.pdf, id=991, 468.75125pt x 
+<supplemental_files/figure-latex/unnamed-chunk-99-1.pdf, id=953, 468.75125pt x 
 313.17pt>
 File: supplemental_files/figure-latex/unnamed-chunk-99-1.pdf Graphic file (type
  pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-99-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-99-1.pdf
-  used on input line 4379.
+  used on input line 3951.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[86pdfTeX warning (ext4): destination with the same identifier (name{table.18})
+[84pdfTeX warning (ext4): destination with the same identifier (name{table.18})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4386 \begin{Shaded}
-                     ] [87pdfTeX warning (ext4): destination with the same iden
-tifier (name{figure.37}) has been already used, duplicate ignored
+l.3972 \end{Shaded}
+                   ] [85pdfTeX warning (ext4): destination with the same identi
+fier (name{figure.30}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4386 \begin{Shaded}
-                     pdfTeX warning (ext4): destination with the same identifie
-r (name{table.19}) has been already used, duplicate ignored
+l.3972 \end{Shaded}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.19}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4386 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-97-1.pdf
->] [88pdfTeX warning (ext4): destination with the same identifier (name{figure.
-38}) has been already used, duplicate ignored
+l.3972 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-97-1.pdf>]
+[86pdfTeX warning (ext4): destination with the same identifier (name{figure.31}
+) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4386 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-99-1.pdf
->]
-Overfull \hbox (52.57748pt too wide) in paragraph at lines 4407--4435
+l.3972 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-99-1.pdf>]
+
+Overfull \hbox (35.35541pt too wide) in paragraph at lines 3978--4006
  [][] 
  []
 
-<supplemental_files/figure-latex/unnamed-chunk-101-1.pdf, id=1026, 468.75125pt 
-x 313.17pt>
+<supplemental_files/figure-latex/unnamed-chunk-101-1.pdf, id=990, 468.75125pt x
+ 313.17pt>
 File: supplemental_files/figure-latex/unnamed-chunk-101-1.pdf Graphic file (typ
 e pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-101-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-101-1.pd
-f  used on input line 4445.
+f  used on input line 4016.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[89pdfTeX warning (ext4): destination with the same identifier (name{table.20})
- has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4552 \end{verbatim}
-                     ] [90pdfTeX warning (ext4): destination with the same iden
-tifier (name{figure.39}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4552 \end{verbatim}
-                      <./supplemental_files/figure-latex/unnamed-chunk-101-1.pd
-f>] [91]
-<supplemental_files/figure-latex/unnamed-chunk-103-1.pdf, id=1051, 468.75125pt 
-x 315.1775pt>
+
+Overfull \hbox (35.35541pt too wide) in paragraph at lines 4043--4071
+ [][] 
+ []
+
+<supplemental_files/figure-latex/unnamed-chunk-103-1.pdf, id=991, 468.75125pt x
+ 313.17pt>
 File: supplemental_files/figure-latex/unnamed-chunk-103-1.pdf Graphic file (typ
 e pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-103-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-103-1.pd
-f  used on input line 4571.
-(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
-<supplemental_files/figure-latex/unnamed-chunk-104-1.pdf, id=1052, 573.14125pt 
-x 315.1775pt>
-File: supplemental_files/figure-latex/unnamed-chunk-104-1.pdf Graphic file (typ
-e pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-104-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-104-1.pd
-f  used on input line 4599.
-(pdftex.def)             Requested size: 469.76022pt x 258.32698pt.
-[92] [93pdfTeX warning (ext4): destination with the same identifier (name{figur
-e.40}) has been already used, duplicate ignored
+f  used on input line 4081.
+(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
+[87pdfTeX warning (ext4): destination with the same identifier (name{table.20})
+ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4606 \begin{Shaded}
+l.4090 \begin{Shaded}
+                     ] [88pdfTeX warning (ext4): destination with the same iden
+tifier (name{figure.32}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4090 \begin{Shaded}
+                     pdfTeX warning (ext4): destination with the same identifie
+r (name{table.21}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4090 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-101-1.pd
+f>] [89pdfTeX warning (ext4): destination with the same identifier (name{figure
+.33}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4090 \begin{Shaded}
                       <./supplemental_files/figure-latex/unnamed-chunk-103-1.pd
-f>] [94pdfTeX warning (ext4): destination with the same identifier (name{figure
-.41}) has been already used, duplicate ignored
+f>]
+<supplemental_files/figure-latex/unnamed-chunk-106-1.pdf, id=1025, 468.75125pt 
+x 315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-106-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-106-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-106-1.pd
+f  used on input line 4126.
+(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
+[90pdfTeX warning (ext4): destination with the same identifier (name{figure.34}
+) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4681 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-104-1.pd
-f>] [95]
-<supplemental_files/figure-latex/unnamed-chunk-108-1.pdf, id=1088, 457.71pt x 3
-13.17pt>
+l.4147 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-106-1.pdf>
+]
+<supplemental_files/figure-latex/unnamed-chunk-107-1.pdf, id=1038, 456.70625pt 
+x 315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-107-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-107-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-107-1.pd
+f  used on input line 4151.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+[91pdfTeX warning (ext4): destination with the same identifier (name{figure.35}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4179 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-107-1.pdf>
+]
+<supplemental_files/figure-latex/unnamed-chunk-108-1.pdf, id=1052, 463.7325pt x
+ 314.17375pt>
 File: supplemental_files/figure-latex/unnamed-chunk-108-1.pdf Graphic file (typ
 e pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-108-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-108-1.pd
-f  used on input line 4716.
-(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
-[96pdfTeX warning (ext4): destination with the same identifier (name{figure.42}
+f  used on input line 4183.
+(pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
+
+Overfull \hbox (18.27289pt too wide) in paragraph at lines 4200--4228
+ [][] 
+ []
+
+[92pdfTeX warning (ext4): destination with the same identifier (name{figure.36}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4723 \begin{Shaded}
+l.4235 \begin{Shaded}
                       <./supplemental_files/figure-latex/unnamed-chunk-108-1.pd
+f>] [93] [94pdfTeX warning (ext4): destination with the same identifier (name{t
+able.22}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4333 \begin{Shaded}
+                     ]
+Overfull \hbox (48.13316pt too wide) in paragraph at lines 4354--4382
+ [][] 
+ []
+
+<supplemental_files/figure-latex/unnamed-chunk-113-1.pdf, id=1081, 468.75125pt 
+x 313.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-113-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-113-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-113-1.pd
+f  used on input line 4392.
+(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
+
+Overfull \hbox (48.13316pt too wide) in paragraph at lines 4420--4448
+ [][] 
+ []
+
+<supplemental_files/figure-latex/unnamed-chunk-115-1.pdf, id=1082, 468.75125pt 
+x 313.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-115-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-115-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-115-1.pd
+f  used on input line 4458.
+(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
+[95pdfTeX warning (ext4): destination with the same identifier (name{table.23})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4465 \begin{Shaded}
+                     ] [96pdfTeX warning (ext4): destination with the same iden
+tifier (name{figure.37}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4465 \begin{Shaded}
+                     pdfTeX warning (ext4): destination with the same identifie
+r (name{table.24}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4465 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-113-1.pd
+f>] [97pdfTeX warning (ext4): destination with the same identifier (name{figure
+.38}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4465 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-115-1.pd
 f>]
-<supplemental_files/figure-latex/unnamed-chunk-110-1.pdf, id=1106, 457.71pt x 3
-13.17pt>
-File: supplemental_files/figure-latex/unnamed-chunk-110-1.pdf Graphic file (typ
+Overfull \hbox (48.13316pt too wide) in paragraph at lines 4486--4514
+ [][] 
+ []
+
+<supplemental_files/figure-latex/unnamed-chunk-117-1.pdf, id=1119, 468.75125pt 
+x 313.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-117-1.pdf Graphic file (typ
 e pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-110-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-110-1.pd
-f  used on input line 4740.
-(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
-<supplemental_files/figure-latex/unnamed-chunk-112-1.pdf, id=1107, 457.71pt x 3
-13.17pt>
-File: supplemental_files/figure-latex/unnamed-chunk-112-1.pdf Graphic file (typ
-e pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-112-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-112-1.pd
-f  used on input line 4764.
-(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
-[97pdfTeX warning (ext4): destination with the same identifier (name{figure.43}
-) has been already used, duplicate ignored
+<use supplemental_files/figure-latex/unnamed-chunk-117-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-117-1.pd
+f  used on input line 4524.
+(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
+[98pdfTeX warning (ext4): destination with the same identifier (name{table.25})
+ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4771 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-110-1.pd
-f>] [98pdfTeX warning (ext4): destination with the same identifier (name{figure
-.44}) has been already used, duplicate ignored
+l.4622 \end{verbatim}
+                     ] [99pdfTeX warning (ext4): destination with the same iden
+tifier (name{figure.39}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4771 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-112-1.pd
-f>]
-<supplemental_files/figure-latex/unnamed-chunk-114-1.pdf, id=1137, 457.71pt x 3
-13.17pt>
-File: supplemental_files/figure-latex/unnamed-chunk-114-1.pdf Graphic file (typ
+l.4622 \end{verbatim}
+                      <./supplemental_files/figure-latex/unnamed-chunk-117-1.pd
+f>] [100]
+<supplemental_files/figure-latex/unnamed-chunk-119-1.pdf, id=1143, 468.75125pt 
+x 315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-119-1.pdf Graphic file (typ
 e pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-114-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-114-1.pd
-f  used on input line 4788.
-(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
-<supplemental_files/figure-latex/unnamed-chunk-116-1.pdf, id=1138, 457.71pt x 3
-13.17pt>
-File: supplemental_files/figure-latex/unnamed-chunk-116-1.pdf Graphic file (typ
-e pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-116-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-116-1.pd
-f  used on input line 4812.
-(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
-[99pdfTeX warning (ext4): destination with the same identifier (name{figure.45}
-) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4819 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-114-1.pd
-f>] [100pdfTeX warning (ext4): destination with the same identifier (name{figur
-e.46}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4819 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-116-1.pd
-f>]
-<supplemental_files/figure-latex/unnamed-chunk-118-1.pdf, id=1167, 457.71pt x 3
-13.17pt>
-File: supplemental_files/figure-latex/unnamed-chunk-118-1.pdf Graphic file (typ
-e pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-118-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-118-1.pd
-f  used on input line 4836.
-(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
-[101pdfTeX warning (ext4): destination with the same identifier (name{figure.47
+<use supplemental_files/figure-latex/unnamed-chunk-119-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-119-1.pd
+f  used on input line 4641.
+(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
+[101pdfTeX warning (ext4): destination with the same identifier (name{figure.40
 }) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4840 \newpage
-                <./supplemental_files/figure-latex/unnamed-chunk-118-1.pdf>]
-<supplemental_files/figure-latex/unnamed-chunk-124-1.pdf, id=1181, 461.725pt x 
-315.1775pt>
+l.4645 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-119-1.pd
+f>]
+<supplemental_files/figure-latex/unnamed-chunk-120-1.pdf, id=1156, 573.14125pt 
+x 315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-120-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-120-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-120-1.pd
+f  used on input line 4669.
+(pdftex.def)             Requested size: 469.76022pt x 258.32698pt.
+[102pdfTeX warning (ext4): destination with the same identifier (name{figure.41
+}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4700 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-120-1.pdf>
+] [103]
+<supplemental_files/figure-latex/unnamed-chunk-124-1.pdf, id=1177, 457.71pt x 3
+13.17pt>
 File: supplemental_files/figure-latex/unnamed-chunk-124-1.pdf Graphic file (typ
 e pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-124-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-124-1.pd
-f  used on input line 4887.
-(pdftex.def)             Requested size: 461.72388pt x 315.17673pt.
-<supplemental_files/figure-latex/unnamed-chunk-125-1.pdf, id=1182, 463.7325pt x
- 314.17375pt>
-File: supplemental_files/figure-latex/unnamed-chunk-125-1.pdf Graphic file (typ
-e pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-125-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-125-1.pd
-f  used on input line 4916.
-(pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
-[102] [103pdfTeX warning (ext4): destination with the same identifier (name{fig
-ure.48}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4929 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-124-1.pdf>
-] [104pdfTeX warning (ext4): destination with the same identifier (name{figure.
-49}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4929 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-125-1.pdf>
-]
-<supplemental_files/figure-latex/unnamed-chunk-127-1.pdf, id=1218, 468.75125pt 
-x 315.1775pt>
-File: supplemental_files/figure-latex/unnamed-chunk-127-1.pdf Graphic file (typ
-e pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-127-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-127-1.pd
-f  used on input line 4953.
-(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
-[105pdfTeX warning (ext4): destination with the same identifier (name{figure.50
+f  used on input line 4786.
+(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
+[104pdfTeX warning (ext4): destination with the same identifier (name{figure.42
 }) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4965 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-127-1.pd
+l.4793 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-124-1.pd
 f>]
-<supplemental_files/figure-latex/unnamed-chunk-129-1.pdf, id=1233, 461.725pt x 
-315.1775pt>
-File: supplemental_files/figure-latex/unnamed-chunk-129-1.pdf Graphic file (typ
+<supplemental_files/figure-latex/unnamed-chunk-126-1.pdf, id=1194, 457.71pt x 3
+13.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-126-1.pdf Graphic file (typ
 e pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-129-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-129-1.pd
-f  used on input line 4993.
-(pdftex.def)             Requested size: 461.72388pt x 315.17673pt.
-[106pdfTeX warning (ext4): destination with the same identifier (name{figure.51
+<use supplemental_files/figure-latex/unnamed-chunk-126-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-126-1.pd
+f  used on input line 4810.
+(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
+<supplemental_files/figure-latex/unnamed-chunk-128-1.pdf, id=1195, 457.71pt x 3
+13.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-128-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-128-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-128-1.pd
+f  used on input line 4834.
+(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
+[105pdfTeX warning (ext4): destination with the same identifier (name{figure.43
 }) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4997 \begin{Shaded}
-                      <./supplemental_files/figure-latex/unnamed-chunk-129-1.pd
+l.4841 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-126-1.pd
+f>] [106pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.44}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4841 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-128-1.pd
 f>]
-<supplemental_files/figure-latex/unnamed-chunk-130-1.pdf, id=1248, 463.7325pt x
- 315.1775pt>
+<supplemental_files/figure-latex/unnamed-chunk-130-1.pdf, id=1224, 457.71pt x 3
+13.17pt>
 File: supplemental_files/figure-latex/unnamed-chunk-130-1.pdf Graphic file (typ
 e pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-130-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-130-1.pd
-f  used on input line 5020.
-(pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
-
-Overfull \vbox (0.19162pt too high) detected at line 5033
- []
-
-[107pdfTeX warning (ext4): destination with the same identifier (name{figure.52
-}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5033 \end{Shaded}
-                    <./supplemental_files/figure-latex/unnamed-chunk-130-1.pdf>
-]
-<supplemental_files/figure-latex/unnamed-chunk-132-1.pdf, id=1263, 468.75125pt 
-x 315.1775pt>
+f  used on input line 4858.
+(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
+<supplemental_files/figure-latex/unnamed-chunk-132-1.pdf, id=1225, 457.71pt x 3
+13.17pt>
 File: supplemental_files/figure-latex/unnamed-chunk-132-1.pdf Graphic file (typ
 e pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-132-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-132-1.pd
-f  used on input line 5059.
-(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
-[108pdfTeX warning (ext4): destination with the same identifier (name{figure.53
+f  used on input line 4882.
+(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
+[107pdfTeX warning (ext4): destination with the same identifier (name{figure.45
 }) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.5063 \newpage
-                <./supplemental_files/figure-latex/unnamed-chunk-132-1.pdf>] [1
-09]
-<supplemental_files/figure-latex/unnamed-chunk-141-1.pdf, id=1283, 460.72125pt 
-x 305.14pt>
+l.4889 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-130-1.pd
+f>] [108pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.46}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4889 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-132-1.pd
+f>]
+<supplemental_files/figure-latex/unnamed-chunk-134-1.pdf, id=1255, 457.71pt x 3
+13.17pt>
+File: supplemental_files/figure-latex/unnamed-chunk-134-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-134-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-134-1.pd
+f  used on input line 4906.
+(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
+[109pdfTeX warning (ext4): destination with the same identifier (name{figure.47
+}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4910 \newpage
+                <./supplemental_files/figure-latex/unnamed-chunk-134-1.pdf>]
+<supplemental_files/figure-latex/unnamed-chunk-140-1.pdf, id=1270, 461.725pt x 
+315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-140-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-140-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-140-1.pd
+f  used on input line 4957.
+(pdftex.def)             Requested size: 461.72388pt x 315.17673pt.
+<supplemental_files/figure-latex/unnamed-chunk-141-1.pdf, id=1271, 463.7325pt x
+ 314.17375pt>
 File: supplemental_files/figure-latex/unnamed-chunk-141-1.pdf Graphic file (typ
 e pdf)
 <use supplemental_files/figure-latex/unnamed-chunk-141-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-141-1.pd
-f  used on input line 5162.
-(pdftex.def)             Requested size: 460.72012pt x 305.13924pt.
-[110] [111 <./supplemental_files/figure-latex/unnamed-chunk-141-1.pdf>] [112]
-<supplemental_files/figure-latex/unnamed-chunk-149-1.pdf, id=1304, 461.725pt x 
-305.14pt>
-File: supplemental_files/figure-latex/unnamed-chunk-149-1.pdf Graphic file (typ
+f  used on input line 4986.
+(pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
+[110] [111pdfTeX warning (ext4): destination with the same identifier (name{fig
+ure.48}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4999 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-140-1.pdf>
+] [112pdfTeX warning (ext4): destination with the same identifier (name{figure.
+49}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4999 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-141-1.pdf>
+]
+<supplemental_files/figure-latex/unnamed-chunk-143-1.pdf, id=1306, 468.75125pt 
+x 315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-143-1.pdf Graphic file (typ
 e pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-149-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-149-1.pd
-f  used on input line 5286.
+<use supplemental_files/figure-latex/unnamed-chunk-143-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-143-1.pd
+f  used on input line 5023.
+(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
+[113pdfTeX warning (ext4): destination with the same identifier (name{figure.50
+}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5035 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-143-1.pd
+f>]
+<supplemental_files/figure-latex/unnamed-chunk-145-1.pdf, id=1320, 461.725pt x 
+315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-145-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-145-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-145-1.pd
+f  used on input line 5063.
+(pdftex.def)             Requested size: 461.72388pt x 315.17673pt.
+[114pdfTeX warning (ext4): destination with the same identifier (name{figure.51
+}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5067 \begin{Shaded}
+                      <./supplemental_files/figure-latex/unnamed-chunk-145-1.pd
+f>]
+<supplemental_files/figure-latex/unnamed-chunk-146-1.pdf, id=1335, 463.7325pt x
+ 315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-146-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-146-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-146-1.pd
+f  used on input line 5090.
+(pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
+
+Overfull \vbox (0.19162pt too high) detected at line 5103
+ []
+
+[115pdfTeX warning (ext4): destination with the same identifier (name{figure.52
+}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5103 \end{Shaded}
+                    <./supplemental_files/figure-latex/unnamed-chunk-146-1.pdf>
+]
+<supplemental_files/figure-latex/unnamed-chunk-148-1.pdf, id=1351, 468.75125pt 
+x 315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-148-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-148-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-148-1.pd
+f  used on input line 5129.
+(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
+[116pdfTeX warning (ext4): destination with the same identifier (name{figure.53
+}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5133 \newpage
+                <./supplemental_files/figure-latex/unnamed-chunk-148-1.pdf>] [1
+17]
+<supplemental_files/figure-latex/unnamed-chunk-157-1.pdf, id=1371, 460.72125pt 
+x 305.14pt>
+File: supplemental_files/figure-latex/unnamed-chunk-157-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-157-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-157-1.pd
+f  used on input line 5232.
+(pdftex.def)             Requested size: 460.72012pt x 305.13924pt.
+[118] [119 <./supplemental_files/figure-latex/unnamed-chunk-157-1.pdf>] [120]
+<supplemental_files/figure-latex/unnamed-chunk-165-1.pdf, id=1392, 461.725pt x 
+305.14pt>
+File: supplemental_files/figure-latex/unnamed-chunk-165-1.pdf Graphic file (typ
+e pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-165-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-165-1.pd
+f  used on input line 5356.
 (pdftex.def)             Requested size: 461.72388pt x 305.13924pt.
-[113 <./supplemental_files/figure-latex/unnamed-chunk-149-1.pdf>] [114] (./supp
+[121 <./supplemental_files/figure-latex/unnamed-chunk-165-1.pdf>] [122] (./supp
 lemental.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `supplemental.out' has not changed.
-(rerunfilecheck)             Checksum: 073FA9640917021F66BAFDC82C51DFB8;6025.
+(rerunfilecheck)             Checksum: F54F41B83624AEEB96254E4531EFB12F;5964.
  ) 
 Here is how much of TeX's memory you used:
- 13502 strings out of 480502
- 214275 string characters out of 5898669
- 553541 words of memory out of 5000000
- 30494 multiletter control sequences out of 15000+600000
- 454345 words of font info for 71 fonts, out of 8000000 for 9000
+ 13537 strings out of 480502
+ 215997 string characters out of 5898669
+ 534361 words of memory out of 5000000
+ 30498 multiletter control sequences out of 15000+600000
+ 454040 words of font info for 70 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,9n,66p,787b,483s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/Users/sweston2/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/U
-sers/sweston2/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Use
-rs/sweston2/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/swe
-ston2/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</Users/sweston2/
-Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/sweston2/Li
-brary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/sweston2/Libr
-ary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/sweston2/Librar
-y/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/sweston2/Library/T
-inyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/sweston2/Library/Tiny
-TeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/sweston2/Library/TinyTeX
-/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/sweston2/Library/TinyTeX/t
-exmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/sweston2/Library/TinyTeX/tex
-mf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/sweston2/Library/TinyTeX/texmf
--dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on supplemental.pdf (114 pages, 681956 bytes).
+{/Users/sweston2/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}
+{/Users/sweston2/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/User
+s/sweston2/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</Users/swes
+ton2/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/swesto
+n2/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/sweston2
+/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/sweston2/L
+ibrary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/sweston2/Libr
+ary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/sweston2/Library
+/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/sweston2/Library/Ti
+nyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/sweston2/Library/Tiny
+TeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/sweston2/Library/TinyTe
+X/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/sweston2/Library/TinyTeX/
+texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
+Output written on supplemental.pdf (122 pages, 715134 bytes).
 PDF statistics:
- 1456 PDF objects out of 1728 (max. 8388607)
- 1141 compressed objects within 12 object streams
- 373 named destinations out of 1000 (max. 500000)
- 508 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1548 PDF objects out of 1728 (max. 8388607)
+ 1213 compressed objects within 13 object streams
+ 404 named destinations out of 1000 (max. 500000)
+ 528 words of extra memory for PDF output out of 10000 (max. 10000000)
 
