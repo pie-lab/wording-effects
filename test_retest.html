@@ -369,7 +369,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Test-retest reliability</h1>
-<h4 class="date">Last updated 2021-08-10</h4>
+<h4 class="date">Last updated 2021-08-11</h4>
 
 </div>
 
@@ -377,7 +377,7 @@ div.tocify {
 <p>We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific – formats #3 and #4 above vs the use of adjectives alone. In other words, we expect equal or lower retest reliability for the adjectives than for longer phrases. We will also consider the effect of performance on the word recall task on retest reliability .</p>
 <div id="prep-dataset" class="section level2">
 <h2>Prep dataset</h2>
-<p>The data structure needed for these analsyes is in wide-format. That is, we require one column for each time point. In addition, we hope to examine reliability <em>within</em> format, which requires selecting only the response options which match the original, Block 1, assessment.</p>
+<p>The data structure needed for these analyses is in wide-format. That is, we require one column for each time point. In addition, we hope to examine reliability <em>within</em> format, which requires selecting only the response options which match the original, Block 1, assessment.</p>
 <pre class="r"><code>items_df = items_df %&gt;% 
   mutate(condition = tolower(condition)) %&gt;% 
   mutate(condition = factor(condition, 
@@ -385,6 +385,7 @@ div.tocify {
                             labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;Am someone\nwho tends to be\nAdjective&quot;)))
 
 items_matchb1 = items_df %&gt;% 
+  mutate(across(c(format, condition), as.character)) %&gt;% 
   filter(format == condition) %&gt;% 
   mutate(block = paste0(&quot;block_&quot;, block)) %&gt;% 
   select(-timing, -seconds_log, -i) %&gt;% 
@@ -549,13 +550,13 @@ tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)</code></pre>
 ##   condition                             block_1.trend     SE  df lower.CL
 ##  Adjective\nOnly                                0.605 0.0728 213    0.462
 ##  Am\nAdjective                                  0.850 0.0710 224    0.710
-##  Tend to be\nAdjective                          0.809 0.0869 227    0.637
 ##  Am someone\nwho tends to be\nAdjective         0.877 0.1044 189    0.671
+##  Tend to be\nAdjective                          0.809 0.0869 227    0.637
 ##  upper.CL
 ##     0.749
 ##     0.990
-##     0.980
 ##     1.083
+##     0.980
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## Confidence level used: 0.95 
@@ -563,18 +564,18 @@ tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)</code></pre>
 ## $contrasts
 ##    contrast                                                     estimate    SE
 ##  Adjective\nOnly - Am\nAdjective                                 -0.2452 0.102
-##  Adjective\nOnly - Tend to be\nAdjective                         -0.2036 0.113
 ##  Adjective\nOnly - Am someone\nwho tends to be\nAdjective        -0.2720 0.127
-##  Am\nAdjective - Tend to be\nAdjective                            0.0416 0.112
+##  Adjective\nOnly - Tend to be\nAdjective                         -0.2036 0.113
 ##  Am\nAdjective - Am someone\nwho tends to be\nAdjective          -0.0268 0.126
-##  Tend to be\nAdjective - Am someone\nwho tends to be\nAdjective  -0.0684 0.136
+##  Am\nAdjective - Tend to be\nAdjective                            0.0416 0.112
+##  Am someone\nwho tends to be\nAdjective - Tend to be\nAdjective   0.0684 0.136
 ##   df t.ratio p.value
 ##  219 -2.413  0.0777 
-##  228 -1.796  0.2777 
 ##  219 -2.137  0.1448 
-##  229  0.371  0.9825 
+##  228 -1.796  0.2777 
 ##  214 -0.212  0.9966 
-##  210 -0.503  0.9582 
+##  229  0.371  0.9825 
+##  210  0.503  0.9582 
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
@@ -586,13 +587,13 @@ tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)</code></pre>
 ##   condition                             block_1.trend     SE  df lower.CL
 ##  Adjective\nOnly                                0.677 0.0649 535    0.550
 ##  Am\nAdjective                                  0.659 0.0621 539    0.537
-##  Tend to be\nAdjective                          0.683 0.0673 278    0.550
 ##  Am someone\nwho tends to be\nAdjective         0.621 0.0751 543    0.473
+##  Tend to be\nAdjective                          0.683 0.0673 278    0.550
 ##  upper.CL
 ##     0.805
 ##     0.781
-##     0.815
 ##     0.768
+##     0.815
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## Confidence level used: 0.95 
@@ -600,18 +601,18 @@ tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)</code></pre>
 ## $contrasts
 ##    contrast                                                     estimate     SE
 ##  Adjective\nOnly - Am\nAdjective                                 0.01849 0.0899
-##  Adjective\nOnly - Tend to be\nAdjective                        -0.00562 0.0935
 ##  Adjective\nOnly - Am someone\nwho tends to be\nAdjective        0.05634 0.0993
-##  Am\nAdjective - Tend to be\nAdjective                          -0.02411 0.0916
+##  Adjective\nOnly - Tend to be\nAdjective                        -0.00562 0.0935
 ##  Am\nAdjective - Am someone\nwho tends to be\nAdjective          0.03785 0.0975
-##  Tend to be\nAdjective - Am someone\nwho tends to be\nAdjective  0.06196 0.1009
+##  Am\nAdjective - Tend to be\nAdjective                          -0.02411 0.0916
+##  Am someone\nwho tends to be\nAdjective - Tend to be\nAdjective -0.06196 0.1009
 ##   df t.ratio p.value
 ##  543  0.206  0.9969 
-##  413 -0.060  0.9999 
 ##  541  0.567  0.9417 
-##  441 -0.263  0.9936 
+##  413 -0.060  0.9999 
 ##  543  0.388  0.9801 
-##  457  0.614  0.9275 
+##  441 -0.263  0.9936 
+##  457 -0.614  0.9275 
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
@@ -1696,7 +1697,7 @@ Y
   labs(x = NULL, y = &quot;Correlation&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="test_retest_files/figure-html/unnamed-chunk-17-1.png" alt="Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item." width="672" />
+<img src="test_retest_files/figure-html/test-retest-17-1.png" alt="Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item." width="672" />
 <p class="caption">
 Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item.
 </p>

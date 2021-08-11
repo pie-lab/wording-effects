@@ -369,7 +369,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2021-08-10</h4>
+<h4 class="date">Last updated 2021-08-11</h4>
 
 </div>
 
@@ -451,11 +451,6 @@ data = full_join(data, personality_items)</code></pre>
   filter(id_length &gt; 20) %&gt;% 
   select(-id_length)</code></pre>
 <p>We removed 5 participants without valid Prolific IDs.</p>
-<pre class="r"><code>data = data %&gt;%
-  mutate(proid = str_remove(proid, &quot;Value will be set from panel or URL&quot;),
-         proid = str_remove(proid, &quot;Value will be set from panel or UR&quot;),
-         proid = str_remove(proid, &quot;TEST&quot;)) %&gt;%
-  filter(proid != &quot;&quot;)</code></pre>
 </div>
 <div id="based-on-language" class="section level4">
 <h4>Based on language</h4>
@@ -563,7 +558,7 @@ runs_data %&gt;%
   ) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/1-cleaning-16-1.png" alt="Maximum number of same consecutive responses in personality blocks." width="672" />
+<img src="1-cleaning_files/figure-html/1-cleaning-18-1.png" alt="Maximum number of same consecutive responses in personality blocks." width="672" />
 <p class="caption">
 Maximum number of same consecutive responses in personality blocks.
 </p>
@@ -600,7 +595,7 @@ rm(runs_data)</code></pre>
   labs(x = &quot;Average response to inattention check items&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/1-cleaning-19-1.png" alt="Average response to inattention check items" width="672" />
+<img src="1-cleaning_files/figure-html/1-cleaning-21-1.png" alt="Average response to inattention check items" width="672" />
 <p class="caption">
 Average response to inattention check items
 </p>
@@ -645,7 +640,7 @@ Average response to inattention check items
   labs(x = &quot;Average response time (seconds)&quot;, y = &quot;Number of participants&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/timing_dist-1.png" alt="Distribution of average time to respond to personality items." width="672" />
+<img src="1-cleaning_files/figure-html/1-cleaning-27-1.png" alt="Distribution of average time to respond to personality items." width="672" />
 <p class="caption">
 Distribution of average time to respond to personality items.
 </p>
@@ -750,11 +745,6 @@ data_2 = full_join(data_2, personality_items_2)</code></pre>
 <pre class="r"><code>data_2 = data_2 %&gt;% 
   filter(proid %in% data$proid)</code></pre>
 <p>We removed 13 participants without valid Prolific IDs.</p>
-<pre class="r"><code>data_2 = data_2 %&gt;%
-  mutate(proid = str_remove(proid, &quot;Value will be set from panel or URL&quot;),
-         proid = str_remove(proid, &quot;Value will be set from panel or UR&quot;),
-         proid = str_remove(proid, &quot;TEST&quot;)) %&gt;%
-  filter(proid != &quot;&quot;)</code></pre>
 </div>
 <div id="based-on-patterns-1" class="section level4">
 <h4>Based on patterns</h4>
@@ -818,7 +808,7 @@ runs_data_2 %&gt;%
        y = &quot;Participant count&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/1-cleaning-45-1.png" alt="Maximum number of same consecutive responses in personality block 3." width="672" />
+<img src="1-cleaning_files/figure-html/1-cleaning-51-1.png" alt="Maximum number of same consecutive responses in personality block 3." width="672" />
 <p class="caption">
 Maximum number of same consecutive responses in personality block 3.
 </p>
@@ -855,7 +845,7 @@ rm(runs_data_2)</code></pre>
   labs(x = &quot;Average response to inattention check items&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/1-cleaning-48-1.png" alt="Average response to inattention check items" width="672" />
+<img src="1-cleaning_files/figure-html/1-cleaning-55-1.png" alt="Average response to inattention check items" width="672" />
 <p class="caption">
 Average response to inattention check items
 </p>
@@ -900,7 +890,7 @@ Average response to inattention check items
   labs(x = &quot;Average response time (seconds)&quot;, y = &quot;Number of participants&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/timing_dist_2-1.png" alt="Distribution of average time to respond to personality items in Block 3." width="672" />
+<img src="1-cleaning_files/figure-html/1-cleaning-61-1.png" alt="Distribution of average time to respond to personality items in Block 3." width="672" />
 <p class="caption">
 Distribution of average time to respond to personality items in Block 3.
 </p>
@@ -1020,7 +1010,7 @@ data = data %&gt;%
   scale_x_continuous(breaks = 0:10) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/1-cleaning-63-1.png" alt="Correct responses on the memory task" width="672" />
+<img src="1-cleaning_files/figure-html/1-cleaning-72-1.png" alt="Correct responses on the memory task" width="672" />
 <p class="caption">
 Correct responses on the memory task
 </p>
@@ -1186,7 +1176,7 @@ data = inner_join(data, mem2)</code></pre>
   labs(y = &quot;Number of participants&quot;) +
   theme_pubr() </code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/1-cleaning-66-1.png" alt="Distribution of delayed memory scores" width="672" />
+<img src="1-cleaning_files/figure-html/1-cleaning-75-1.png" alt="Distribution of delayed memory scores" width="672" />
 <p class="caption">
 Distribution of delayed memory scores
 </p>
@@ -1200,7 +1190,7 @@ Distribution of delayed memory scores
   labs(title = paste0(&quot;r = &quot;, printnum(cor(data$memory, data$delayed_memory, use = &quot;pairwise&quot;)))) +
   theme_pubr() </code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/1-cleaning-67-1.png" alt="Relationship between immediate and delayed recall" width="672" />
+<img src="1-cleaning_files/figure-html/1-cleaning-76-1.png" alt="Relationship between immediate and delayed recall" width="672" />
 <p class="caption">
 Relationship between immediate and delayed recall
 </p>
@@ -1244,7 +1234,7 @@ data = full_join(data, mem3)</code></pre>
   labs(y = &quot;Number of participants&quot;) +
   theme_pubr() </code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/1-cleaning-66b-1.png" alt="Distribution of delayed memory scores" width="672" />
+<img src="1-cleaning_files/figure-html/1-cleaning-78-1.png" alt="Distribution of delayed memory scores" width="672" />
 <p class="caption">
 Distribution of delayed memory scores
 </p>
@@ -1258,7 +1248,7 @@ Distribution of delayed memory scores
   labs(title = paste0(&quot;r = &quot;, printnum(cor(data$memory, data$delayed_memory, use = &quot;pairwise&quot;)))) +
   theme_pubr() </code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/1-cleaning-67b-1.png" alt="Relationship between immediate and delayed recall" width="672" />
+<img src="1-cleaning_files/figure-html/1-cleaning-79-1.png" alt="Relationship between immediate and delayed recall" width="672" />
 <p class="caption">
 Relationship between immediate and delayed recall
 </p>
@@ -1370,7 +1360,7 @@ items_df$format = factor(items_df$format,
   labs(x = NULL, y = &quot;Number of participants&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="1-cleaning_files/figure-html/1-cleaning-77-1.png" alt="Distribution of seconds, raw and transformed." width="672" />
+<img src="1-cleaning_files/figure-html/1-cleaning-90-1.png" alt="Distribution of seconds, raw and transformed." width="672" />
 <p class="caption">
 Distribution of seconds, raw and transformed.
 </p>
@@ -1385,7 +1375,7 @@ new_id = stri_rand_strings(n = length(original_id), length = 10)
 
 for(i in 1:length(original_id)){
   data$proid[data$proid == original_id[i]] = new_id[i]
-  items_df$proid[data$proid == original_id[i]] = new_id[i]
+  items_df$proid[items_df$proid == original_id[i]] = new_id[i]
 }</code></pre>
 </div>
 </div>

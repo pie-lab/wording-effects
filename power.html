@@ -367,12 +367,16 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Power analysis</h1>
-<h4 class="date">Last updated 2021-08-10</h4>
+<h4 class="date">Last updated 2021-08-11</h4>
 
 </div>
 
 
 <p>We conduct power analyses for the main research question – does formatting affect response to personality items – using a simulation method. That is, we generate datasets of varying sample sizes (from as few as 50 participants per condition to as many as 100), then simulate responses based on the models fit to the pilot data.</p>
+<p>Here we set the sample sizes we’ll test, as well as the number of simulations we’ll run for each sample size.</p>
+<pre class="r"><code>sample_sizes = seq(50, 500, 25)
+
+n_sims = 1000</code></pre>
 <div id="model-1" class="section level2">
 <h2>Model 1</h2>
 <p>To simplify our code, we write a function that simulates responses to model 1 based on a given sample size, N, and number of repititions.</p>
@@ -401,7 +405,7 @@ sim_format_b1 = function(n, sims){
   sim_d = expand_grid(
     proid = as.character(((3*n)+1):(4*n)),
     item = c(1:33),
-    format = &quot;I am someone\nwho tends to be\nAdjective&quot;
+    format = &quot;Am someone\nwho tends to be\nAdjective&quot;
   )
   
   sim_data = rbind(sim_a, sim_b) %&gt;% rbind(sim_c) %&gt;% rbind(sim_d)
@@ -413,12 +417,6 @@ sim_format_b1 = function(n, sims){
 }</code></pre>
 <p>Next we identify the sample sizes for simulation (from 50 to 500 by 25) and create a data frame to hold the results. Power represents the proportion of simulations for which <em>p</em> is less than .05.</p>
 <pre class="r"><code># simulate at various sample sizes
-# n = number per condition
-
-sample_sizes = seq(50, 500, 25)
-
-n_sims = 1000
-
 power_df = data.frame(
   N = sample_sizes,
   power = 0
@@ -440,7 +438,7 @@ for(i in sample_sizes){
     y = &quot;Simulated power&quot;
   ) +
   theme_pubclean()</code></pre>
-<p><img src="power_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="power_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>#identify minimum sample size
 
 power_df_min = power_df %&gt;% 
@@ -451,7 +449,7 @@ N_min = min(power_df_min$N)</code></pre>
 </div>
 <div id="model-2" class="section level2">
 <h2>Model 2</h2>
-<p>Here we repeat the process for our second model, which uses both blocks of data.</p>
+<p>Here we repeat the process for our second model, which uses both blocks of data from Time 1 (i.e., Blocks 1 and 2).</p>
 <pre class="r"><code># function to simulate mod.format_b2
 
 sim_format_b2 = function(n, sims){
@@ -480,7 +478,7 @@ sim_format_b2 = function(n, sims){
   sim_d_b2 = expand_grid(
     proid = as.character(((3*n)+1):(4*n)),
     item = c(1:33),
-    format = &quot;I am someone\nwho tends to be\nAdjective&quot;,
+    format = &quot;Am someone\nwho tends to be\nAdjective&quot;,
     block = &quot;1&quot;
   )
   sim_b2 = expand_grid(
@@ -492,7 +490,7 @@ sim_format_b2 = function(n, sims){
     x = c(&quot;Adjective\nOnly&quot;,
           &quot;Am\nAdjective&quot;,
           &quot;Tend to be\nAdjective&quot;,
-          &quot;I am someone\nwho tends to be\nAdjective&quot;), 
+          &quot;Am someone\nwho tends to be\nAdjective&quot;), 
     size = 33*n*4,
     replace = TRUE
   )
@@ -533,7 +531,7 @@ for(i in sample_sizes){
     y = &quot;Simulated power&quot;
   ) +
   theme_pubclean()</code></pre>
-<p><img src="power_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="power_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <pre class="r"><code>#identify minimum sample size
 
 power_df2_min = power_df_2 %&gt;% 
@@ -541,6 +539,88 @@ power_df2_min = power_df_2 %&gt;%
 
 N_min2 = min(power_df2_min$N)</code></pre>
 <p>The simulation suggests that power would be over the threshold of .95 with a sample size of 75 participants per condition.</p>
+</div>
+<div id="model-3" class="section level2">
+<h2>Model 3</h2>
+<p>Finally we repeat the process for our third model, which uses Blocks 1 and 3, or the first personality assessment at each time point.</p>
+<p>We note here that condition A (adjective only) is omitted from this model, as it is grammatically incorrect to preface this type with “I” (e.g., “I talkative”).</p>
+<pre class="r"><code># function to simulate mod.format_b3
+
+sim_format_b3 = function(n, sims){
+  
+  p_vals_i = numeric(length = sims)
+  p_vals_int = numeric(length = sims)
+  
+  sim_b = expand_grid(
+    proid = as.character((n+1):(2*n)),
+    item = c(1:33),
+    block = c(1,3),
+    format = &quot;Am\nAdjective&quot;
+  )
+  
+  sim_c = expand_grid(
+    proid = as.character(((2*n)+1):(3*n)),
+    item = c(1:33),
+    block = c(1,3),
+    format = &quot;Tend to be\nAdjective&quot;
+  )
+  
+  sim_d = expand_grid(
+    proid = as.character(((3*n)+1):(4*n)),
+    item = c(1:33),
+    block = c(1,3),
+    format = &quot;Am someone\nwho tends to be\nAdjective&quot;
+  )
+  
+  sim_data = rbind(sim_b, sim_c) %&gt;% rbind(sim_d)
+  
+  for (simulation in 1:sims){
+    
+    sim_data = sim_data %&gt;% 
+      group_by(row_number()) %&gt;% 
+      mutate(i = case_when(
+        block == 1 ~ &quot;Absent&quot;,
+        TRUE ~ sample(c(&quot;Absent&quot;, &quot;Present&quot;), size = 1))) %&gt;% 
+      ungroup()
+    
+    sim_data$response = simulate(mod.format_b3, newdata = sim_data, allow.new.levels = T)[,1]
+    sim_mod = lmer(response~format*i + (1|proid), data = sim_data)
+    p_vals_i[simulation] = anova(sim_mod)[&quot;i&quot;, 6]
+    p_vals_int[simulation] = anova(sim_mod)[&quot;format:i&quot;, 6]}
+  return(list(p_vals_i, p_vals_int))
+}</code></pre>
+<p>We use the same sample sizes and simulation length for these analyses, so we start by creating a new data frame. In this case, we estimate power for two different effects in the model: the main effect of including the word “I”, as well as the interaction between “I” and the format of the item.</p>
+<pre class="r"><code>power_df_3 = data.frame(
+  N = sample_sizes,
+  power_i = 0,
+  power_int = 0
+)</code></pre>
+<p>Here we (inefficiently) loop through all sample sizes and calculate power.</p>
+<pre class="r"><code>set.seed(20210729)
+for(i in sample_sizes){
+  pvalues = sim_format_b3(i, n_sims)
+  sig_i = ifelse(pvalues[[1]] &lt; .05, 1, 0)
+  sig_int = ifelse(pvalues[[2]] &lt; .05, 1, 0)
+  power_df_3$power_i[power_df_3$N == i] &lt;- sum(sig_i)/n_sims
+  power_df_3$power_int[power_df_3$N == i] &lt;- sum(sig_int)/n_sims
+}</code></pre>
+<p>Finally, we plot these effects to determine needed sample size.</p>
+<pre class="r"><code>power_df_3 %&gt;%
+  ggplot(aes(x = N, y = power)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    x = &quot;N per condition&quot;,
+    y = &quot;Simulated power&quot;
+  ) +
+  theme_pubclean()</code></pre>
+<pre class="r"><code>#identify minimum sample size
+
+power_df2_min = power_df_2 %&gt;% 
+  filter(power &gt; .95)
+
+N_min2 = min(power_df2_min$N)</code></pre>
+<!-- The simulation suggests that power would be over the threshold of .95 with a sample size of 75 participants per condition. -->
 </div>
 
 

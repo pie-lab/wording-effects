@@ -13,7 +13,7 @@ knitr::opts_chunk$set(warning = F, message = F)
 
 ## Workspace
 
-```{r 1-cleaning-2}
+```{r 1-cleaning-2 }
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
@@ -31,7 +31,7 @@ library(broom.mixed) # for tidying mulitievel models
 
 ## Time 1
 
-```{r 1-cleaning-3}
+```{r 1-cleaning-3 }
 data_path = here("data/Wording_July 13, 2021_20.00.text.csv")
 
 data_labels = read_csv(data_path)
@@ -45,7 +45,7 @@ data = clean_names(data)
 
 Remove the following columns.
 
-```{r 1-cleaning-4}
+```{r 1-cleaning-4 }
 data = data %>%
   select(-end_date,
          -ip_address, 
@@ -64,7 +64,7 @@ data = data %>%
 
 We recode the responses to personality items, which we downloaded as text strings. 
 
-```{r 1-cleaning-5}
+```{r 1-cleaning-5 }
 p_items = str_extract(names(data), "^[[:alpha:]]*_[abcd](_2)?$")
 p_items = p_items[!is.na(p_items)]
 
@@ -73,7 +73,7 @@ personality_items = select(data, proid, all_of(p_items))
 
 Next we write a simple function to recode values.
 
-```{r 1-cleaning-6}
+```{r 1-cleaning-6 }
 recode_p = function(x){
   y = case_when(
     x == "Very inaccurate" ~ 1,
@@ -89,7 +89,7 @@ recode_p = function(x){
 
 Finally, we apply this function to all personality items.
 
-```{r 1-cleaning-7}
+```{r 1-cleaning-7 }
 personality_items = personality_items %>%
   mutate(
     across(!c(proid), recode_p))
@@ -97,7 +97,7 @@ personality_items = personality_items %>%
 
 Now we merge this back into the data.
 
-```{r 1-cleaning-8}
+```{r 1-cleaning-8 }
 data = select(data, -all_of(p_items))
 data = full_join(data, personality_items)
 ```
@@ -110,7 +110,7 @@ data = full_join(data, personality_items)
 olddata = data
 ```
 
-```{r rm_proid, echo = F}
+```{r 1-cleaning-10, echo = F}
 data = data %>%
   mutate(proid = str_remove(proid, "Value will be set from panel or URL"),
          proid = str_remove(proid, "Value will be set from panel or UR"),
@@ -121,7 +121,7 @@ data = data %>%
 
 Prolific IDs must also be a certain length. We remove IDs that are not sufficiently long.
 
-```{r 1-cleaning-10}
+```{r 1-cleaning-11 }
 data = data %>% 
   mutate(id_length = nchar(proid)) %>% 
   filter(id_length > 20) %>% 
@@ -130,16 +130,16 @@ data = data %>%
 
 We removed `r nrow(olddata)-nrow(data)` participants without valid Prolific IDs.
 
-```{r 1-cleaning-11, ref.label='rm_proid'}
+```{r 1-cleaning-12, ref.label='rm_proid'}
 ```
 
 #### Based on language
 
-```{r 1-cleaning-12, echo = F}
+```{r 1-cleaning-13, echo = F}
 olddata = data
 ```
 
-```{r rm_english, echo = F}
+```{r 1-cleaning-14, echo = F}
 data = data %>%
   filter(english %in% c("Well", "Very well (fluent/native)"))
 ```
@@ -150,7 +150,7 @@ We removed `r nrow(olddata)-nrow(data)` participants that do not speak english w
 
 We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row.
 
-```{r 1-cleaning-13}
+```{r 1-cleaning-15 }
 # first, identify unique adjectives, in order
 adjectives = p_items %>%
   str_remove_all("_.") %>%
@@ -194,7 +194,7 @@ for(i in 1:nrow(block1)){
 block1$block1_runs = block1_runs
 ```
 
-```{r 1-cleaning-14}
+```{r 1-cleaning-16 }
 # extract block 2 questions
 block2 = data %>%
   select(proid, matches("^[[:alpha:]]+_[abcd]_2$")) 
@@ -233,7 +233,7 @@ for(i in 1:nrow(block2)){
 block2$block2_runs = block2_runs
 ```
 
-```{r 1-cleaning-15}
+```{r 1-cleaning-17 }
 #combine results
 runs_data = block1 %>%
   select(proid, block1_runs) %>%
@@ -246,7 +246,7 @@ runs_data = block1 %>%
     ))
 ```
 
-```{r 1-cleaning-16, fig.cap = "Maximum number of same consecutive responses in personality blocks."}
+```{r 1-cleaning-18, fig.cap = "Maximum number of same consecutive responses in personality blocks."}
 #visualize
 runs_data %>%
   ggplot(aes(block1_runs, block2_runs)) +
@@ -262,7 +262,7 @@ runs_data %>%
 
 There were `r table(runs_data$remove)[[2]]` participants who provided the same answer 17 or more times in a row. These participants were removed from the analyses.
 
-```{r 1-cleaning-17}
+```{r 1-cleaning-19 }
 data = data %>%
   full_join(select(runs_data, proid, remove)) %>%
   filter(remove != "Remove") %>%
@@ -275,7 +275,7 @@ rm(runs_data)
 
 We expect to exclude any participant who has an average response of 4 (“slightly agree”) or greater to the attention check items. Two items from the Inattentive and Deviant Responding Inventory for Adjectives (IDRIA) scale (Kay & Saucier, in prep) have been included here, in part to help evaluate the extent of inattentive responding but also to consider the effect of item wording on these items. The two items used here (i.e., “Asleep”, “Human”) were chosen to be as inconspicuous as possible, so as to not to inflate item response durations. The frequency item (i.e., “human”) will be reverse-scored, so that higher scores on both the infrequency and frequency items reflect greater inattentive responding.
 
-```{r 1-cleaning-18}
+```{r 1-cleaning-20 }
 in_average = data %>%
   # reverse score human
   mutate(across(matches("^human"),  ~(.x*-1)+7)) %>%
@@ -290,7 +290,7 @@ in_average = data %>%
       avg >= 4 ~ "Remove",
       TRUE ~ "Keep"))
 ```
-```{r 1-cleaning-19, fig.cap = "Average response to inattention check items"}
+```{r 1-cleaning-21, fig.cap = "Average response to inattention check items"}
 in_average %>%
   ggplot(aes(x = avg, fill = remove)) +
   geom_histogram(bins = 20, color = "white") +
@@ -302,7 +302,7 @@ in_average %>%
 
 We remove `r table(in_average$remove[[2]])` participants whose responses suggest inattention.
 
-```{r 1-cleaning-20}
+```{r 1-cleaning-22 }
 data = data %>%
   full_join(select(in_average, proid, remove)) %>%
   filter(remove != "Remove") %>%
@@ -313,14 +313,14 @@ data = data %>%
 
 First, select just the timing of the personality items. We do this by searching for specific strings: "t_[someword]_[a or b or c or d]_(maybe 2_)_page_submit."
 
-```{r 1-cleaning-21}
+```{r 1-cleaning-23 }
 timing_data = data %>%
   select(proid, matches("t_[[:alpha:]]*_[abcd](_2)?_page_submit"))
 ```
 
 Next we gather into long form and remove missing timing values
 
-```{r 1-cleaning-22}
+```{r 1-cleaning-24 }
 timing_data = timing_data %>%
   gather(variable, timing, -proid) %>%
   filter(!is.na(timing))
@@ -328,7 +328,7 @@ timing_data = timing_data %>%
 
 To check, each participant should have the same number of responses: 62.
 
-```{r 1-cleaning-23}
+```{r 1-cleaning-25 }
 timing_data %>%
   group_by(proid) %>%
   count() %>%
@@ -338,7 +338,7 @@ timing_data %>%
 
 Excellent! Now we calculate the average response time per item for each participant. We mark a participant for removal if their average time is less than 1 second or greater than 30. See Figure \@ref(fig:timing_dist) for a distribution of average response time.
 
-```{r 1-cleaning-24}
+```{r 1-cleaning-26 }
 timing_data = timing_data %>%
   group_by(proid) %>%
   summarise(m_time = mean(timing)) %>%
@@ -349,7 +349,7 @@ timing_data = timing_data %>%
   ))
 ```
 
-```{r timing_dist, fig.cap = "Distribution of average time to respond to personality items."}
+```{r 1-cleaning-27, fig.cap = "Distribution of average time to respond to personality items."}
 timing_data %>%
   ggplot(aes(x = m_time, fill = remove)) +
   geom_histogram(color = "white") +
@@ -357,11 +357,11 @@ timing_data %>%
   theme_pubr()
 ```
 
-```{r 1-cleaning-25, echo = F}
+```{r 1-cleaning-28, echo = F}
 olddata = data
 ```
 
-```{r 1-cleaning-26}
+```{r 1-cleaning-29 }
 data = inner_join(data, filter(timing_data, remove == "Keep")) %>%
   select(-remove)
 ```
@@ -370,7 +370,7 @@ Based on timing, we removed `r printnum(nrow(olddata)-nrow(data))` participants.
 
 We create a variable which indicates the Block 1 condition of each participant. This is used in two places: first, in recruitinig participants at Time 2 (participants are given the same format at Time 2 as they received in Block 1), and second, in selecting the corret items during the test-retest analyses. 
 
-```{r 1-cleaning-27}
+```{r 1-cleaning-30 }
 data = data %>% 
   mutate(condition = case_when(
     !is.na(outgoing_a) ~ "A",
@@ -382,7 +382,7 @@ data = data %>%
 
 At this point, we'll extract the Prolific ID numbers. These participants will be eligible to take the survey at Time 2.
 
-```{r 1-cleaning-28}
+```{r 1-cleaning-31 }
 data %>% 
   select(proid, condition) %>% 
   write_csv(file = here("data/elligible_proid"))
@@ -390,7 +390,7 @@ data %>%
 
 ## Time 2
 
-```{r 1-cleaning-29}
+```{r 1-cleaning-32 }
 data_path_2A = here("data/Wording 2A_July 29, 2021_14.49.text.csv")
 
 data_labels_2A = read_csv(data_path_2A)
@@ -402,7 +402,7 @@ rm(data_labels_2A)
 data_2A = clean_names(data_2A)
 ```
 
-```{r 1-cleaning-30}
+```{r 1-cleaning-33 }
 data_path_2B = here("data/Wording 2B_August 4, 2021_18.49.text.csv")
 
 data_labels_2B = read_csv(data_path_2B)
@@ -415,12 +415,12 @@ rm(data_labels_2B)
 data_2B = clean_names(data_2B)
 ```
 
-```{r}
+```{r 1-cleaning-34}
 names(data_2B) = str_replace(names(data_2B), "q763", "proid")
 ```
 
 
-```{r 1-cleaning-32}
+```{r 1-cleaning-35 }
 data_path_2C = here("data/Wording 2C_August 3, 2021_18.02.csv")
 
 data_labels_2C = read_csv(data_path_2C)
@@ -433,7 +433,7 @@ data_2C = clean_names(data_2C)
 ```
 
 
-```{r 1-cleaning-33}
+```{r 1-cleaning-36 }
 data_path_2D = here("data/Wording 2D_July 29, 2021_14.55.text.csv")
 
 data_labels_2D = read_csv(data_path_2D)
@@ -445,7 +445,7 @@ rm(data_labels_2D)
 data_2D = clean_names(data_2D)
 ```
 
-```{r 1-cleaning-34}
+```{r 1-cleaning-37 }
 data_2 = data_2A %>% 
   full_join(data_2B) %>% 
   full_join(data_2C) %>% 
@@ -454,7 +454,7 @@ data_2 = data_2A %>%
 
 Remove the following columns.
 
-```{r 1-cleaning-35}
+```{r 1-cleaning-38 }
 data_2 = data_2 %>%
   select(-end_date,
          -ip_address, 
@@ -469,7 +469,7 @@ data_2 = data_2 %>%
          -starts_with("meta_info"))
 ```
 
-```{r}
+```{r 1-cleaning-39}
 data_2 = data_2 %>% 
   select(-contains("outgoing_b_3i"))
 ```
@@ -479,7 +479,7 @@ data_2 = data_2 %>%
 
 We recode the responses to personality items, which we downloaded as text strings. Here, all items end with `_3` and sometimes with `i`.
 
-```{r 1-cleaning-36}
+```{r 1-cleaning-40 }
 p_items_2 = str_extract(names(data_2), "^[[:alpha:]]*_[abcd]_3(i)?$")
 p_items_2 = p_items_2[!is.na(p_items_2)]
 
@@ -488,7 +488,7 @@ personality_items_2 = select(data_2, proid, all_of(p_items_2))
 
 We apply the recoding function to all personality items.
 
-```{r 1-cleaning-37}
+```{r 1-cleaning-41 }
 personality_items_2 = personality_items_2 %>%
   mutate(
     across(!c(proid), recode_p))
@@ -496,7 +496,7 @@ personality_items_2 = personality_items_2 %>%
 
 Now we merge this back into the data_2.
 
-```{r 1-cleaning-38}
+```{r 1-cleaning-42 }
 data_2 = select(data_2, -all_of(p_items_2))
 data_2 = full_join(data_2, personality_items_2)
 ```
@@ -505,11 +505,11 @@ data_2 = full_join(data_2, personality_items_2)
 
 #### Based on ID
 
-```{r 1-cleaning-39, echo = F}
+```{r 1-cleaning-43, echo = F}
 olddata_2 = data_2
 ```
 
-```{r rm_proid_2, echo = F}
+```{r 1-cleaning-44, echo = F}
 data_2 = data_2 %>%
   mutate(proid = str_remove(proid, "Value will be set from panel or URL"),
          proid = str_remove(proid, "Value will be set from panel or UR"),
@@ -519,12 +519,12 @@ data_2 = data_2 %>%
 
 We also check that the ID in time 2 matches an ID in time 1.
 
-```{r 1-cleaning-40}
+```{r 1-cleaning-45 }
 data_2 = data_2 %>% 
   filter(proid %in% data$proid)
 ```
 
-```{r, echo = F}
+```{r 1-cleaning-46, echo = F}
 data_2 = data_2 %>% 
   group_by(proid) %>% 
   filter(row_number() == 1) %>% 
@@ -534,10 +534,10 @@ data_2 = data_2 %>%
 
 We removed `r nrow(olddata_2)-nrow(data_2)` participants without valid Prolific IDs.
 
-```{r 1-cleaning-41, ref.label='rm_proid_2'}
+```{r 1-cleaning-47, ref.label='rm_proid_2'}
 ```
 
-```{r 1-cleaning-42, echo = F}
+```{r 1-cleaning-48, echo = F}
 olddata_2 = data_2
 ```
 
@@ -545,7 +545,7 @@ olddata_2 = data_2
 
 We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row.
 
-```{r 1-cleaning-43}
+```{r 1-cleaning-49 }
 # first, identify unique adjectives, in order
 adjectives = p_items_2 %>%
   str_remove_all("_.") %>%
@@ -590,7 +590,7 @@ block3$block3_runs = block3_runs
 ```
 
 
-```{r 1-cleaning-44}
+```{r 1-cleaning-50 }
 #combine results
 runs_data_2 = block3 %>%
   select(proid, block3_runs) %>%
@@ -601,7 +601,7 @@ runs_data_2 = block3 %>%
     ))
 ```
 
-```{r 1-cleaning-45, fig.cap = "Maximum number of same consecutive responses in personality block 3."}
+```{r 1-cleaning-51, fig.cap = "Maximum number of same consecutive responses in personality block 3."}
 #visualize
 runs_data_2 %>%
   ggplot(aes(block3_runs)) +
@@ -613,7 +613,7 @@ runs_data_2 %>%
   theme_pubr()
 ```
 
-```{r, echo = F}
+```{r 1-cleaning-52, echo = F}
 n_removed = table(runs_data_2$remove)
 n_removed = ifelse(length(n_removed) == 1, 0, n_removed[[2]])
 ```
@@ -621,7 +621,7 @@ n_removed = ifelse(length(n_removed) == 1, 0, n_removed[[2]])
 
 There were `r n_removed` participants who provided the same answer 17 or more times in a row. These participants were removed from the analyses.
 
-```{r 1-cleaning-46}
+```{r 1-cleaning-53 }
 data_2 = data_2 %>%
   full_join(select(runs_data_2, proid, remove)) %>%
   filter(remove != "Remove") %>%
@@ -634,7 +634,7 @@ rm(runs_data_2)
 
 We expect to exclude any participant who has an average response of 4 (“slightly agree”) or greater to the attention check items. Two items from the Inattentive and Deviant Responding Inventory for Adjectives (IDRIA) scale (Kay & Saucier, in prep) have been included here, in part to help evaluate the extent of inattentive responding but also to consider the effect of item wording on these items. The two items used here (i.e., “Asleep”, “Human”) were chosen to be as inconspicuous as possible, so as to not to inflate item response durations. The frequency item (i.e., “human”) will be reverse-scored, so that higher scores on both the infrequency and frequency items reflect greater inattentive responding.
 
-```{r 1-cleaning-47}
+```{r 1-cleaning-54 }
 in_average = data_2 %>%
   # reverse score human
   mutate(across(matches("^human"),  ~(.x*-1)+7)) %>%
@@ -649,7 +649,7 @@ in_average = data_2 %>%
       avg >= 4 ~ "Remove",
       TRUE ~ "Keep"))
 ```
-```{r 1-cleaning-48, fig.cap = "Average response to inattention check items"}
+```{r 1-cleaning-55, fig.cap = "Average response to inattention check items"}
 in_average %>%
   ggplot(aes(x = avg, fill = remove)) +
   geom_histogram(bins = 20, color = "white") +
@@ -661,7 +661,7 @@ in_average %>%
 
 We remove `r table(in_average$remove[[2]])` participants whose responses suggest inattention.
 
-```{r 1-cleaning-49}
+```{r 1-cleaning-56 }
 data_2 = data_2 %>%
   full_join(select(in_average, proid, remove)) %>%
   filter(remove != "Remove") %>%
@@ -672,14 +672,14 @@ data_2 = data_2 %>%
 
 First, select just the timing of the personality items. We do this by searching for specific strings: "t_[someword]_[a or b or c or d]_(maybe 2_)_page_submit."
 
-```{r 1-cleaning-50}
+```{r 1-cleaning-57 }
 timing_data_2 = data_2 %>%
   select(proid, matches("t_[[:alpha:]]*_[abcd]_3(i)?_page_submit"))
 ```
 
 Next we gather into long form and remove missing timing values
 
-```{r 1-cleaning-51}
+```{r 1-cleaning-58 }
 timing_data_2 = timing_data_2 %>%
   gather(variable, timing, -proid) %>%
   filter(!is.na(timing))
@@ -687,7 +687,7 @@ timing_data_2 = timing_data_2 %>%
 
 To check, each participant should have the same number of responses: 62.
 
-```{r 1-cleaning-52}
+```{r 1-cleaning-59 }
 timing_data_2 %>%
   group_by(proid) %>%
   count() %>%
@@ -697,7 +697,7 @@ timing_data_2 %>%
 
 Excellent! Now we calculate the average response time per item for each participant. We mark a participant for removal if their average time is less than 1 second or greater than 30. See Figure \@ref(fig:timing_dist) for a distribution of average response time.
 
-```{r 1-cleaning-53}
+```{r 1-cleaning-60 }
 timing_data_2 = timing_data_2 %>%
   group_by(proid) %>%
   summarise(m_time = mean(timing)) %>%
@@ -708,7 +708,7 @@ timing_data_2 = timing_data_2 %>%
   ))
 ```
 
-```{r timing_dist_2, fig.cap = "Distribution of average time to respond to personality items in Block 3."}
+```{r 1-cleaning-61, fig.cap = "Distribution of average time to respond to personality items in Block 3."}
 timing_data_2 %>%
   ggplot(aes(x = m_time, fill = remove)) +
   geom_histogram(color = "white") +
@@ -716,18 +716,18 @@ timing_data_2 %>%
   theme_pubr()
 ```
 
-```{r 1-cleaning-54, echo = F}
+```{r 1-cleaning-62, echo = F}
 olddata_2 = data_2
 ```
 
-```{r 1-cleaning-55}
+```{r 1-cleaning-63 }
 data_2 = inner_join(data_2, filter(timing_data_2, remove == "Keep")) %>%
   select(-remove)
 ```
 
 ### Merge all datasets together
 
-```{r 1-cleaning-56}
+```{r 1-cleaning-64 }
 data_2 = data_2 %>% 
   select(proid, very_delayed_recall, contains("_3")) %>% 
   mutate(time2 = "yes")
@@ -741,7 +741,7 @@ data = data %>% full_join(data_2)
 
 The following items are (typically) negatively correlated with the others: reckless, moody, worrying, nervous, careless, impulsive. We reverse-score them to ease interpretation of associations and means in the later sections. In short, all traits will be scored such that larger numbers are indicative of the more socially desirable end of the specturm.
 
-```{r 1-cleaning-57}
+```{r 1-cleaning-65 }
 data = data %>%
   mutate(
     across(matches("^reckless"),  ~(.x*-1)+7),
@@ -754,7 +754,7 @@ data = data %>%
 
 We also create a vector noting the items that are reverse scored. We use this later in tables, to help identify patterns when looking at analyses within-adjective.
 
-```{r}
+```{r 1-cleaning-66}
 reverse = c("reckless", "moody", "worrying", "nervous", "careless", "impulsive")
 ```
 
@@ -763,7 +763,7 @@ reverse = c("reckless", "moody", "worrying", "nervous", "careless", "impulsive")
 
 Now we score the memory task. We start by creating vectors of the correct responses. 
 
-```{r 1-cleaning-58}
+```{r 1-cleaning-67 }
 correct1 = c("book", "child", "gold", "hotel", "king", 
              "market", "paper", "river", "skin", "tree")
 
@@ -779,7 +779,7 @@ correct4 = c("baby", "church", "doctor", "fire", "garden",
 
 Next we convert all responses to lowercase. Then we break the string of responses into a vector containing many strings.
 
-```{r 1-cleaning-59}
+```{r 1-cleaning-68 }
 data = data %>%
   mutate(
     across(matches("recall"),tolower), # convert to lower
@@ -799,7 +799,7 @@ data = data %>%
 
 Now we use the `amatch` function in the `stringdist` package to look for exact (or close) matches to the target words. This function returns for each word either the position of the key in which you can find the target word or `NA` to indicate the word or a close match does not exist in the string.
 
-```{r 1-cleaning-60}
+```{r 1-cleaning-69 }
 distance = 1 #maximum distance between target word and correct response
 data = data %>%
   mutate(
@@ -812,7 +812,7 @@ data = data %>%
 
 We count the number of correct answers. This gets complicated...
 
-```{r 1-cleaning-61}
+```{r 1-cleaning-70 }
 data = data %>%
   mutate(
     across(starts_with("memory"),
@@ -848,7 +848,7 @@ data = data %>%
 
 Finally, we want to go from 4 columns (one for each recall test), to two: one that has the number of correct resposnes, and one that indicates which version they saw.
 
-```{r 1-cleaning-62, results = 'asis'}
+```{r 1-cleaning-71, results = 'asis'}
 data = data %>%
   select(proid, starts_with("memory")) %>%
   gather(mem_condition, memory, -proid) %>%
@@ -859,7 +859,7 @@ data = data %>%
 
 Participants remember on average `r papaja::printnum(mean(data$memory))` words correctly $(SD = `r papaja::printnum(sd(data$memory))`)$,
 
-```{r 1-cleaning-63, fig.cap = "Correct responses on the memory task"}
+```{r 1-cleaning-72, fig.cap = "Correct responses on the memory task"}
 data %>%
   ggplot(aes(x = memory)) +
   geom_histogram(bins = 11, color = "white") +
@@ -868,7 +868,7 @@ data %>%
   theme_pubr()
 ```
 
-```{r 1-cleaning-64}
+```{r 1-cleaning-73 }
 data %>%
   group_by(mem_condition) %>%
   summarise(
@@ -889,7 +889,7 @@ data %>%
 
 A challenge with the delayed recall task is identifying the memory condition that participants were assigned to, but this is made easier by the work done above.
 
-```{r 1-cleaning-65}
+```{r 1-cleaning-74 }
 mem2 = data %>%
   select(proid, mem_condition, delayed_recall) %>%
   mutate(newid = 1:nrow(.))
@@ -919,7 +919,7 @@ mem2 = mem2 %>%
 data = inner_join(data, mem2)
 ```
 
-```{r 1-cleaning-66, fig.cap = "Distribution of delayed memory scores"}
+```{r 1-cleaning-75, fig.cap = "Distribution of delayed memory scores"}
 data %>%
   ggplot(aes(x = delayed_memory)) +
   geom_histogram(color = "white", bins = 11) +
@@ -929,7 +929,7 @@ data %>%
 ```
 
 
-```{r 1-cleaning-67, fig.cap = "Relationship between immediate and delayed recall"}
+```{r 1-cleaning-76, fig.cap = "Relationship between immediate and delayed recall"}
 data %>%
   ggplot(aes(x = memory, y = delayed_memory)) +
   geom_point() +
@@ -944,7 +944,7 @@ data %>%
 
 Finally, we score the memory challenge posed at Time 2. 
 
-```{r}
+```{r 1-cleaning-77}
 mem3 = data %>%
   filter(time2 == "yes") %>% 
   select(proid, mem_condition, very_delayed_recall) %>%
@@ -975,7 +975,7 @@ mem3 = mem3 %>%
 data = full_join(data, mem3)
 ```
 
-```{r 1-cleaning-66b, fig.cap = "Distribution of delayed memory scores"}
+```{r 1-cleaning-78, fig.cap = "Distribution of delayed memory scores"}
 data %>%
   ggplot(aes(x = very_delayed_memory)) +
   geom_histogram(color = "white", bins = 11) +
@@ -985,7 +985,7 @@ data %>%
 ```
 
 
-```{r 1-cleaning-67b, fig.cap = "Relationship between immediate and delayed recall"}
+```{r 1-cleaning-79, fig.cap = "Relationship between immediate and delayed recall"}
 data %>%
   ggplot(aes(x = memory, y = very_delayed_memory)) +
   geom_point() +
@@ -998,7 +998,7 @@ data %>%
 
 #### Correlations
 
-```{r}
+```{r 1-cleaning-80}
 data %>% 
   select(matches("memory$")) %>% 
   corr.test
@@ -1009,7 +1009,7 @@ data %>%
 
 These labels are too long!
 
-```{r 1-cleaning-68}
+```{r 1-cleaning-81 }
 data = data %>% 
   mutate(devicetype = factor(
     devicetype,
@@ -1021,7 +1021,7 @@ data = data %>%
 
 ### Long-form dataset
 
-```{r 1-cleaning-69, echo = F}
+```{r 1-cleaning-82, echo = F}
 #oops
 names(data) = str_replace(names(data), "responsbile", "responsible")
 ```
@@ -1031,7 +1031,7 @@ We need one dataset that contains the responses to and timing of the personality
 
 These variable names have one of four formats: `[trait]_[abcd]` (for example, `talkative_a`), `[trait]_[abcd]_2` (for example, `talkative_a_2`), `[trait]_[abcd]_3` (e.g., `talkative_a_3`), or `[trait]_[abcd]_3i` (e.g., `talkative_a_3i`). We search for these items using regular expressions.
 
-```{r 1-cleaning-70}
+```{r 1-cleaning-83 }
 item_responses = str_subset(
   names(data),
   "^([[:alpha:]])+_[abcd](_2)?(_3)?(i)?$"
@@ -1040,13 +1040,13 @@ item_responses = str_subset(
 
 Similarly, we'll need to know how long it took participants to respond to these items. These variable names have one of four formats listed above followed by the string `page_submit`. We search for these items using regular expressions.
 
-```{r 1-cleaning-71}
+```{r 1-cleaning-84 }
 item_timing = str_subset(names(data), "t_([[:alpha:]])+_[abcd](_2)?(_3)?(i)?_page_submit$")
 ```
 
 We extract just the participant IDs, delayed memory, and these variables. 
 
-```{r 1-cleaning-72}
+```{r 1-cleaning-85 }
 items_df = data %>% 
   select(proid, condition, time2, 
          memory, delayed_memory, very_delayed_memory,
@@ -1056,7 +1056,7 @@ items_df = data %>%
 
 Next we reshape these data into long form. This requires several steps. We'll need to identify whether each value is a response or timing; we can use the presence of the string `t_` for this. Next, we'll identify the block based on whether the string contains `_2` or `_3`. We also identify whether it ends with `i`, indicating the item in block 3 started with "I". Then, we identify the condition based on which letter (`a`, `b`, `c`, or `d`) follows an underscore. Throughout, we'll strip the item string of extraneous information until we're left with only the adjective assessed. Finally, we'll use spread to create separate columns for the response and the timing variables.
 
-```{r 1-cleaning-73}
+```{r 1-cleaning-86 }
 items_df = items_df %>%
   gather(item, value, all_of(item_responses), all_of(item_timing)) %>%
   filter(!is.na(value)) %>% 
@@ -1084,7 +1084,7 @@ items_df = items_df %>%
 
 We also remove responses to the adjectives "human" and "asleep", as these are not personality items per-se and included for the purpose of attention checks.
 
-```{r 1-cleaning-74}
+```{r 1-cleaning-87 }
 items_df = items_df %>% 
   filter(item != "human") %>% 
   filter(item != "asleep")
@@ -1094,7 +1094,7 @@ items_df = items_df %>%
 
 We give labels to the formats, to clarify interpretations and aid table and figure construction.
 
-```{r 1-cleaning-75}
+```{r 1-cleaning-88 }
 items_df$format = as.factor(items_df$format)
 items_df$format = relevel(items_df$format, ref = "a") 
 items_df$format = factor(items_df$format,
@@ -1106,12 +1106,12 @@ items_df$format = factor(items_df$format,
 
 The variable `seconds` appears to have a very severe right skew. We log-transform this variable for later analyses.
 
-```{r 1-cleaning-76}
+```{r 1-cleaning-89 }
 items_df = items_df %>% 
   mutate(seconds_log = log(timing))
 ```
 
-```{r 1-cleaning-77, fig.cap= "Distribution of seconds, raw and transformed."}
+```{r 1-cleaning-90, fig.cap= "Distribution of seconds, raw and transformed."}
 items_df %>% 
   gather(variable, value, timing, seconds_log) %>% 
   mutate(variable = factor(variable,
@@ -1128,20 +1128,18 @@ items_df %>%
 
 We replace the Prolific ID numbers with randomly generated numbers. This allows us to share the data without the risk of identifying participants or breaking their confidentiality.
 
-```{r}
+```{r 1-cleaning-91}
 set.seed(202108)
 original_id = unique(data$proid)
 new_id = stri_rand_strings(n = length(original_id), length = 10)
 
 for(i in 1:length(original_id)){
   data$proid[data$proid == original_id[i]] = new_id[i]
-  items_df$proid[data$proid == original_id[i]] = new_id[i]
+  items_df$proid[items_df$proid == original_id[i]] = new_id[i]
 }
 ```
 
-
-
-```{r 1-cleaning-78, echo = F}
+```{r 1-cleaning-92, echo = F}
 save(reverse, file = here("data/reverse_vector.Rds"))
 save(data, file = here("data/cleaned_data.Rds"))
 save(items_df, file = here("data/items_df.Rds"))

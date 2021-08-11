@@ -23,10 +23,12 @@ library(emmeans) # for comparisons
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
+library(papaja) # for formatting numbers
 ```
 
 ```{r, echo = F}
 load(here("data/items_df.Rds"))
+load(here("data/reverse_vector.Rds"))
 ```
 
 
@@ -120,15 +122,20 @@ summary_by_item_b1 = mod_by_item_b1 %>%
   select(item, tidy) %>% 
   unnest(cols = c(tidy)) %>%
   filter(term == "format") %>%
-  select(-term, -df) %>% 
+  mutate(reverse = case_when(
+    item %in% reverse ~ "Y",
+    TRUE ~ "N"
+  )) %>% 
   mutate(p.adj = p.adjust(p.value, method = "holm")) 
 
 summary_by_item_b1 %>%
-  mutate(across(
-    starts_with("p"),
-    papaja::printnum
-  )) %>%
-  kable(digits = 2, booktabs = T, caption = "Format effects on log-seconds by item (block 1 data only)") %>%
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  arrange(reverse, item) %>% 
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>% 
+  kable(digits = 2,
+        booktabs = T, 
+        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "F", "raw", "adj"),
+        caption = "Format effects on log-seconds by item (block 1 data only)") %>%
   kable_styling()
 ```
 
@@ -158,8 +165,10 @@ helpful_model_b1 = item_block1 %>%
 
 helpful_em_b1 = emmeans(helpful_model_b1, "format")
 pairs(helpful_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Differences in log-seconds to Helpful by format (Block 1 data only)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
@@ -178,8 +187,10 @@ caring_model_b1 = item_block1 %>%
 
 caring_em_b1 = emmeans(caring_model_b1, "format")
 pairs(caring_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Differences in log-seconds to Caring by format (Block 1 data only)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
@@ -198,8 +209,10 @@ softhearted_model_b1 = item_block1 %>%
 
 softhearted_em_b1 = emmeans(softhearted_model_b1, "format")
 pairs(softhearted_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Differences in log-seconds to Soft-hearted by format (Block 1 data only)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
@@ -218,8 +231,10 @@ calm_model_b1 = item_block1 %>%
 
 calm_em_b1 = emmeans(calm_model_b1, "format")
 pairs(calm_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Differences in log-seconds to Calm by format (Block 1 data only)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
@@ -238,8 +253,10 @@ sympathetic_model_b1 = item_block1 %>%
 
 sympathetic_em_b1 = emmeans(sympathetic_model_b1, "format")
 pairs(sympathetic_em_b1, adjust = "holm") %>%
+   as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Differences in log-seconds to Sympathetic by format (Block 1 data only)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
@@ -258,8 +275,10 @@ adventurous_model_b1 = item_block1 %>%
 
 adventurous_em_b1 = emmeans(adventurous_model_b1, "format")
 pairs(adventurous_em_b1, adjust = "holm") %>%
+   as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Differences in log-seconds to Adventurous by format (Block 1 data only)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
@@ -361,15 +380,20 @@ summary_by_item_b2 = mod_by_item_b2 %>%
   select(item, tidy) %>% 
   unnest(cols = c(tidy)) %>%
   filter(term == "format") %>%
-  select(-term) %>% 
+  mutate(reverse = case_when(
+    item %in% reverse ~ "Y",
+    TRUE ~ "N"
+  )) %>% 
   mutate(p.adj = p.adjust(p.value, method = "holm")) 
 
 summary_by_item_b2 %>%
-  mutate(across(
-    starts_with("p"),
-    papaja::printnum
-  )) %>%
-  kable(digits = 2, booktabs = T, caption = "Format effects on log-seconds by item (block 1 data only)") %>%
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  arrange(reverse, item) %>% 
+  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
+  kable(digits = 2, 
+        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df1", "df2", "F", "raw", "adj"),
+        booktabs = T, 
+        caption = "Format effects on log-seconds by item (block 1 data only)") %>%
   kable_styling()
 ```
 
@@ -399,8 +423,10 @@ helpful_model_b2 = items_12 %>%
 
 helpful_em_b2 = emmeans(helpful_model_b2, "format")
 pairs(helpful_em_b2, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Differences in log-seconds to Helpful by format (Block 1 and Block 2)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
@@ -420,8 +446,10 @@ caring_model_b2 = items_12 %>%
 
 caring_em_b2 = emmeans(caring_model_b2, "format")
 pairs(caring_em_b2, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Differences in log-seconds to Caring by format (Block 1 and Block 2)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
@@ -442,8 +470,10 @@ adventurous_model_b2 = items_12 %>%
 
 adventurous_em_b2 = emmeans(adventurous_model_b2, "format")
 pairs(adventurous_em_b2, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Differences in log-seconds to Adventurous by format (Block 1 and Block 2)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
@@ -509,14 +539,16 @@ summary_by_item_mem = mod_by_item_mem %>%
   select(item, tidy) %>% 
   unnest(cols = c(tidy)) %>%
   filter(term == "format:delayed_memory") %>%
-  select(-term) %>% 
+  mutate(reverse = case_when(
+    item %in% reverse ~ "Y",
+    TRUE ~ "N"
+  )) %>% 
   mutate(p.adj = p.adjust(p.value, method = "holm"))
 
 summary_by_item_mem %>%
-  mutate(across(
-    starts_with("p"),
-    papaja::printnum
-  )) %>%
+  arrange(reverse, item) %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
   kable(digits = 2, booktabs = T) %>%
   kable_styling()
 ```

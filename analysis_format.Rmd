@@ -29,6 +29,7 @@ library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
 library(broom.mixed) # for tidying mulitievel models
+library(papaja) # pretty numbers
 ```
 
 ```{r, echo = F}
@@ -113,10 +114,12 @@ summary_by_item_b1 = mod_by_item_b1 %>%
   mutate(p.adj = p.adjust(p.value, method = "holm")) 
 
 summary_by_item_b1 %>%
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   arrange(reverse, item) %>% 
   select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>% 
-  kable(digits = c(0,0,2,2,2,2,3,3), booktabs = T, 
-         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "F", "raw", "adj"),
+  kable(digits = 2, 
+        booktabs = T, 
+        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "F", "raw", "adj"),
         caption = "Format effects on response by item (block 1 data only)") %>%
   kable_styling()
 ```
@@ -146,8 +149,10 @@ talkative_model_b1 = item_block1 %>%
 
 talkative_em_b1 = emmeans(talkative_model_b1, "format")
 pairs(talkative_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Differences in response to Talkative by format (Block 1 data only)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
@@ -240,9 +245,10 @@ summary_by_item_b2 = mod_by_item_b2 %>%
   mutate(p.adj = p.adjust(p.value, method = "holm")) 
 
 summary_by_item_b2 %>%
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   arrange(reverse, item) %>% 
   select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
-  kable(digits = c(0,0,2,2,0,2,2,3,3), 
+  kable(digits = 2, 
         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df1", "df2", "F", "raw", "adj"),
         booktabs = T, caption = "Format effects on response by item (block 1 data only)") %>%
   kable_styling() %>% 
@@ -275,8 +281,10 @@ careless_model_b2 = items_12 %>%
 
 careless_em_b2 = emmeans(careless_model_b2, "format")
 pairs(careless_em_b2, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Differences in response to Careless by format (Block 1 and Block 2)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
@@ -296,8 +304,10 @@ thrifty_model_b2 = items_12 %>%
 
 thrifty_em_b2 = emmeans(thrifty_model_b2, "format")
 pairs(thrifty_em_b2, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Differences in response to Thifty by format (Block 1 and Block 2)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
@@ -350,9 +360,10 @@ summary_by_item_mem = mod_by_item_mem %>%
   mutate(p.adj = p.adjust(p.value, method = "holm"))
 
 summary_by_item_mem %>%
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   arrange(reverse, item) %>% 
   select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>% 
-  kable(digits = c(0,0,2,2,2,2,3,3), 
+  kable(digits = 2, 
          col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "F", "raw", "adj"),
         booktabs = T) %>%
   kable_styling() %>% 
@@ -386,6 +397,11 @@ items_13 = items_df %>%
 mod.format_b3 = lmer(response~format*i + (1|proid), 
                   data = items_13)
 anova(mod.format_b3)
+```
+
+```{r, echo = F}
+# save for power analysis
+save(mod.format_b3, file = here("objects/mod_format_b3.Rdata"))
 ```
 
 
@@ -446,9 +462,10 @@ summary_by_item_i = mod_by_item_i %>%
   mutate(p.adj = p.adjust(p.value, method = "holm"))
 
 summary_by_item_i %>%
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   arrange(reverse, item) %>% 
   select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
-  kable(digits = c(0,0,2,2,0,2,2,3,3), 
+  kable(digits = 2, 
         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df1", "df2", "F", "raw", "adj"),
         booktabs = T, caption = "Interaction of format and \"I\" (block 1 and 3 data)") %>%
   kable_styling() %>% 
@@ -482,8 +499,9 @@ curious_model_i %>%
          term = str_replace(term, "iPresent", "I")) %>% 
   filter(is.na(group)) %>% 
   select(-effect, -group) %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Interaction of format and \"I\"",
         col.names = c("Term", "Estimate", "SE",  "t", "df", "p")) %>%
   kable_styling()
@@ -510,8 +528,9 @@ lively_model_i %>%
          term = str_replace(term, "iPresent", "I")) %>% 
   filter(is.na(group)) %>% 
   select(-effect, -group) %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Interaction of format and \"I\"",
         col.names = c("Term", "Estimate", "SE",  "t", "df", "p")) %>%
   kable_styling()
@@ -538,8 +557,9 @@ responsible_model_i %>%
          term = str_replace(term, "iPresent", "I")) %>% 
   filter(is.na(group)) %>% 
   select(-effect, -group) %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Interaction of format and \"I\"",
         col.names = c("Term", "Estimate", "SE",  "t", "df", "p")) %>%
   kable_styling()
@@ -566,8 +586,9 @@ sympathetic_model_i %>%
          term = str_replace(term, "iPresent", "I")) %>% 
   filter(is.na(group)) %>% 
   select(-effect, -group) %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = "Interaction of format and \"I\"",
         col.names = c("Term", "Estimate", "SE",  "t", "df", "p")) %>%
   kable_styling()

@@ -369,7 +369,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact response?</h1>
-<h4 class="date">Last updated 2021-08-10</h4>
+<h4 class="date">Last updated 2021-08-11</h4>
 
 </div>
 
@@ -451,10 +451,12 @@ summary_by_item_b1 = mod_by_item_b1 %&gt;%
   mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;)) 
 
 summary_by_item_b1 %&gt;%
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   arrange(reverse, item) %&gt;% 
   select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %&gt;% 
-  kable(digits = c(0,0,2,2,2,2,3,3), booktabs = T, 
-         col.names = c(&quot;Item&quot;, &quot;Reverse\nScored?&quot;, &quot;SS&quot;, &quot;MS&quot;, &quot;df&quot;, &quot;F&quot;, &quot;raw&quot;, &quot;adj&quot;),
+  kable(digits = 2, 
+        booktabs = T, 
+        col.names = c(&quot;Item&quot;, &quot;Reverse\nScored?&quot;, &quot;SS&quot;, &quot;MS&quot;, &quot;df&quot;, &quot;F&quot;, &quot;raw&quot;, &quot;adj&quot;),
         caption = &quot;Format effects on response by item (block 1 data only)&quot;) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
@@ -481,10 +483,10 @@ df
 <th style="text-align:right;">
 F
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 raw
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 adj
 </th>
 </tr>
@@ -509,11 +511,11 @@ N
 <td style="text-align:right;">
 0.61
 </td>
-<td style="text-align:right;">
-0.611
+<td style="text-align:left;">
+.611
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -535,11 +537,11 @@ N
 <td style="text-align:right;">
 0.50
 </td>
-<td style="text-align:right;">
-0.682
+<td style="text-align:left;">
+.682
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -561,11 +563,11 @@ N
 <td style="text-align:right;">
 1.29
 </td>
-<td style="text-align:right;">
-0.295
+<td style="text-align:left;">
+.295
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -587,11 +589,11 @@ N
 <td style="text-align:right;">
 1.17
 </td>
-<td style="text-align:right;">
-0.337
+<td style="text-align:left;">
+.337
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -613,11 +615,11 @@ N
 <td style="text-align:right;">
 0.32
 </td>
-<td style="text-align:right;">
-0.814
+<td style="text-align:left;">
+.814
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -639,11 +641,11 @@ N
 <td style="text-align:right;">
 0.79
 </td>
-<td style="text-align:right;">
-0.507
+<td style="text-align:left;">
+.507
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -665,11 +667,11 @@ N
 <td style="text-align:right;">
 0.15
 </td>
-<td style="text-align:right;">
-0.927
+<td style="text-align:left;">
+.927
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -691,11 +693,11 @@ N
 <td style="text-align:right;">
 0.34
 </td>
-<td style="text-align:right;">
-0.796
+<td style="text-align:left;">
+.796
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -717,11 +719,11 @@ N
 <td style="text-align:right;">
 0.02
 </td>
-<td style="text-align:right;">
-0.997
+<td style="text-align:left;">
+.997
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -743,11 +745,11 @@ N
 <td style="text-align:right;">
 0.08
 </td>
-<td style="text-align:right;">
-0.968
+<td style="text-align:left;">
+.968
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -769,11 +771,11 @@ N
 <td style="text-align:right;">
 0.58
 </td>
-<td style="text-align:right;">
-0.630
+<td style="text-align:left;">
+.630
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -795,11 +797,11 @@ N
 <td style="text-align:right;">
 0.44
 </td>
-<td style="text-align:right;">
-0.725
+<td style="text-align:left;">
+.725
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -821,11 +823,11 @@ N
 <td style="text-align:right;">
 0.36
 </td>
-<td style="text-align:right;">
-0.782
+<td style="text-align:left;">
+.782
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -847,11 +849,11 @@ N
 <td style="text-align:right;">
 0.66
 </td>
-<td style="text-align:right;">
-0.583
+<td style="text-align:left;">
+.583
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -873,11 +875,11 @@ N
 <td style="text-align:right;">
 0.40
 </td>
-<td style="text-align:right;">
-0.755
+<td style="text-align:left;">
+.755
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -899,11 +901,11 @@ N
 <td style="text-align:right;">
 0.65
 </td>
-<td style="text-align:right;">
-0.588
+<td style="text-align:left;">
+.588
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -925,11 +927,11 @@ N
 <td style="text-align:right;">
 0.30
 </td>
-<td style="text-align:right;">
-0.828
+<td style="text-align:left;">
+.828
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -951,11 +953,11 @@ N
 <td style="text-align:right;">
 0.21
 </td>
-<td style="text-align:right;">
-0.887
+<td style="text-align:left;">
+.887
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -977,11 +979,11 @@ N
 <td style="text-align:right;">
 1.10
 </td>
-<td style="text-align:right;">
-0.363
+<td style="text-align:left;">
+.363
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1003,11 +1005,11 @@ N
 <td style="text-align:right;">
 3.19
 </td>
-<td style="text-align:right;">
-0.037
+<td style="text-align:left;">
+.037
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1029,11 +1031,11 @@ N
 <td style="text-align:right;">
 0.08
 </td>
-<td style="text-align:right;">
-0.968
+<td style="text-align:left;">
+.968
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1055,11 +1057,11 @@ N
 <td style="text-align:right;">
 2.06
 </td>
-<td style="text-align:right;">
-0.126
+<td style="text-align:left;">
+.126
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1081,11 +1083,11 @@ N
 <td style="text-align:right;">
 0.20
 </td>
-<td style="text-align:right;">
-0.897
+<td style="text-align:left;">
+.897
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1107,11 +1109,11 @@ Y
 <td style="text-align:right;">
 2.77
 </td>
-<td style="text-align:right;">
-0.058
+<td style="text-align:left;">
+.058
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1133,11 +1135,11 @@ Y
 <td style="text-align:right;">
 0.45
 </td>
-<td style="text-align:right;">
-0.716
+<td style="text-align:left;">
+.716
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1159,11 +1161,11 @@ Y
 <td style="text-align:right;">
 1.14
 </td>
-<td style="text-align:right;">
-0.350
+<td style="text-align:left;">
+.350
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1185,11 +1187,11 @@ Y
 <td style="text-align:right;">
 0.20
 </td>
-<td style="text-align:right;">
-0.893
+<td style="text-align:left;">
+.893
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1211,11 +1213,11 @@ Y
 <td style="text-align:right;">
 0.65
 </td>
-<td style="text-align:right;">
-0.587
+<td style="text-align:left;">
+.587
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1237,11 +1239,11 @@ Y
 <td style="text-align:right;">
 1.25
 </td>
-<td style="text-align:right;">
-0.307
+<td style="text-align:left;">
+.307
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 </tbody>
@@ -1267,8 +1269,10 @@ sig_item_b1</code></pre>
 
 talkative_em_b1 = emmeans(talkative_model_b1, &quot;format&quot;)
 pairs(talkative_em_b1, adjust = &quot;holm&quot;) %&gt;%
+  as_tibble() %&gt;% 
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = &quot;Differences in response to Talkative by format (Block 1 data only)&quot;,
         col.names = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
@@ -1293,7 +1297,7 @@ df
 <th style="text-align:right;">
 t
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 p
 </th>
 </tr>
@@ -1315,8 +1319,8 @@ Adjective Only - Am Adjective
 <td style="text-align:right;">
 -2.39
 </td>
-<td style="text-align:right;">
-0.139
+<td style="text-align:left;">
+.139
 </td>
 </tr>
 <tr>
@@ -1335,8 +1339,8 @@ Adjective Only - Tend to be Adjective
 <td style="text-align:right;">
 -2.16
 </td>
-<td style="text-align:right;">
-0.192
+<td style="text-align:left;">
+.192
 </td>
 </tr>
 <tr>
@@ -1355,8 +1359,8 @@ Adjective Only - Am someone who tends to be Adjective
 <td style="text-align:right;">
 0.02
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1375,8 +1379,8 @@ Am Adjective - Tend to be Adjective
 <td style="text-align:right;">
 0.14
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1395,8 +1399,8 @@ Am Adjective - Am someone who tends to be Adjective
 <td style="text-align:right;">
 2.15
 </td>
-<td style="text-align:right;">
-0.192
+<td style="text-align:left;">
+.192
 </td>
 </tr>
 <tr>
@@ -1415,8 +1419,8 @@ Tend to be Adjective - Am someone who tends to be Adjective
 <td style="text-align:right;">
 1.96
 </td>
-<td style="text-align:right;">
-0.192
+<td style="text-align:left;">
+.192
 </td>
 </tr>
 </tbody>
@@ -1503,9 +1507,10 @@ Distribution of responses by category, block 1 and block 2
   mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;)) 
 
 summary_by_item_b2 %&gt;%
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   arrange(reverse, item) %&gt;% 
   select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %&gt;% 
-  kable(digits = c(0,0,2,2,0,2,2,3,3), 
+  kable(digits = 2, 
         col.names = c(&quot;Item&quot;, &quot;Reverse\nScored?&quot;, &quot;SS&quot;, &quot;MS&quot;, &quot;df1&quot;, &quot;df2&quot;, &quot;F&quot;, &quot;raw&quot;, &quot;adj&quot;),
         booktabs = T, caption = &quot;Format effects on response by item (block 1 data only)&quot;) %&gt;%
   kable_styling() %&gt;% 
@@ -1546,10 +1551,10 @@ df2
 <th style="text-align:right;">
 F
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 raw
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 adj
 </th>
 </tr>
@@ -1577,11 +1582,11 @@ N
 <td style="text-align:right;">
 1.01
 </td>
-<td style="text-align:right;">
-0.398
+<td style="text-align:left;">
+.398
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1606,11 +1611,11 @@ N
 <td style="text-align:right;">
 1.09
 </td>
-<td style="text-align:right;">
-0.361
+<td style="text-align:left;">
+.361
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1635,11 +1640,11 @@ N
 <td style="text-align:right;">
 0.13
 </td>
-<td style="text-align:right;">
-0.940
+<td style="text-align:left;">
+.940
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1664,11 +1669,11 @@ N
 <td style="text-align:right;">
 1.28
 </td>
-<td style="text-align:right;">
-0.291
+<td style="text-align:left;">
+.291
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1693,11 +1698,11 @@ N
 <td style="text-align:right;">
 0.98
 </td>
-<td style="text-align:right;">
-0.407
+<td style="text-align:left;">
+.407
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1722,11 +1727,11 @@ N
 <td style="text-align:right;">
 0.13
 </td>
-<td style="text-align:right;">
-0.943
+<td style="text-align:left;">
+.943
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1751,11 +1756,11 @@ N
 <td style="text-align:right;">
 1.05
 </td>
-<td style="text-align:right;">
-0.377
+<td style="text-align:left;">
+.377
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1780,11 +1785,11 @@ N
 <td style="text-align:right;">
 1.45
 </td>
-<td style="text-align:right;">
-0.239
+<td style="text-align:left;">
+.239
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1809,11 +1814,11 @@ N
 <td style="text-align:right;">
 2.06
 </td>
-<td style="text-align:right;">
-0.117
+<td style="text-align:left;">
+.117
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1838,11 +1843,11 @@ N
 <td style="text-align:right;">
 0.82
 </td>
-<td style="text-align:right;">
-0.488
+<td style="text-align:left;">
+.488
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1867,11 +1872,11 @@ N
 <td style="text-align:right;">
 0.86
 </td>
-<td style="text-align:right;">
-0.465
+<td style="text-align:left;">
+.465
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1896,11 +1901,11 @@ N
 <td style="text-align:right;">
 1.15
 </td>
-<td style="text-align:right;">
-0.340
+<td style="text-align:left;">
+.340
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1925,11 +1930,11 @@ N
 <td style="text-align:right;">
 0.89
 </td>
-<td style="text-align:right;">
-0.456
+<td style="text-align:left;">
+.456
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1954,11 +1959,11 @@ N
 <td style="text-align:right;">
 0.41
 </td>
-<td style="text-align:right;">
-0.750
+<td style="text-align:left;">
+.750
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1983,11 +1988,11 @@ N
 <td style="text-align:right;">
 0.83
 </td>
-<td style="text-align:right;">
-0.484
+<td style="text-align:left;">
+.484
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2012,11 +2017,11 @@ N
 <td style="text-align:right;">
 0.82
 </td>
-<td style="text-align:right;">
-0.487
+<td style="text-align:left;">
+.487
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2041,11 +2046,11 @@ N
 <td style="text-align:right;">
 0.74
 </td>
-<td style="text-align:right;">
-0.531
+<td style="text-align:left;">
+.531
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2070,11 +2075,11 @@ N
 <td style="text-align:right;">
 0.04
 </td>
-<td style="text-align:right;">
-0.989
+<td style="text-align:left;">
+.989
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2099,11 +2104,11 @@ N
 <td style="text-align:right;">
 0.51
 </td>
-<td style="text-align:right;">
-0.676
+<td style="text-align:left;">
+.676
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2128,11 +2133,11 @@ N
 <td style="text-align:right;">
 1.95
 </td>
-<td style="text-align:right;">
-0.135
+<td style="text-align:left;">
+.135
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2157,11 +2162,11 @@ N
 <td style="text-align:right;">
 2.72
 </td>
-<td style="text-align:right;">
-0.057
+<td style="text-align:left;">
+.057
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2186,11 +2191,11 @@ N
 <td style="text-align:right;">
 3.30
 </td>
-<td style="text-align:right;">
-0.027
+<td style="text-align:left;">
+.027
 </td>
-<td style="text-align:right;">
-0.794
+<td style="text-align:left;">
+.794
 </td>
 </tr>
 <tr>
@@ -2215,11 +2220,11 @@ N
 <td style="text-align:right;">
 0.08
 </td>
-<td style="text-align:right;">
-0.968
+<td style="text-align:left;">
+.968
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2244,11 +2249,11 @@ Y
 <td style="text-align:right;">
 2.84
 </td>
-<td style="text-align:right;">
-0.047
+<td style="text-align:left;">
+.047
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2273,11 +2278,11 @@ Y
 <td style="text-align:right;">
 0.85
 </td>
-<td style="text-align:right;">
-0.473
+<td style="text-align:left;">
+.473
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2302,11 +2307,11 @@ Y
 <td style="text-align:right;">
 0.69
 </td>
-<td style="text-align:right;">
-0.566
+<td style="text-align:left;">
+.566
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2331,11 +2336,11 @@ Y
 <td style="text-align:right;">
 0.45
 </td>
-<td style="text-align:right;">
-0.716
+<td style="text-align:left;">
+.716
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2360,11 +2365,11 @@ Y
 <td style="text-align:right;">
 0.36
 </td>
-<td style="text-align:right;">
-0.782
+<td style="text-align:left;">
+.782
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2389,11 +2394,11 @@ Y
 <td style="text-align:right;">
 0.63
 </td>
-<td style="text-align:right;">
-0.602
+<td style="text-align:left;">
+.602
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 </tbody>
@@ -2420,8 +2425,10 @@ sig_item_b2</code></pre>
 
 careless_em_b2 = emmeans(careless_model_b2, &quot;format&quot;)
 pairs(careless_em_b2, adjust = &quot;holm&quot;) %&gt;%
+  as_tibble() %&gt;% 
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = &quot;Differences in response to Careless by format (Block 1 and Block 2)&quot;,
         col.names = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
@@ -2446,7 +2453,7 @@ df
 <th style="text-align:right;">
 t
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 p
 </th>
 </tr>
@@ -2468,8 +2475,8 @@ Adjective Only - Am Adjective
 <td style="text-align:right;">
 1.83
 </td>
-<td style="text-align:right;">
-0.359
+<td style="text-align:left;">
+.359
 </td>
 </tr>
 <tr>
@@ -2488,8 +2495,8 @@ Adjective Only - Tend to be Adjective
 <td style="text-align:right;">
 0.32
 </td>
-<td style="text-align:right;">
-0.749
+<td style="text-align:left;">
+.749
 </td>
 </tr>
 <tr>
@@ -2508,8 +2515,8 @@ Adjective Only - Am someone who tends to be Adjective
 <td style="text-align:right;">
 -1.01
 </td>
-<td style="text-align:right;">
-0.633
+<td style="text-align:left;">
+.633
 </td>
 </tr>
 <tr>
@@ -2528,8 +2535,8 @@ Am Adjective - Tend to be Adjective
 <td style="text-align:right;">
 -1.52
 </td>
-<td style="text-align:right;">
-0.542
+<td style="text-align:left;">
+.542
 </td>
 </tr>
 <tr>
@@ -2548,8 +2555,8 @@ Am Adjective - Am someone who tends to be Adjective
 <td style="text-align:right;">
 -2.82
 </td>
-<td style="text-align:right;">
-0.041
+<td style="text-align:left;">
+.041
 </td>
 </tr>
 <tr>
@@ -2568,8 +2575,8 @@ Tend to be Adjective - Am someone who tends to be Adjective
 <td style="text-align:right;">
 -1.31
 </td>
-<td style="text-align:right;">
-0.591
+<td style="text-align:left;">
+.591
 </td>
 </tr>
 </tbody>
@@ -2591,8 +2598,10 @@ Average response to “careless” by format (Block 1 and Block 2)
 
 thrifty_em_b2 = emmeans(thrifty_model_b2, &quot;format&quot;)
 pairs(thrifty_em_b2, adjust = &quot;holm&quot;) %&gt;%
+  as_tibble() %&gt;% 
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = &quot;Differences in response to Thifty by format (Block 1 and Block 2)&quot;,
         col.names = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;df&quot;, &quot;t&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
@@ -2617,7 +2626,7 @@ df
 <th style="text-align:right;">
 t
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 p
 </th>
 </tr>
@@ -2639,8 +2648,8 @@ Adjective Only - Am Adjective
 <td style="text-align:right;">
 -0.04
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2659,8 +2668,8 @@ Adjective Only - Tend to be Adjective
 <td style="text-align:right;">
 -2.54
 </td>
-<td style="text-align:right;">
-0.083
+<td style="text-align:left;">
+.083
 </td>
 </tr>
 <tr>
@@ -2679,8 +2688,8 @@ Adjective Only - Am someone who tends to be Adjective
 <td style="text-align:right;">
 -0.26
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2699,8 +2708,8 @@ Am Adjective - Tend to be Adjective
 <td style="text-align:right;">
 -2.45
 </td>
-<td style="text-align:right;">
-0.084
+<td style="text-align:left;">
+.084
 </td>
 </tr>
 <tr>
@@ -2719,8 +2728,8 @@ Am Adjective - Am someone who tends to be Adjective
 <td style="text-align:right;">
 -0.21
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2739,8 +2748,8 @@ Tend to be Adjective - Am someone who tends to be Adjective
 <td style="text-align:right;">
 2.49
 </td>
-<td style="text-align:right;">
-0.084
+<td style="text-align:left;">
+.084
 </td>
 </tr>
 </tbody>
@@ -2866,9 +2875,10 @@ summary_by_item_mem = mod_by_item_mem %&gt;%
   mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;))
 
 summary_by_item_mem %&gt;%
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   arrange(reverse, item) %&gt;% 
   select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %&gt;% 
-  kable(digits = c(0,0,2,2,2,2,3,3), 
+  kable(digits = 2, 
          col.names = c(&quot;Item&quot;, &quot;Reverse\nScored?&quot;, &quot;SS&quot;, &quot;MS&quot;, &quot;df&quot;, &quot;F&quot;, &quot;raw&quot;, &quot;adj&quot;),
         booktabs = T) %&gt;%
   kable_styling() %&gt;% 
@@ -2903,10 +2913,10 @@ df
 <th style="text-align:right;">
 F
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 raw
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 adj
 </th>
 </tr>
@@ -2931,11 +2941,11 @@ N
 <td style="text-align:right;">
 0.06
 </td>
-<td style="text-align:right;">
-0.980
+<td style="text-align:left;">
+.980
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2957,11 +2967,11 @@ N
 <td style="text-align:right;">
 0.39
 </td>
-<td style="text-align:right;">
-0.759
+<td style="text-align:left;">
+.759
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2983,11 +2993,11 @@ N
 <td style="text-align:right;">
 0.06
 </td>
-<td style="text-align:right;">
-0.980
+<td style="text-align:left;">
+.980
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3009,11 +3019,11 @@ N
 <td style="text-align:right;">
 0.08
 </td>
-<td style="text-align:right;">
-0.968
+<td style="text-align:left;">
+.968
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3035,11 +3045,11 @@ N
 <td style="text-align:right;">
 0.12
 </td>
-<td style="text-align:right;">
-0.948
+<td style="text-align:left;">
+.948
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3061,11 +3071,11 @@ N
 <td style="text-align:right;">
 0.44
 </td>
-<td style="text-align:right;">
-0.727
+<td style="text-align:left;">
+.727
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3087,11 +3097,11 @@ N
 <td style="text-align:right;">
 0.27
 </td>
-<td style="text-align:right;">
-0.843
+<td style="text-align:left;">
+.843
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3113,11 +3123,11 @@ N
 <td style="text-align:right;">
 1.01
 </td>
-<td style="text-align:right;">
-0.394
+<td style="text-align:left;">
+.394
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3139,11 +3149,11 @@ N
 <td style="text-align:right;">
 0.37
 </td>
-<td style="text-align:right;">
-0.771
+<td style="text-align:left;">
+.771
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3165,11 +3175,11 @@ N
 <td style="text-align:right;">
 0.73
 </td>
-<td style="text-align:right;">
-0.536
+<td style="text-align:left;">
+.536
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3191,11 +3201,11 @@ N
 <td style="text-align:right;">
 0.35
 </td>
-<td style="text-align:right;">
-0.790
+<td style="text-align:left;">
+.790
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3217,11 +3227,11 @@ N
 <td style="text-align:right;">
 0.95
 </td>
-<td style="text-align:right;">
-0.421
+<td style="text-align:left;">
+.421
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3243,11 +3253,11 @@ N
 <td style="text-align:right;">
 0.28
 </td>
-<td style="text-align:right;">
-0.840
+<td style="text-align:left;">
+.840
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3269,11 +3279,11 @@ N
 <td style="text-align:right;">
 1.53
 </td>
-<td style="text-align:right;">
-0.216
+<td style="text-align:left;">
+.216
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3295,11 +3305,11 @@ N
 <td style="text-align:right;">
 0.40
 </td>
-<td style="text-align:right;">
-0.753
+<td style="text-align:left;">
+.753
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3321,11 +3331,11 @@ N
 <td style="text-align:right;">
 1.11
 </td>
-<td style="text-align:right;">
-0.353
+<td style="text-align:left;">
+.353
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3347,11 +3357,11 @@ N
 <td style="text-align:right;">
 0.13
 </td>
-<td style="text-align:right;">
-0.943
+<td style="text-align:left;">
+.943
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3373,11 +3383,11 @@ N
 <td style="text-align:right;">
 0.89
 </td>
-<td style="text-align:right;">
-0.451
+<td style="text-align:left;">
+.451
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3399,11 +3409,11 @@ N
 <td style="text-align:right;">
 0.40
 </td>
-<td style="text-align:right;">
-0.754
+<td style="text-align:left;">
+.754
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3425,11 +3435,11 @@ N
 <td style="text-align:right;">
 1.23
 </td>
-<td style="text-align:right;">
-0.306
+<td style="text-align:left;">
+.306
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3451,11 +3461,11 @@ N
 <td style="text-align:right;">
 1.13
 </td>
-<td style="text-align:right;">
-0.344
+<td style="text-align:left;">
+.344
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3477,11 +3487,11 @@ N
 <td style="text-align:right;">
 0.13
 </td>
-<td style="text-align:right;">
-0.940
+<td style="text-align:left;">
+.940
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3503,11 +3513,11 @@ N
 <td style="text-align:right;">
 0.69
 </td>
-<td style="text-align:right;">
-0.560
+<td style="text-align:left;">
+.560
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3529,11 +3539,11 @@ Y
 <td style="text-align:right;">
 0.55
 </td>
-<td style="text-align:right;">
-0.653
+<td style="text-align:left;">
+.653
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3555,11 +3565,11 @@ Y
 <td style="text-align:right;">
 1.13
 </td>
-<td style="text-align:right;">
-0.343
+<td style="text-align:left;">
+.343
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3581,11 +3591,11 @@ Y
 <td style="text-align:right;">
 1.76
 </td>
-<td style="text-align:right;">
-0.165
+<td style="text-align:left;">
+.165
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3607,11 +3617,11 @@ Y
 <td style="text-align:right;">
 0.57
 </td>
-<td style="text-align:right;">
-0.638
+<td style="text-align:left;">
+.638
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3633,11 +3643,11 @@ Y
 <td style="text-align:right;">
 1.01
 </td>
-<td style="text-align:right;">
-0.394
+<td style="text-align:left;">
+.394
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3659,11 +3669,11 @@ Y
 <td style="text-align:right;">
 0.22
 </td>
-<td style="text-align:right;">
-0.880
+<td style="text-align:left;">
+.880
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 </tbody>
@@ -3703,7 +3713,7 @@ plot_b3 +
        title = &quot;Average responses by item formatting (Block 1 and Block 2)&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-30-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
+<img src="analysis_format_files/figure-html/unnamed-chunk-31-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
 <p class="caption">
 Predicted response on personality items by condition, using only Block 1 data.
 </p>
@@ -3731,7 +3741,7 @@ items_13 %&gt;%
        title = &quot;Distribution of responses by format (Block 1 and Block 2)&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-31-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
+<img src="analysis_format_files/figure-html/unnamed-chunk-32-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
 <p class="caption">
 Distribution of responses by category, block 1 and block 2
 </p>
@@ -3757,9 +3767,10 @@ summary_by_item_i = mod_by_item_i %&gt;%
   mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;))
 
 summary_by_item_i %&gt;%
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   arrange(reverse, item) %&gt;% 
   select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %&gt;% 
-  kable(digits = c(0,0,2,2,0,2,2,3,3), 
+  kable(digits = 2, 
         col.names = c(&quot;Item&quot;, &quot;Reverse\nScored?&quot;, &quot;SS&quot;, &quot;MS&quot;, &quot;df1&quot;, &quot;df2&quot;, &quot;F&quot;, &quot;raw&quot;, &quot;adj&quot;),
         booktabs = T, caption = &quot;Interaction of format and \&quot;I\&quot; (block 1 and 3 data)&quot;) %&gt;%
   kable_styling() %&gt;% 
@@ -3800,10 +3811,10 @@ df2
 <th style="text-align:right;">
 F
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 raw
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 adj
 </th>
 </tr>
@@ -3831,11 +3842,11 @@ N
 <td style="text-align:right;">
 0.66
 </td>
-<td style="text-align:right;">
-0.535
+<td style="text-align:left;">
+.535
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3860,11 +3871,11 @@ N
 <td style="text-align:right;">
 2.06
 </td>
-<td style="text-align:right;">
-0.158
+<td style="text-align:left;">
+.158
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3889,11 +3900,11 @@ N
 <td style="text-align:right;">
 0.12
 </td>
-<td style="text-align:right;">
-0.883
+<td style="text-align:left;">
+.883
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3918,11 +3929,11 @@ N
 <td style="text-align:right;">
 0.24
 </td>
-<td style="text-align:right;">
-0.786
+<td style="text-align:left;">
+.786
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3947,11 +3958,11 @@ N
 <td style="text-align:right;">
 1.42
 </td>
-<td style="text-align:right;">
-0.277
+<td style="text-align:left;">
+.277
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3976,11 +3987,11 @@ N
 <td style="text-align:right;">
 0.22
 </td>
-<td style="text-align:right;">
-0.803
+<td style="text-align:left;">
+.803
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4005,11 +4016,11 @@ N
 <td style="text-align:right;">
 4.54
 </td>
-<td style="text-align:right;">
-0.031
+<td style="text-align:left;">
+.031
 </td>
-<td style="text-align:right;">
-0.827
+<td style="text-align:left;">
+.827
 </td>
 </tr>
 <tr>
@@ -4034,11 +4045,11 @@ N
 <td style="text-align:right;">
 0.30
 </td>
-<td style="text-align:right;">
-0.741
+<td style="text-align:left;">
+.741
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4063,11 +4074,11 @@ N
 <td style="text-align:right;">
 0.65
 </td>
-<td style="text-align:right;">
-0.539
+<td style="text-align:left;">
+.539
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4092,11 +4103,11 @@ N
 <td style="text-align:right;">
 2.40
 </td>
-<td style="text-align:right;">
-0.122
+<td style="text-align:left;">
+.122
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4121,11 +4132,11 @@ N
 <td style="text-align:right;">
 1.96
 </td>
-<td style="text-align:right;">
-0.177
+<td style="text-align:left;">
+.177
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4150,11 +4161,11 @@ N
 <td style="text-align:right;">
 0.34
 </td>
-<td style="text-align:right;">
-0.715
+<td style="text-align:left;">
+.715
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4179,11 +4190,11 @@ N
 <td style="text-align:right;">
 6.92
 </td>
-<td style="text-align:right;">
-0.009
+<td style="text-align:left;">
+.009
 </td>
-<td style="text-align:right;">
-0.250
+<td style="text-align:left;">
+.250
 </td>
 </tr>
 <tr>
@@ -4208,11 +4219,11 @@ N
 <td style="text-align:right;">
 0.52
 </td>
-<td style="text-align:right;">
-0.608
+<td style="text-align:left;">
+.608
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4237,11 +4248,11 @@ N
 <td style="text-align:right;">
 0.90
 </td>
-<td style="text-align:right;">
-0.358
+<td style="text-align:left;">
+.358
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4266,11 +4277,11 @@ N
 <td style="text-align:right;">
 3.67
 </td>
-<td style="text-align:right;">
-0.050
+<td style="text-align:left;">
+.050
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4295,11 +4306,11 @@ N
 <td style="text-align:right;">
 1.32
 </td>
-<td style="text-align:right;">
-0.298
+<td style="text-align:left;">
+.298
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4324,11 +4335,11 @@ N
 <td style="text-align:right;">
 1.90
 </td>
-<td style="text-align:right;">
-0.187
+<td style="text-align:left;">
+.187
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4353,11 +4364,11 @@ N
 <td style="text-align:right;">
 5.38
 </td>
-<td style="text-align:right;">
-0.021
+<td style="text-align:left;">
+.021
 </td>
-<td style="text-align:right;">
-0.575
+<td style="text-align:left;">
+.575
 </td>
 </tr>
 <tr>
@@ -4382,11 +4393,11 @@ N
 <td style="text-align:right;">
 0.11
 </td>
-<td style="text-align:right;">
-0.898
+<td style="text-align:left;">
+.898
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4411,11 +4422,11 @@ N
 <td style="text-align:right;">
 0.19
 </td>
-<td style="text-align:right;">
-0.828
+<td style="text-align:left;">
+.828
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4440,11 +4451,11 @@ N
 <td style="text-align:right;">
 0.58
 </td>
-<td style="text-align:right;">
-0.570
+<td style="text-align:left;">
+.570
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4469,11 +4480,11 @@ N
 <td style="text-align:right;">
 0.32
 </td>
-<td style="text-align:right;">
-0.734
+<td style="text-align:left;">
+.734
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4498,11 +4509,11 @@ Y
 <td style="text-align:right;">
 2.51
 </td>
-<td style="text-align:right;">
-0.106
+<td style="text-align:left;">
+.106
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4527,11 +4538,11 @@ Y
 <td style="text-align:right;">
 0.17
 </td>
-<td style="text-align:right;">
-0.844
+<td style="text-align:left;">
+.844
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4556,11 +4567,11 @@ Y
 <td style="text-align:right;">
 0.34
 </td>
-<td style="text-align:right;">
-0.718
+<td style="text-align:left;">
+.718
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4585,11 +4596,11 @@ Y
 <td style="text-align:right;">
 0.37
 </td>
-<td style="text-align:right;">
-0.693
+<td style="text-align:left;">
+.693
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4614,11 +4625,11 @@ Y
 <td style="text-align:right;">
 0.58
 </td>
-<td style="text-align:right;">
-0.570
+<td style="text-align:left;">
+.570
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4643,11 +4654,11 @@ Y
 <td style="text-align:right;">
 0.78
 </td>
-<td style="text-align:right;">
-0.474
+<td style="text-align:left;">
+.474
 </td>
-<td style="text-align:right;">
-1.000
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 </tbody>
@@ -4677,8 +4688,9 @@ curious_model_i %&gt;%
          term = str_replace(term, &quot;iPresent&quot;, &quot;I&quot;)) %&gt;% 
   filter(is.na(group)) %&gt;% 
   select(-effect, -group) %&gt;% 
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = &quot;Interaction of format and \&quot;I\&quot;&quot;,
         col.names = c(&quot;Term&quot;, &quot;Estimate&quot;, &quot;SE&quot;,  &quot;t&quot;, &quot;df&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
@@ -4703,7 +4715,7 @@ t
 <th style="text-align:right;">
 df
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 p
 </th>
 </tr>
@@ -4725,8 +4737,8 @@ p
 <td style="text-align:right;">
 14.77
 </td>
-<td style="text-align:right;">
-0.000
+<td style="text-align:left;">
+&lt; .001
 </td>
 </tr>
 <tr>
@@ -4745,8 +4757,8 @@ Tend to be Adjective
 <td style="text-align:right;">
 13.62
 </td>
-<td style="text-align:right;">
-0.830
+<td style="text-align:left;">
+.830
 </td>
 </tr>
 <tr>
@@ -4765,8 +4777,8 @@ Am someone who tends to be Adjective
 <td style="text-align:right;">
 14.25
 </td>
-<td style="text-align:right;">
-0.864
+<td style="text-align:left;">
+.864
 </td>
 </tr>
 <tr>
@@ -4785,8 +4797,8 @@ I
 <td style="text-align:right;">
 12.58
 </td>
-<td style="text-align:right;">
-0.117
+<td style="text-align:left;">
+.117
 </td>
 </tr>
 <tr>
@@ -4805,8 +4817,8 @@ Tend to be Adjective:I
 <td style="text-align:right;">
 14.24
 </td>
-<td style="text-align:right;">
-0.944
+<td style="text-align:left;">
+.944
 </td>
 </tr>
 <tr>
@@ -4825,8 +4837,8 @@ Am someone who tends to be Adjective:I
 <td style="text-align:right;">
 13.09
 </td>
-<td style="text-align:right;">
-0.015
+<td style="text-align:left;">
+.015
 </td>
 </tr>
 </tbody>
@@ -4834,7 +4846,7 @@ Am someone who tends to be Adjective:I
 <pre class="r"><code>plot_model(curious_model_i, type = &quot;pred&quot;, 
            terms = c(&quot;format&quot;, &quot;i&quot;)) +
   geom_line()</code></pre>
-<p><img src="analysis_format_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p><img src="analysis_format_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 </div>
 <div id="lively" class="section level3">
 <h3>Lively</h3>
@@ -4850,8 +4862,9 @@ lively_model_i %&gt;%
          term = str_replace(term, &quot;iPresent&quot;, &quot;I&quot;)) %&gt;% 
   filter(is.na(group)) %&gt;% 
   select(-effect, -group) %&gt;% 
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = &quot;Interaction of format and \&quot;I\&quot;&quot;,
         col.names = c(&quot;Term&quot;, &quot;Estimate&quot;, &quot;SE&quot;,  &quot;t&quot;, &quot;df&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
@@ -4876,7 +4889,7 @@ t
 <th style="text-align:right;">
 df
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 p
 </th>
 </tr>
@@ -4898,8 +4911,8 @@ p
 <td style="text-align:right;">
 11.21
 </td>
-<td style="text-align:right;">
-0.000
+<td style="text-align:left;">
+&lt; .001
 </td>
 </tr>
 <tr>
@@ -4918,8 +4931,8 @@ Tend to be Adjective
 <td style="text-align:right;">
 11.59
 </td>
-<td style="text-align:right;">
-0.623
+<td style="text-align:left;">
+.623
 </td>
 </tr>
 <tr>
@@ -4938,8 +4951,8 @@ Am someone who tends to be Adjective
 <td style="text-align:right;">
 11.43
 </td>
-<td style="text-align:right;">
-0.296
+<td style="text-align:left;">
+.296
 </td>
 </tr>
 <tr>
@@ -4958,8 +4971,8 @@ I
 <td style="text-align:right;">
 13.74
 </td>
-<td style="text-align:right;">
-0.003
+<td style="text-align:left;">
+.003
 </td>
 </tr>
 <tr>
@@ -4978,8 +4991,8 @@ Tend to be Adjective:I
 <td style="text-align:right;">
 13.50
 </td>
-<td style="text-align:right;">
-0.254
+<td style="text-align:left;">
+.254
 </td>
 </tr>
 <tr>
@@ -4998,8 +5011,8 @@ Am someone who tends to be Adjective:I
 <td style="text-align:right;">
 13.54
 </td>
-<td style="text-align:right;">
-0.004
+<td style="text-align:left;">
+.004
 </td>
 </tr>
 </tbody>
@@ -5007,7 +5020,7 @@ Am someone who tends to be Adjective:I
 <pre class="r"><code>plot_model(lively_model_i, type = &quot;pred&quot;, 
            terms = c(&quot;format&quot;, &quot;i&quot;)) +
   geom_line()</code></pre>
-<p><img src="analysis_format_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p><img src="analysis_format_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 </div>
 <div id="responsible" class="section level3">
 <h3>Responsible</h3>
@@ -5023,8 +5036,9 @@ responsible_model_i %&gt;%
          term = str_replace(term, &quot;iPresent&quot;, &quot;I&quot;)) %&gt;% 
   filter(is.na(group)) %&gt;% 
   select(-effect, -group) %&gt;% 
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = &quot;Interaction of format and \&quot;I\&quot;&quot;,
         col.names = c(&quot;Term&quot;, &quot;Estimate&quot;, &quot;SE&quot;,  &quot;t&quot;, &quot;df&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
@@ -5049,7 +5063,7 @@ t
 <th style="text-align:right;">
 df
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 p
 </th>
 </tr>
@@ -5071,8 +5085,8 @@ p
 <td style="text-align:right;">
 16.29
 </td>
-<td style="text-align:right;">
-0.000
+<td style="text-align:left;">
+&lt; .001
 </td>
 </tr>
 <tr>
@@ -5091,8 +5105,8 @@ Tend to be Adjective
 <td style="text-align:right;">
 15.64
 </td>
-<td style="text-align:right;">
-0.634
+<td style="text-align:left;">
+.634
 </td>
 </tr>
 <tr>
@@ -5111,8 +5125,8 @@ Am someone who tends to be Adjective
 <td style="text-align:right;">
 13.70
 </td>
-<td style="text-align:right;">
-0.859
+<td style="text-align:left;">
+.859
 </td>
 </tr>
 <tr>
@@ -5131,8 +5145,8 @@ I
 <td style="text-align:right;">
 13.25
 </td>
-<td style="text-align:right;">
-0.638
+<td style="text-align:left;">
+.638
 </td>
 </tr>
 <tr>
@@ -5151,8 +5165,8 @@ Tend to be Adjective:I
 <td style="text-align:right;">
 13.91
 </td>
-<td style="text-align:right;">
-0.043
+<td style="text-align:left;">
+.043
 </td>
 </tr>
 <tr>
@@ -5171,8 +5185,8 @@ Am someone who tends to be Adjective:I
 <td style="text-align:right;">
 16.66
 </td>
-<td style="text-align:right;">
-0.509
+<td style="text-align:left;">
+.509
 </td>
 </tr>
 </tbody>
@@ -5180,7 +5194,7 @@ Am someone who tends to be Adjective:I
 <pre class="r"><code>plot_model(responsible_model_i, type = &quot;pred&quot;, 
            terms = c(&quot;format&quot;, &quot;i&quot;)) +
   geom_line()</code></pre>
-<p><img src="analysis_format_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p><img src="analysis_format_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 </div>
 <div id="sympathetic" class="section level3">
 <h3>Sympathetic</h3>
@@ -5196,8 +5210,9 @@ sympathetic_model_i %&gt;%
          term = str_replace(term, &quot;iPresent&quot;, &quot;I&quot;)) %&gt;% 
   filter(is.na(group)) %&gt;% 
   select(-effect, -group) %&gt;% 
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
-        digits = c(0,2,2,2,2,3),
+        digits = 2,
         caption = &quot;Interaction of format and \&quot;I\&quot;&quot;,
         col.names = c(&quot;Term&quot;, &quot;Estimate&quot;, &quot;SE&quot;,  &quot;t&quot;, &quot;df&quot;, &quot;p&quot;)) %&gt;%
   kable_styling()</code></pre>
@@ -5222,7 +5237,7 @@ t
 <th style="text-align:right;">
 df
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 p
 </th>
 </tr>
@@ -5244,8 +5259,8 @@ p
 <td style="text-align:right;">
 12.24
 </td>
-<td style="text-align:right;">
-0.000
+<td style="text-align:left;">
+&lt; .001
 </td>
 </tr>
 <tr>
@@ -5264,8 +5279,8 @@ Tend to be Adjective
 <td style="text-align:right;">
 11.79
 </td>
-<td style="text-align:right;">
-0.541
+<td style="text-align:left;">
+.541
 </td>
 </tr>
 <tr>
@@ -5284,8 +5299,8 @@ Am someone who tends to be Adjective
 <td style="text-align:right;">
 12.41
 </td>
-<td style="text-align:right;">
-0.589
+<td style="text-align:left;">
+.589
 </td>
 </tr>
 <tr>
@@ -5304,8 +5319,8 @@ I
 <td style="text-align:right;">
 12.31
 </td>
-<td style="text-align:right;">
-0.321
+<td style="text-align:left;">
+.321
 </td>
 </tr>
 <tr>
@@ -5324,8 +5339,8 @@ Tend to be Adjective:I
 <td style="text-align:right;">
 12.94
 </td>
-<td style="text-align:right;">
-0.519
+<td style="text-align:left;">
+.519
 </td>
 </tr>
 <tr>
@@ -5344,8 +5359,8 @@ Am someone who tends to be Adjective:I
 <td style="text-align:right;">
 12.15
 </td>
-<td style="text-align:right;">
-0.007
+<td style="text-align:left;">
+.007
 </td>
 </tr>
 </tbody>
@@ -5353,7 +5368,7 @@ Am someone who tends to be Adjective:I
 <pre class="r"><code>plot_model(sympathetic_model_i, type = &quot;pred&quot;, 
            terms = c(&quot;format&quot;, &quot;i&quot;)) +
   geom_line()</code></pre>
-<p><img src="analysis_format_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p><img src="analysis_format_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 </div>
 </div>
 
