@@ -23,9 +23,12 @@ library(papaja) # for pretty numbers
 
 ```{r, echo = F}
 load(here("data/items_df.Rds"))
+load(here("data/cleaned_data.Rds"))
 ```
 
-## Block 1 personality
+## Personality by block and format
+
+### Block 1
 
 
 ```{r, results = 'asis'}
@@ -62,7 +65,7 @@ items_df %>%
   kable_styling()
 ```
 
-## Block 2 personality
+### Block 2
 
 
 ```{r, results = 'asis'}
@@ -99,3 +102,218 @@ items_df %>%
   kable_styling()
 ```
 
+### Block 3
+
+
+```{r, results = 'asis'}
+items_df %>%
+  filter(block == "2") %>% 
+  group_by(format) %>%
+  summarise(
+    mean = mean(response),
+    sd = sd(response),
+    median = median(response),
+    N_responses = n(),
+    N_participants = length(unique(proid))
+  ) %>%
+  kable(booktabs = T, digits = c(0,2,2,0,0,0),
+        caption = "Descriptives of responses to Block 2") %>%
+  kable_styling()
+```
+
+
+```{r, results = 'asis'}
+items_df %>%
+  filter(block == "2") %>%
+  group_by(item, format) %>%
+  summarise(
+    mean = mean(response),
+    sd = sd(response)
+  ) %>% 
+  mutate(value = paste0(
+    printnum(mean), " (", printnum(sd), ")"
+  )) %>%
+  select(-mean, -sd) %>%
+  spread(format, value) %>% 
+  kable(booktabs = T) %>%
+  kable_styling()
+```
+
+## Demographics 
+
+### Age
+
+```{r}
+data %>% 
+  select(age) %>% 
+  summarise(across(age, list(mean = mean, 
+                             sd = sd, 
+                             min = min, 
+                             max = max)))
+```
+
+```{r}
+data %>% 
+  ggplot(aes(x = age)) +
+  geom_histogram(binwidth = 5, color = "white") +
+  labs(x = "Age", y = "Frequency",
+       title = "Distribution of ages") +
+  theme_pubr()
+```
+
+
+### Gender
+
+```{r}
+table(data$sex)
+round((table(data$sex)/nrow(data))*100,2)
+```
+
+```{r}
+data %>% 
+  ggplot(aes(x = sex)) +
+  geom_bar(stat = "count") +
+  labs(x = NULL, y = "Frequency",
+       title = "Distribution of sex") +
+  theme_pubr()
+```
+
+
+### Education
+
+```{r}
+table(data$edu)
+round((table(data$edu)/nrow(data))*100,2)
+```
+
+
+```{r}
+data %>% 
+  ggplot(aes(x = edu)) +
+  geom_bar(stat = "count") +
+  labs(x = NULL, y = "Frequency",
+       title = "Distribution of education") +
+  theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### Ethnicity
+
+```{r}
+table(data$ethnic)
+round((table(data$ethnic)/nrow(data))*100,2)
+```
+
+
+```{r}
+data %>% 
+  ggplot(aes(x = ethnic)) +
+  geom_bar(stat = "count") +
+  labs(x = NULL, y = "Frequency",
+       title = "Distribution of ethnicity") +
+  theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### Household income
+
+```{r}
+table(data$hhinc)
+round((table(data$hhinc)/nrow(data))*100,2)
+```
+
+
+```{r}
+data %>% 
+  ggplot(aes(x = hhinc)) +
+  geom_bar(stat = "count") +
+  labs(x = NULL, y = "Frequency",
+       title = "Distribution of household income") +
+  theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## Demographics by device type
+
+### Age
+
+```{r, results = 'asis'}
+age_mod = lm(age ~ devicetype, data = data) 
+
+apa_print(age_mod)$table %>% 
+  kable(booktabs = T) %>% 
+  kable_styling()
+```
+
+```{r}
+plot_model(age_mod, type = "pred")$devicetype +
+  labs(x = NULL, y = "Average age") +
+  theme_pubclean()
+```
+
+### Sex
+
+```{r, results = 'asis'}
+chisq.test(table(data$sex, data$devicetype))
+```
+
+```{r}
+data %>% 
+  ggplot(aes(x = sex, fill = devicetype)) +
+  geom_bar(stat = "count") +
+  facet_wrap(~devicetype, scales = "free_y") +
+  guides(fill = "none") +
+  labs(x = NULL, y = "Frequency") +
+  theme_pubr()
+```
+
+### Education
+
+```{r, results = 'asis'}
+chisq.test(table(data$edu, data$devicetype))
+```
+
+```{r}
+data %>% 
+  ggplot(aes(x = edu, fill = devicetype)) +
+  geom_bar(stat = "count") +
+  facet_wrap(~devicetype, scales = "free_y") +
+  guides(fill = "none") +
+  labs(x = NULL, y = "Frequency") +
+  theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### Ethnicity
+
+```{r, results = 'asis'}
+chisq.test(table(data$ethnic, data$devicetype))
+```
+
+```{r}
+data %>% 
+  ggplot(aes(x = ethnic, fill = devicetype)) +
+  geom_bar(stat = "count") +
+  facet_wrap(~devicetype, scales = "free_y") +
+  guides(fill = "none") +
+  labs(x = NULL, y = "Frequency") +
+  theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### Household income
+
+```{r, results = 'asis'}
+chisq.test(table(data$hhinc, data$devicetype))
+```
+
+```{r}
+data %>% 
+  ggplot(aes(x = hhinc, fill = devicetype)) +
+  geom_bar(stat = "count") +
+  facet_wrap(~devicetype, scales = "free_y") +
+  guides(fill = "none") +
+  labs(x = NULL, y = "Frequency") +
+  theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```

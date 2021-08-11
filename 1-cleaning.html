@@ -1290,6 +1290,40 @@ Relationship between immediate and delayed recall
     labels = c(&quot;Computer&quot;, &quot;Mobile&quot;, &quot;Tablet&quot;)
   ))</code></pre>
 </div>
+<div id="reorder-demographic-categories" class="section level3">
+<h3>Reorder demographic categories</h3>
+<pre class="r"><code>data = data %&gt;% 
+  mutate(edu = factor(edu, 
+                      levels = c(
+                        &quot;Less than 12 years&quot;,
+                        &quot;High school graduate/GED&quot;,
+                        &quot;Currently in college/university&quot;,
+                        &quot;Some college/university, but did not graduate&quot;,
+                        &quot;Associate degree (2 year)&quot;,
+                        &quot;College/university degree (4 year)&quot;,
+                        &quot;Currently in graduate or professional school&quot;,
+                        &quot;Graduate or professional school degree&quot;))) %&gt;% 
+  mutate(hhinc = str_remove(hhinc, &quot; a year&quot;),
+         hhinc = str_replace_all(hhinc, &quot;,000&quot;, &quot;K&quot;),
+         hhinc = str_replace_all(hhinc, &quot; to &quot;, &quot;-&quot;),
+         hhinc = str_replace_all(hhinc, &quot;less than&quot;, &quot;&lt;&quot;),
+         hhinc = str_replace_all(hhinc, &quot;more than&quot;, &quot;&gt;&quot;))%&gt;% 
+  mutate(hhinc = factor(hhinc,
+                        levels = c(
+                          &quot;&lt; $20,000&quot;,
+                          &quot;$20K-$40K&quot;,
+                          &quot;$40K-$60K&quot;,
+                          &quot;$60K-$80K&quot;,
+                          &quot;$80K-$100K&quot;,
+                          &quot;$100K-$120K&quot;,
+                          &quot;$120K-$150K&quot;,
+                          &quot;$150K-$200K&quot;,
+                          &quot;$200K-$250K&quot;,
+                          &quot;$250K-$350K&quot;,
+                          &quot;$350K-$500K&quot;,
+                          &quot;&gt;$500K&quot;
+                        )))</code></pre>
+</div>
 <div id="long-form-dataset" class="section level3">
 <h3>Long-form dataset</h3>
 <p>We need one dataset that contains the responses to and timing of the personality items in long form. This will be used for nearly all the statistical models, which will nest items within person. To create this, we first select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 – that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.</p>

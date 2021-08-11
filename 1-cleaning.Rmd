@@ -1019,6 +1019,42 @@ data = data %>%
   ))
 ```
 
+### Reorder demographic categories
+
+```{r}
+data = data %>% 
+  mutate(edu = factor(edu, 
+                      levels = c(
+                        "Less than 12 years",
+                        "High school graduate/GED",
+                        "Currently in college/university",
+                        "Some college/university, but did not graduate",
+                        "Associate degree (2 year)",
+                        "College/university degree (4 year)",
+                        "Currently in graduate or professional school",
+                        "Graduate or professional school degree"))) %>% 
+  mutate(hhinc = str_remove(hhinc, " a year"),
+         hhinc = str_replace_all(hhinc, ",000", "K"),
+         hhinc = str_replace_all(hhinc, " to ", "-"),
+         hhinc = str_replace_all(hhinc, "less than", "<"),
+         hhinc = str_replace_all(hhinc, "more than", ">"))%>% 
+  mutate(hhinc = factor(hhinc,
+                        levels = c(
+                          "< $20,000",
+                          "$20K-$40K",
+                          "$40K-$60K",
+                          "$60K-$80K",
+                          "$80K-$100K",
+                          "$100K-$120K",
+                          "$120K-$150K",
+                          "$150K-$200K",
+                          "$200K-$250K",
+                          "$250K-$350K",
+                          "$350K-$500K",
+                          ">$500K"
+                        )))
+```
+
 ### Long-form dataset
 
 ```{r 1-cleaning-82, echo = F}
@@ -1101,6 +1137,8 @@ items_df$format = factor(items_df$format,
                                levels = c("a","b","c","d"),
                                labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "Am someone\nwho tends to be\nAdjective"))
 ```
+
+
 
 #### Transform seconds
 
