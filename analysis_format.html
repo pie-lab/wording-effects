@@ -338,6 +338,9 @@ div.tocify {
       <a href="analysis_format.html">Does item formatting affect response?</a>
     </li>
     <li>
+      <a href="internal.html">Does item formatting affect internal consistency?</a>
+    </li>
+    <li>
       <a href="test_retest.html">Does item formatting affect test-retest reliability?</a>
     </li>
     <li>
@@ -369,7 +372,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact response?</h1>
-<h4 class="date">Last updated 2021-08-11</h4>
+<h4 class="date">Last updated 2021-08-16</h4>
 
 </div>
 
@@ -387,8 +390,9 @@ mod.format_b1 = lmer(response~format + (1|proid),
 anova(mod.format_b1)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##        Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
-## format 1.7991  0.5997     3    31  0.3946 0.7577</code></pre>
-<pre class="r"><code>plot_b1 = plot_model(mod.format_b1, type = &quot;pred&quot;) 
+## format 1.3559 0.45198     3    31  0.3033 0.8228</code></pre>
+<p>When examining only Block 1 data, item format was unassociated with participants’ responses to personality items <span class="math inline">\((F(3, 31.00) = 0.30, p = .823)\)</span>.</p>
+<pre class="r"><code>plot_b1 = plot_model(mod.format_b1, type = &quot;pred&quot;)
 
 plot_b1$format +
   labs(x = NULL,
@@ -396,13 +400,13 @@ plot_b1$format +
        title = &quot;Average responses by item formatting (Block 1 Data)&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-6-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
+<img src="analysis_format_files/figure-html/analysis-format-7-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
 <p class="caption">
 Predicted response on personality items by condition, using only Block 1 data.
 </p>
 </div>
 <pre class="r"><code>means_by_group = item_block1 %&gt;%
-  group_by(format) %&gt;% 
+  group_by(format) %&gt;%
   summarise(m = mean(response),
             s = sd(response))
 
@@ -410,12 +414,12 @@ item_block1 %&gt;%
   ggplot(aes(x = response, fill = format)) +
   geom_histogram(bins = 6, color = &quot;white&quot;) +
   geom_vline(aes(xintercept = m), data = means_by_group) +
-  geom_text(aes(x = 1, 
-                y = 125, 
-                label = paste(&quot;M =&quot;, round(m,2), 
-                              &quot;\nSD =&quot;, round(s,2))), 
-            data = means_by_group, 
-            hjust =0, 
+  geom_text(aes(x = 1,
+                y = 125,
+                label = paste(&quot;M =&quot;, round(m,2),
+                              &quot;\nSD =&quot;, round(s,2))),
+            data = means_by_group,
+            hjust =0,
             vjust = 1) +
   facet_wrap(~format) +
   guides(fill = &quot;none&quot;) +
@@ -424,7 +428,7 @@ item_block1 %&gt;%
        title = &quot;Distribution of responses by format (Block 1 data)&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-7-1.png" alt="Distribution of responses by category, block 1 data only" width="672" />
+<img src="analysis_format_files/figure-html/analysis-format-8-1.png" alt="Distribution of responses by category, block 1 data only" width="672" />
 <p class="caption">
 Distribution of responses by category, block 1 data only
 </p>
@@ -436,26 +440,26 @@ Distribution of responses by category, block 1 data only
   group_by(item) %&gt;%
   nest() %&gt;%
   mutate(mod = map(data, ~lm(response~format, data = .))) %&gt;%
-  mutate(aov = map(mod, anova)) 
+  mutate(aov = map(mod, anova))
 
 summary_by_item_b1 = mod_by_item_b1 %&gt;%
-  ungroup() %&gt;% 
+  ungroup() %&gt;%
   mutate(tidy = map(aov, broom::tidy)) %&gt;%
-  select(item, tidy) %&gt;% 
+  select(item, tidy) %&gt;%
   unnest(cols = c(tidy)) %&gt;%
   filter(term == &quot;format&quot;) %&gt;%
   mutate(reverse = case_when(
     item %in% reverse ~ &quot;Y&quot;,
     TRUE ~ &quot;N&quot;
-  )) %&gt;% 
-  mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;)) 
+  )) %&gt;%
+  mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;))
 
 summary_by_item_b1 %&gt;%
   mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
-  arrange(reverse, item) %&gt;% 
-  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %&gt;% 
-  kable(digits = 2, 
-        booktabs = T, 
+  arrange(reverse, item) %&gt;%
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %&gt;%
+  kable(digits = 2,
+        booktabs = T,
         col.names = c(&quot;Item&quot;, &quot;Reverse\nScored?&quot;, &quot;SS&quot;, &quot;MS&quot;, &quot;df&quot;, &quot;F&quot;, &quot;raw&quot;, &quot;adj&quot;),
         caption = &quot;Format effects on response by item (block 1 data only)&quot;) %&gt;%
   kable_styling()</code></pre>
@@ -539,6 +543,32 @@ N
 </td>
 <td style="text-align:left;">
 .682
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+broadminded
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+2.27
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.66
+</td>
+<td style="text-align:left;">
+.581
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -910,6 +940,32 @@ N
 </tr>
 <tr>
 <td style="text-align:left;">
+selfdisciplined
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+2.87
+</td>
+<td style="text-align:right;">
+0.96
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.72
+</td>
+<td style="text-align:left;">
+.545
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 softhearted
 </td>
 <td style="text-align:left;">
@@ -1253,7 +1309,7 @@ Y
 <h3>Pairwise t-tests for significant ANOVAs</h3>
 <p>Here we identify the specific items with significant differences.</p>
 <pre class="r"><code>sig_item_b1 = summary_by_item_b1 %&gt;%
-  filter(p.value &lt; .05) 
+  filter(p.value &lt; .05)
 
 sig_item_b1 = sig_item_b1$item
 sig_item_b1</code></pre>
@@ -1269,7 +1325,7 @@ sig_item_b1</code></pre>
 
 talkative_em_b1 = emmeans(talkative_model_b1, &quot;format&quot;)
 pairs(talkative_em_b1, adjust = &quot;holm&quot;) %&gt;%
-  as_tibble() %&gt;% 
+  as_tibble() %&gt;%
   mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -1427,7 +1483,7 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </table>
 <pre class="r"><code>plot_model(talkative_model_b1, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-11-1.png" alt="Average response to &quot;talkative&quot; by format (block 1 data only)" width="672" />
+<img src="analysis_format_files/figure-html/analysis-format-12-1.png" alt="Average response to &quot;talkative&quot; by format (block 1 data only)" width="672" />
 <p class="caption">
 Average response to “talkative” by format (block 1 data only)
 </p>
@@ -1438,13 +1494,14 @@ Average response to “talkative” by format (block 1 data only)
 <h2>Effect of format (Block 1 and 2)</h2>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2.</p>
 <pre class="r"><code>items_12 = items_df %&gt;% filter(block %in% c(&quot;1&quot;,&quot;2&quot;))</code></pre>
-<pre class="r"><code>mod.format_b2 = lmer(response~format + (1|proid), 
+<pre class="r"><code>mod.format_b2 = lmer(response~format + (1|proid),
                   data = items_12)
 anova(mod.format_b2)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##        Sum Sq Mean Sq NumDF  DenDF F value Pr(&gt;F)
-## format 4.0137  1.3379     3 1959.5  0.8666 0.4577</code></pre>
-<pre class="r"><code>plot_b2 = plot_model(mod.format_b2, type = &quot;pred&quot;) 
+## format 4.1445  1.3815     3 2104.9  0.9193 0.4307</code></pre>
+<p>When examining both Block 1 and Block 2 data, item format was unassociated with participants’ responses to personality items <span class="math inline">\((F(3, 2,104.92) = 0.92, p = .431)\)</span>.</p>
+<pre class="r"><code>plot_b2 = plot_model(mod.format_b2, type = &quot;pred&quot;)
 
 plot_b2$format +
   labs(x = NULL,
@@ -1452,13 +1509,13 @@ plot_b2$format +
        title = &quot;Average responses by item formatting (Block 1 and Block 2)&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-15-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
+<img src="analysis_format_files/figure-html/analysis-format-16-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
 <p class="caption">
 Predicted response on personality items by condition, using only Block 1 data.
 </p>
 </div>
 <pre class="r"><code>means_by_group = items_12 %&gt;%
-  group_by(format) %&gt;% 
+  group_by(format) %&gt;%
   summarise(m = mean(response),
             s = sd(response))
 
@@ -1466,12 +1523,12 @@ items_12 %&gt;%
   ggplot(aes(x = response, fill = format)) +
   geom_histogram(bins = 6, color = &quot;white&quot;) +
   geom_vline(aes(xintercept = m), data = means_by_group) +
-  geom_text(aes(x = 1, 
-                y = 200, 
-                label = paste(&quot;M =&quot;, round(m,2), 
-                              &quot;\nSD =&quot;, round(s,2))), 
-            data = means_by_group, 
-            hjust =0, 
+  geom_text(aes(x = 1,
+                y = 200,
+                label = paste(&quot;M =&quot;, round(m,2),
+                              &quot;\nSD =&quot;, round(s,2))),
+            data = means_by_group,
+            hjust =0,
             vjust = 1) +
   facet_wrap(~format) +
   guides(fill = &quot;none&quot;) +
@@ -1480,7 +1537,7 @@ items_12 %&gt;%
        title = &quot;Distribution of responses by format (Block 1 and Block 2)&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-16-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
+<img src="analysis_format_files/figure-html/analysis-format-17-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
 <p class="caption">
 Distribution of responses by category, block 1 and block 2
 </p>
@@ -1492,28 +1549,28 @@ Distribution of responses by category, block 1 and block 2
   group_by(item) %&gt;%
   nest() %&gt;%
   mutate(mod = map(data, ~lmer(response~format + (1|proid), data = .))) %&gt;%
-  mutate(aov = map(mod, anova)) </code></pre>
+  mutate(aov = map(mod, anova))</code></pre>
 <p>To present these results, we use the <code>tidy</code> function to summarise the findings and extract just the <em>F</em>-test associated with the format variable. We calculate adjusted <em>p</em>-values using a Holm correction. We also create a column that indicates whether the item was reverse-scored; we use this to sort the table, in case a pattern emerges.</p>
 <pre class="r"><code>summary_by_item_b2 = mod_by_item_b2 %&gt;%
-  ungroup() %&gt;% 
+  ungroup() %&gt;%
   mutate(tidy = map(aov, broom::tidy)) %&gt;%
-  select(item, tidy) %&gt;% 
+  select(item, tidy) %&gt;%
   unnest(cols = c(tidy)) %&gt;%
   filter(term == &quot;format&quot;) %&gt;%
   mutate(reverse = case_when(
     item %in% reverse ~ &quot;Y&quot;,
     TRUE ~ &quot;N&quot;
-  )) %&gt;% 
-  mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;)) 
+  )) %&gt;%
+  mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;))
 
 summary_by_item_b2 %&gt;%
   mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
-  arrange(reverse, item) %&gt;% 
-  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %&gt;% 
-  kable(digits = 2, 
+  arrange(reverse, item) %&gt;%
+  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %&gt;%
+  kable(digits = 2,
         col.names = c(&quot;Item&quot;, &quot;Reverse\nScored?&quot;, &quot;SS&quot;, &quot;MS&quot;, &quot;df1&quot;, &quot;df2&quot;, &quot;F&quot;, &quot;raw&quot;, &quot;adj&quot;),
         booktabs = T, caption = &quot;Format effects on response by item (block 1 data only)&quot;) %&gt;%
-  kable_styling() %&gt;% 
+  kable_styling() %&gt;%
     add_header_above(c(&quot; &quot; = 7, &quot;p-value&quot; = 2))</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -1613,6 +1670,35 @@ N
 </td>
 <td style="text-align:left;">
 .361
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+broadminded
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.54
+</td>
+<td style="text-align:right;">
+0.51
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+64.49
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:left;">
+.521
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -2026,6 +2112,35 @@ N
 </tr>
 <tr>
 <td style="text-align:left;">
+selfdisciplined
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.32
+</td>
+<td style="text-align:right;">
+0.11
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+41.84
+</td>
+<td style="text-align:right;">
+0.26
+</td>
+<td style="text-align:left;">
+.853
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 softhearted
 </td>
 <td style="text-align:left;">
@@ -2195,7 +2310,7 @@ N
 .027
 </td>
 <td style="text-align:left;">
-.794
+.849
 </td>
 </tr>
 <tr>
@@ -2408,7 +2523,7 @@ Y
 <h3>Pairwise t-tests for significant ANOVAs</h3>
 <p>Here we identify the specific items with significant differences.</p>
 <pre class="r"><code>sig_item_b2 = summary_by_item_b2 %&gt;%
-  filter(p.value &lt; .05) 
+  filter(p.value &lt; .05)
 
 sig_item_b2 = sig_item_b2$item
 sig_item_b2</code></pre>
@@ -2420,12 +2535,12 @@ sig_item_b2</code></pre>
 <h3>Careless</h3>
 <pre class="r"><code>careless_model_b2 = items_12 %&gt;%
   filter(item == &quot;careless&quot;) %&gt;%
-  lmer(response~format + (1|proid), 
+  lmer(response~format + (1|proid),
                                data = .)
 
 careless_em_b2 = emmeans(careless_model_b2, &quot;format&quot;)
 pairs(careless_em_b2, adjust = &quot;holm&quot;) %&gt;%
-  as_tibble() %&gt;% 
+  as_tibble() %&gt;%
   mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -2583,7 +2698,7 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </table>
 <pre class="r"><code>plot_model(careless_model_b2, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-21-1.png" alt="Average response to &quot;careless&quot; by format (Block 1 and Block 2)" width="672" />
+<img src="analysis_format_files/figure-html/analysis-format-22-1.png" alt="Average response to &quot;careless&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
 Average response to “careless” by format (Block 1 and Block 2)
 </p>
@@ -2593,12 +2708,12 @@ Average response to “careless” by format (Block 1 and Block 2)
 <h3>Thrifty</h3>
 <pre class="r"><code>thrifty_model_b2 = items_12 %&gt;%
   filter(item == &quot;thrifty&quot;) %&gt;%
-  lmer(response~format + (1|proid), 
+  lmer(response~format + (1|proid),
                                data = .)
 
 thrifty_em_b2 = emmeans(thrifty_model_b2, &quot;format&quot;)
 pairs(thrifty_em_b2, adjust = &quot;holm&quot;) %&gt;%
-  as_tibble() %&gt;% 
+  as_tibble() %&gt;%
   mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -2756,7 +2871,7 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </table>
 <pre class="r"><code>plot_model(thrifty_model_b2, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-23-1.png" alt="Average response to &quot;thrifty&quot; by format (Block 1 and Block 2)" width="672" />
+<img src="analysis_format_files/figure-html/analysis-format-24-1.png" alt="Average response to &quot;thrifty&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
 Average response to “thrifty” by format (Block 1 and Block 2)
 </p>
@@ -2765,91 +2880,92 @@ Average response to “thrifty” by format (Block 1 and Block 2)
 </div>
 <div id="account-for-memory-effects-blocks-1-and-2" class="section level2">
 <h2>Account for memory effects (Blocks 1 and 2)</h2>
-<pre class="r"><code>mod.format_mem = lmer(response~format*delayed_memory + (1|proid), 
+<pre class="r"><code>mod.format_mem = lmer(response~format*delayed_memory + (1|proid),
                   data = items_12)
 anova(mod.format_mem)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##                       Sum Sq Mean Sq NumDF   DenDF F value Pr(&gt;F)
-## format                6.7506  2.2502     3 1977.31  1.4579 0.2242
-## delayed_memory        2.3953  2.3953     1   33.16  1.5519 0.2216
-## format:delayed_memory 4.4469  1.4823     3 1977.58  0.9604 0.4105</code></pre>
+## format                4.8144 1.60479     3 2117.22  1.0675 0.3617
+## delayed_memory        2.4823 2.48233     1   33.18  1.6513 0.2077
+## format:delayed_memory 2.9060 0.96867     3 2118.52  0.6444 0.5865</code></pre>
 <pre class="r"><code>summary(mod.format_mem)</code></pre>
 <pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 ## lmerModLmerTest]
 ## Formula: response ~ format * delayed_memory + (1 | proid)
 ##    Data: items_12
 ## 
-## REML criterion at convergence: 6740.6
+## REML criterion at convergence: 7144.7
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -3.4138 -0.4310  0.2627  0.6936  1.7952 
+## -3.4343 -0.4565  0.2507  0.6893  1.7916 
 ## 
 ## Random effects:
 ##  Groups   Name        Variance Std.Dev.
-##  proid    (Intercept) 0.1811   0.4256  
-##  Residual             1.5435   1.2424  
-## Number of obs: 2030, groups:  proid, 35
+##  proid    (Intercept) 0.1804   0.4248  
+##  Residual             1.5033   1.2261  
+## Number of obs: 2170, groups:  proid, 35
 ## 
 ## Fixed effects:
 ##                                                               Estimate
-## (Intercept)                                                  4.608e+00
-## formatAm\nAdjective                                         -3.353e-01
-## formatTend to be\nAdjective                                 -1.070e-01
-## formatAm someone\nwho tends to be\nAdjective                -1.945e-01
-## delayed_memory                                               6.223e-03
-## formatAm\nAdjective:delayed_memory                           4.654e-02
-## formatTend to be\nAdjective:delayed_memory                   2.972e-02
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory  3.050e-02
+## (Intercept)                                                    4.58932
+## formatAm\nAdjective                                           -0.27329
+## formatTend to be\nAdjective                                   -0.07698
+## formatAm someone\nwho tends to be\nAdjective                  -0.14891
+## delayed_memory                                                 0.01320
+## formatAm\nAdjective:delayed_memory                             0.03632
+## formatTend to be\nAdjective:delayed_memory                     0.02519
+## formatAm someone\nwho tends to be\nAdjective:delayed_memory    0.02048
 ##                                                             Std. Error
-## (Intercept)                                                  1.851e-01
-## formatAm\nAdjective                                          1.654e-01
-## formatTend to be\nAdjective                                  1.749e-01
-## formatAm someone\nwho tends to be\nAdjective                 1.796e-01
-## delayed_memory                                               3.164e-02
-## formatAm\nAdjective:delayed_memory                           2.765e-02
-## formatTend to be\nAdjective:delayed_memory                   3.082e-02
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory  3.082e-02
+## (Intercept)                                                    0.18198
+## formatAm\nAdjective                                            0.15843
+## formatTend to be\nAdjective                                    0.16694
+## formatAm someone\nwho tends to be\nAdjective                   0.17237
+## delayed_memory                                                 0.03108
+## formatAm\nAdjective:delayed_memory                             0.02641
+## formatTend to be\nAdjective:delayed_memory                     0.02944
+## formatAm someone\nwho tends to be\nAdjective:delayed_memory    0.02956
 ##                                                                     df t value
-## (Intercept)                                                  6.417e+01  24.900
-## formatAm\nAdjective                                          1.990e+03  -2.028
-## formatTend to be\nAdjective                                  1.946e+03  -0.612
-## formatAm someone\nwho tends to be\nAdjective                 1.999e+03  -1.083
-## delayed_memory                                               6.577e+01   0.197
-## formatAm\nAdjective:delayed_memory                           1.971e+03   1.683
-## formatTend to be\nAdjective:delayed_memory                   1.927e+03   0.964
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory  2.006e+03   0.990
+## (Intercept)                                                   62.17156  25.219
+## formatAm\nAdjective                                         2128.91591  -1.725
+## formatTend to be\nAdjective                                 2092.17672  -0.461
+## formatAm someone\nwho tends to be\nAdjective                2139.15284  -0.864
+## delayed_memory                                                63.52491   0.425
+## formatAm\nAdjective:delayed_memory                          2116.48721   1.375
+## formatTend to be\nAdjective:delayed_memory                  2070.60879   0.856
+## formatAm someone\nwho tends to be\nAdjective:delayed_memory 2147.54208   0.693
 ##                                                             Pr(&gt;|t|)    
 ## (Intercept)                                                   &lt;2e-16 ***
-## formatAm\nAdjective                                           0.0427 *  
-## formatTend to be\nAdjective                                   0.5408    
-## formatAm someone\nwho tends to be\nAdjective                  0.2787    
-## delayed_memory                                                0.8447    
-## formatAm\nAdjective:delayed_memory                            0.0925 .  
-## formatTend to be\nAdjective:delayed_memory                    0.3350    
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory   0.3224    
+## formatAm\nAdjective                                           0.0847 .  
+## formatTend to be\nAdjective                                   0.6447    
+## formatAm someone\nwho tends to be\nAdjective                  0.3878    
+## delayed_memory                                                0.6725    
+## formatAm\nAdjective:delayed_memory                            0.1692    
+## formatTend to be\nAdjective:delayed_memory                    0.3922    
+## formatAm someone\nwho tends to be\nAdjective:delayed_memory   0.4885    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) frmtAA frTtbA frAswttbA dlyd_m frAA:_ fTtbA:
-## frmtAmAdjct -0.449                                             
-## frmtTndtbAd -0.442  0.475                                      
-## frmtAswttbA -0.418  0.458  0.471                               
-## delayd_mmry -0.868  0.395  0.389  0.364                        
-## frmtAAdjc:_  0.405 -0.857 -0.428 -0.415    -0.476              
-## frmtTtbAd:_  0.377 -0.406 -0.865 -0.399    -0.441  0.491       
-## frAswttbA:_  0.363 -0.402 -0.410 -0.872    -0.422  0.487  0.462</code></pre>
-<pre class="r"><code>plot_model(mod.format_mem, 
-           type = &quot;pred&quot;, 
+## frmtAmAdjct -0.439                                             
+## frmtTndtbAd -0.433  0.478                                      
+## frmtAswttbA -0.407  0.455  0.470                               
+## delayd_mmry -0.869  0.387  0.381  0.355                        
+## frmtAAdjc:_  0.397 -0.859 -0.433 -0.413    -0.465              
+## frmtTtbAd:_  0.370 -0.409 -0.865 -0.398    -0.431  0.495       
+## frAswttbA:_  0.354 -0.400 -0.410 -0.873    -0.410  0.484  0.460</code></pre>
+<p>When examining both Block 1 and Block 2 data, memory did not have a main effect on participant responses <span class="math inline">\((F(1, 33.18) = 1.65, p = .208)\)</span> and did not moderate differences between formats <span class="math inline">\((F(3, 2,118.52) = 0.64, p = .586)\)</span>.</p>
+<pre class="r"><code>plot_model(mod.format_mem,
+           type = &quot;pred&quot;,
            term = c(&quot;format&quot;, &quot;delayed_memory[meansd]&quot;)) +
   geom_line() +
-  labs(x = NULL, 
+  labs(x = NULL,
        y = &quot;Average response&quot;) +
   scale_color_discrete(&quot;Memory&quot;, labels = c(&quot;-1SD&quot;, &quot;Mean&quot;, &quot;+1SD&quot;))+
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-25-1.png" alt="Predicted response on personality items by condition after controlling for delayed_memory." width="672" />
+<img src="analysis_format_files/figure-html/analysis-format-26-1.png" alt="Predicted response on personality items by condition after controlling for delayed_memory." width="672" />
 <p class="caption">
 Predicted response on personality items by condition after controlling for delayed_memory.
 </p>
@@ -2860,28 +2976,28 @@ Predicted response on personality items by condition after controlling for delay
   group_by(item) %&gt;%
   nest() %&gt;%
   mutate(mod = map(data, ~lm(response~format*delayed_memory, data = .))) %&gt;%
-  mutate(aov = map(mod, anova)) 
+  mutate(aov = map(mod, anova))
 
 summary_by_item_mem = mod_by_item_mem %&gt;%
-  ungroup() %&gt;% 
+  ungroup() %&gt;%
   mutate(tidy = map(aov, broom::tidy)) %&gt;%
-  select(item, tidy) %&gt;% 
+  select(item, tidy) %&gt;%
   unnest(cols = c(tidy)) %&gt;%
   filter(term == &quot;format:delayed_memory&quot;) %&gt;%
   mutate(reverse = case_when(
     item %in% reverse ~ &quot;Y&quot;,
     TRUE ~ &quot;N&quot;
-  )) %&gt;% 
+  )) %&gt;%
   mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;))
 
 summary_by_item_mem %&gt;%
   mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
-  arrange(reverse, item) %&gt;% 
-  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %&gt;% 
-  kable(digits = 2, 
+  arrange(reverse, item) %&gt;%
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %&gt;%
+  kable(digits = 2,
          col.names = c(&quot;Item&quot;, &quot;Reverse\nScored?&quot;, &quot;SS&quot;, &quot;MS&quot;, &quot;df&quot;, &quot;F&quot;, &quot;raw&quot;, &quot;adj&quot;),
         booktabs = T) %&gt;%
-  kable_styling() %&gt;% 
+  kable_styling() %&gt;%
   add_header_above(c(&quot; &quot; = 6, &quot;p-value&quot; = 2))</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -2969,6 +3085,32 @@ N
 </td>
 <td style="text-align:left;">
 .759
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+broadminded
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.71
+</td>
+<td style="text-align:right;">
+0.24
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:left;">
+.843
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -3340,6 +3482,32 @@ N
 </tr>
 <tr>
 <td style="text-align:left;">
+selfdisciplined
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+2.29
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.60
+</td>
+<td style="text-align:left;">
+.616
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 softhearted
 </td>
 <td style="text-align:left;">
@@ -3683,7 +3851,7 @@ Y
 <h3>Pairwise t-tests for significant ANOVAs</h3>
 <p>Here we identify the specific items with significant differences.</p>
 <pre class="r"><code>sig_item_mem = summary_by_item_mem %&gt;%
-  filter(p.value &lt; .05) 
+  filter(p.value &lt; .05)
 
 sig_item_mem = sig_item_mem$item
 sig_item_mem</code></pre>
@@ -3693,19 +3861,26 @@ sig_item_mem</code></pre>
 <div id="inclusion-of-i-block-1-and-block-3" class="section level2">
 <h2>Inclusion of “I” (Block 1 and Block 3)</h2>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word “I”. Here, we use data from blocks 1 and 3.</p>
-<pre class="r"><code>items_13 = items_df %&gt;% 
-  filter(block %in% c(&quot;1&quot;,&quot;3&quot;)) %&gt;% 
-  filter(condition != &quot;A&quot;) %&gt;% 
+<pre class="r"><code>items_13 = items_df %&gt;%
+  filter(block %in% c(&quot;1&quot;,&quot;3&quot;)) %&gt;%
+  filter(condition != &quot;A&quot;) %&gt;%
   filter(time2 == &quot;yes&quot;)</code></pre>
-<pre class="r"><code>mod.format_b3 = lmer(response~format*i + (1|proid), 
+<pre class="r"><code>mod.format_b3_1 = lmer(response~format + i + (1|proid),
                   data = items_13)
-anova(mod.format_b3)</code></pre>
+anova(mod.format_b3_1)</code></pre>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##        Sum Sq Mean Sq NumDF  DenDF F value Pr(&gt;F)
+## format 2.3214  1.1607     2  11.00  0.7559 0.4925
+## i      3.4344  3.4344     1 856.17  2.2366 0.1351</code></pre>
+<pre class="r"><code>mod.format_b3_2 = lmer(response~format*i + (1|proid),
+                  data = items_13)
+anova(mod.format_b3_2)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##          Sum Sq Mean Sq NumDF  DenDF F value Pr(&gt;F)
-## format   3.2586 1.62932     2  12.41  1.0262 0.3869
-## i        2.6021 2.60209     1 796.86  1.6389 0.2008
-## format:i 1.5784 0.78918     2 797.04  0.4971 0.6085</code></pre>
-<pre class="r"><code>plot_b3 = plot_model(mod.format_b3, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;i&quot;)) 
+## format   3.1941  1.5971     2  12.32  1.0390 0.3828
+## i        2.0278  2.0278     1 853.63  1.3192 0.2511
+## format:i 1.7712  0.8856     2 853.78  0.5761 0.5623</code></pre>
+<pre class="r"><code>plot_b3 = plot_model(mod.format_b3_2, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;i&quot;))
 plot_b3 +
   geom_line() +
   labs(x = NULL,
@@ -3713,13 +3888,13 @@ plot_b3 +
        title = &quot;Average responses by item formatting (Block 1 and Block 2)&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-31-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
+<img src="analysis_format_files/figure-html/analysis-format-32-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
 <p class="caption">
 Predicted response on personality items by condition, using only Block 1 data.
 </p>
 </div>
 <pre class="r"><code>means_by_group = items_13 %&gt;%
-  group_by(format, i) %&gt;% 
+  group_by(format, i) %&gt;%
   summarise(m = mean(response),
             s = sd(response))
 
@@ -3727,12 +3902,12 @@ items_13 %&gt;%
   ggplot(aes(x = response, fill = i)) +
   geom_histogram(bins = 6, color = &quot;white&quot;) +
   geom_vline(aes(xintercept = m), data = means_by_group) +
-  geom_text(aes(x = 1, 
-                y = 100, 
-                label = paste(&quot;M =&quot;, round(m,2), 
-                              &quot;\nSD =&quot;, round(s,2))), 
-            data = means_by_group, 
-            hjust =0, 
+  geom_text(aes(x = 1,
+                y = 100,
+                label = paste(&quot;M =&quot;, round(m,2),
+                              &quot;\nSD =&quot;, round(s,2))),
+            data = means_by_group,
+            hjust =0,
             vjust = 1) +
   facet_grid(i~format, scales = &quot;free&quot;) +
   guides(fill = &quot;none&quot;) +
@@ -3741,7 +3916,7 @@ items_13 %&gt;%
        title = &quot;Distribution of responses by format (Block 1 and Block 2)&quot;) +
   theme_pubr()</code></pre>
 <div class="figure">
-<img src="analysis_format_files/figure-html/unnamed-chunk-32-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
+<img src="analysis_format_files/figure-html/analysis-format-33-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
 <p class="caption">
 Distribution of responses by category, block 1 and block 2
 </p>
@@ -3751,29 +3926,1002 @@ Distribution of responses by category, block 1 and block 2
 <pre class="r"><code>mod_by_item_i = items_13 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
-  mutate(mod = map(data, ~lmer(response~format*i + (1|proid), data = .))) %&gt;%
-  mutate(aov = map(mod, anova)) 
+  mutate(mod = map(data, ~lmer(response~format + i + (1|proid), data = .))) %&gt;%
+  mutate(aov = map(mod, anova))
 
 summary_by_item_i = mod_by_item_i %&gt;%
-  ungroup() %&gt;% 
+  ungroup() %&gt;%
   mutate(tidy = map(aov, broom::tidy)) %&gt;%
-  select(item, tidy) %&gt;% 
+  select(item, tidy) %&gt;%
+  unnest(cols = c(tidy)) %&gt;%
+  filter(term == &quot;i&quot;) %&gt;%
+  mutate(reverse = case_when(
+    item %in% reverse ~ &quot;Y&quot;,
+    TRUE ~ &quot;N&quot;
+  )) %&gt;%
+  mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;))
+
+summary_by_item_i %&gt;%
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
+  arrange(reverse, item) %&gt;%
+  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %&gt;%
+  kable(digits = 2,
+        col.names = c(&quot;Item&quot;, &quot;Reverse\nScored?&quot;, &quot;SS&quot;, &quot;MS&quot;, &quot;df1&quot;, &quot;df2&quot;, &quot;F&quot;, &quot;raw&quot;, &quot;adj&quot;),
+        booktabs = T, caption = &quot;Effect of \&quot;I\&quot; (block 1 and 3 data)&quot;) %&gt;%
+  kable_styling() %&gt;%
+    add_header_above(c(&quot; &quot; = 7, &quot;p-value&quot; = 2))</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Effect of “I” (block 1 and 3 data)
+</caption>
+<thead>
+<tr>
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="7">
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+p-value
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:left;">
+Item
+</th>
+<th style="text-align:left;">
+Reverse Scored?
+</th>
+<th style="text-align:right;">
+SS
+</th>
+<th style="text-align:right;">
+MS
+</th>
+<th style="text-align:right;">
+df1
+</th>
+<th style="text-align:right;">
+df2
+</th>
+<th style="text-align:right;">
+F
+</th>
+<th style="text-align:left;">
+raw
+</th>
+<th style="text-align:left;">
+adj
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+active
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+15.27
+</td>
+<td style="text-align:right;">
+1.26
+</td>
+<td style="text-align:left;">
+.278
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+adventurous
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.00
+</td>
+<td style="text-align:right;">
+1.45
+</td>
+<td style="text-align:left;">
+.240
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+broadminded
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.22
+</td>
+<td style="text-align:right;">
+0.22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+17.80
+</td>
+<td style="text-align:right;">
+0.43
+</td>
+<td style="text-align:left;">
+.518
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calm
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+2.54
+</td>
+<td style="text-align:right;">
+2.54
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+18.68
+</td>
+<td style="text-align:right;">
+3.23
+</td>
+<td style="text-align:left;">
+.089
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+caring
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.00
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:left;">
+.606
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cautious
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.39
+</td>
+<td style="text-align:right;">
+0.39
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+15.73
+</td>
+<td style="text-align:right;">
+0.64
+</td>
+<td style="text-align:left;">
+.435
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creative
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.34
+</td>
+<td style="text-align:right;">
+0.34
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+14.76
+</td>
+<td style="text-align:right;">
+1.53
+</td>
+<td style="text-align:left;">
+.236
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+curious
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+16.22
+</td>
+<td style="text-align:right;">
+0.32
+</td>
+<td style="text-align:left;">
+.579
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friendly
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.24
+</td>
+<td style="text-align:right;">
+0.24
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.00
+</td>
+<td style="text-align:right;">
+0.80
+</td>
+<td style="text-align:left;">
+.380
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hardworking
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+14.54
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+<td style="text-align:left;">
+.402
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+helpful
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+19.61
+</td>
+<td style="text-align:right;">
+0.19
+</td>
+<td style="text-align:left;">
+.668
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+imaginative
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+16.98
+</td>
+<td style="text-align:right;">
+1.36
+</td>
+<td style="text-align:left;">
+.259
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+intelligent
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+16.12
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+<td style="text-align:left;">
+.858
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lively
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+3.63
+</td>
+<td style="text-align:right;">
+3.63
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+16.62
+</td>
+<td style="text-align:right;">
+9.45
+</td>
+<td style="text-align:left;">
+.007
+</td>
+<td style="text-align:left;">
+.218
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+organized
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+14.73
+</td>
+<td style="text-align:right;">
+0.78
+</td>
+<td style="text-align:left;">
+.390
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+outgoing
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.18
+</td>
+<td style="text-align:right;">
+0.18
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+14.97
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+<td style="text-align:left;">
+.447
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+responsible
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.45
+</td>
+<td style="text-align:right;">
+0.45
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+17.72
+</td>
+<td style="text-align:right;">
+1.30
+</td>
+<td style="text-align:left;">
+.269
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+selfdisciplined
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.20
+</td>
+<td style="text-align:right;">
+0.20
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+14.03
+</td>
+<td style="text-align:right;">
+2.09
+</td>
+<td style="text-align:left;">
+.170
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+softhearted
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+16.35
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:left;">
+.907
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sophisticated
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+15.52
+</td>
+<td style="text-align:right;">
+0.46
+</td>
+<td style="text-align:left;">
+.509
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sympathetic
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.46
+</td>
+<td style="text-align:right;">
+0.46
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+18.69
+</td>
+<td style="text-align:right;">
+0.79
+</td>
+<td style="text-align:left;">
+.385
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+talkative
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.35
+</td>
+<td style="text-align:right;">
+0.35
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+14.08
+</td>
+<td style="text-align:right;">
+0.62
+</td>
+<td style="text-align:left;">
+.445
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thorough
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.94
+</td>
+<td style="text-align:right;">
+1.94
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+17.69
+</td>
+<td style="text-align:right;">
+6.12
+</td>
+<td style="text-align:left;">
+.024
+</td>
+<td style="text-align:left;">
+.714
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thrifty
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.02
+</td>
+<td style="text-align:right;">
+1.02
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+15.94
+</td>
+<td style="text-align:right;">
+1.34
+</td>
+<td style="text-align:left;">
+.265
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+warm
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+17.23
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:left;">
+.913
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+careless
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+1.25
+</td>
+<td style="text-align:right;">
+1.25
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+21.45
+</td>
+<td style="text-align:right;">
+0.64
+</td>
+<td style="text-align:left;">
+.432
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+impulsive
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.33
+</td>
+<td style="text-align:right;">
+0.33
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+14.86
+</td>
+<td style="text-align:right;">
+0.47
+</td>
+<td style="text-align:left;">
+.505
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+moody
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.71
+</td>
+<td style="text-align:right;">
+0.71
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+16.97
+</td>
+<td style="text-align:right;">
+0.66
+</td>
+<td style="text-align:left;">
+.428
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nervous
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+3.02
+</td>
+<td style="text-align:right;">
+3.02
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+21.34
+</td>
+<td style="text-align:right;">
+1.58
+</td>
+<td style="text-align:left;">
+.222
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+reckless
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+1.15
+</td>
+<td style="text-align:right;">
+1.15
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+19.64
+</td>
+<td style="text-align:right;">
+0.85
+</td>
+<td style="text-align:left;">
+.368
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+worrying
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.19
+</td>
+<td style="text-align:right;">
+0.19
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+17.05
+</td>
+<td style="text-align:right;">
+0.20
+</td>
+<td style="text-align:left;">
+.662
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>mod_by_item_i2 = items_13 %&gt;%
+  group_by(item) %&gt;%
+  nest() %&gt;%
+  mutate(mod = map(data, ~lmer(response~format*i + (1|proid), data = .))) %&gt;%
+  mutate(aov = map(mod, anova))
+
+summary_by_item_i2 = mod_by_item_i2 %&gt;%
+  ungroup() %&gt;%
+  mutate(tidy = map(aov, broom::tidy)) %&gt;%
+  select(item, tidy) %&gt;%
   unnest(cols = c(tidy)) %&gt;%
   filter(term == &quot;format:i&quot;) %&gt;%
   mutate(reverse = case_when(
     item %in% reverse ~ &quot;Y&quot;,
     TRUE ~ &quot;N&quot;
-  )) %&gt;% 
+  )) %&gt;%
   mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;))
 
-summary_by_item_i %&gt;%
+summary_by_item_i2 %&gt;%
   mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
-  arrange(reverse, item) %&gt;% 
-  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %&gt;% 
-  kable(digits = 2, 
+  arrange(reverse, item) %&gt;%
+  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %&gt;%
+  kable(digits = 2,
         col.names = c(&quot;Item&quot;, &quot;Reverse\nScored?&quot;, &quot;SS&quot;, &quot;MS&quot;, &quot;df1&quot;, &quot;df2&quot;, &quot;F&quot;, &quot;raw&quot;, &quot;adj&quot;),
         booktabs = T, caption = &quot;Interaction of format and \&quot;I\&quot; (block 1 and 3 data)&quot;) %&gt;%
-  kable_styling() %&gt;% 
+  kable_styling() %&gt;%
     add_header_above(c(&quot; &quot; = 7, &quot;p-value&quot; = 2))</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -3873,6 +5021,35 @@ N
 </td>
 <td style="text-align:left;">
 .158
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+broadminded
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+2.29
+</td>
+<td style="text-align:right;">
+1.14
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+16.84
+</td>
+<td style="text-align:right;">
+2.41
+</td>
+<td style="text-align:left;">
+.120
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -4020,7 +5197,7 @@ N
 .031
 </td>
 <td style="text-align:left;">
-.827
+.888
 </td>
 </tr>
 <tr>
@@ -4194,7 +5371,7 @@ N
 .009
 </td>
 <td style="text-align:left;">
-.250
+.267
 </td>
 </tr>
 <tr>
@@ -4286,6 +5463,35 @@ N
 </tr>
 <tr>
 <td style="text-align:left;">
+selfdisciplined
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.44
+</td>
+<td style="text-align:right;">
+0.22
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+11.69
+</td>
+<td style="text-align:right;">
+2.93
+</td>
+<td style="text-align:left;">
+.093
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 softhearted
 </td>
 <td style="text-align:left;">
@@ -4368,7 +5574,7 @@ N
 .021
 </td>
 <td style="text-align:left;">
-.575
+.616
 </td>
 </tr>
 <tr>
@@ -4668,26 +5874,26 @@ Y
 <h3>Pairwise t-tests for significant ANOVAs</h3>
 <p>Here we identify the specific items with significant differences.</p>
 <pre class="r"><code>sig_item_i = summary_by_item_i %&gt;%
-  filter(p.value &lt; .05) 
+  filter(p.value &lt; .05)
 
 sig_item_i = sig_item_i$item
 sig_item_i</code></pre>
-<pre><code>## [1] &quot;curious&quot;     &quot;lively&quot;      &quot;responsible&quot; &quot;sympathetic&quot;</code></pre>
+<pre><code>## [1] &quot;lively&quot;   &quot;thorough&quot;</code></pre>
 </div>
 <div id="curious" class="section level3">
 <h3>Curious</h3>
 <pre class="r"><code>curious_model_i = items_13 %&gt;%
   filter(item == &quot;curious&quot;) %&gt;%
-  lmer(response~format*i + (1|proid), 
+  lmer(response~format*i + (1|proid),
                                data = .)
 
 curious_model_i %&gt;%
-  tidy() %&gt;% 
+  tidy() %&gt;%
   mutate(term = str_replace(term, &quot;\n&quot;, &quot; &quot;),
          term = str_replace(term, &quot;format&quot;, &quot;&quot;),
-         term = str_replace(term, &quot;iPresent&quot;, &quot;I&quot;)) %&gt;% 
-  filter(is.na(group)) %&gt;% 
-  select(-effect, -group) %&gt;% 
+         term = str_replace(term, &quot;iPresent&quot;, &quot;I&quot;)) %&gt;%
+  filter(is.na(group)) %&gt;%
+  select(-effect, -group) %&gt;%
   mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -4843,25 +6049,25 @@ Am someone who tends to be Adjective:I
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>plot_model(curious_model_i, type = &quot;pred&quot;, 
+<pre class="r"><code>plot_model(curious_model_i, type = &quot;pred&quot;,
            terms = c(&quot;format&quot;, &quot;i&quot;)) +
   geom_line()</code></pre>
-<p><img src="analysis_format_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p><img src="analysis_format_files/figure-html/analysis-format-38-1.png" width="672" /></p>
 </div>
 <div id="lively" class="section level3">
 <h3>Lively</h3>
 <pre class="r"><code>lively_model_i = items_13 %&gt;%
   filter(item == &quot;lively&quot;) %&gt;%
-  lmer(response~format*i + (1|proid), 
+  lmer(response~format*i + (1|proid),
                                data = .)
 
 lively_model_i %&gt;%
-  tidy() %&gt;% 
+  tidy() %&gt;%
   mutate(term = str_replace(term, &quot;\n&quot;, &quot; &quot;),
          term = str_replace(term, &quot;format&quot;, &quot;&quot;),
-         term = str_replace(term, &quot;iPresent&quot;, &quot;I&quot;)) %&gt;% 
-  filter(is.na(group)) %&gt;% 
-  select(-effect, -group) %&gt;% 
+         term = str_replace(term, &quot;iPresent&quot;, &quot;I&quot;)) %&gt;%
+  filter(is.na(group)) %&gt;%
+  select(-effect, -group) %&gt;%
   mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -5017,25 +6223,25 @@ Am someone who tends to be Adjective:I
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>plot_model(lively_model_i, type = &quot;pred&quot;, 
+<pre class="r"><code>plot_model(lively_model_i, type = &quot;pred&quot;,
            terms = c(&quot;format&quot;, &quot;i&quot;)) +
   geom_line()</code></pre>
-<p><img src="analysis_format_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p><img src="analysis_format_files/figure-html/analysis-format-40-1.png" width="672" /></p>
 </div>
 <div id="responsible" class="section level3">
 <h3>Responsible</h3>
 <pre class="r"><code>responsible_model_i = items_13 %&gt;%
   filter(item == &quot;responsible&quot;) %&gt;%
-  lmer(response~format*i + (1|proid), 
+  lmer(response~format*i + (1|proid),
                                data = .)
 
 responsible_model_i %&gt;%
-  tidy() %&gt;% 
+  tidy() %&gt;%
   mutate(term = str_replace(term, &quot;\n&quot;, &quot; &quot;),
          term = str_replace(term, &quot;format&quot;, &quot;&quot;),
-         term = str_replace(term, &quot;iPresent&quot;, &quot;I&quot;)) %&gt;% 
-  filter(is.na(group)) %&gt;% 
-  select(-effect, -group) %&gt;% 
+         term = str_replace(term, &quot;iPresent&quot;, &quot;I&quot;)) %&gt;%
+  filter(is.na(group)) %&gt;%
+  select(-effect, -group) %&gt;%
   mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -5191,25 +6397,25 @@ Am someone who tends to be Adjective:I
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>plot_model(responsible_model_i, type = &quot;pred&quot;, 
+<pre class="r"><code>plot_model(responsible_model_i, type = &quot;pred&quot;,
            terms = c(&quot;format&quot;, &quot;i&quot;)) +
   geom_line()</code></pre>
-<p><img src="analysis_format_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><img src="analysis_format_files/figure-html/analysis-format-42-1.png" width="672" /></p>
 </div>
 <div id="sympathetic" class="section level3">
 <h3>Sympathetic</h3>
 <pre class="r"><code>sympathetic_model_i = items_13 %&gt;%
   filter(item == &quot;sympathetic&quot;) %&gt;%
-  lmer(response~format*i + (1|proid), 
+  lmer(response~format*i + (1|proid),
                                data = .)
 
 sympathetic_model_i %&gt;%
-  tidy() %&gt;% 
+  tidy() %&gt;%
   mutate(term = str_replace(term, &quot;\n&quot;, &quot; &quot;),
          term = str_replace(term, &quot;format&quot;, &quot;&quot;),
-         term = str_replace(term, &quot;iPresent&quot;, &quot;I&quot;)) %&gt;% 
-  filter(is.na(group)) %&gt;% 
-  select(-effect, -group) %&gt;% 
+         term = str_replace(term, &quot;iPresent&quot;, &quot;I&quot;)) %&gt;%
+  filter(is.na(group)) %&gt;%
+  select(-effect, -group) %&gt;%
   mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -5365,10 +6571,10 @@ Am someone who tends to be Adjective:I
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>plot_model(sympathetic_model_i, type = &quot;pred&quot;, 
+<pre class="r"><code>plot_model(sympathetic_model_i, type = &quot;pred&quot;,
            terms = c(&quot;format&quot;, &quot;i&quot;)) +
   geom_line()</code></pre>
-<p><img src="analysis_format_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p><img src="analysis_format_files/figure-html/analysis-format-44-1.png" width="672" /></p>
 </div>
 </div>
 

@@ -338,6 +338,9 @@ div.tocify {
       <a href="analysis_format.html">Does item formatting affect response?</a>
     </li>
     <li>
+      <a href="internal.html">Does item formatting affect internal consistency?</a>
+    </li>
+    <li>
       <a href="test_retest.html">Does item formatting affect test-retest reliability?</a>
     </li>
     <li>
@@ -369,7 +372,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact timing?</h1>
-<h4 class="date">Last updated 2021-08-11</h4>
+<h4 class="date">Last updated 2021-08-16</h4>
 
 </div>
 
@@ -384,7 +387,7 @@ mod.format_b1 = lmer(seconds_log~format + (1|proid),
 anova(mod.format_b1)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##        Sum Sq Mean Sq NumDF DenDF F value  Pr(&gt;F)  
-## format 6.9057  2.3019     3    31  3.8542 0.01875 *
+## format 7.1362  2.3788     3    31  4.0608 0.01522 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>plot_b1 = plot_model(mod.format_b1, type = &quot;pred&quot;) 
@@ -482,7 +485,7 @@ p.value
 Adjective Only - Am Adjective
 </td>
 <td style="text-align:right;">
--0.40
+-0.39
 </td>
 <td style="text-align:right;">
 0.18
@@ -491,10 +494,10 @@ Adjective Only - Am Adjective
 31
 </td>
 <td style="text-align:right;">
--2.14
+-2.13
 </td>
 <td style="text-align:right;">
-0.160
+0.164
 </td>
 </tr>
 <tr>
@@ -502,7 +505,7 @@ Adjective Only - Am Adjective
 Adjective Only - Tend to be Adjective
 </td>
 <td style="text-align:right;">
--0.59
+-0.60
 </td>
 <td style="text-align:right;">
 0.19
@@ -511,10 +514,10 @@ Adjective Only - Tend to be Adjective
 31
 </td>
 <td style="text-align:right;">
--3.09
+-3.16
 </td>
 <td style="text-align:right;">
-0.025
+0.021
 </td>
 </tr>
 <tr>
@@ -522,7 +525,7 @@ Adjective Only - Tend to be Adjective
 Adjective Only - Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
--0.10
+-0.09
 </td>
 <td style="text-align:right;">
 0.20
@@ -531,10 +534,10 @@ Adjective Only - Am someone who tends to be Adjective
 31
 </td>
 <td style="text-align:right;">
--0.52
+-0.45
 </td>
 <td style="text-align:right;">
-0.675
+0.657
 </td>
 </tr>
 <tr>
@@ -542,7 +545,7 @@ Adjective Only - Am someone who tends to be Adjective
 Am Adjective - Tend to be Adjective
 </td>
 <td style="text-align:right;">
--0.19
+-0.21
 </td>
 <td style="text-align:right;">
 0.20
@@ -551,10 +554,10 @@ Am Adjective - Tend to be Adjective
 31
 </td>
 <td style="text-align:right;">
--0.97
+-1.05
 </td>
 <td style="text-align:right;">
-0.675
+0.602
 </td>
 </tr>
 <tr>
@@ -562,19 +565,19 @@ Am Adjective - Tend to be Adjective
 Am Adjective - Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
-0.29
+0.30
 </td>
 <td style="text-align:right;">
-0.21
+0.20
 </td>
 <td style="text-align:right;">
 31
 </td>
 <td style="text-align:right;">
-1.41
+1.47
 </td>
 <td style="text-align:right;">
-0.505
+0.452
 </td>
 </tr>
 <tr>
@@ -582,7 +585,7 @@ Am Adjective - Am someone who tends to be Adjective
 Tend to be Adjective - Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
-0.49
+0.51
 </td>
 <td style="text-align:right;">
 0.21
@@ -591,10 +594,10 @@ Tend to be Adjective - Am someone who tends to be Adjective
 31
 </td>
 <td style="text-align:right;">
-2.29
+2.42
 </td>
 <td style="text-align:right;">
-0.146
+0.107
 </td>
 </tr>
 </tbody>
@@ -607,7 +610,8 @@ Tend to be Adjective - Am someone who tends to be Adjective
   group_by(item) %&gt;%
   nest() %&gt;%
   mutate(mod = map(data, ~lm(seconds_log~format, data = .))) %&gt;%
-  mutate(aov = map(mod, anova)) 
+  mutate(aov = map(mod, anova)) %&gt;% 
+  ungroup()
 
 summary_by_item_b1 = mod_by_item_b1 %&gt;%
   mutate(tidy = map(aov, broom::tidy)) %&gt;%
@@ -685,7 +689,7 @@ N
 .556
 </td>
 <td style="text-align:left;">
-.556
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -711,7 +715,33 @@ N
 .037
 </td>
 <td style="text-align:left;">
-.037
+.913
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+broadminded
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.26
+</td>
+<td style="text-align:right;">
+0.42
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.78
+</td>
+<td style="text-align:left;">
+.513
+</td>
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -737,7 +767,7 @@ N
 .030
 </td>
 <td style="text-align:left;">
-.030
+.789
 </td>
 </tr>
 <tr>
@@ -763,7 +793,7 @@ N
 .010
 </td>
 <td style="text-align:left;">
-.010
+.300
 </td>
 </tr>
 <tr>
@@ -789,7 +819,7 @@ N
 .974
 </td>
 <td style="text-align:left;">
-.974
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -815,7 +845,7 @@ N
 .056
 </td>
 <td style="text-align:left;">
-.056
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -841,7 +871,7 @@ N
 .132
 </td>
 <td style="text-align:left;">
-.132
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -867,7 +897,7 @@ N
 .582
 </td>
 <td style="text-align:left;">
-.582
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -893,7 +923,7 @@ N
 .074
 </td>
 <td style="text-align:left;">
-.074
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -919,7 +949,7 @@ N
 .029
 </td>
 <td style="text-align:left;">
-.029
+.773
 </td>
 </tr>
 <tr>
@@ -945,7 +975,7 @@ N
 .288
 </td>
 <td style="text-align:left;">
-.288
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -971,7 +1001,7 @@ N
 .344
 </td>
 <td style="text-align:left;">
-.344
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -997,7 +1027,7 @@ N
 .255
 </td>
 <td style="text-align:left;">
-.255
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1023,7 +1053,7 @@ N
 .183
 </td>
 <td style="text-align:left;">
-.183
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1049,7 +1079,7 @@ N
 .398
 </td>
 <td style="text-align:left;">
-.398
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1075,7 +1105,33 @@ N
 .057
 </td>
 <td style="text-align:left;">
-.057
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+selfdisciplined
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+6.81
+</td>
+<td style="text-align:right;">
+2.27
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4.20
+</td>
+<td style="text-align:left;">
+.013
+</td>
+<td style="text-align:left;">
+.372
 </td>
 </tr>
 <tr>
@@ -1101,7 +1157,7 @@ N
 .004
 </td>
 <td style="text-align:left;">
-.004
+.113
 </td>
 </tr>
 <tr>
@@ -1127,7 +1183,7 @@ N
 .556
 </td>
 <td style="text-align:left;">
-.556
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1153,7 +1209,7 @@ N
 .002
 </td>
 <td style="text-align:left;">
-.002
+.056
 </td>
 </tr>
 <tr>
@@ -1179,7 +1235,7 @@ N
 .890
 </td>
 <td style="text-align:left;">
-.890
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1205,7 +1261,7 @@ N
 .111
 </td>
 <td style="text-align:left;">
-.111
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1231,7 +1287,7 @@ N
 .420
 </td>
 <td style="text-align:left;">
-.420
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1257,7 +1313,7 @@ N
 .068
 </td>
 <td style="text-align:left;">
-.068
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1283,7 +1339,7 @@ Y
 .832
 </td>
 <td style="text-align:left;">
-.832
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1309,7 +1365,7 @@ Y
 .386
 </td>
 <td style="text-align:left;">
-.386
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1335,7 +1391,7 @@ Y
 .860
 </td>
 <td style="text-align:left;">
-.860
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1361,7 +1417,7 @@ Y
 .074
 </td>
 <td style="text-align:left;">
-.074
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1387,7 +1443,7 @@ Y
 .122
 </td>
 <td style="text-align:left;">
-.122
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -1413,7 +1469,7 @@ Y
 .575
 </td>
 <td style="text-align:left;">
-.575
+&gt; .999
 </td>
 </tr>
 </tbody>
@@ -1427,8 +1483,8 @@ Y
 
 sig_item_b1 = sig_item_b1$item
 sig_item_b1</code></pre>
-<pre><code>## [1] &quot;adventurous&quot; &quot;calm&quot;        &quot;caring&quot;      &quot;helpful&quot;     &quot;softhearted&quot;
-## [6] &quot;sympathetic&quot;</code></pre>
+<pre><code>## [1] &quot;adventurous&quot;     &quot;calm&quot;            &quot;caring&quot;          &quot;helpful&quot;        
+## [5] &quot;selfdisciplined&quot; &quot;softhearted&quot;     &quot;sympathetic&quot;</code></pre>
 <p>Then we create models for each adjective. We use the <code>emmeans</code> package to perform pairwise comparisons, again with a Holm correction on the <em>p</em>-values. We also plot the means and 95% confidence intervals of each mean.</p>
 <p><strong>This code will have to be changed after final data collection. It is not self-adapting!</strong></p>
 </div>
@@ -2474,7 +2530,7 @@ Average log-seconds to “adventurous” by format (block 1 data only)
 anova(mod.format_b2)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##        Sum Sq Mean Sq NumDF  DenDF F value    Pr(&gt;F)    
-## format  23.85  7.9499     3 2017.4   11.82 1.127e-07 ***
+## format 25.706  8.5685     3 2159.4  12.973 2.128e-08 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>plot_b2 = plot_model(mod.format_b2, type = &quot;pred&quot;) 
@@ -2571,16 +2627,16 @@ p.value
 Adjective Only - Am Adjective
 </td>
 <td style="text-align:right;">
--0.26
+-0.27
 </td>
 <td style="text-align:right;">
-0.06
+0.05
 </td>
 <td style="text-align:right;">
-2015.9
+2159.5
 </td>
 <td style="text-align:right;">
--4.60
+-4.91
 </td>
 <td style="text-align:right;">
 0.000
@@ -2597,10 +2653,10 @@ Adjective Only - Tend to be Adjective
 0.06
 </td>
 <td style="text-align:right;">
-2009.1
+2152.3
 </td>
 <td style="text-align:right;">
--4.04
+-4.20
 </td>
 <td style="text-align:right;">
 0.000
@@ -2617,10 +2673,10 @@ Adjective Only - Am someone who tends to be Adjective
 0.06
 </td>
 <td style="text-align:right;">
-2018.3
+2160.7
 </td>
 <td style="text-align:right;">
--5.35
+-5.55
 </td>
 <td style="text-align:right;">
 0.000
@@ -2631,19 +2687,19 @@ Adjective Only - Am someone who tends to be Adjective
 Am Adjective - Tend to be Adjective
 </td>
 <td style="text-align:right;">
-0.02
+0.03
 </td>
 <td style="text-align:right;">
 0.06
 </td>
 <td style="text-align:right;">
-2014.6
+2156.8
 </td>
 <td style="text-align:right;">
-0.40
+0.53
 </td>
 <td style="text-align:right;">
-0.752
+0.854
 </td>
 </tr>
 <tr>
@@ -2657,13 +2713,13 @@ Am Adjective - Am someone who tends to be Adjective
 0.06
 </td>
 <td style="text-align:right;">
-2018.8
+2160.1
 </td>
 <td style="text-align:right;">
--0.89
+-0.79
 </td>
 <td style="text-align:right;">
-0.752
+0.854
 </td>
 </tr>
 <tr>
@@ -2677,13 +2733,13 @@ Tend to be Adjective - Am someone who tends to be Adjective
 0.06
 </td>
 <td style="text-align:right;">
-2024.4
+2164.2
 </td>
 <td style="text-align:right;">
--1.28
+-1.32
 </td>
 <td style="text-align:right;">
-0.601
+0.565
 </td>
 </tr>
 </tbody>
@@ -2696,7 +2752,8 @@ Tend to be Adjective - Am someone who tends to be Adjective
   group_by(item) %&gt;%
   nest() %&gt;%
   mutate(mod = map(data, ~lmer(seconds_log~format + (1|proid), data = .))) %&gt;%
-  mutate(aov = map(mod, anova)) 
+  mutate(aov = map(mod, anova)) %&gt;% 
+  ungroup()
 
 summary_by_item_b2 = mod_by_item_b2 %&gt;%
   mutate(tidy = map(aov, broom::tidy)) %&gt;%
@@ -2780,7 +2837,7 @@ N
 .493
 </td>
 <td style="text-align:left;">
-.493
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2809,7 +2866,36 @@ N
 .038
 </td>
 <td style="text-align:left;">
-.038
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+broadminded
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.31
+</td>
+<td style="text-align:right;">
+0.44
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+58.18
+</td>
+<td style="text-align:right;">
+1.04
+</td>
+<td style="text-align:left;">
+.381
+</td>
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2838,7 +2924,7 @@ N
 .119
 </td>
 <td style="text-align:left;">
-.119
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2867,7 +2953,7 @@ N
 .036
 </td>
 <td style="text-align:left;">
-.036
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2896,7 +2982,7 @@ N
 .342
 </td>
 <td style="text-align:left;">
-.342
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2925,7 +3011,7 @@ N
 .555
 </td>
 <td style="text-align:left;">
-.555
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2954,7 +3040,7 @@ N
 .252
 </td>
 <td style="text-align:left;">
-.252
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -2983,7 +3069,7 @@ N
 .909
 </td>
 <td style="text-align:left;">
-.909
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3012,7 +3098,7 @@ N
 .050
 </td>
 <td style="text-align:left;">
-.050
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3041,7 +3127,7 @@ N
 .040
 </td>
 <td style="text-align:left;">
-.040
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3070,7 +3156,7 @@ N
 .126
 </td>
 <td style="text-align:left;">
-.126
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3099,7 +3185,7 @@ N
 .389
 </td>
 <td style="text-align:left;">
-.389
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3128,7 +3214,7 @@ N
 .558
 </td>
 <td style="text-align:left;">
-.558
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3157,7 +3243,7 @@ N
 .392
 </td>
 <td style="text-align:left;">
-.392
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3186,7 +3272,7 @@ N
 .233
 </td>
 <td style="text-align:left;">
-.233
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3215,7 +3301,36 @@ N
 .205
 </td>
 <td style="text-align:left;">
-.205
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+selfdisciplined
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.32
+</td>
+<td style="text-align:right;">
+0.44
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+66.00
+</td>
+<td style="text-align:right;">
+0.66
+</td>
+<td style="text-align:left;">
+.580
+</td>
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3244,7 +3359,7 @@ N
 .364
 </td>
 <td style="text-align:left;">
-.364
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3273,7 +3388,7 @@ N
 .572
 </td>
 <td style="text-align:left;">
-.572
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3302,7 +3417,7 @@ N
 .166
 </td>
 <td style="text-align:left;">
-.166
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3331,7 +3446,7 @@ N
 .794
 </td>
 <td style="text-align:left;">
-.794
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3360,7 +3475,7 @@ N
 .580
 </td>
 <td style="text-align:left;">
-.580
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3389,7 +3504,7 @@ N
 .230
 </td>
 <td style="text-align:left;">
-.230
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3418,7 +3533,7 @@ N
 .738
 </td>
 <td style="text-align:left;">
-.738
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3447,7 +3562,7 @@ Y
 .356
 </td>
 <td style="text-align:left;">
-.356
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3476,7 +3591,7 @@ Y
 .418
 </td>
 <td style="text-align:left;">
-.418
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3505,7 +3620,7 @@ Y
 .416
 </td>
 <td style="text-align:left;">
-.416
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3534,7 +3649,7 @@ Y
 .074
 </td>
 <td style="text-align:left;">
-.074
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3563,7 +3678,7 @@ Y
 .662
 </td>
 <td style="text-align:left;">
-.662
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -3592,7 +3707,7 @@ Y
 .717
 </td>
 <td style="text-align:left;">
-.717
+&gt; .999
 </td>
 </tr>
 </tbody>
@@ -4137,9 +4252,9 @@ Average log-seconds to “adventurous” by format (Block 1 and Block 2)
 anova(mod.format_mem)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##                        Sum Sq Mean Sq NumDF   DenDF F value    Pr(&gt;F)    
-## format                12.2428  4.0809     3 2017.71  6.1286 0.0003801 ***
-## delayed_memory         0.0686  0.0686     1   33.07  0.1031 0.7502193    
-## format:delayed_memory 15.3343  5.1114     3 2018.21  7.6762 4.229e-05 ***
+## format                12.2415  4.0805     3 2158.60  6.2430 0.0003226 ***
+## delayed_memory         0.0753  0.0753     1   33.06  0.1151 0.7365052    
+## format:delayed_memory 16.5149  5.5050     3 2159.06  8.4223 1.453e-05 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>summary(mod.format_mem)</code></pre>
@@ -4148,67 +4263,67 @@ anova(mod.format_mem)</code></pre>
 ## Formula: seconds_log ~ format * delayed_memory + (1 | proid)
 ##    Data: items_12
 ## 
-## REML criterion at convergence: 5057.9
+## REML criterion at convergence: 5362.1
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -3.9381 -0.5402 -0.1418  0.3674  6.8773 
+## -3.9500 -0.5434 -0.1473  0.3649  6.9573 
 ## 
 ## Random effects:
 ##  Groups   Name        Variance Std.Dev.
-##  proid    (Intercept) 0.1397   0.3738  
-##  Residual             0.6659   0.8160  
-## Number of obs: 2030, groups:  proid, 35
+##  proid    (Intercept) 0.1438   0.3792  
+##  Residual             0.6536   0.8085  
+## Number of obs: 2170, groups:  proid, 35
 ## 
 ## Fixed effects:
 ##                                                               Estimate
-## (Intercept)                                                    0.72370
-## formatAm\nAdjective                                           -0.10681
-## formatTend to be\nAdjective                                    0.13727
-## formatAm someone\nwho tends to be\nAdjective                   0.38377
-## delayed_memory                                                -0.01248
-## formatAm\nAdjective:delayed_memory                             0.07052
-## formatTend to be\nAdjective:delayed_memory                     0.02071
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory   -0.01240
+## (Intercept)                                                  7.227e-01
+## formatAm\nAdjective                                         -1.157e-01
+## formatTend to be\nAdjective                                  1.567e-01
+## formatAm someone\nwho tends to be\nAdjective                 3.587e-01
+## delayed_memory                                              -1.258e-02
+## formatAm\nAdjective:delayed_memory                           7.284e-02
+## formatTend to be\nAdjective:delayed_memory                   1.629e-02
+## formatAm someone\nwho tends to be\nAdjective:delayed_memory -7.931e-03
 ##                                                             Std. Error
-## (Intercept)                                                    0.14824
-## formatAm\nAdjective                                            0.10934
-## formatTend to be\nAdjective                                    0.11583
-## formatAm someone\nwho tends to be\nAdjective                   0.11866
-## delayed_memory                                                 0.02529
-## formatAm\nAdjective:delayed_memory                             0.01830
-## formatTend to be\nAdjective:delayed_memory                     0.02043
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory    0.02036
+## (Intercept)                                                  1.484e-01
+## formatAm\nAdjective                                          1.051e-01
+## formatTend to be\nAdjective                                  1.110e-01
+## formatAm someone\nwho tends to be\nAdjective                 1.143e-01
+## delayed_memory                                               2.530e-02
+## formatAm\nAdjective:delayed_memory                           1.754e-02
+## formatTend to be\nAdjective:delayed_memory                   1.958e-02
+## formatAm someone\nwho tends to be\nAdjective:delayed_memory  1.959e-02
 ##                                                                     df t value
-## (Intercept)                                                   51.00813   4.882
-## formatAm\nAdjective                                         2020.78149  -0.977
-## formatTend to be\nAdjective                                 2012.77870   1.185
-## formatAm someone\nwho tends to be\nAdjective                2021.63962   3.234
-## delayed_memory                                                51.97799  -0.494
-## formatAm\nAdjective:delayed_memory                          2017.90928   3.854
-## formatTend to be\nAdjective:delayed_memory                  2008.14522   1.014
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory 2021.99447  -0.609
+## (Intercept)                                                  4.932e+01   4.870
+## formatAm\nAdjective                                          2.161e+03  -1.101
+## formatTend to be\nAdjective                                  2.155e+03   1.412
+## formatAm someone\nwho tends to be\nAdjective                 2.162e+03   3.137
+## delayed_memory                                               5.010e+01  -0.497
+## formatAm\nAdjective:delayed_memory                           2.160e+03   4.153
+## formatTend to be\nAdjective:delayed_memory                   2.151e+03   0.832
+## formatAm someone\nwho tends to be\nAdjective:delayed_memory  2.162e+03  -0.405
 ##                                                             Pr(&gt;|t|)    
-## (Intercept)                                                 1.08e-05 ***
-## formatAm\nAdjective                                          0.32877    
-## formatTend to be\nAdjective                                  0.23612    
-## formatAm someone\nwho tends to be\nAdjective                 0.00124 ** 
-## delayed_memory                                               0.62371    
-## formatAm\nAdjective:delayed_memory                           0.00012 ***
-## formatTend to be\nAdjective:delayed_memory                   0.31077    
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory  0.54247    
+## (Intercept)                                                 1.19e-05 ***
+## formatAm\nAdjective                                          0.27123    
+## formatTend to be\nAdjective                                  0.15806    
+## formatAm someone\nwho tends to be\nAdjective                 0.00173 ** 
+## delayed_memory                                               0.62103    
+## formatAm\nAdjective:delayed_memory                          3.40e-05 ***
+## formatTend to be\nAdjective:delayed_memory                   0.40538    
+## formatAm someone\nwho tends to be\nAdjective:delayed_memory  0.68568    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) frmtAA frTtbA frAswttbA dlyd_m frAA:_ fTtbA:
-## frmtAmAdjct -0.370                                             
-## frmtTndtbAd -0.366  0.474                                      
-## frmtAswttbA -0.346  0.457  0.473                               
-## delayd_mmry -0.868  0.327  0.322  0.302                        
-## frmtAAdjc:_  0.334 -0.857 -0.427 -0.414    -0.394              
-## frmtTtbAd:_  0.312 -0.405 -0.865 -0.400    -0.365  0.491       
-## frAswttbA:_  0.300 -0.402 -0.412 -0.871    -0.350  0.488  0.464</code></pre>
+## frmtAmAdjct -0.357                                             
+## frmtTndtbAd -0.353  0.477                                      
+## frmtAswttbA -0.331  0.454  0.472                               
+## delayd_mmry -0.868  0.315  0.311  0.289                        
+## frmtAAdjc:_  0.323 -0.859 -0.432 -0.413    -0.379              
+## frmtTtbAd:_  0.301 -0.408 -0.864 -0.399    -0.352  0.494       
+## frAswttbA:_  0.288 -0.399 -0.411 -0.873    -0.334  0.484  0.462</code></pre>
 <pre class="r"><code>plot_mem = plot_model(mod.format_mem, 
            type = &quot;pred&quot;, 
            term = c(&quot;format&quot;, &quot;delayed_memory[meansd]&quot;)) +
@@ -4254,7 +4369,8 @@ Predicted seconds on personality items by condition after controlling for delaye
   group_by(item) %&gt;%
   nest() %&gt;%
   mutate(mod = map(data, ~lmer(seconds_log~format*delayed_memory + (1|proid), data = .))) %&gt;%
-  mutate(aov = map(mod, anova)) 
+  mutate(aov = map(mod, anova)) %&gt;% 
+  ungroup()
 
 summary_by_item_mem = mod_by_item_mem %&gt;% 
   mutate(tidy = map(aov, broom::tidy)) %&gt;%
@@ -4332,7 +4448,7 @@ N
 .789
 </td>
 <td style="text-align:left;">
-.789
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4361,7 +4477,36 @@ N
 .376
 </td>
 <td style="text-align:left;">
-.376
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+broadminded
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.65
+</td>
+<td style="text-align:right;">
+0.22
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+51.30
+</td>
+<td style="text-align:right;">
+0.51
+</td>
+<td style="text-align:left;">
+.677
+</td>
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4390,7 +4535,7 @@ N
 .417
 </td>
 <td style="text-align:left;">
-.417
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4419,7 +4564,7 @@ N
 .535
 </td>
 <td style="text-align:left;">
-.535
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4448,7 +4593,7 @@ N
 .559
 </td>
 <td style="text-align:left;">
-.559
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4477,7 +4622,7 @@ N
 .059
 </td>
 <td style="text-align:left;">
-.059
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4506,7 +4651,7 @@ N
 .231
 </td>
 <td style="text-align:left;">
-.231
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4535,7 +4680,7 @@ N
 .361
 </td>
 <td style="text-align:left;">
-.361
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4564,7 +4709,7 @@ N
 .531
 </td>
 <td style="text-align:left;">
-.531
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4593,7 +4738,7 @@ N
 .243
 </td>
 <td style="text-align:left;">
-.243
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4622,7 +4767,7 @@ N
 .048
 </td>
 <td style="text-align:left;">
-.048
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4651,7 +4796,7 @@ N
 .410
 </td>
 <td style="text-align:left;">
-.410
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4680,7 +4825,7 @@ N
 .750
 </td>
 <td style="text-align:left;">
-.750
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4709,7 +4854,7 @@ N
 .524
 </td>
 <td style="text-align:left;">
-.524
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4738,7 +4883,7 @@ N
 .021
 </td>
 <td style="text-align:left;">
-.021
+.621
 </td>
 </tr>
 <tr>
@@ -4767,7 +4912,36 @@ N
 .003
 </td>
 <td style="text-align:left;">
-.003
+.106
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+selfdisciplined
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+4.25
+</td>
+<td style="text-align:right;">
+1.42
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+62.00
+</td>
+<td style="text-align:right;">
+2.21
+</td>
+<td style="text-align:left;">
+.096
+</td>
+<td style="text-align:left;">
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4796,7 +4970,7 @@ N
 .242
 </td>
 <td style="text-align:left;">
-.242
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4825,7 +4999,7 @@ N
 .034
 </td>
 <td style="text-align:left;">
-.034
+.907
 </td>
 </tr>
 <tr>
@@ -4854,7 +5028,7 @@ N
 .664
 </td>
 <td style="text-align:left;">
-.664
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4883,7 +5057,7 @@ N
 .012
 </td>
 <td style="text-align:left;">
-.012
+.359
 </td>
 </tr>
 <tr>
@@ -4912,7 +5086,7 @@ N
 .231
 </td>
 <td style="text-align:left;">
-.231
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4941,7 +5115,7 @@ N
 .479
 </td>
 <td style="text-align:left;">
-.479
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -4970,7 +5144,7 @@ N
 .027
 </td>
 <td style="text-align:left;">
-.027
+.750
 </td>
 </tr>
 <tr>
@@ -4999,7 +5173,7 @@ Y
 .180
 </td>
 <td style="text-align:left;">
-.180
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -5028,7 +5202,7 @@ Y
 .051
 </td>
 <td style="text-align:left;">
-.051
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -5057,7 +5231,7 @@ Y
 .835
 </td>
 <td style="text-align:left;">
-.835
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -5086,7 +5260,7 @@ Y
 .374
 </td>
 <td style="text-align:left;">
-.374
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -5115,7 +5289,7 @@ Y
 .059
 </td>
 <td style="text-align:left;">
-.059
+&gt; .999
 </td>
 </tr>
 <tr>
@@ -5144,7 +5318,7 @@ Y
 .460
 </td>
 <td style="text-align:left;">
-.460
+&gt; .999
 </td>
 </tr>
 </tbody>
@@ -5244,6 +5418,1962 @@ Average log-seconds to “talkative” by format (Block 1 and Block 2)
 Average log-seconds to “sophisticated” by format (Block 1 and Block 2)
 </p>
 </div>
+</div>
+</div>
+<div id="inclusion-of-i-block-1-and-block-3" class="section level2">
+<h2>Inclusion of “I” (Block 1 and Block 3)</h2>
+<p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word “I”. Here, we use data from blocks 1 and 3.</p>
+<pre class="r"><code>items_13 = items_df %&gt;% 
+  filter(block %in% c(&quot;1&quot;,&quot;3&quot;)) %&gt;% 
+  filter(condition != &quot;A&quot;) %&gt;% 
+  filter(time2 == &quot;yes&quot;)</code></pre>
+<pre class="r"><code>mod.format_b3_1 = lmer(seconds_log~format + i + (1|proid), 
+                  data = items_13)
+anova(mod.format_b3_1)</code></pre>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##         Sum Sq Mean Sq NumDF  DenDF F value Pr(&gt;F)
+## format 1.63009 0.81504     2  11.00  1.4131 0.2843
+## i      0.06372 0.06372     1 854.38  0.1105 0.7397</code></pre>
+<pre class="r"><code>mod.format_b3_2 = lmer(seconds_log~format*i + (1|proid), 
+                  data = items_13)
+anova(mod.format_b3_2)</code></pre>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##           Sum Sq Mean Sq NumDF  DenDF F value Pr(&gt;F)
+## format   1.86655 0.93328     2  11.54  1.6190 0.2400
+## i        0.06751 0.06751     1 852.14  0.1171 0.7323
+## format:i 1.48866 0.74433     2 852.21  1.2912 0.2755</code></pre>
+<pre class="r"><code>plot_b2 = plot_model(mod.format_b3_2, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;i&quot;)) 
+
+plot_b2 +
+  labs(x = NULL,
+       y = &quot;Average log-seconds&quot;,
+       title = &quot;Average responses by item formatting (Block 1 and Block 3)&quot;,
+       color = &quot;I&quot;) +
+  theme_pubclean()</code></pre>
+<div class="figure">
+<img src="timing_format_files/figure-html/unnamed-chunk-56-1.png" alt="Predicted log-seconds on personality items by condition and I, using Block 1 and Block 3 data." width="672" />
+<p class="caption">
+Predicted log-seconds on personality items by condition and I, using Block 1 and Block 3 data.
+</p>
+</div>
+<div id="one-model-for-each-adjective-3" class="section level3">
+<h3>One model for each adjective</h3>
+<pre class="r"><code>mod_by_item_i1 = items_13 %&gt;%
+  group_by(item) %&gt;%
+  nest() %&gt;%
+  mutate(mod = map(data, ~lmer(seconds_log~format+i + (1|proid), data = .))) %&gt;%
+  mutate(aov = map(mod, anova)) %&gt;% 
+  ungroup()
+
+summary_by_item_i1 = mod_by_item_i1 %&gt;% 
+  mutate(tidy = map(aov, broom::tidy)) %&gt;%
+  select(item, tidy) %&gt;% 
+  unnest(cols = c(tidy)) %&gt;%
+  filter(term == &quot;i&quot;) %&gt;%
+  mutate(reverse = case_when(
+    item %in% reverse ~ &quot;Y&quot;,
+    TRUE ~ &quot;N&quot;
+  )) %&gt;% 
+  mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;))
+
+summary_by_item_i1 %&gt;%
+  arrange(reverse, item) %&gt;% 
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
+  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %&gt;% 
+  kable(digits = 2, booktabs = T) %&gt;%
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+item
+</th>
+<th style="text-align:left;">
+reverse
+</th>
+<th style="text-align:right;">
+sumsq
+</th>
+<th style="text-align:right;">
+meansq
+</th>
+<th style="text-align:right;">
+NumDF
+</th>
+<th style="text-align:right;">
+DenDF
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:left;">
+p.value
+</th>
+<th style="text-align:left;">
+p.adj
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+active
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+21.27
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+<td style="text-align:left;">
+.884
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+adventurous
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+18.46
+</td>
+<td style="text-align:right;">
+0.48
+</td>
+<td style="text-align:left;">
+.498
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+broadminded
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+21.62
+</td>
+<td style="text-align:right;">
+0.49
+</td>
+<td style="text-align:left;">
+.490
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calm
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.17
+</td>
+<td style="text-align:right;">
+0.17
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+19.98
+</td>
+<td style="text-align:right;">
+0.31
+</td>
+<td style="text-align:left;">
+.586
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+caring
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.27
+</td>
+<td style="text-align:right;">
+1.27
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+18.52
+</td>
+<td style="text-align:right;">
+2.20
+</td>
+<td style="text-align:left;">
+.155
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cautious
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.24
+</td>
+<td style="text-align:right;">
+1.24
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+18.49
+</td>
+<td style="text-align:right;">
+2.64
+</td>
+<td style="text-align:left;">
+.121
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creative
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+18.96
+</td>
+<td style="text-align:right;">
+0.91
+</td>
+<td style="text-align:left;">
+.351
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+curious
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.21
+</td>
+<td style="text-align:right;">
+0.21
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.00
+</td>
+<td style="text-align:right;">
+0.38
+</td>
+<td style="text-align:left;">
+.545
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friendly
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+17.35
+</td>
+<td style="text-align:right;">
+0.29
+</td>
+<td style="text-align:left;">
+.600
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hardworking
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.44
+</td>
+<td style="text-align:right;">
+0.44
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+19.70
+</td>
+<td style="text-align:right;">
+0.34
+</td>
+<td style="text-align:left;">
+.565
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+helpful
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+17.40
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:left;">
+.794
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+imaginative
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+23.06
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:left;">
+.781
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+intelligent
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+22.68
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:left;">
+.606
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lively
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.45
+</td>
+<td style="text-align:right;">
+0.45
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+20.89
+</td>
+<td style="text-align:right;">
+1.09
+</td>
+<td style="text-align:left;">
+.309
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+organized
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.24
+</td>
+<td style="text-align:right;">
+0.24
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+14.95
+</td>
+<td style="text-align:right;">
+2.50
+</td>
+<td style="text-align:left;">
+.135
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+outgoing
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.13
+</td>
+<td style="text-align:right;">
+0.13
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.00
+</td>
+<td style="text-align:right;">
+0.19
+</td>
+<td style="text-align:left;">
+.668
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+responsible
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.44
+</td>
+<td style="text-align:right;">
+0.44
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.00
+</td>
+<td style="text-align:right;">
+0.92
+</td>
+<td style="text-align:left;">
+.348
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+selfdisciplined
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+16.29
+</td>
+<td style="text-align:right;">
+0.11
+</td>
+<td style="text-align:left;">
+.747
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+softhearted
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+15.84
+</td>
+<td style="text-align:right;">
+0.35
+</td>
+<td style="text-align:left;">
+.565
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sophisticated
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.00
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:left;">
+.765
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sympathetic
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+21.34
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:left;">
+.983
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+talkative
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+17.20
+</td>
+<td style="text-align:right;">
+0.38
+</td>
+<td style="text-align:left;">
+.545
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thorough
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.47
+</td>
+<td style="text-align:right;">
+0.47
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.00
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+<td style="text-align:left;">
+.443
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thrifty
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.70
+</td>
+<td style="text-align:right;">
+1.70
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.00
+</td>
+<td style="text-align:right;">
+1.82
+</td>
+<td style="text-align:left;">
+.190
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+warm
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.32
+</td>
+<td style="text-align:right;">
+0.32
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+15.72
+</td>
+<td style="text-align:right;">
+2.11
+</td>
+<td style="text-align:left;">
+.166
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+careless
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:left;">
+.993
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+impulsive
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+17.04
+</td>
+<td style="text-align:right;">
+0.67
+</td>
+<td style="text-align:left;">
+.425
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+moody
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+18.15
+</td>
+<td style="text-align:right;">
+0.16
+</td>
+<td style="text-align:left;">
+.692
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nervous
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.30
+</td>
+<td style="text-align:right;">
+0.30
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+16.93
+</td>
+<td style="text-align:right;">
+0.87
+</td>
+<td style="text-align:left;">
+.364
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+reckless
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+18.36
+</td>
+<td style="text-align:right;">
+0.21
+</td>
+<td style="text-align:left;">
+.653
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+worrying
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+19.21
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:left;">
+.728
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>mod_by_item_i2 = items_13 %&gt;%
+  group_by(item) %&gt;%
+  nest() %&gt;%
+  mutate(mod = map(data, ~lmer(seconds_log~format*i + (1|proid), data = .))) %&gt;%
+  mutate(aov = map(mod, anova)) %&gt;% 
+  ungroup()
+
+summary_by_item_i2 = mod_by_item_i2 %&gt;% 
+  mutate(tidy = map(aov, broom::tidy)) %&gt;%
+  select(item, tidy) %&gt;% 
+  unnest(cols = c(tidy)) %&gt;%
+  filter(term == &quot;format:i&quot;) %&gt;%
+  mutate(reverse = case_when(
+    item %in% reverse ~ &quot;Y&quot;,
+    TRUE ~ &quot;N&quot;
+  )) %&gt;% 
+  mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;))
+
+summary_by_item_i2 %&gt;%
+  arrange(reverse, item) %&gt;% 
+  mutate(across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
+  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %&gt;% 
+  kable(digits = 2, booktabs = T) %&gt;%
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+item
+</th>
+<th style="text-align:left;">
+reverse
+</th>
+<th style="text-align:right;">
+sumsq
+</th>
+<th style="text-align:right;">
+meansq
+</th>
+<th style="text-align:right;">
+NumDF
+</th>
+<th style="text-align:right;">
+DenDF
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:left;">
+p.value
+</th>
+<th style="text-align:left;">
+p.adj
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+active
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.29
+</td>
+<td style="text-align:right;">
+0.15
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+18.62
+</td>
+<td style="text-align:right;">
+0.66
+</td>
+<td style="text-align:left;">
+.530
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+adventurous
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+17.30
+</td>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:left;">
+.757
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+broadminded
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+20.44
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:left;">
+.924
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calm
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.56
+</td>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+19.49
+</td>
+<td style="text-align:right;">
+0.46
+</td>
+<td style="text-align:left;">
+.635
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+caring
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.74
+</td>
+<td style="text-align:right;">
+0.87
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+14.85
+</td>
+<td style="text-align:right;">
+1.84
+</td>
+<td style="text-align:left;">
+.193
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cautious
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.58
+</td>
+<td style="text-align:right;">
+0.29
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+16.03
+</td>
+<td style="text-align:right;">
+0.55
+</td>
+<td style="text-align:left;">
+.586
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creative
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.09
+</td>
+<td style="text-align:right;">
+0.55
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+18.02
+</td>
+<td style="text-align:right;">
+0.60
+</td>
+<td style="text-align:left;">
+.557
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+curious
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.56
+</td>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+22.00
+</td>
+<td style="text-align:right;">
+0.49
+</td>
+<td style="text-align:left;">
+.618
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friendly
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.18
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+15.98
+</td>
+<td style="text-align:right;">
+0.43
+</td>
+<td style="text-align:left;">
+.660
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hardworking
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.09
+</td>
+<td style="text-align:right;">
+0.55
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+17.96
+</td>
+<td style="text-align:right;">
+0.40
+</td>
+<td style="text-align:left;">
+.674
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+helpful
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+0.38
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+14.97
+</td>
+<td style="text-align:right;">
+4.17
+</td>
+<td style="text-align:left;">
+.036
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+imaginative
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+21.10
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:left;">
+.987
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+intelligent
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.93
+</td>
+<td style="text-align:right;">
+0.47
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+19.64
+</td>
+<td style="text-align:right;">
+0.53
+</td>
+<td style="text-align:left;">
+.595
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lively
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.53
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+20.09
+</td>
+<td style="text-align:right;">
+0.58
+</td>
+<td style="text-align:left;">
+.571
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+organized
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+13.89
+</td>
+<td style="text-align:right;">
+0.32
+</td>
+<td style="text-align:left;">
+.732
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+outgoing
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+23.00
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:left;">
+.730
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+responsible
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.23
+</td>
+<td style="text-align:right;">
+0.11
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+22.00
+</td>
+<td style="text-align:right;">
+0.22
+</td>
+<td style="text-align:left;">
+.804
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+selfdisciplined
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.85
+</td>
+<td style="text-align:right;">
+0.43
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+13.64
+</td>
+<td style="text-align:right;">
+1.36
+</td>
+<td style="text-align:left;">
+.290
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+softhearted
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.97
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12.57
+</td>
+<td style="text-align:right;">
+4.50
+</td>
+<td style="text-align:left;">
+.034
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sophisticated
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+22.00
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:left;">
+.957
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sympathetic
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+2.61
+</td>
+<td style="text-align:right;">
+1.31
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+19.97
+</td>
+<td style="text-align:right;">
+2.24
+</td>
+<td style="text-align:left;">
+.133
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+talkative
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+15.70
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:left;">
+.957
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thorough
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.40
+</td>
+<td style="text-align:right;">
+0.70
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+22.00
+</td>
+<td style="text-align:right;">
+0.89
+</td>
+<td style="text-align:left;">
+.424
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thrifty
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+2.09
+</td>
+<td style="text-align:right;">
+1.04
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+22.00
+</td>
+<td style="text-align:right;">
+1.13
+</td>
+<td style="text-align:left;">
+.341
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+warm
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.46
+</td>
+<td style="text-align:right;">
+0.23
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12.87
+</td>
+<td style="text-align:right;">
+1.88
+</td>
+<td style="text-align:left;">
+.193
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+careless
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.70
+</td>
+<td style="text-align:right;">
+0.35
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+22.00
+</td>
+<td style="text-align:right;">
+0.54
+</td>
+<td style="text-align:left;">
+.591
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+impulsive
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+1.22
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+14.96
+</td>
+<td style="text-align:right;">
+0.50
+</td>
+<td style="text-align:left;">
+.616
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+moody
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+16.96
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:left;">
+.996
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nervous
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.53
+</td>
+<td style="text-align:right;">
+0.26
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+15.81
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+<td style="text-align:left;">
+.487
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+reckless
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.97
+</td>
+<td style="text-align:right;">
+0.49
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+15.01
+</td>
+<td style="text-align:right;">
+1.78
+</td>
+<td style="text-align:left;">
+.203
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+worrying
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.62
+</td>
+<td style="text-align:right;">
+0.31
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+17.61
+</td>
+<td style="text-align:right;">
+0.51
+</td>
+<td style="text-align:left;">
+.610
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 

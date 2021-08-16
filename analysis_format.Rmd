@@ -14,11 +14,11 @@ Using a protocol that administers each adjective twice to the same participant (
 These analyses will attempt to account for delayed_memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a delayed_memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).
 
 
-```{r, include = FALSE}
+```{r analysis-format-1, include = FALSE}
 knitr::opts_chunk$set(warning = F, message = F)
 ```
 
-```{r, echo = F}
+```{r analysis-format-2, echo = F}
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
@@ -32,7 +32,7 @@ library(broom.mixed) # for tidying mulitievel models
 library(papaja) # pretty numbers
 ```
 
-```{r, echo = F}
+```{r analysis-format-3, echo = F}
 load(here("data/items_df.Rds"))
 load(here("data/reverse_vector.Rds"))
 ```
@@ -41,7 +41,7 @@ load(here("data/reverse_vector.Rds"))
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data.
 
-```{r}
+```{r analysis-format-4}
 item_block1 = filter(items_df, block == "1")
 
 mod.format_b1 = lmer(response~format + (1|proid), 
@@ -49,14 +49,28 @@ mod.format_b1 = lmer(response~format + (1|proid),
 anova(mod.format_b1)
 ```
 
-```{r, echo = F}
+```{r analysis-format-5, echo = F}
+fb1_aov = anova(mod.format_b1)
+fb1_sig = fb1_aov$`Pr(>F)`[[1]] < .05
+fb1_aov = fb1_aov %>% 
+  as_tibble() %>% 
+  rename(Fval = `F value`,
+         Pval = `Pr(>F)`) %>% 
+  mutate(across(starts_with("P"), printp),
+         across(where(is.numeric), printnum))
+```
+
+When examining only Block 1 data, item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ responses to personality items $(F(`r fb1_aov$NumDF[[1]]`, `r fb1_aov$DenDF[[1]]`) = `r fb1_aov$Fval[[1]]`, p = `r fb1_aov$Pval[[1]]`)$.
+
+
+```{r analysis-format-6, echo = F}
 # save for power analysis
 save(mod.format_b1, file = here("objects/mod_format_b1.Rdata"))
 ```
 
 
-```{r, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
-plot_b1 = plot_model(mod.format_b1, type = "pred") 
+```{r analysis-format-7, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
+plot_b1 = plot_model(mod.format_b1, type = "pred")
 
 plot_b1$format +
   labs(x = NULL,
@@ -65,9 +79,9 @@ plot_b1$format +
   theme_pubclean()
 ```
 
-```{r, fig.cap = "Distribution of responses by category, block 1 data only"}
+```{r analysis-format-8, fig.cap = "Distribution of responses by category, block 1 data only"}
 means_by_group = item_block1 %>%
-  group_by(format) %>% 
+  group_by(format) %>%
   summarise(m = mean(response),
             s = sd(response))
 
@@ -75,12 +89,12 @@ item_block1 %>%
   ggplot(aes(x = response, fill = format)) +
   geom_histogram(bins = 6, color = "white") +
   geom_vline(aes(xintercept = m), data = means_by_group) +
-  geom_text(aes(x = 1, 
-                y = 125, 
-                label = paste("M =", round(m,2), 
-                              "\nSD =", round(s,2))), 
-            data = means_by_group, 
-            hjust =0, 
+  geom_text(aes(x = 1,
+                y = 125,
+                label = paste("M =", round(m,2),
+                              "\nSD =", round(s,2))),
+            data = means_by_group,
+            hjust =0,
             vjust = 1) +
   facet_wrap(~format) +
   guides(fill = "none") +
@@ -92,33 +106,33 @@ item_block1 %>%
 
 ### One model for each adjective
 
-We can also repeat this analysis separately for each trait. 
+We can also repeat this analysis separately for each trait.
 
-```{r, results = 'asis'}
+```{r analysis-format-9, results = 'asis'}
 mod_by_item_b1 = item_block1 %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~lm(response~format, data = .))) %>%
-  mutate(aov = map(mod, anova)) 
+  mutate(aov = map(mod, anova))
 
 summary_by_item_b1 = mod_by_item_b1 %>%
-  ungroup() %>% 
+  ungroup() %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
-  select(item, tidy) %>% 
+  select(item, tidy) %>%
   unnest(cols = c(tidy)) %>%
   filter(term == "format") %>%
   mutate(reverse = case_when(
     item %in% reverse ~ "Y",
     TRUE ~ "N"
-  )) %>% 
-  mutate(p.adj = p.adjust(p.value, method = "holm")) 
+  )) %>%
+  mutate(p.adj = p.adjust(p.value, method = "holm"))
 
 summary_by_item_b1 %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
-  arrange(reverse, item) %>% 
-  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>% 
-  kable(digits = 2, 
-        booktabs = T, 
+  arrange(reverse, item) %>%
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>%
+  kable(digits = 2,
+        booktabs = T,
         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "F", "raw", "adj"),
         caption = "Format effects on response by item (block 1 data only)") %>%
   kable_styling()
@@ -128,28 +142,28 @@ summary_by_item_b1 %>%
 
 Here we identify the specific items with significant differences.
 
-```{r}
+```{r analysis-format-10}
 sig_item_b1 = summary_by_item_b1 %>%
-  filter(p.value < .05) 
+  filter(p.value < .05)
 
 sig_item_b1 = sig_item_b1$item
 sig_item_b1
 ```
 
-Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean. 
+Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean.
 
 **This code will have to be changed after final data collection. It is not self-adapting!**
 
 ### Talkative
 
-```{r, results = 'asis'}
+```{r analysis-format-11, results = 'asis'}
 talkative_model_b1 = item_block1 %>%
   filter(item == "talkative") %>%
   lm(response~format, data = .)
 
 talkative_em_b1 = emmeans(talkative_model_b1, "format")
 pairs(talkative_em_b1, adjust = "holm") %>%
-  as_tibble() %>% 
+  as_tibble() %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -158,7 +172,7 @@ pairs(talkative_em_b1, adjust = "holm") %>%
   kable_styling()
 ```
 
-```{r, fig.cap = "Average response to \"talkative\" by format (block 1 data only)" }
+```{r analysis-format-12, fig.cap = "Average response to \"talkative\" by format (block 1 data only)" }
 plot_model(talkative_model_b1, type = "pred", terms = c("format"))
 ```
 
@@ -166,25 +180,39 @@ plot_model(talkative_model_b1, type = "pred", terms = c("format"))
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2.
 
-```{r}
+```{r analysis-format-13}
 items_12 = items_df %>% filter(block %in% c("1","2"))
 ```
 
 
-```{r}
-mod.format_b2 = lmer(response~format + (1|proid), 
+```{r analysis-format-14}
+mod.format_b2 = lmer(response~format + (1|proid),
                   data = items_12)
 anova(mod.format_b2)
 ```
 
-```{r, echo = F}
+
+```{r analysis-format-14b, echo = F}
+fb2_aov = anova(mod.format_b2)
+fb2_sig = fb2_aov$`Pr(>F)`[[1]] < .05
+fb2_aov = fb2_aov %>% 
+  as_tibble() %>% 
+  rename(Fval = `F value`,
+         Pval = `Pr(>F)`) %>% 
+  mutate(across(starts_with("P"), printp),
+         across(where(is.numeric), printnum))
+```
+
+When examining both Block 1 and Block 2 data, item format was `r ifelse(fb2_sig, "associated", "unassociated")` with participants’ responses to personality items $(F(`r fb2_aov$NumDF[[1]]`, `r fb2_aov$DenDF[[1]]`) = `r fb2_aov$Fval[[1]]`, p = `r fb2_aov$Pval[[1]]`)$.
+
+```{r analysis-format-15, echo = F}
 # save for power analysis
 save(mod.format_b2, file = here("objects/mod_format_b2.Rdata"))
 ```
 
 
-```{r, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
-plot_b2 = plot_model(mod.format_b2, type = "pred") 
+```{r analysis-format-16, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
+plot_b2 = plot_model(mod.format_b2, type = "pred")
 
 plot_b2$format +
   labs(x = NULL,
@@ -193,9 +221,9 @@ plot_b2$format +
   theme_pubclean()
 ```
 
-```{r, fig.cap = "Distribution of responses by category, block 1 and block 2"}
+```{r analysis-format-17, fig.cap = "Distribution of responses by category, block 1 and block 2"}
 means_by_group = items_12 %>%
-  group_by(format) %>% 
+  group_by(format) %>%
   summarise(m = mean(response),
             s = sd(response))
 
@@ -203,12 +231,12 @@ items_12 %>%
   ggplot(aes(x = response, fill = format)) +
   geom_histogram(bins = 6, color = "white") +
   geom_vline(aes(xintercept = m), data = means_by_group) +
-  geom_text(aes(x = 1, 
-                y = 200, 
-                label = paste("M =", round(m,2), 
-                              "\nSD =", round(s,2))), 
-            data = means_by_group, 
-            hjust =0, 
+  geom_text(aes(x = 1,
+                y = 200,
+                label = paste("M =", round(m,2),
+                              "\nSD =", round(s,2))),
+            data = means_by_group,
+            hjust =0,
             vjust = 1) +
   facet_wrap(~format) +
   guides(fill = "none") +
@@ -222,36 +250,36 @@ items_12 %>%
 
 We can also repeat this analysis separately for each trait. We use the `anova` function to estimate the variability due to format and print the corresponding _F_-test.
 
-```{r, results = 'asis'}
+```{r analysis-format-18, results = 'asis'}
 mod_by_item_b2 = items_12 %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~lmer(response~format + (1|proid), data = .))) %>%
-  mutate(aov = map(mod, anova)) 
+  mutate(aov = map(mod, anova))
 ```
 
 To present these results, we use the `tidy` function to summarise the findings and extract just the _F_-test associated with the format variable. We calculate adjusted _p_-values using a Holm correction. We also create a column that indicates whether the item was reverse-scored; we use this to sort the table, in case a pattern emerges.
-```{r}
+```{r analysis-format-19}
 summary_by_item_b2 = mod_by_item_b2 %>%
-  ungroup() %>% 
+  ungroup() %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
-  select(item, tidy) %>% 
+  select(item, tidy) %>%
   unnest(cols = c(tidy)) %>%
   filter(term == "format") %>%
   mutate(reverse = case_when(
     item %in% reverse ~ "Y",
     TRUE ~ "N"
-  )) %>% 
-  mutate(p.adj = p.adjust(p.value, method = "holm")) 
+  )) %>%
+  mutate(p.adj = p.adjust(p.value, method = "holm"))
 
 summary_by_item_b2 %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
-  arrange(reverse, item) %>% 
-  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
-  kable(digits = 2, 
+  arrange(reverse, item) %>%
+  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>%
+  kable(digits = 2,
         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df1", "df2", "F", "raw", "adj"),
         booktabs = T, caption = "Format effects on response by item (block 1 data only)") %>%
-  kable_styling() %>% 
+  kable_styling() %>%
     add_header_above(c(" " = 7, "p-value" = 2))
 ```
 
@@ -259,29 +287,29 @@ summary_by_item_b2 %>%
 
 Here we identify the specific items with significant differences.
 
-```{r}
+```{r analysis-format-20}
 sig_item_b2 = summary_by_item_b2 %>%
-  filter(p.value < .05) 
+  filter(p.value < .05)
 
 sig_item_b2 = sig_item_b2$item
 sig_item_b2
 ```
 
-Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean. 
+Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean.
 
 **This code will have to be changed after final data collection. It is not self-adapting!**
 
 ### Careless
 
-```{r, results = 'asis'}
+```{r analysis-format-21, results = 'asis'}
 careless_model_b2 = items_12 %>%
   filter(item == "careless") %>%
-  lmer(response~format + (1|proid), 
+  lmer(response~format + (1|proid),
                                data = .)
 
 careless_em_b2 = emmeans(careless_model_b2, "format")
 pairs(careless_em_b2, adjust = "holm") %>%
-  as_tibble() %>% 
+  as_tibble() %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -290,21 +318,21 @@ pairs(careless_em_b2, adjust = "holm") %>%
   kable_styling()
 ```
 
-```{r, fig.cap = "Average response to \"careless\" by format (Block 1 and Block 2)" }
+```{r analysis-format-22, fig.cap = "Average response to \"careless\" by format (Block 1 and Block 2)" }
 plot_model(careless_model_b2, type = "pred", terms = c("format"))
 ```
 
 ### Thrifty
 
-```{r, results = 'asis'}
+```{r analysis-format-23, results = 'asis'}
 thrifty_model_b2 = items_12 %>%
   filter(item == "thrifty") %>%
-  lmer(response~format + (1|proid), 
+  lmer(response~format + (1|proid),
                                data = .)
 
 thrifty_em_b2 = emmeans(thrifty_model_b2, "format")
 pairs(thrifty_em_b2, adjust = "holm") %>%
-  as_tibble() %>% 
+  as_tibble() %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -313,26 +341,41 @@ pairs(thrifty_em_b2, adjust = "holm") %>%
   kable_styling()
 ```
 
-```{r, fig.cap = "Average response to \"thrifty\" by format (Block 1 and Block 2)" }
+```{r analysis-format-24, fig.cap = "Average response to \"thrifty\" by format (Block 1 and Block 2)" }
 plot_model(thrifty_model_b2, type = "pred", terms = c("format"))
 ```
 
 ## Account for memory effects (Blocks 1 and 2)
 
-```{r}
-mod.format_mem = lmer(response~format*delayed_memory + (1|proid), 
+```{r analysis-format-25}
+mod.format_mem = lmer(response~format*delayed_memory + (1|proid),
                   data = items_12)
 anova(mod.format_mem)
 summary(mod.format_mem)
 ```
 
 
-```{r, fig.cap = "Predicted response on personality items by condition after controlling for delayed_memory."}
-plot_model(mod.format_mem, 
-           type = "pred", 
+```{r analysis-format-25b, echo = F}
+fmem_aov = anova(mod.format_mem)
+fmem_sig1 = fmem_aov$`Pr(>F)`[[2]] < .05
+fmem_sig2 = fmem_aov$`Pr(>F)`[[3]] < .05
+fmem_aov = fmem_aov %>% 
+  as_tibble() %>% 
+  rename(Fval = `F value`,
+         Pval = `Pr(>F)`) %>% 
+  mutate(across(starts_with("P"), printp),
+         across(where(is.numeric), printnum))
+```
+
+When examining both Block 1 and Block 2 data, memory `r ifelse(fmem_sig1, "had", "did not have")` a main effect on participant responses $(F(`r fmem_aov$NumDF[[2]]`, `r fmem_aov$DenDF[[2]]`) = `r fmem_aov$Fval[[2]]`, p = `r fmem_aov$Pval[[2]]`)$ and `r ifelse(fmem_sig2, "did", "did not")` moderate differences between formats $(F(`r fmem_aov$NumDF[[3]]`, `r fmem_aov$DenDF[[3]]`) = `r fmem_aov$Fval[[3]]`, p = `r fmem_aov$Pval[[3]]`)$.
+
+
+```{r analysis-format-26, fig.cap = "Predicted response on personality items by condition after controlling for delayed_memory."}
+plot_model(mod.format_mem,
+           type = "pred",
            term = c("format", "delayed_memory[meansd]")) +
   geom_line() +
-  labs(x = NULL, 
+  labs(x = NULL,
        y = "Average response") +
   scale_color_discrete("Memory", labels = c("-1SD", "Mean", "+1SD"))+
   theme_pubclean()
@@ -340,33 +383,33 @@ plot_model(mod.format_mem,
 
 ### One model for each adjective
 
-```{r, results = 'asis'}
+```{r analysis-format-27, results = 'asis'}
 mod_by_item_mem = items_12 %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~lm(response~format*delayed_memory, data = .))) %>%
-  mutate(aov = map(mod, anova)) 
+  mutate(aov = map(mod, anova))
 
 summary_by_item_mem = mod_by_item_mem %>%
-  ungroup() %>% 
+  ungroup() %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
-  select(item, tidy) %>% 
+  select(item, tidy) %>%
   unnest(cols = c(tidy)) %>%
   filter(term == "format:delayed_memory") %>%
   mutate(reverse = case_when(
     item %in% reverse ~ "Y",
     TRUE ~ "N"
-  )) %>% 
+  )) %>%
   mutate(p.adj = p.adjust(p.value, method = "holm"))
 
 summary_by_item_mem %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
-  arrange(reverse, item) %>% 
-  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>% 
-  kable(digits = 2, 
+  arrange(reverse, item) %>%
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>%
+  kable(digits = 2,
          col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "F", "raw", "adj"),
         booktabs = T) %>%
-  kable_styling() %>% 
+  kable_styling() %>%
   add_header_above(c(" " = 6, "p-value" = 2))
 ```
 
@@ -374,9 +417,9 @@ summary_by_item_mem %>%
 
 Here we identify the specific items with significant differences.
 
-```{r}
+```{r analysis-format-28}
 sig_item_mem = summary_by_item_mem %>%
-  filter(p.value < .05) 
+  filter(p.value < .05)
 
 sig_item_mem = sig_item_mem$item
 sig_item_mem
@@ -386,27 +429,31 @@ sig_item_mem
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word "I". Here, we use data from blocks 1 and 3.
 
-```{r}
-items_13 = items_df %>% 
-  filter(block %in% c("1","3")) %>% 
-  filter(condition != "A") %>% 
+```{r analysis-format-29}
+items_13 = items_df %>%
+  filter(block %in% c("1","3")) %>%
+  filter(condition != "A") %>%
   filter(time2 == "yes")
 ```
 
-```{r}
-mod.format_b3 = lmer(response~format*i + (1|proid), 
+```{r analysis-format-30}
+mod.format_b3_1 = lmer(response~format + i + (1|proid),
                   data = items_13)
-anova(mod.format_b3)
+anova(mod.format_b3_1)
+
+mod.format_b3_2 = lmer(response~format*i + (1|proid),
+                  data = items_13)
+anova(mod.format_b3_2)
 ```
 
-```{r, echo = F}
+```{r analysis-format-31, echo = F}
 # save for power analysis
-save(mod.format_b3, file = here("objects/mod_format_b3.Rdata"))
+save(mod.format_b3_2, file = here("objects/mod_format_b3.Rdata"))
 ```
 
 
-```{r, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
-plot_b3 = plot_model(mod.format_b3, type = "pred", terms = c("format", "i")) 
+```{r analysis-format-32, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
+plot_b3 = plot_model(mod.format_b3_2, type = "pred", terms = c("format", "i"))
 plot_b3 +
   geom_line() +
   labs(x = NULL,
@@ -415,9 +462,9 @@ plot_b3 +
   theme_pubclean()
 ```
 
-```{r, fig.cap = "Distribution of responses by category, block 1 and block 2"}
+```{r analysis-format-33, fig.cap = "Distribution of responses by category, block 1 and block 2"}
 means_by_group = items_13 %>%
-  group_by(format, i) %>% 
+  group_by(format, i) %>%
   summarise(m = mean(response),
             s = sd(response))
 
@@ -425,12 +472,12 @@ items_13 %>%
   ggplot(aes(x = response, fill = i)) +
   geom_histogram(bins = 6, color = "white") +
   geom_vline(aes(xintercept = m), data = means_by_group) +
-  geom_text(aes(x = 1, 
-                y = 100, 
-                label = paste("M =", round(m,2), 
-                              "\nSD =", round(s,2))), 
-            data = means_by_group, 
-            hjust =0, 
+  geom_text(aes(x = 1,
+                y = 100,
+                label = paste("M =", round(m,2),
+                              "\nSD =", round(s,2))),
+            data = means_by_group,
+            hjust =0,
             vjust = 1) +
   facet_grid(i~format, scales = "free") +
   guides(fill = "none") +
@@ -442,33 +489,64 @@ items_13 %>%
 
 ### One model for each adjective
 
-```{r, results = 'asis'}
+```{r analysis-format-34, results = 'asis'}
 mod_by_item_i = items_13 %>%
   group_by(item) %>%
   nest() %>%
-  mutate(mod = map(data, ~lmer(response~format*i + (1|proid), data = .))) %>%
-  mutate(aov = map(mod, anova)) 
+  mutate(mod = map(data, ~lmer(response~format + i + (1|proid), data = .))) %>%
+  mutate(aov = map(mod, anova))
 
 summary_by_item_i = mod_by_item_i %>%
-  ungroup() %>% 
+  ungroup() %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
-  select(item, tidy) %>% 
+  select(item, tidy) %>%
+  unnest(cols = c(tidy)) %>%
+  filter(term == "i") %>%
+  mutate(reverse = case_when(
+    item %in% reverse ~ "Y",
+    TRUE ~ "N"
+  )) %>%
+  mutate(p.adj = p.adjust(p.value, method = "holm"))
+
+summary_by_item_i %>%
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  arrange(reverse, item) %>%
+  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>%
+  kable(digits = 2,
+        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df1", "df2", "F", "raw", "adj"),
+        booktabs = T, caption = "Effect of \"I\" (block 1 and 3 data)") %>%
+  kable_styling() %>%
+    add_header_above(c(" " = 7, "p-value" = 2))
+```
+
+
+```{r analysis-format-35, results = 'asis'}
+mod_by_item_i2 = items_13 %>%
+  group_by(item) %>%
+  nest() %>%
+  mutate(mod = map(data, ~lmer(response~format*i + (1|proid), data = .))) %>%
+  mutate(aov = map(mod, anova))
+
+summary_by_item_i2 = mod_by_item_i2 %>%
+  ungroup() %>%
+  mutate(tidy = map(aov, broom::tidy)) %>%
+  select(item, tidy) %>%
   unnest(cols = c(tidy)) %>%
   filter(term == "format:i") %>%
   mutate(reverse = case_when(
     item %in% reverse ~ "Y",
     TRUE ~ "N"
-  )) %>% 
+  )) %>%
   mutate(p.adj = p.adjust(p.value, method = "holm"))
 
-summary_by_item_i %>%
+summary_by_item_i2 %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
-  arrange(reverse, item) %>% 
-  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
-  kable(digits = 2, 
+  arrange(reverse, item) %>%
+  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>%
+  kable(digits = 2,
         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df1", "df2", "F", "raw", "adj"),
         booktabs = T, caption = "Interaction of format and \"I\" (block 1 and 3 data)") %>%
-  kable_styling() %>% 
+  kable_styling() %>%
     add_header_above(c(" " = 7, "p-value" = 2))
 ```
 
@@ -476,9 +554,9 @@ summary_by_item_i %>%
 
 Here we identify the specific items with significant differences.
 
-```{r}
+```{r analysis-format-36}
 sig_item_i = summary_by_item_i %>%
-  filter(p.value < .05) 
+  filter(p.value < .05)
 
 sig_item_i = sig_item_i$item
 sig_item_i
@@ -486,19 +564,19 @@ sig_item_i
 
 ### Curious
 
-```{r, results = 'asis'}
+```{r analysis-format-37, results = 'asis'}
 curious_model_i = items_13 %>%
   filter(item == "curious") %>%
-  lmer(response~format*i + (1|proid), 
+  lmer(response~format*i + (1|proid),
                                data = .)
 
 curious_model_i %>%
-  tidy() %>% 
+  tidy() %>%
   mutate(term = str_replace(term, "\n", " "),
          term = str_replace(term, "format", ""),
-         term = str_replace(term, "iPresent", "I")) %>% 
-  filter(is.na(group)) %>% 
-  select(-effect, -group) %>% 
+         term = str_replace(term, "iPresent", "I")) %>%
+  filter(is.na(group)) %>%
+  select(-effect, -group) %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -507,27 +585,27 @@ curious_model_i %>%
   kable_styling()
 ```
 
-```{r}
-plot_model(curious_model_i, type = "pred", 
+```{r analysis-format-38}
+plot_model(curious_model_i, type = "pred",
            terms = c("format", "i")) +
   geom_line()
 ```
 
 ### Lively
 
-```{r, results = 'asis'}
+```{r analysis-format-39, results = 'asis'}
 lively_model_i = items_13 %>%
   filter(item == "lively") %>%
-  lmer(response~format*i + (1|proid), 
+  lmer(response~format*i + (1|proid),
                                data = .)
 
 lively_model_i %>%
-  tidy() %>% 
+  tidy() %>%
   mutate(term = str_replace(term, "\n", " "),
          term = str_replace(term, "format", ""),
-         term = str_replace(term, "iPresent", "I")) %>% 
-  filter(is.na(group)) %>% 
-  select(-effect, -group) %>% 
+         term = str_replace(term, "iPresent", "I")) %>%
+  filter(is.na(group)) %>%
+  select(-effect, -group) %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -536,27 +614,27 @@ lively_model_i %>%
   kable_styling()
 ```
 
-```{r}
-plot_model(lively_model_i, type = "pred", 
+```{r analysis-format-40}
+plot_model(lively_model_i, type = "pred",
            terms = c("format", "i")) +
   geom_line()
 ```
 
 ### Responsible
 
-```{r, results = 'asis'}
+```{r analysis-format-41, results = 'asis'}
 responsible_model_i = items_13 %>%
   filter(item == "responsible") %>%
-  lmer(response~format*i + (1|proid), 
+  lmer(response~format*i + (1|proid),
                                data = .)
 
 responsible_model_i %>%
-  tidy() %>% 
+  tidy() %>%
   mutate(term = str_replace(term, "\n", " "),
          term = str_replace(term, "format", ""),
-         term = str_replace(term, "iPresent", "I")) %>% 
-  filter(is.na(group)) %>% 
-  select(-effect, -group) %>% 
+         term = str_replace(term, "iPresent", "I")) %>%
+  filter(is.na(group)) %>%
+  select(-effect, -group) %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -565,27 +643,27 @@ responsible_model_i %>%
   kable_styling()
 ```
 
-```{r}
-plot_model(responsible_model_i, type = "pred", 
+```{r analysis-format-42}
+plot_model(responsible_model_i, type = "pred",
            terms = c("format", "i")) +
   geom_line()
 ```
 
 ### Sympathetic
 
-```{r, results = 'asis'}
+```{r analysis-format-43, results = 'asis'}
 sympathetic_model_i = items_13 %>%
   filter(item == "sympathetic") %>%
-  lmer(response~format*i + (1|proid), 
+  lmer(response~format*i + (1|proid),
                                data = .)
 
 sympathetic_model_i %>%
-  tidy() %>% 
+  tidy() %>%
   mutate(term = str_replace(term, "\n", " "),
          term = str_replace(term, "format", ""),
-         term = str_replace(term, "iPresent", "I")) %>% 
-  filter(is.na(group)) %>% 
-  select(-effect, -group) %>% 
+         term = str_replace(term, "iPresent", "I")) %>%
+  filter(is.na(group)) %>%
+  select(-effect, -group) %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
         digits = 2,
@@ -594,8 +672,9 @@ sympathetic_model_i %>%
   kable_styling()
 ```
 
-```{r}
-plot_model(sympathetic_model_i, type = "pred", 
+```{r analysis-format-44}
+plot_model(sympathetic_model_i, type = "pred",
            terms = c("format", "i")) +
   geom_line()
+
 ```

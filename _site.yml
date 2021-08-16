@@ -11,6 +11,8 @@ navbar:
       menu:
         - text: "Does item formatting affect response?"
           href: analysis_format.html
+        - text: "Does item formatting affect internal consistency?"
+          href: internal.html
         - text: "Does item formatting affect test-retest reliability?"
           href: test_retest.html
         - text: "Does timing differ across format?"

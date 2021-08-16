@@ -338,6 +338,9 @@ div.tocify {
       <a href="analysis_format.html">Does item formatting affect response?</a>
     </li>
     <li>
+      <a href="internal.html">Does item formatting affect internal consistency?</a>
+    </li>
+    <li>
       <a href="test_retest.html">Does item formatting affect test-retest reliability?</a>
     </li>
     <li>
@@ -369,7 +372,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Test-retest reliability</h1>
-<h4 class="date">Last updated 2021-08-11</h4>
+<h4 class="date">Last updated 2021-08-16</h4>
 
 </div>
 
@@ -451,19 +454,19 @@ p
 -0.02
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.14 – 0.09
+-0.12 – 0.09
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.678
+0.733
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.04
+-0.05
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 -0.15 – 0.06
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
-0.450
+0.359
 </td>
 </tr>
 <tr>
@@ -471,10 +474,10 @@ p
 block_1
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.77
+0.78
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.69 – 0.85
+0.70 – 0.85
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -483,7 +486,7 @@ block_1
 0.67
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.60 – 0.73
+0.61 – 0.73
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
 <strong>&lt;0.001</strong>
@@ -494,7 +497,7 @@ block_1
 ICC
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.15
+0.11
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
 0.06
@@ -514,10 +517,10 @@ N
 Observations
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
-237
+252
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
-551
+589
 </td>
 </tr>
 <tr>
@@ -525,163 +528,375 @@ Observations
 Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.599 / 0.658
+0.597 / 0.642
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.421 / 0.456
+0.419 / 0.455
 </td>
 </tr>
 </table>
 </div>
-<div id="test-retest-reliability-all-items-pooled-by-format" class="section level2">
-<h2>Test-retest reliability (all items pooled, by format)</h2>
-<p>We fit these same models, except now we moderate by format, to determine whether the test-retest reliabilty differs as a function of item wording.</p>
-<pre class="r"><code>tr_mod2_b1b2 = lmer(block_2 ~ block_1*condition + (1 |proid),
+<div id="test-retest-reliability-all-items-pooled-by-memory" class="section level2">
+<h2>Test-retest reliability (all items pooled, by memory)</h2>
+<p>Here we fit models moderated by memory – that it, perhaps the test-retest coefficient is affected by the memory of the participant.</p>
+<pre class="r"><code>tr_mod2_b1b2 = lmer(block_2 ~ block_1*delayed_memory + 
+                      (1 |proid),
                     data = items_matchb1)
-tr_mod2_b1b3 = lmer(block_3 ~ block_1*condition + (1 |proid),
+tr_mod2_b1b3 = lmer(block_3 ~ block_1*very_delayed_memory + 
+                      (1 |proid),
                     data = items_matchb1)
 
 tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)</code></pre>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+block 2
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+block 3
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col7">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.01
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.12 – 0.09
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.826
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.05
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.16 – 0.06
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.379
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+block_1
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.77
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.68 – 0.85
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.67
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.60 – 0.73
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+delayed_memory
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.02
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.09 – 0.13
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.746
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+block_1 * delayed_memory
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.05
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.14 – 0.04
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.301
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+very_delayed_memory
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.01
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.12 – 0.10
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.854
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+block_1 *<br>very_delayed_memory
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.02
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.09 – 0.05
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.605
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ICC
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.12
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.07
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+35 <sub>proid</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+19 <sub>proid</sub>
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+252
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+589
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.597 / 0.644
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.418 / 0.457
+</td>
+</tr>
+</table>
 <p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
 <div id="block-1block-2" class="section level3">
 <h3>Block 1/Block 2</h3>
-<pre class="r"><code>emtrends(tr_mod2_b1b2, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
+<pre class="r"><code>mem_list = list(delayed_memory = c(-1,0,1))
+
+emtrends(tr_mod2_b1b2, 
+         pairwise~delayed_memory, 
+         var = &quot;block_1&quot;, 
+         at = mem_list)</code></pre>
+<pre><code>## $emtrends
+##  delayed_memory block_1.trend     SE  df lower.CL upper.CL
+##              -1         0.814 0.0565 246    0.703    0.925
+##               0         0.765 0.0414 247    0.684    0.847
+##               1         0.717 0.0686 247    0.582    0.852
+## 
+## Degrees-of-freedom method: kenward-roger 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast estimate     SE  df t.ratio p.value
+##  (-1) - 0   0.0486 0.0473 247 1.028   0.5599 
+##  (-1) - 1   0.0972 0.0946 247 1.028   0.5599 
+##  0 - 1      0.0486 0.0473 247 1.028   0.5599 
+## 
+## Degrees-of-freedom method: kenward-roger 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+</div>
+<div id="block-1block-3" class="section level3">
+<h3>Block 1/Block 3</h3>
+<p><strong>This chunk is turned off due to low coverage. Be sure to turn on with real data.</strong></p>
+<pre class="r"><code>mem_list = list(very_delayed_memory = c(-1,0,1))
+
+emtrends(tr_mod2_b1b3, 
+         pairwise~very_delayed_memory, 
+         var = &quot;block_1&quot;, 
+         at = mem_list)</code></pre>
+<pre><code>## $emtrends
+##  very_delayed_memory block_1.trend     SE  df lower.CL upper.CL
+##                   -1         0.688 0.0470 584    0.595    0.780
+##                    0         0.668 0.0331 585    0.603    0.733
+##                    1         0.649 0.0530 582    0.545    0.753
+## 
+## Degrees-of-freedom method: kenward-roger 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast estimate     SE  df t.ratio p.value
+##  (-1) - 0   0.0194 0.0376 583 0.516   0.8634 
+##  (-1) - 1   0.0388 0.0752 583 0.516   0.8634 
+##  0 - 1      0.0194 0.0376 583 0.516   0.8634 
+## 
+## Degrees-of-freedom method: kenward-roger 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+</div>
+</div>
+<div id="test-retest-reliability-all-items-pooled-by-format" class="section level2">
+<h2>Test-retest reliability (all items pooled, by format)</h2>
+<p>We fit these same models, except now we moderate by format, to determine whether the test-retest reliabilty differs as a function of item wording.</p>
+<pre class="r"><code>tr_mod3_b1b2 = lmer(block_2 ~ block_1*condition + (1 |proid),
+                    data = items_matchb1)
+tr_mod3_b1b3 = lmer(block_3 ~ block_1*condition + (1 |proid),
+                    data = items_matchb1)
+
+anova(tr_mod3_b1b2)</code></pre>
+<p>Type III Analysis of Variance Table with Satterthwaite’s method Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)<br />
+block_1 129.868 129.868 1 242.83 368.1068 &lt; 2e-16 *** condition 0.961 0.320 3 27.78 0.9082 0.44968<br />
+block_1:condition 2.518 0.839 3 238.81 2.3793 0.07039 .<br />
+— Signif. codes: 0 ‘<em><strong>’ 0.001 ’</strong>’ 0.01 ’</em>’ 0.05 ‘.’ 0.1 ’ ’ 1</p>
+<pre class="r"><code>anova(tr_mod3_b1b3)</code></pre>
+<p>Type III Analysis of Variance Table with Satterthwaite’s method Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)<br />
+block_1 230.053 230.053 1 545.00 417.3370 &lt; 2.2e-16 *<strong> condition 10.966 3.655 3 14.60 6.6313 0.004767 </strong> block_1:condition 0.402 0.134 3 538.45 0.2434 0.866044<br />
+— Signif. codes: 0 ‘<em><strong>’ 0.001 ’</strong>’ 0.01 ’</em>’ 0.05 ‘.’ 0.1 ’ ’ 1</p>
+<p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
+<div id="block-1block-2-1" class="section level3">
+<h3>Block 1/Block 2</h3>
+<pre class="r"><code>emtrends(tr_mod3_b1b2, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
 <pre><code>## $emtrends
 ##   condition                             block_1.trend     SE  df lower.CL
-##  Adjective\nOnly                                0.605 0.0728 213    0.462
-##  Am\nAdjective                                  0.850 0.0710 224    0.710
-##  Am someone\nwho tends to be\nAdjective         0.877 0.1044 189    0.671
-##  Tend to be\nAdjective                          0.809 0.0869 227    0.637
+##  Adjective\nOnly                                0.611 0.0739 230    0.465
+##  Am\nAdjective                                  0.822 0.0706 240    0.683
+##  Am someone\nwho tends to be\nAdjective         0.877 0.0986 223    0.683
+##  Tend to be\nAdjective                          0.843 0.0856 240    0.674
 ##  upper.CL
-##     0.749
-##     0.990
-##     1.083
-##     0.980
+##     0.757
+##     0.961
+##     1.072
+##     1.011
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
 ##    contrast                                                     estimate    SE
-##  Adjective\nOnly - Am\nAdjective                                 -0.2452 0.102
-##  Adjective\nOnly - Am someone\nwho tends to be\nAdjective        -0.2720 0.127
-##  Adjective\nOnly - Tend to be\nAdjective                         -0.2036 0.113
-##  Am\nAdjective - Am someone\nwho tends to be\nAdjective          -0.0268 0.126
-##  Am\nAdjective - Tend to be\nAdjective                            0.0416 0.112
-##  Am someone\nwho tends to be\nAdjective - Tend to be\nAdjective   0.0684 0.136
+##  Adjective\nOnly - Am\nAdjective                                 -0.2108 0.102
+##  Adjective\nOnly - Am someone\nwho tends to be\nAdjective        -0.2663 0.123
+##  Adjective\nOnly - Tend to be\nAdjective                         -0.2316 0.113
+##  Am\nAdjective - Am someone\nwho tends to be\nAdjective          -0.0555 0.121
+##  Am\nAdjective - Tend to be\nAdjective                           -0.0208 0.111
+##  Am someone\nwho tends to be\nAdjective - Tend to be\nAdjective   0.0347 0.131
 ##   df t.ratio p.value
-##  219 -2.413  0.0777 
-##  219 -2.137  0.1448 
-##  228 -1.796  0.2777 
-##  214 -0.212  0.9966 
-##  229  0.371  0.9825 
-##  210  0.503  0.9582 
+##  236 -2.062  0.1686 
+##  241 -2.161  0.1372 
+##  244 -2.048  0.1734 
+##  238 -0.457  0.9681 
+##  244 -0.187  0.9977 
+##  232  0.266  0.9934 
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 </div>
-<div id="block-1block-3" class="section level3">
+<div id="block-1block-3-1" class="section level3">
 <h3>Block 1/Block 3</h3>
-<pre class="r"><code>emtrends(tr_mod2_b1b3, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
+<pre class="r"><code>emtrends(tr_mod3_b1b3, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
 <pre><code>## $emtrends
 ##   condition                             block_1.trend     SE  df lower.CL
-##  Adjective\nOnly                                0.677 0.0649 535    0.550
-##  Am\nAdjective                                  0.659 0.0621 539    0.537
-##  Am someone\nwho tends to be\nAdjective         0.621 0.0751 543    0.473
-##  Tend to be\nAdjective                          0.683 0.0673 278    0.550
+##  Adjective\nOnly                                0.688 0.0634 571    0.564
+##  Am\nAdjective                                  0.647 0.0604 577    0.528
+##  Am someone\nwho tends to be\nAdjective         0.627 0.0727 580    0.485
+##  Tend to be\nAdjective                          0.696 0.0653 275    0.567
 ##  upper.CL
-##     0.805
-##     0.781
-##     0.768
-##     0.815
+##     0.813
+##     0.766
+##     0.770
+##     0.825
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
 ##    contrast                                                     estimate     SE
-##  Adjective\nOnly - Am\nAdjective                                 0.01849 0.0899
-##  Adjective\nOnly - Am someone\nwho tends to be\nAdjective        0.05634 0.0993
-##  Adjective\nOnly - Tend to be\nAdjective                        -0.00562 0.0935
-##  Am\nAdjective - Am someone\nwho tends to be\nAdjective          0.03785 0.0975
-##  Am\nAdjective - Tend to be\nAdjective                          -0.02411 0.0916
-##  Am someone\nwho tends to be\nAdjective - Tend to be\nAdjective -0.06196 0.1009
+##  Adjective\nOnly - Am\nAdjective                                 0.04145 0.0875
+##  Adjective\nOnly - Am someone\nwho tends to be\nAdjective        0.06098 0.0964
+##  Adjective\nOnly - Tend to be\nAdjective                        -0.00764 0.0910
+##  Am\nAdjective - Am someone\nwho tends to be\nAdjective          0.01953 0.0945
+##  Am\nAdjective - Tend to be\nAdjective                          -0.04909 0.0889
+##  Am someone\nwho tends to be\nAdjective - Tend to be\nAdjective -0.06862 0.0977
 ##   df t.ratio p.value
-##  543  0.206  0.9969 
-##  541  0.567  0.9417 
-##  413 -0.060  0.9999 
-##  543  0.388  0.9801 
-##  441 -0.263  0.9936 
-##  457 -0.614  0.9275 
+##  580  0.474  0.9649 
+##  580  0.632  0.9216 
+##  427 -0.084  0.9998 
+##  579  0.207  0.9969 
+##  457 -0.552  0.9460 
+##  487 -0.702  0.8962 
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
-</div>
-</div>
-<div id="test-retest-reliability-all-items-pooled-by-memory" class="section level2">
-<h2>Test-retest reliability (all items pooled, by memory)</h2>
-<p>Here we fit models moderated by memory – that it, perhaps the test-retest coefficient is affected by the memory of the participant.</p>
-<pre class="r"><code>tr_mod3_b1b2 = lmer(block_2 ~ block_1*delayed_memory + 
-                      (1 |proid),
-                    data = items_matchb1)
-tr_mod3_b1b3 = lmer(block_3 ~ block_1*very_delayed_memory + 
-                      (1 |proid),
-                    data = items_matchb1)
-
-tab_model(tr_mod3_b1b2, tr_mod3_b1b3, show.re.var = F)</code></pre>
-<p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
-<div id="block-1block-2-1" class="section level3">
-<h3>Block 1/Block 2</h3>
-<pre class="r"><code>mem_list = list(delayed_memory = c(-1,0,1))
-
-emtrends(tr_mod3_b1b2, 
-         pairwise~delayed_memory, 
-         var = &quot;block_1&quot;, 
-         at = mem_list)</code></pre>
-<pre><code>## $emtrends
-##  delayed_memory block_1.trend     SE  df lower.CL upper.CL
-##              -1         0.811 0.0580 232    0.697    0.925
-##               0         0.762 0.0418 231    0.679    0.844
-##               1         0.712 0.0690 231    0.576    0.848
-## 
-## Degrees-of-freedom method: kenward-roger 
-## Confidence level used: 0.95 
-## 
-## $contrasts
-##  contrast estimate     SE  df t.ratio p.value
-##  (-1) - 0   0.0495 0.0481 232 1.029   0.5592 
-##  (-1) - 1   0.0990 0.0962 232 1.029   0.5592 
-##  0 - 1      0.0495 0.0481 232 1.029   0.5592 
-## 
-## Degrees-of-freedom method: kenward-roger 
-## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
-</div>
-<div id="block-1block-3-1" class="section level3">
-<h3>Block 1/Block 3</h3>
-<p><strong>This chunk is turned off due to low coverage. Be sure to turn on with real data.</strong></p>
-<pre class="r"><code>mem_list = list(very_delayed_memory = c(-1,0,1))
-
-emtrends(tr_mod3_b1b3, 
-         pairwise~very_delayed_memory, 
-         var = &quot;block_1&quot;, 
-         at = mem_list)</code></pre>
-<pre><code>## $emtrends
-##  very_delayed_memory block_1.trend     SE  df lower.CL upper.CL
-##                   -1         0.678 0.0485 545    0.582    0.773
-##                    0         0.665 0.0341 546    0.598    0.732
-##                    1         0.653 0.0553 547    0.544    0.762
-## 
-## Degrees-of-freedom method: kenward-roger 
-## Confidence level used: 0.95 
-## 
-## $contrasts
-##  contrast estimate     SE  df t.ratio p.value
-##  (-1) - 0   0.0123 0.0393 547 0.312   0.9478 
-##  (-1) - 1   0.0245 0.0786 547 0.312   0.9478 
-##  0 - 1      0.0123 0.0393 547 0.312   0.9478 
-## 
-## Degrees-of-freedom method: kenward-roger 
-## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
 </div>
 <div id="test-retest-reliability-items-separated-by-format" class="section level2">
@@ -702,8 +917,8 @@ emtrends(tr_mod3_b1b3,
   )</code></pre>
 <pre><code>## # A tibble: 1 x 4
 ##     min   max  mean median
-##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-## 1     0    11   8.5      8</code></pre>
+##   &lt;int&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1     7    11  8.75    8.5</code></pre>
 <pre class="r"><code>items_matchb1 %&gt;%
   group_by(item, condition) %&gt;%
   count() %&gt;%
@@ -717,7 +932,7 @@ emtrends(tr_mod3_b1b3,
        y = &quot;Number of tests&quot;) +
   facet_wrap(~condition)</code></pre>
 <div class="figure">
-<img src="test_retest_files/figure-html/testre-1.png" alt="(#fig:testre) Sample sizes for item-level test-retest correlations." width="672" />
+<img src="test_retest_files/figure-html/test-retest-15-1.png" alt="(#fig:testre) Sample sizes for item-level test-retest correlations." width="672" />
 <p class="caption">
 (#fig:testre) Sample sizes for item-level test-retest correlations.
 </p>
@@ -880,6 +1095,37 @@ N
 </td>
 <td style="text-align:left;">
 -0.87
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+broadminded
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.25
+</td>
+<td style="text-align:left;">
+0.50
+</td>
+<td style="text-align:left;">
+-0.47
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+0.82*
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+1.00*
 </td>
 </tr>
 <tr>
@@ -1142,30 +1388,6 @@ N
 </tr>
 <tr>
 <td style="text-align:left;">
-impusive
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 intelligent
 </td>
 <td style="text-align:left;">
@@ -1301,6 +1523,35 @@ N
 </td>
 <td style="text-align:left;">
 -0.50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+selfdisciplined
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.61
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.80
+</td>
+<td style="text-align:left;">
+1.00*
+</td>
+<td style="text-align:left;">
+0.96*
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+1.00*
 </td>
 </tr>
 <tr>
@@ -1697,7 +1948,7 @@ Y
   labs(x = NULL, y = &quot;Correlation&quot;) +
   theme_pubclean()</code></pre>
 <div class="figure">
-<img src="test_retest_files/figure-html/test-retest-17-1.png" alt="Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item." width="672" />
+<img src="test_retest_files/figure-html/test-retest-18-1.png" alt="Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item." width="672" />
 <p class="caption">
 Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item.
 </p>

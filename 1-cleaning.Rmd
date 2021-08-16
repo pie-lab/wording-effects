@@ -43,6 +43,14 @@ rm(data_labels)
 data = clean_names(data)
 ```
 
+We rename several columns, in order to facilitate the use of regular expressions later. Specifically, we remove the underscores (_) in the columns pertaining to broad-mindedness and self-disciplined.
+
+```{r}
+names(data) = str_replace(names(data), "broad_mind", "broadmind")
+names(data) = str_replace(names(data), "self_disciplind", "selfdisciplined")
+```
+
+
 Remove the following columns.
 
 ```{r 1-cleaning-4 }
@@ -474,6 +482,12 @@ data_2 = data_2 %>%
   select(-contains("outgoing_b_3i"))
 ```
 
+We rename several columns, in order to facilitate the use of regular expressions later. Specifically, we remove the underscores (_) in the columns pertaining to broad-mindedness and self-disciplined.
+
+```{r}
+names(data_2) = str_replace(names(data_2), "broad_mind", "broadmind")
+names(data_2) = str_replace(names(data_2), "self_disciplind", "selfdisciplined")
+```
 
 ### Recode personality item responses to numeric
 
@@ -1060,6 +1074,7 @@ data = data %>%
 ```{r 1-cleaning-82, echo = F}
 #oops
 names(data) = str_replace(names(data), "responsbile", "responsible")
+names(data) = str_replace(names(data), "impusive", "impulsive")
 ```
 
 

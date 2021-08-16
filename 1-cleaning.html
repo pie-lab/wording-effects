@@ -338,6 +338,9 @@ div.tocify {
       <a href="analysis_format.html">Does item formatting affect response?</a>
     </li>
     <li>
+      <a href="internal.html">Does item formatting affect internal consistency?</a>
+    </li>
+    <li>
       <a href="test_retest.html">Does item formatting affect test-retest reliability?</a>
     </li>
     <li>
@@ -369,7 +372,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2021-08-11</h4>
+<h4 class="date">Last updated 2021-08-16</h4>
 
 </div>
 
@@ -401,6 +404,9 @@ data = read_csv(data_path,
                 col_names = names(data_labels))
 rm(data_labels)
 data = clean_names(data)</code></pre>
+<p>We rename several columns, in order to facilitate the use of regular expressions later. Specifically, we remove the underscores (_) in the columns pertaining to broad-mindedness and self-disciplined.</p>
+<pre class="r"><code>names(data) = str_replace(names(data), &quot;broad_mind&quot;, &quot;broadmind&quot;)
+names(data) = str_replace(names(data), &quot;self_disciplind&quot;, &quot;selfdisciplined&quot;)</code></pre>
 <p>Remove the following columns.</p>
 <pre class="r"><code>data = data %&gt;%
   select(-end_date,
@@ -624,7 +630,7 @@ Average response to inattention check items
 <pre><code>## # A tibble: 1 x 2
 ##   `min(n)` `max(n)`
 ##      &lt;int&gt;    &lt;int&gt;
-## 1       62       62</code></pre>
+## 1       66       66</code></pre>
 <p>Excellent! Now we calculate the average response time per item for each participant. We mark a participant for removal if their average time is less than 1 second or greater than 30. See Figure @ref(fig:timing_dist) for a distribution of average response time.</p>
 <pre class="r"><code>timing_data = timing_data %&gt;%
   group_by(proid) %&gt;%
@@ -722,6 +728,9 @@ data_2D = clean_names(data_2D)</code></pre>
          -starts_with(&quot;meta_info&quot;))</code></pre>
 <pre class="r"><code>data_2 = data_2 %&gt;% 
   select(-contains(&quot;outgoing_b_3i&quot;))</code></pre>
+<p>We rename several columns, in order to facilitate the use of regular expressions later. Specifically, we remove the underscores (_) in the columns pertaining to broad-mindedness and self-disciplined.</p>
+<pre class="r"><code>names(data_2) = str_replace(names(data_2), &quot;broad_mind&quot;, &quot;broadmind&quot;)
+names(data_2) = str_replace(names(data_2), &quot;self_disciplind&quot;, &quot;selfdisciplined&quot;)</code></pre>
 <div id="recode-personality-item-responses-to-numeric-1" class="section level3">
 <h3>Recode personality item responses to numeric</h3>
 <p>We recode the responses to personality items, which we downloaded as text strings. Here, all items end with <code>_3</code> and sometimes with <code>i</code>.</p>
@@ -874,7 +883,7 @@ Average response to inattention check items
 <pre><code>## # A tibble: 1 x 2
 ##   `min(n)` `max(n)`
 ##      &lt;int&gt;    &lt;int&gt;
-## 1       31       31</code></pre>
+## 1       33       33</code></pre>
 <p>Excellent! Now we calculate the average response time per item for each participant. We mark a participant for removal if their average time is less than 1 second or greater than 30. See Figure @ref(fig:timing_dist) for a distribution of average response time.</p>
 <pre class="r"><code>timing_data_2 = timing_data_2 %&gt;%
   group_by(proid) %&gt;%

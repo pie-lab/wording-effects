@@ -11,7 +11,7 @@
 
 
 
-<title>Device effects</title>
+<title>Does the internal consistency of Big Five traits vary by item wording?</title>
 
 <script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -35,6 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -369,160 +371,226 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Device effects</h1>
+<h1 class="title toc-ignore">Does the internal consistency of Big Five traits vary by item wording?</h1>
 <h4 class="date">Last updated 2021-08-16</h4>
 
 </div>
 
 
-<div id="responses" class="section level2">
-<h2>Responses</h2>
-<div id="response-by-device" class="section level3">
-<h3>Response by device</h3>
-<p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device format. Here, we use data from blocks 1 and 2.</p>
-<pre class="r"><code>items_12 = items_df %&gt;% filter(block %in% c(&quot;1&quot;,&quot;2&quot;))</code></pre>
-<pre class="r"><code>mod.response = lmer(response~devicetype + (1|proid), 
-                  data = items_12)
-anova(mod.response)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##            Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
-## devicetype 2.9109  1.4554     2    32  0.9685 0.3905</code></pre>
-<pre class="r"><code>plot1 = plot_model(mod.response, type = &quot;pred&quot;) 
+<p>We calculate and report Cronbach’s alpha for all formats using data from Block 1 only. This will include both the average split-half reliability, as well as the 95% confidence interval. Differences in internal consistency will be considered statistically significant if the confidence intervals of two formats do not overlap. We will also show the distribution of all possible split halves for each of the four formats.</p>
+<div id="prep-data" class="section level2">
+<h2>Prep data</h2>
+<p>We start by creating a wide-format of the dataset using only the Block 1 data.</p>
+<pre class="r"><code>items_wide = items_df %&gt;%
+  # only block 1 responses
+  filter(block == 1) %&gt;% 
+  #only need these variables
+  select(proid, condition, item, response) %&gt;% 
+  # to wide form
+  spread(item, response)</code></pre>
+<p>Next, we identify the items associated with each trait. These come from the Health and Retirement Study Psychosocial and Lifestyle Questionnaire 2006-2016 user guide, which can be found at this <a href="https://hrs.isr.umich.edu/publications/biblio/9066">link</a>.</p>
+<pre class="r"><code>Extra = c(&quot;outgoing&quot;, &quot;friendly&quot;, &quot;lively&quot;, &quot;active&quot; ,&quot;talkative&quot;)
+Agree = c(&quot;helpful&quot;, &quot;warm&quot;, &quot;caring&quot;, &quot;softhearted&quot;, &quot;sympathetic&quot;)
+Consc = c(&quot;reckless&quot;, &quot;organized&quot;, &quot;responsible&quot;, &quot;hardworking&quot;, &quot;selfdisciplined&quot;, 
+          &quot;careless&quot;, &quot;impulsive&quot;, &quot;cautious&quot;, &quot;thorough&quot;, &quot;thrifty&quot;)
+Neuro = c(&quot;moody&quot;, &quot;worrying&quot;, &quot;nervous&quot;, &quot;calm&quot;)
+Openn = c(&quot;creative&quot;, &quot;imaginative&quot;, &quot;intelligent&quot;, &quot;curious&quot;, &quot;broadminded&quot;, 
+          &quot;sophisticated&quot;, &quot;adventurous&quot;)</code></pre>
+</div>
+<div id="calculate-cronbachs-alpha-for-each-format" class="section level2">
+<h2>Calculate Cronbach’s alpha for each format</h2>
+<p>We start by grouping data by condition and then nesting, to create separate data frames for each of the four fomats.</p>
+<pre class="r"><code>format_data = items_wide %&gt;% 
+  group_by(condition) %&gt;% 
+  nest() %&gt;% 
+  ungroup()</code></pre>
+<p>Next we create separate datasets for each of the five personality traits.</p>
+<pre class="r"><code>format_data = format_data %&gt;% 
+  mutate(
+    data_Extra = map(data, ~select(.x, all_of(Extra))),
+    data_Agree = map(data, ~select(.x, all_of(Agree))),
+    data_Consc = map(data, ~select(.x, all_of(Consc))),
+    data_Neuro = map(data, ~select(.x, all_of(Neuro))),
+    data_Openn = map(data, ~select(.x, all_of(Openn)))
+    ) </code></pre>
+<p>We gather these datasets into a single column, for ease of use.</p>
+<pre class="r"><code>format_data = format_data %&gt;% 
+  select(-data) %&gt;% 
+  gather(variable, data, starts_with(&quot;data&quot;)) %&gt;% 
+  mutate(variable = str_remove(variable, &quot;data_&quot;))</code></pre>
+<p>Next we apply the alpha function to the datasets. We do not need to use the <code>check.keys</code> function, as items were reverse-scored during the cleaning process.</p>
+<pre class="r"><code>format_data = format_data %&gt;% 
+  mutate(alpha = map(data, psych::alpha))</code></pre>
+<pre><code>## Some items ( talkative ) were negatively correlated with the total scale and 
+## probably should be reversed.  
+## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( active ) were negatively correlated with the total scale and 
+## probably should be reversed.  
+## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( friendly ) were negatively correlated with the total scale and 
+## probably should be reversed.  
+## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( softhearted sympathetic ) were negatively correlated with the total scale and 
+## probably should be reversed.  
+## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( sympathetic ) were negatively correlated with the total scale and 
+## probably should be reversed.  
+## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( hardworking impulsive cautious thrifty ) were negatively correlated with the total scale and 
+## probably should be reversed.  
+## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( reckless impulsive thrifty ) were negatively correlated with the total scale and 
+## probably should be reversed.  
+## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( reckless careless impulsive thrifty ) were negatively correlated with the total scale and 
+## probably should be reversed.  
+## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( worrying ) were negatively correlated with the total scale and 
+## probably should be reversed.  
+## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( sophisticated ) were negatively correlated with the total scale and 
+## probably should be reversed.  
+## To do this, run the function again with the &#39;check.keys=TRUE&#39; option</code></pre>
+<p>We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.)</p>
+<pre class="r"><code>format_data = format_data %&gt;% 
+  mutate(alpha_list = map(alpha, &quot;total&quot;),
+         alpha_est = map_dbl(alpha_list, &quot;raw_alpha&quot;),
+         se_est = map_dbl(alpha_list, &quot;ase&quot;),
+         lower_est = alpha_est - (1.96*se_est),
+         upper_est = alpha_est + (1.96*se_est)) 
 
-plot1$devicetype +
-  labs(x = NULL,
-       y = &quot;Average response&quot;,
-       title = &quot;Average responses by device&quot;) +
+format_data %&gt;% 
+  select(condition, variable, alpha_est, lower_est, upper_est) %&gt;% 
+  mutate(
+    across(ends_with(&quot;est&quot;), printnum),
+    value = paste0(alpha_est, &quot; [&quot;, lower_est, &quot;, &quot;, upper_est, &quot;]&quot;)) %&gt;% 
+  select(-contains(&quot;est&quot;)) %&gt;% 
+  spread(condition, value) %&gt;% 
+  kable(booktabs = T) %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+variable
+</th>
+<th style="text-align:left;">
+A
+</th>
+<th style="text-align:left;">
+B
+</th>
+<th style="text-align:left;">
+C
+</th>
+<th style="text-align:left;">
+D
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Agree
+</td>
+<td style="text-align:left;">
+0.30 [-0.27, 0.88]
+</td>
+<td style="text-align:left;">
+0.58 [0.13, 1.03]
+</td>
+<td style="text-align:left;">
+0.90 [0.80, 1.01]
+</td>
+<td style="text-align:left;">
+0.10 [-1.02, 1.22]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Consc
+</td>
+<td style="text-align:left;">
+0.44 [-0.01, 0.89]
+</td>
+<td style="text-align:left;">
+0.55 [0.13, 0.97]
+</td>
+<td style="text-align:left;">
+0.86 [0.73, 1.00]
+</td>
+<td style="text-align:left;">
+0.45 [-0.15, 1.06]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Extra
+</td>
+<td style="text-align:left;">
+0.22 [-0.54, 0.98]
+</td>
+<td style="text-align:left;">
+0.63 [0.35, 0.91]
+</td>
+<td style="text-align:left;">
+0.69 [0.31, 1.06]
+</td>
+<td style="text-align:left;">
+0.86 [0.69, 1.02]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Neuro
+</td>
+<td style="text-align:left;">
+0.77 [0.62, 0.93]
+</td>
+<td style="text-align:left;">
+0.77 [0.56, 0.98]
+</td>
+<td style="text-align:left;">
+0.27 [-0.54, 1.07]
+</td>
+<td style="text-align:left;">
+0.68 [0.30, 1.06]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Openn
+</td>
+<td style="text-align:left;">
+0.59 [0.23, 0.95]
+</td>
+<td style="text-align:left;">
+0.78 [0.58, 0.98]
+</td>
+<td style="text-align:left;">
+0.84 [0.65, 1.02]
+</td>
+<td style="text-align:left;">
+0.53 [-0.05, 1.10]
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>format_data %&gt;% 
+  ggplot(aes(x = condition, y = alpha_est)) +
+  geom_errorbar(aes(ymin = lower_est, ymax = upper_est)) +
+  geom_point() +
+  labs(x = NULL, y = &quot;Alpha&quot;) +
+  facet_wrap(~variable) +
   theme_pubclean()</code></pre>
-<div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-6-1.png" alt="Predicted response on personality items by condition." width="672" />
-<p class="caption">
-Predicted response on personality items by condition.
-</p>
-</div>
-<pre class="r"><code>means_by_group = items_12 %&gt;%
-  group_by(devicetype) %&gt;% 
-  summarise(m = mean(response),
-            s = sd(response))
+<p><img src="internal_files/figure-html/internal-11-1.png" width="672" /></p>
+<p>Alpha is the average split-half reliability; given space, it can be useful to report the distribution of all split-half reliability estimates. We use the <code>splitHalf</code> function to calculate those. We use smoothed correlation matrices here because when developing code on the pilot data, we had non-positive definite correlation matrices.</p>
+<pre class="r"><code>format_data = format_data %&gt;% 
+  mutate(cor_mat = map(data, cor),
+         cor_mat = map(cor_mat, cor.smooth)) %&gt;% 
+  mutate(splithalf = map(cor_mat, splitHalf, raw = T))
 
-items_12 %&gt;%
-  ggplot(aes(x = response)) +
-  geom_histogram(aes(fill = block),
-                 position = &quot;dodge&quot;,
-                 bins = 6, color = &quot;white&quot;) +
-  geom_vline(aes(xintercept = m), 
-             data = means_by_group) +
-  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
-  #guides(fill = &quot;none&quot;) +
-  scale_x_continuous(breaks = 1:6) +
-  labs(y = &quot;Number of particpants&quot;,
-       title = &quot;Distribution of responses by format&quot;) +
-  theme_pubr()</code></pre>
-<div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-7-1.png" alt="Distribution of responses by category" width="672" />
-<p class="caption">
-Distribution of responses by category
-</p>
-</div>
-</div>
-<div id="device-by-format" class="section level3">
-<h3>Device by format</h3>
-<pre class="r"><code>mod.response2 = lmer(response~devicetype*format + (1|proid), 
-                  data = items_12)
-anova(mod.response2)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##                    Sum Sq Mean Sq NumDF   DenDF F value Pr(&gt;F)
-## devicetype         1.8061 0.90304     2   32.83  0.6016 0.5539
-## format             5.1709 1.72363     3 2105.79  1.1483 0.3283
-## devicetype:format 13.6298 2.27163     6 2102.81  1.5133 0.1697</code></pre>
-<pre class="r"><code>plot2 = plot_model(mod.response2, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;devicetype&quot;)) 
-
-plot2 +
-  labs(x = NULL,
-       y = &quot;Average response&quot;,
-       title = &quot;Average responses by device&quot;) +
-  theme_pubclean()</code></pre>
-<div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-9-1.png" alt="Predicted response on personality items by condition." width="672" />
-<p class="caption">
-Predicted response on personality items by condition.
-</p>
-</div>
-</div>
-</div>
-<div id="timing" class="section level2">
-<h2>Timing</h2>
-<div id="timing-by-device" class="section level3">
-<h3>Timing by device</h3>
-<p>We used a multilevel model, nesting timing within participant to account for dependence. Our primary predictor was format.</p>
-<pre class="r"><code>mod.timing = lmer(seconds_log~devicetype + (1|proid), 
-                  data = items_12)
-anova(mod.timing)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##            Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
-## devicetype 2.4781  1.2391     2    32  1.8444 0.1745</code></pre>
-<pre class="r"><code>plot1 = plot_model(mod.timing, type = &quot;pred&quot;) 
-
-plot1$devicetype +
-  labs(x = NULL,
-       y = &quot;timing (log)&quot;,
-       title = &quot;Average timing time by device type&quot;) +
-  theme_pubclean()</code></pre>
-<div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-11-1.png" alt="Predicted timing on personality items by condition." width="672" />
-<p class="caption">
-Predicted timing on personality items by condition.
-</p>
-</div>
-<pre class="r"><code>means_by_group = items_12 %&gt;%
-  group_by(devicetype) %&gt;% 
-  summarise(m = mean(timing),
-            s = sd(timing))
-
-items_12 %&gt;%
-  ggplot(aes(x = timing, fill = devicetype)) +
-  geom_histogram(bins = 100) +
-  geom_vline(aes(xintercept = m), data = means_by_group) +
-  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
+format_data %&gt;% 
+  mutate(sh_est = map(splithalf, &quot;raw&quot;)) %&gt;% 
+  select(variable, condition, sh_est) %&gt;% 
+  unnest(cols = c(sh_est)) %&gt;% 
+  ggplot(aes(x = sh_est, y = condition, fill = condition)) +
+  geom_density_ridges() +
+  facet_wrap(~variable) +
   guides(fill = &quot;none&quot;) +
-  scale_x_log10() +
-  labs(y = &quot;Number of particpants&quot;,
-       title = &quot;Distribution of timing by format&quot;,
-       x = &quot;timing (logrithmic scale)&quot;) +
-  theme_pubr()</code></pre>
-<div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-12-1.png" alt="Distribution of secondss by category" width="672" />
-<p class="caption">
-Distribution of secondss by category
-</p>
-</div>
-</div>
-<div id="device-by-format-1" class="section level3">
-<h3>Device by format</h3>
-<pre class="r"><code>mod.timing2 = lmer(seconds_log~devicetype*format + (1|proid), 
-                  data = items_12)
-anova(mod.timing2)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##                   Sum Sq Mean Sq NumDF   DenDF F value    Pr(&gt;F)    
-## devicetype         2.919  1.4595     2   32.31  2.2275 0.1240954    
-## format            11.022  3.6741     3 2146.65  5.6074 0.0007915 ***
-## devicetype:format 14.153  2.3589     6 2148.23  3.6001 0.0014831 ** 
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>plot1 = plot_model(mod.timing2, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;devicetype&quot;)) 
-
-plot1 +
-  labs(x = NULL,
-       y = &quot;timing (log)&quot;,
-       title = &quot;Average timing time by device type&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure">
-<img src="device_files/figure-html/unnamed-chunk-14-1.png" alt="Predicted timing on personality items by condition." width="672" />
-<p class="caption">
-Predicted timing on personality items by condition.
-</p>
-</div>
-</div>
+<p><img src="internal_files/figure-html/internal-12-1.png" width="672" /></p>
 </div>
 
 

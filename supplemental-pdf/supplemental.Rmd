@@ -38,6 +38,12 @@ library(here)
 
 <!-- ```{r, child = here("analysis_propVariance.Rmd")} -->
 <!-- ``` -->
+\newpage
+
+# Does the internal consistency of Big Five traits vary by item wording?
+
+```{r, child = here("internal.Rmd")}
+```
 
 \newpage
 

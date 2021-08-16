@@ -1,0 +1,155 @@
+---
+title: "Does the internal consistency of Big Five traits vary by item wording?"
+date: "Last updated `r Sys.Date()`"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+We calculate and report Cronbach’s alpha for all formats using data from Block 1 only. This will include both the average split-half reliability, as well as the 95% confidence interval. Differences in internal consistency will be considered statistically significant if the confidence intervals of two formats do not overlap. We will also show the distribution of all possible split halves for each of the four formats.
+
+
+```{r internal-1, include = FALSE}
+knitr::opts_chunk$set(warning = F, message = F)
+```
+
+```{r internal-2, echo = F}
+library(here) # for working with files
+library(tidyverse) # for cleaning
+library(janitor) # for variable names
+library(lme4) # for mulitlevel modeling
+library(lmerTest) # for p-values
+library(emmeans) # for comparisons
+library(sjPlot) # for figures
+library(ggpubr) # for prettier plots
+library(kableExtra) # for nicer tables
+library(papaja) # for number formatting
+library(psych) # for correlation tests
+library(ggridges) # for overlay distributions
+
+options(knitr.kable.NA = '')
+```
+
+```{r internal-3, echo = F}
+load(here("data/items_df.Rds"))
+```
+
+## Prep data
+
+We start by creating a wide-format of the dataset using only the Block 1 data.
+
+```{r internal-4}
+items_wide = items_df %>%
+  # only block 1 responses
+  filter(block == 1) %>% 
+  #only need these variables
+  select(proid, condition, item, response) %>% 
+  # to wide form
+  spread(item, response)
+```
+
+Next, we identify the items associated with each trait. These come from the Health and Retirement Study Psychosocial and Lifestyle Questionnaire 2006-2016 user guide, which can be found at this [link](https://hrs.isr.umich.edu/publications/biblio/9066).
+
+```{r internal-5}
+Extra = c("outgoing", "friendly", "lively", "active" ,"talkative")
+Agree = c("helpful", "warm", "caring", "softhearted", "sympathetic")
+Consc = c("reckless", "organized", "responsible", "hardworking", "selfdisciplined", 
+          "careless", "impulsive", "cautious", "thorough", "thrifty")
+Neuro = c("moody", "worrying", "nervous", "calm")
+Openn = c("creative", "imaginative", "intelligent", "curious", "broadminded", 
+          "sophisticated", "adventurous")
+```
+
+## Calculate Cronbach's alpha for each format
+
+We start by grouping data by condition and then nesting, to create separate data frames for each of the four fomats.
+
+```{r internal-6}
+format_data = items_wide %>% 
+  group_by(condition) %>% 
+  nest() %>% 
+  ungroup()
+```
+
+Next we create separate datasets for each of the five personality traits.
+
+```{r internal-7}
+format_data = format_data %>% 
+  mutate(
+    data_Extra = map(data, ~select(.x, all_of(Extra))),
+    data_Agree = map(data, ~select(.x, all_of(Agree))),
+    data_Consc = map(data, ~select(.x, all_of(Consc))),
+    data_Neuro = map(data, ~select(.x, all_of(Neuro))),
+    data_Openn = map(data, ~select(.x, all_of(Openn)))
+    ) 
+```
+
+We gather these datasets into a single column, for ease of use.
+
+```{r internal-8}
+format_data = format_data %>% 
+  select(-data) %>% 
+  gather(variable, data, starts_with("data")) %>% 
+  mutate(variable = str_remove(variable, "data_"))
+```
+
+Next we apply the alpha function to the datasets. We do not need to use the `check.keys` function, as items were reverse-scored during the cleaning process.
+
+```{r internal-9}
+format_data = format_data %>% 
+  mutate(alpha = map(data, psych::alpha))
+```
+
+We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.)
+
+```{r internal-10, results = 'asis'}
+format_data = format_data %>% 
+  mutate(alpha_list = map(alpha, "total"),
+         alpha_est = map_dbl(alpha_list, "raw_alpha"),
+         se_est = map_dbl(alpha_list, "ase"),
+         lower_est = alpha_est - (1.96*se_est),
+         upper_est = alpha_est + (1.96*se_est)) 
+
+format_data %>% 
+  select(condition, variable, alpha_est, lower_est, upper_est) %>% 
+  mutate(
+    across(ends_with("est"), printnum),
+    value = paste0(alpha_est, " [", lower_est, ", ", upper_est, "]")) %>% 
+  select(-contains("est")) %>% 
+  spread(condition, value) %>% 
+  kable(booktabs = T) %>% 
+  kable_styling()
+```
+
+```{r internal-11}
+format_data %>% 
+  ggplot(aes(x = condition, y = alpha_est)) +
+  geom_errorbar(aes(ymin = lower_est, ymax = upper_est)) +
+  geom_point() +
+  labs(x = NULL, y = "Alpha") +
+  facet_wrap(~variable) +
+  theme_pubclean()
+```
+
+Alpha is the average split-half reliability; given space, it can be useful to report the distribution of all split-half reliability estimates. We use the `splitHalf` function to calculate those. We use smoothed correlation matrices here because when developing code on the pilot data, we had non-positive definite correlation matrices. 
+
+```{r internal-12}
+format_data = format_data %>% 
+  mutate(cor_mat = map(data, cor),
+         cor_mat = map(cor_mat, cor.smooth)) %>% 
+  mutate(splithalf = map(cor_mat, splitHalf, raw = T))
+
+format_data %>% 
+  mutate(sh_est = map(splithalf, "raw")) %>% 
+  select(variable, condition, sh_est) %>% 
+  unnest(cols = c(sh_est)) %>% 
+  ggplot(aes(x = sh_est, y = condition, fill = condition)) +
+  geom_density_ridges() +
+  facet_wrap(~variable) +
+  guides(fill = "none") +
+  theme_pubclean()
+```
+
+
+

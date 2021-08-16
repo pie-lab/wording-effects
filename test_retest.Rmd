@@ -31,7 +31,6 @@ options(knitr.kable.NA = '')
 ```
 
 ```{r test-retest-3, echo = F}
-rm(list = ls())
 load(here("data/items_df.Rds"))
 load(here("data/reverse_vector.Rds"))
 ```
@@ -40,7 +39,7 @@ load(here("data/reverse_vector.Rds"))
 
 The data structure needed for these analyses is in wide-format. That is, we require one column for each time point. In addition, we hope to examine reliability _within_ format, which requires selecting only the response options which match the original, Block 1, assessment. 
 
-```{r test-retest-4}
+```{r test-retest-4 }
 items_df = items_df %>% 
   mutate(condition = tolower(condition)) %>% 
   mutate(condition = factor(condition, 
@@ -57,7 +56,7 @@ items_matchb1 = items_df %>%
 
 We standardize responses within each block -- this allows us to use a regression framework yet interpret the slopes as correlations. 
 
-```{r test-retest-5}
+```{r test-retest-5 }
 items_matchb1 = items_matchb1 %>% 
   mutate(across(
     starts_with("block"), ~(.-mean(., na.rm=T))/sd(., na.rm = T)
@@ -66,7 +65,7 @@ items_matchb1 = items_matchb1 %>%
 
 We also standardize the memory scores for ease of interpretation. 
 
-```{r test-retest-6}
+```{r test-retest-6 }
 items_matchb1 = items_matchb1 %>% 
   mutate(across(
     ends_with("memory"), ~(.-mean(., na.rm=T))/sd(., na.rm = T)
@@ -78,7 +77,7 @@ items_matchb1 = items_matchb1 %>%
 
 To estimate the reliability coefficients, we use a multilevel model, predicting the latter block from the earlier one. These models nest responses within participant, allowing us to estimate standard errors which account for the dependency of scores.
 
-```{r test-retest-7}
+```{r test-retest-7 }
 tr_mod1_b1b2 = lmer(block_2 ~ block_1 + (1 |proid), data = items_matchb1)
 tr_mod1_b1b3 = lmer(block_3 ~ block_1 + (1 |proid), data = items_matchb1)
 
@@ -86,56 +85,30 @@ tab_model(tr_mod1_b1b2, tr_mod1_b1b3, show.re.var = F)
 ```
 
 
-## Test-retest reliability (all items pooled, by format)
-
-We fit these same models, except now we moderate by format, to determine whether the test-retest reliabilty differs as a function of item wording.
-
-```{r test-retest-8, results = 'hide'}
-tr_mod2_b1b2 = lmer(block_2 ~ block_1*condition + (1 |proid),
-                    data = items_matchb1)
-tr_mod2_b1b3 = lmer(block_3 ~ block_1*condition + (1 |proid),
-                    data = items_matchb1)
-
-tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)
-```
-
-We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.
-
-### Block 1/Block 2
-
-```{r test-retest-9}
-emtrends(tr_mod2_b1b2, pairwise ~ condition, var = "block_1")
-```
-
-### Block 1/Block 3
-
-```{r test-retest-10}
-emtrends(tr_mod2_b1b3, pairwise ~ condition, var = "block_1")
-```
-
 ## Test-retest reliability (all items pooled, by memory)
 
 Here we fit models moderated by memory -- that it, perhaps the test-retest coefficient is affected by the memory of the participant.
 
-```{r test-retest-11, results = 'hide'}
-tr_mod3_b1b2 = lmer(block_2 ~ block_1*delayed_memory + 
+```{r test-retest-8, results = 'asis'}
+tr_mod2_b1b2 = lmer(block_2 ~ block_1*delayed_memory + 
                       (1 |proid),
                     data = items_matchb1)
-tr_mod3_b1b3 = lmer(block_3 ~ block_1*very_delayed_memory + 
+tr_mod2_b1b3 = lmer(block_3 ~ block_1*very_delayed_memory + 
                       (1 |proid),
                     data = items_matchb1)
 
-tab_model(tr_mod3_b1b2, tr_mod3_b1b3, show.re.var = F)
+tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)
+
 ```
 
 We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.
 
 ### Block 1/Block 2
 
-```{r test-retest-12}
+```{r test-retest-9 }
 mem_list = list(delayed_memory = c(-1,0,1))
 
-emtrends(tr_mod3_b1b2, 
+emtrends(tr_mod2_b1b2, 
          pairwise~delayed_memory, 
          var = "block_1", 
          at = mem_list)
@@ -145,21 +118,50 @@ emtrends(tr_mod3_b1b2,
 
 **This chunk is turned off due to low coverage. Be sure to turn on with real data.**
 
-```{r test-retest-13}
+```{r test-retest-10 }
 mem_list = list(very_delayed_memory = c(-1,0,1))
 
-emtrends(tr_mod3_b1b3, 
+emtrends(tr_mod2_b1b3, 
          pairwise~very_delayed_memory, 
          var = "block_1", 
          at = mem_list)
 ```
+
+## Test-retest reliability (all items pooled, by format)
+
+We fit these same models, except now we moderate by format, to determine whether the test-retest reliabilty differs as a function of item wording.
+
+```{r test-retest-11, results = 'asis'}
+tr_mod3_b1b2 = lmer(block_2 ~ block_1*condition + (1 |proid),
+                    data = items_matchb1)
+tr_mod3_b1b3 = lmer(block_3 ~ block_1*condition + (1 |proid),
+                    data = items_matchb1)
+
+anova(tr_mod3_b1b2)
+anova(tr_mod3_b1b3)
+```
+
+We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.
+
+### Block 1/Block 2
+
+```{r test-retest-12 }
+emtrends(tr_mod3_b1b2, pairwise ~ condition, var = "block_1")
+```
+
+### Block 1/Block 3
+
+```{r test-retest-13 }
+emtrends(tr_mod3_b1b3, pairwise ~ condition, var = "block_1")
+```
+
 
 
 ## Test-retest reliability (items separated, by format)
 
 To assess test-retest reliability for each item, we can rely on more simple correlation analyses, as each participant only contributed one response to each item in each block. We first not the sample size coverage for these comparisons:
 
-```{r test-retest-14}
+```{r test-retest-14 }
 items_matchb1 %>%
   group_by(item, condition) %>%
   count() %>%
@@ -175,7 +177,7 @@ items_matchb1 %>%
   )
 ```
 
-```{r testre, fig.cap = "(#fig:testre) Sample sizes for item-level test-retest correlations."}
+```{r test-retest-15, fig.cap = "(#fig:testre) Sample sizes for item-level test-retest correlations."}
 items_matchb1 %>%
   group_by(item, condition) %>%
   count() %>%
@@ -191,7 +193,7 @@ items_matchb1 %>%
 ```
 
 
-```{r test-retest-15, results = 'hide'}
+```{r test-retest-16, results = 'hide'}
 items_cors = items_matchb1 %>%
   select(item, condition, contains("block")) %>%
   group_by(item, condition) %>%
@@ -203,7 +205,7 @@ items_cors = items_matchb1 %>%
   unnest(cols = c(cors))
 ```
 
-```{r test-retest-16, results = 'asis'}
+```{r test-retest-17, results = 'asis'}
 items_cors %>%
   mutate(raw.r = printnum(raw.r),
          raw.r = case_when(
@@ -233,7 +235,7 @@ items_cors %>%
                      "Tend to be" = 2, "Am someone who tends to be" = 2))
 ```
 
-```{r test-retest-17, fig.cap = "Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item."}
+```{r test-retest-18, fig.cap = "Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item."}
 items_cors %>%
   mutate(comp_num = case_when(
     comp == "blc_1-blc_2" ~ 1,

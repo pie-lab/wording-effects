@@ -338,7 +338,7 @@ for(i in sample_sizes){
 ```
 
 ```{r, echo = F, eval = run_analyses}
-save(power_df_2, file = here("objects/power_format_b3.Rdata"))
+save(power_df_3, file = here("objects/power_format_b3.Rdata"))
 ```
 
 ```{r, echo = F, eval = F}
