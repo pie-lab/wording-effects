@@ -72,3 +72,10 @@ library(here)
 
 ```{r, child = here("power.Rmd")}
 ```
+
+\newpage
+
+# R version and packages
+
+```{r, child = here("workspace.Rmd")}
+```

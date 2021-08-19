@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Workspace Information</title>
+
+<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">On item wording effects</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="1-cleaning.html">Data cleaning</a>
+</li>
+<li>
+  <a href="descriptives.html">Descriptives</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="analysis_format.html">Does item formatting affect response?</a>
+    </li>
+    <li>
+      <a href="internal.html">Does item formatting affect internal consistency?</a>
+    </li>
+    <li>
+      <a href="test_retest.html">Does item formatting affect test-retest reliability?</a>
+    </li>
+    <li>
+      <a href="timing_format.html">Does timing differ across format?</a>
+    </li>
+    <li>
+      <a href="device.html">Does device type affect response and timing?</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="power.html">Power analysis</a>
+</li>
+<li>
+  <a href="workspace.html">R version and packages</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/pie-lab/wording-effects">
+    <span class="fas fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Workspace Information</h1>
+<h4 class="date">Last updated 2021-08-19</h4>
+
+</div>
+
+
+<p>All data cleaning and analyses were completed using R version 4.1.0 (2021-05-18) (Camp Pontanezen). Below we list the packages (and versions) used in these analyses.</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Package
+</th>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Authors and contributors
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+knitr
+</td>
+<td style="text-align:left;">
+1.33
+</td>
+<td style="text-align:left;width: 5in; ">
+Yihui Xie [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-0645-5666%3E" class="uri">https://orcid.org/0000-0003-0645-5666&gt;</a>;), Abhraneel Sarma [ctb], Adam Vogt [ctb], Alastair Andrew [ctb], Alex Zvoleff [ctb], Andre Simon [ctb] (the CSS files under inst/themes/ were derived from the Highlight package <a href="http://www.andre-simon.de" class="uri">http://www.andre-simon.de</a>), Aron Atkins [ctb], Aaron Wolen [ctb], Ashley Manton [ctb], Atsushi Yasumoto [ctb] (&lt;<a href="https://orcid.org/0000-0002-8335-495X%3E" class="uri">https://orcid.org/0000-0002-8335-495X&gt;</a>;), Ben Baumer [ctb], Brian Diggs [ctb], Brian Zhang [ctb], Bulat Yapparov [ctb], Cassio Pereira [ctb], Christophe Dervieux [ctb], David Hall [ctb], David Hugh-Jones [ctb], David Robinson [ctb], Doug Hemken [ctb], Duncan Murdoch [ctb], Elio Campitelli [ctb], Ellis Hughes [ctb], Emily Riederer [ctb], Fabian Hirschmann [ctb], Fitch Simeon [ctb], Forest Fang [ctb], Frank E Harrell Jr [ctb] (the Sweavel package at inst/misc/Sweavel.sty), Garrick Aden-Buie [ctb], Gregoire Detrez [ctb], Hadley Wickham [ctb], Hao Zhu [ctb], Heewon Jeon [ctb], Henrik Bengtsson [ctb], Hiroaki Yutani [ctb], Ian Lyttle [ctb], Hodges Daniel [ctb], Jake Burkhead [ctb], James Manton [ctb], Jared Lander [ctb], Jason Punyon [ctb], Javier Luraschi [ctb], Jeff Arnold [ctb], Jenny Bryan [ctb], Jeremy Ashkenas [ctb, cph] (the CSS file at inst/misc/docco-classic.css), Jeremy Stephens [ctb], Jim Hester [ctb], Joe Cheng [ctb], Johannes Ranke [ctb], John Honaker [ctb], John Muschelli [ctb], Jonathan Keane [ctb], JJ Allaire [ctb], Johan Toloe [ctb], Jonathan Sidi [ctb], Joseph Larmarange [ctb], Julien Barnier [ctb], Kaiyin Zhong [ctb], Kamil Slowikowski [ctb], Karl Forner [ctb], Kevin K. Smith [ctb], Kirill Mueller [ctb], Kohske Takahashi [ctb], Lorenz Walthert [ctb], Lucas Gallindo [ctb], Marius Hofert [ctb], Martin Modrák [ctb], Michael Chirico [ctb], Michael Friendly [ctb], Michal Bojanowski [ctb], Michel Kuhlmann [ctb], Miller Patrick [ctb], Nacho Caballero [ctb], Nick Salkowski [ctb], Niels Richard Hansen [ctb], Noam Ross [ctb], Obada Mahdi [ctb], Pavel N. Krivitsky [ctb] (&lt;<a href="https://orcid.org/0000-0002-9101-3362%3E" class="uri">https://orcid.org/0000-0002-9101-3362&gt;</a>;), Qiang Li [ctb], Ramnath Vaidyanathan [ctb], Richard Cotton [ctb], Robert Krzyzanowski [ctb], Romain Francois [ctb], Ruaridh Williamson [ctb], Scott Kostyshak [ctb], Sebastian Meyer [ctb], Sietse Brouwer [ctb], Simon de Bernard [ctb], Sylvain Rousseau [ctb], Taiyun Wei [ctb], Thibaut Assus [ctb], Thibaut Lamadon [ctb], Thomas Leeper [ctb], Tim Mastny [ctb], Tom Torsney-Weir [ctb], Trevor Davis [ctb], Viktoras Veitas [ctb], Weicheng Zhu [ctb], Wush Wu [ctb], Zachary Foster [ctb]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ggridges
+</td>
+<td style="text-align:left;">
+0.5.3
+</td>
+<td style="text-align:left;width: 5in; ">
+Claus O. Wilke [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-7470-9261%3E" class="uri">https://orcid.org/0000-0002-7470-9261&gt;</a>;)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+emmeans
+</td>
+<td style="text-align:left;">
+1.6.0
+</td>
+<td style="text-align:left;width: 5in; ">
+Russell V. Lenth [aut, cre, cph], Paul Buerkner [ctb], Maxime Herve [ctb], Jonathon Love [ctb], Hannes Riebl [ctb], Henrik Singmann [ctb]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+broom.mixed
+</td>
+<td style="text-align:left;">
+0.2.7
+</td>
+<td style="text-align:left;width: 5in; ">
+Ben Bolker [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-2127-0443%3E" class="uri">https://orcid.org/0000-0002-2127-0443&gt;</a>;), David Robinson [aut], Dieter Menne [ctb], Jonah Gabry [ctb], Paul Buerkner [ctb], Christopher Hua [ctb], William Petry [ctb] (&lt;<a href="https://orcid.org/0000-0002-5230-5987%3E" class="uri">https://orcid.org/0000-0002-5230-5987&gt;</a>;), Joshua Wiley [ctb] (&lt;<a href="https://orcid.org/0000-0002-0271-6702%3E" class="uri">https://orcid.org/0000-0002-0271-6702&gt;</a>;), Patrick Kennedy [ctb], Eduard Szöcs [ctb] (&lt;<a href="https://orcid.org/0000-0001-5376-1194%3E" class="uri">https://orcid.org/0000-0001-5376-1194&gt;</a>;, BASF SE), Indrajeet Patil [ctb], Vincent Arel-Bundock [ctb] (&lt;<a href="https://orcid.org/0000-0003-2042-7063%3E" class="uri">https://orcid.org/0000-0003-2042-7063&gt;</a>;)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+psych
+</td>
+<td style="text-align:left;">
+2.1.6
+</td>
+<td style="text-align:left;width: 5in; ">
+William Revelle [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-4880-9610%3E" class="uri">https://orcid.org/0000-0003-4880-9610&gt;</a>;)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+papaja
+</td>
+<td style="text-align:left;">
+0.1.0.9997
+</td>
+<td style="text-align:left;width: 5in; ">
+Frederik Aust [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-4900-788X%3E" class="uri">https://orcid.org/0000-0003-4900-788X&gt;</a>;), Marius Barth [aut] (&lt;<a href="https://orcid.org/0000-0002-3421-6665%3E" class="uri">https://orcid.org/0000-0002-3421-6665&gt;</a>;), Birk Diedenhofen [ctb], Christoph Stahl [ctb], Joseph V. Casillas [ctb], Rudolf Siegel [ctb]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+stringdist
+</td>
+<td style="text-align:left;">
+0.9.6.3
+</td>
+<td style="text-align:left;width: 5in; ">
+Mark van der Loo [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-9807-4686%3E" class="uri">https://orcid.org/0000-0002-9807-4686&gt;</a>;), Jan van der Laan [ctb], R Core Team [ctb], Nick Logan [ctb], Chris Muir [ctb], Johannes Gruber [ctb]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+kableExtra
+</td>
+<td style="text-align:left;">
+1.3.4
+</td>
+<td style="text-align:left;width: 5in; ">
+Hao Zhu [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-3386-6076%3E" class="uri">https://orcid.org/0000-0002-3386-6076&gt;</a>;), Thomas Travison [ctb], Timothy Tsai [ctb], Will Beasley [ctb], Yihui Xie [ctb], GuangChuang Yu [ctb], Stéphane Laurent [ctb], Rob Shepherd [ctb], Yoni Sidi [ctb], Brian Salzer [ctb], George Gui [ctb], Yeliang Fan [ctb], Duncan Murdoch [ctb], Bill Evans [ctb]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ggpubr
+</td>
+<td style="text-align:left;">
+0.4.0
+</td>
+<td style="text-align:left;width: 5in; ">
+Alboukadel Kassambara [aut, cre]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sjPlot
+</td>
+<td style="text-align:left;">
+2.8.8
+</td>
+<td style="text-align:left;width: 5in; ">
+Daniel Lüdecke [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-8895-3206%3E" class="uri">https://orcid.org/0000-0002-8895-3206&gt;</a>;), Alexander Bartel [ctb] (&lt;<a href="https://orcid.org/0000-0002-1280-6138%3E" class="uri">https://orcid.org/0000-0002-1280-6138&gt;</a>;), Carsten Schwemmer [ctb], Chuck Powell [ctb] (&lt;<a href="https://orcid.org/0000-0002-3606-2188%3E" class="uri">https://orcid.org/0000-0002-3606-2188&gt;</a>;), Amir Djalovski [ctb], Johannes Titz [ctb] (&lt;<a href="https://orcid.org/0000-0002-1102-5719%3E" class="uri">https://orcid.org/0000-0002-1102-5719&gt;</a>;)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lmerTest
+</td>
+<td style="text-align:left;">
+3.1-3
+</td>
+<td style="text-align:left;width: 5in; ">
+Alexandra Kuznetsova [aut], Per Bruun Brockhoff [aut, ths], Rune Haubo Bojesen Christensen [aut, cre], Sofie Pødenphant Jensen [ctb]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lme4
+</td>
+<td style="text-align:left;">
+1.1-27
+</td>
+<td style="text-align:left;width: 5in; ">
+Douglas Bates [aut] (&lt;<a href="https://orcid.org/0000-0001-8316-9503%3E" class="uri">https://orcid.org/0000-0001-8316-9503&gt;</a>;), Martin Maechler [aut] (&lt;<a href="https://orcid.org/0000-0002-8685-9910%3E" class="uri">https://orcid.org/0000-0002-8685-9910&gt;</a>;), Ben Bolker [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-2127-0443%3E" class="uri">https://orcid.org/0000-0002-2127-0443&gt;</a>;), Steven Walker [aut] (&lt;<a href="https://orcid.org/0000-0002-4394-9078%3E" class="uri">https://orcid.org/0000-0002-4394-9078&gt;</a>;), Rune Haubo Bojesen Christensen [ctb] (&lt;<a href="https://orcid.org/0000-0002-4494-3399%3E" class="uri">https://orcid.org/0000-0002-4494-3399&gt;</a>;), Henrik Singmann [ctb] (&lt;<a href="https://orcid.org/0000-0002-4842-3657%3E" class="uri">https://orcid.org/0000-0002-4842-3657&gt;</a>;), Bin Dai [ctb], Fabian Scheipl [ctb] (&lt;<a href="https://orcid.org/0000-0001-8172-3603%3E" class="uri">https://orcid.org/0000-0001-8172-3603&gt;</a>;), Gabor Grothendieck [ctb], Peter Green [ctb] (&lt;<a href="https://orcid.org/0000-0002-0238-9852%3E" class="uri">https://orcid.org/0000-0002-0238-9852&gt;</a>;), John Fox [ctb], Alexander Bauer [ctb], Pavel N. Krivitsky [ctb, cph] (&lt;<a href="https://orcid.org/0000-0002-9101-3362%3E" class="uri">https://orcid.org/0000-0002-9101-3362&gt;</a>;, shared copyright on simulate.formula)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Matrix
+</td>
+<td style="text-align:left;">
+1.3-3
+</td>
+<td style="text-align:left;width: 5in; ">
+Douglas Bates [aut], Martin Maechler [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-8685-9910%3E" class="uri">https://orcid.org/0000-0002-8685-9910&gt;</a>;), Timothy A. Davis [ctb] (SuiteSparse and ‘cs’ C libraries, notably CHOLMOD, AMD; collaborators listed in dir(pattern = ‘<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>+[.]txt$’, full.names=TRUE, system.file(‘doc’, ‘SuiteSparse’, package=‘Matrix’))), Jens Oehlschlägel [ctb] (initial nearPD()), Jason Riedy [ctb] (condest() and onenormest() for octave, Copyright: Regents of the University of California), R Core Team [ctb] (base R matrix implementation)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+stringi
+</td>
+<td style="text-align:left;">
+1.6.2
+</td>
+<td style="text-align:left;width: 5in; ">
+Marek Gagolewski [aut, cre, cph] (&lt;<a href="https://orcid.org/0000-0003-0637-6028%3E" class="uri">https://orcid.org/0000-0003-0637-6028&gt;</a>;), Bartek Tartanus [ctb], and others (stringi source code); IBM, Unicode, Inc. and others (ICU4C source code, Unicode Character Database)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+janitor
+</td>
+<td style="text-align:left;">
+2.1.0
+</td>
+<td style="text-align:left;width: 5in; ">
+Sam Firke [aut, cre], Bill Denney [ctb], Chris Haid [ctb], Ryan Knight [ctb], Malte Grosser [ctb], Jonathan Zadra [ctb]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+forcats
+</td>
+<td style="text-align:left;">
+0.5.1
+</td>
+<td style="text-align:left;width: 5in; ">
+Hadley Wickham [aut, cre], RStudio [cph, fnd]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+stringr
+</td>
+<td style="text-align:left;">
+1.4.0
+</td>
+<td style="text-align:left;width: 5in; ">
+Hadley Wickham [aut, cre, cph], RStudio [cph, fnd]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dplyr
+</td>
+<td style="text-align:left;">
+1.0.6
+</td>
+<td style="text-align:left;width: 5in; ">
+Hadley Wickham [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-4757-117X%3E" class="uri">https://orcid.org/0000-0003-4757-117X&gt;</a>;), Romain François [aut] (&lt;<a href="https://orcid.org/0000-0002-2444-4226%3E" class="uri">https://orcid.org/0000-0002-2444-4226&gt;</a>;), Lionel Henry [aut], Kirill Müller [aut] (&lt;<a href="https://orcid.org/0000-0002-1416-3412%3E" class="uri">https://orcid.org/0000-0002-1416-3412&gt;</a>;), RStudio [cph, fnd]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+purrr
+</td>
+<td style="text-align:left;">
+0.3.4
+</td>
+<td style="text-align:left;width: 5in; ">
+Lionel Henry [aut, cre], Hadley Wickham [aut], RStudio [cph, fnd]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+readr
+</td>
+<td style="text-align:left;">
+1.4.0
+</td>
+<td style="text-align:left;width: 5in; ">
+Hadley Wickham [aut], Jim Hester [aut, cre], Romain Francois [ctb], R Core Team [ctb] (Date time code adapted from R), RStudio [cph, fnd], Jukka Jylänki [ctb, cph] (grisu3 implementation), Mikkel Jørgensen [ctb, cph] (grisu3 implementation)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tidyr
+</td>
+<td style="text-align:left;">
+1.1.3
+</td>
+<td style="text-align:left;width: 5in; ">
+Hadley Wickham [aut, cre], RStudio [cph]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tibble
+</td>
+<td style="text-align:left;">
+3.1.2
+</td>
+<td style="text-align:left;width: 5in; ">
+Kirill Müller [aut, cre], Hadley Wickham [aut], Romain Francois [ctb], Jennifer Bryan [ctb], RStudio [cph]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ggplot2
+</td>
+<td style="text-align:left;">
+3.3.5
+</td>
+<td style="text-align:left;width: 5in; ">
+Hadley Wickham [aut] (&lt;<a href="https://orcid.org/0000-0003-4757-117X%3E" class="uri">https://orcid.org/0000-0003-4757-117X&gt;</a>;), Winston Chang [aut] (&lt;<a href="https://orcid.org/0000-0002-1576-2126%3E" class="uri">https://orcid.org/0000-0002-1576-2126&gt;</a>;), Lionel Henry [aut], Thomas Lin Pedersen [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-5147-4711%3E" class="uri">https://orcid.org/0000-0002-5147-4711&gt;</a>;), Kohske Takahashi [aut], Claus Wilke [aut] (&lt;<a href="https://orcid.org/0000-0002-7470-9261%3E" class="uri">https://orcid.org/0000-0002-7470-9261&gt;</a>;), Kara Woo [aut] (&lt;<a href="https://orcid.org/0000-0002-5125-4188%3E" class="uri">https://orcid.org/0000-0002-5125-4188&gt;</a>;), Hiroaki Yutani [aut] (&lt;<a href="https://orcid.org/0000-0002-3385-7233%3E" class="uri">https://orcid.org/0000-0002-3385-7233&gt;</a>;), Dewey Dunnington [aut] (&lt;<a href="https://orcid.org/0000-0002-9415-4582%3E" class="uri">https://orcid.org/0000-0002-9415-4582&gt;</a>;), RStudio [cph, fnd]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tidyverse
+</td>
+<td style="text-align:left;">
+1.3.1
+</td>
+<td style="text-align:left;width: 5in; ">
+Hadley Wickham [aut, cre], RStudio [cph, fnd]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+here
+</td>
+<td style="text-align:left;">
+1.0.1
+</td>
+<td style="text-align:left;width: 5in; ">
+Kirill Müller [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-1416-3412%3E" class="uri">https://orcid.org/0000-0002-1416-3412&gt;</a>;), Jennifer Bryan [ctb] (&lt;<a href="https://orcid.org/0000-0002-6983-2759%3E" class="uri">https://orcid.org/0000-0002-6983-2759&gt;</a>;)
+</td>
+</tr>
+</tbody>
+</table>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>A-Z<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

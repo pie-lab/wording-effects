@@ -21,6 +21,8 @@ navbar:
           href: device.html
     - text: Power analysis
       href: power.html
+    - text: R version and packages
+      href: workspace.html
   right:
     - icon: fa-github
       href: https://github.com/pie-lab/wording-effects
