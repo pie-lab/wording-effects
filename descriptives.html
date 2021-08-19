@@ -372,11 +372,311 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Descriptive statistics</h1>
-<h4 class="date">Last updated 2021-08-16</h4>
+<h4 class="date">Last updated 2021-08-18</h4>
 
 </div>
 
 
+<p>Here we present the descriptive statistics reported in the manuscript.</p>
+<div id="demographics" class="section level2">
+<h2>Demographics</h2>
+<div id="age" class="section level3">
+<h3>Age</h3>
+<pre class="r"><code>data %&gt;% 
+  select(age) %&gt;% 
+  summarise(across(age, list(mean = mean, 
+                             sd = sd, 
+                             min = min, 
+                             max = max)))</code></pre>
+<pre><code>## # A tibble: 1 x 4
+##   age_mean age_sd age_min age_max
+##      &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1     39.4   6.02      31      51</code></pre>
+<pre class="r"><code>data %&gt;% 
+  ggplot(aes(x = age)) +
+  geom_histogram(binwidth = 5, color = &quot;white&quot;) +
+  labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;,
+       title = &quot;Distribution of ages&quot;) +
+  theme_pubr()</code></pre>
+<p><img src="descriptives_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="gender" class="section level3">
+<h3>Gender</h3>
+<pre class="r"><code>table(data$sex)</code></pre>
+<pre><code>## 
+## Female   Male 
+##      8     27</code></pre>
+<pre class="r"><code>round((table(data$sex)/nrow(data))*100,2)</code></pre>
+<pre><code>## 
+## Female   Male 
+##  22.86  77.14</code></pre>
+<pre class="r"><code>data %&gt;% 
+  ggplot(aes(x = sex)) +
+  geom_bar(stat = &quot;count&quot;) +
+  labs(x = NULL, y = &quot;Frequency&quot;,
+       title = &quot;Distribution of sex&quot;) +
+  theme_pubr()</code></pre>
+<p><img src="descriptives_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="education" class="section level3">
+<h3>Education</h3>
+<pre class="r"><code>table(data$edu)</code></pre>
+<pre><code>## 
+##                            Less than 12 years 
+##                                             0 
+##                      High school graduate/GED 
+##                                             2 
+##               Currently in college/university 
+##                                             0 
+## Some college/university, but did not graduate 
+##                                             0 
+##                     Associate degree (2 year) 
+##                                             1 
+##            College/university degree (4 year) 
+##                                             8 
+##  Currently in graduate or professional school 
+##                                             2 
+##        Graduate or professional school degree 
+##                                            22</code></pre>
+<pre class="r"><code>round((table(data$edu)/nrow(data))*100,2)</code></pre>
+<pre><code>## 
+##                            Less than 12 years 
+##                                          0.00 
+##                      High school graduate/GED 
+##                                          5.71 
+##               Currently in college/university 
+##                                          0.00 
+## Some college/university, but did not graduate 
+##                                          0.00 
+##                     Associate degree (2 year) 
+##                                          2.86 
+##            College/university degree (4 year) 
+##                                         22.86 
+##  Currently in graduate or professional school 
+##                                          5.71 
+##        Graduate or professional school degree 
+##                                         62.86</code></pre>
+<pre class="r"><code>data %&gt;% 
+  ggplot(aes(x = edu)) +
+  geom_bar(stat = &quot;count&quot;) +
+  labs(x = NULL, y = &quot;Frequency&quot;,
+       title = &quot;Distribution of education&quot;) +
+  theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="descriptives_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="ethnicity" class="section level3">
+<h3>Ethnicity</h3>
+<pre class="r"><code>table(data$ethnic)</code></pre>
+<pre><code>## 
+##               Asian               Black            Hispanic Mixed (two or more) 
+##                   1                   9                   1                   1 
+##               White 
+##                  23</code></pre>
+<pre class="r"><code>round((table(data$ethnic)/nrow(data))*100,2)</code></pre>
+<pre><code>## 
+##               Asian               Black            Hispanic Mixed (two or more) 
+##                2.86               25.71                2.86                2.86 
+##               White 
+##               65.71</code></pre>
+<pre class="r"><code>data %&gt;% 
+  ggplot(aes(x = ethnic)) +
+  geom_bar(stat = &quot;count&quot;) +
+  labs(x = NULL, y = &quot;Frequency&quot;,
+       title = &quot;Distribution of ethnicity&quot;) +
+  theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="descriptives_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="household-income" class="section level3">
+<h3>Household income</h3>
+<pre class="r"><code>table(data$hhinc)</code></pre>
+<pre><code>## 
+##   &lt; $20,000   $20K-$40K   $40K-$60K   $60K-$80K  $80K-$100K $100K-$120K 
+##           0           3           2           3           2           3 
+## $120K-$150K $150K-$200K $200K-$250K $250K-$350K $350K-$500K      &gt;$500K 
+##           8           3           0           1           0           0</code></pre>
+<pre class="r"><code>round((table(data$hhinc)/nrow(data))*100,2)</code></pre>
+<pre><code>## 
+##   &lt; $20,000   $20K-$40K   $40K-$60K   $60K-$80K  $80K-$100K $100K-$120K 
+##        0.00        8.57        5.71        8.57        5.71        8.57 
+## $120K-$150K $150K-$200K $200K-$250K $250K-$350K $350K-$500K      &gt;$500K 
+##       22.86        8.57        0.00        2.86        0.00        0.00</code></pre>
+<pre class="r"><code>data %&gt;% 
+  ggplot(aes(x = hhinc)) +
+  geom_bar(stat = &quot;count&quot;) +
+  labs(x = NULL, y = &quot;Frequency&quot;,
+       title = &quot;Distribution of household income&quot;) +
+  theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="descriptives_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+</div>
+<div id="demographics-by-device-type" class="section level2">
+<h2>Demographics by device type</h2>
+<div id="age-1" class="section level3">
+<h3>Age</h3>
+<pre class="r"><code>age_mod = lm(age ~ devicetype, data = data) 
+
+apa_print(age_mod)$table %&gt;% 
+  kable(booktabs = T) %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+predictor
+</th>
+<th style="text-align:left;">
+estimate
+</th>
+<th style="text-align:left;">
+ci
+</th>
+<th style="text-align:left;">
+statistic
+</th>
+<th style="text-align:left;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Intercept
+</td>
+<td style="text-align:left;">
+39.50
+</td>
+<td style="text-align:left;">
+<span class="math inline">\([36.81\)</span>, <span class="math inline">\(42.19]\)</span>
+</td>
+<td style="text-align:left;">
+29.92
+</td>
+<td style="text-align:left;">
+&lt; .001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DevicetypeMobile
+</td>
+<td style="text-align:left;">
+0.00
+</td>
+<td style="text-align:left;">
+<span class="math inline">\([-4.81\)</span>, <span class="math inline">\(4.81]\)</span>
+</td>
+<td style="text-align:left;">
+0.00
+</td>
+<td style="text-align:left;">
+&gt; .999
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DevicetypeTablet
+</td>
+<td style="text-align:left;">
+-1.17
+</td>
+<td style="text-align:left;">
+<span class="math inline">\([-8.93\)</span>, <span class="math inline">\(6.60]\)</span>
+</td>
+<td style="text-align:left;">
+-0.31
+</td>
+<td style="text-align:left;">
+.761
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>plot_model(age_mod, type = &quot;pred&quot;)$devicetype +
+  labs(x = NULL, y = &quot;Average age&quot;) +
+  theme_pubclean()</code></pre>
+<p><img src="descriptives_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="sex" class="section level3">
+<h3>Sex</h3>
+<pre class="r"><code>chisq.test(table(data$sex, data$devicetype))</code></pre>
+<pre><code>Pearson&#39;s Chi-squared test</code></pre>
+<p>data: table(data<span class="math inline">\(sex, data\)</span>devicetype) X-squared = 2.8283, df = 2, p-value = 0.2431</p>
+<pre class="r"><code>data %&gt;% 
+  ggplot(aes(x = sex, fill = devicetype)) +
+  geom_bar(stat = &quot;count&quot;) +
+  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
+  guides(fill = &quot;none&quot;) +
+  labs(x = NULL, y = &quot;Frequency&quot;) +
+  theme_pubr()</code></pre>
+<p><img src="descriptives_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="education-1" class="section level3">
+<h3>Education</h3>
+<pre class="r"><code>chisq.test(table(data$edu, data$devicetype))</code></pre>
+<pre><code>Pearson&#39;s Chi-squared test</code></pre>
+<p>data: table(data<span class="math inline">\(edu, data\)</span>devicetype) X-squared = NaN, df = 14, p-value = NA</p>
+<pre class="r"><code>data %&gt;% 
+  ggplot(aes(x = edu, fill = devicetype)) +
+  geom_bar(stat = &quot;count&quot;) +
+  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
+  guides(fill = &quot;none&quot;) +
+  labs(x = NULL, y = &quot;Frequency&quot;) +
+  theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="descriptives_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="ethnicity-1" class="section level3">
+<h3>Ethnicity</h3>
+<pre class="r"><code>chisq.test(table(data$ethnic, data$devicetype))</code></pre>
+<pre><code>Pearson&#39;s Chi-squared test</code></pre>
+<p>data: table(data<span class="math inline">\(ethnic, data\)</span>devicetype) X-squared = 3.9678, df = 8, p-value = 0.86</p>
+<pre class="r"><code>data %&gt;% 
+  ggplot(aes(x = ethnic, fill = devicetype)) +
+  geom_bar(stat = &quot;count&quot;) +
+  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
+  guides(fill = &quot;none&quot;) +
+  labs(x = NULL, y = &quot;Frequency&quot;) +
+  theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="descriptives_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+<div id="household-income-1" class="section level3">
+<h3>Household income</h3>
+<pre class="r"><code>chisq.test(table(data$hhinc, data$devicetype))</code></pre>
+<pre><code>Pearson&#39;s Chi-squared test</code></pre>
+<p>data: table(data<span class="math inline">\(hhinc, data\)</span>devicetype) X-squared = NaN, df = 22, p-value = NA</p>
+<pre class="r"><code>data %&gt;% 
+  ggplot(aes(x = hhinc, fill = devicetype)) +
+  geom_bar(stat = &quot;count&quot;) +
+  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
+  guides(fill = &quot;none&quot;) +
+  labs(x = NULL, y = &quot;Frequency&quot;) +
+  theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="descriptives_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+</div>
+<div id="time" class="section level2">
+<h2>Time</h2>
+<p>How much time elapsed between assessments?</p>
+<pre class="r"><code>data = data %&gt;% 
+  mutate(difference = as.numeric(start_date2-start_date))
+summary(data$difference)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##   11.96   12.00   12.49   13.26   14.17   17.48      13</code></pre>
+<p>How long did it take participants to complete the Time 1 survey?</p>
+<pre class="r"><code>summary(data$duration_in_seconds/60)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    6.65   13.98   17.55   20.56   25.08   44.27</code></pre>
+<p>How long did it take participants to complete the Time 2 survey?</p>
+<pre class="r"><code>summary(data$duration_in_seconds2/60)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##   2.000   3.329   4.925   8.910   7.875  40.833      13</code></pre>
+</div>
 <div id="personality-by-block-and-format" class="section level2">
 <h2>Personality by block and format</h2>
 <div id="block-1" class="section level3">
@@ -2445,288 +2745,6 @@ worrying
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="demographics" class="section level2">
-<h2>Demographics</h2>
-<div id="age" class="section level3">
-<h3>Age</h3>
-<pre class="r"><code>data %&gt;% 
-  select(age) %&gt;% 
-  summarise(across(age, list(mean = mean, 
-                             sd = sd, 
-                             min = min, 
-                             max = max)))</code></pre>
-<pre><code>## # A tibble: 1 x 4
-##   age_mean age_sd age_min age_max
-##      &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-## 1     39.4   6.02      31      51</code></pre>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = age)) +
-  geom_histogram(binwidth = 5, color = &quot;white&quot;) +
-  labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;,
-       title = &quot;Distribution of ages&quot;) +
-  theme_pubr()</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-</div>
-<div id="gender" class="section level3">
-<h3>Gender</h3>
-<pre class="r"><code>table(data$sex)</code></pre>
-<pre><code>## 
-## Female   Male 
-##      8     27</code></pre>
-<pre class="r"><code>round((table(data$sex)/nrow(data))*100,2)</code></pre>
-<pre><code>## 
-## Female   Male 
-##  22.86  77.14</code></pre>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = sex)) +
-  geom_bar(stat = &quot;count&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;,
-       title = &quot;Distribution of sex&quot;) +
-  theme_pubr()</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-</div>
-<div id="education" class="section level3">
-<h3>Education</h3>
-<pre class="r"><code>table(data$edu)</code></pre>
-<pre><code>## 
-##                            Less than 12 years 
-##                                             0 
-##                      High school graduate/GED 
-##                                             2 
-##               Currently in college/university 
-##                                             0 
-## Some college/university, but did not graduate 
-##                                             0 
-##                     Associate degree (2 year) 
-##                                             1 
-##            College/university degree (4 year) 
-##                                             8 
-##  Currently in graduate or professional school 
-##                                             2 
-##        Graduate or professional school degree 
-##                                            22</code></pre>
-<pre class="r"><code>round((table(data$edu)/nrow(data))*100,2)</code></pre>
-<pre><code>## 
-##                            Less than 12 years 
-##                                          0.00 
-##                      High school graduate/GED 
-##                                          5.71 
-##               Currently in college/university 
-##                                          0.00 
-## Some college/university, but did not graduate 
-##                                          0.00 
-##                     Associate degree (2 year) 
-##                                          2.86 
-##            College/university degree (4 year) 
-##                                         22.86 
-##  Currently in graduate or professional school 
-##                                          5.71 
-##        Graduate or professional school degree 
-##                                         62.86</code></pre>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = edu)) +
-  geom_bar(stat = &quot;count&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;,
-       title = &quot;Distribution of education&quot;) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-</div>
-<div id="ethnicity" class="section level3">
-<h3>Ethnicity</h3>
-<pre class="r"><code>table(data$ethnic)</code></pre>
-<pre><code>## 
-##               Asian               Black            Hispanic Mixed (two or more) 
-##                   1                   9                   1                   1 
-##               White 
-##                  23</code></pre>
-<pre class="r"><code>round((table(data$ethnic)/nrow(data))*100,2)</code></pre>
-<pre><code>## 
-##               Asian               Black            Hispanic Mixed (two or more) 
-##                2.86               25.71                2.86                2.86 
-##               White 
-##               65.71</code></pre>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = ethnic)) +
-  geom_bar(stat = &quot;count&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;,
-       title = &quot;Distribution of ethnicity&quot;) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-</div>
-<div id="household-income" class="section level3">
-<h3>Household income</h3>
-<pre class="r"><code>table(data$hhinc)</code></pre>
-<pre><code>## 
-##   &lt; $20,000   $20K-$40K   $40K-$60K   $60K-$80K  $80K-$100K $100K-$120K 
-##           0           3           2           3           2           3 
-## $120K-$150K $150K-$200K $200K-$250K $250K-$350K $350K-$500K      &gt;$500K 
-##           8           3           0           1           0           0</code></pre>
-<pre class="r"><code>round((table(data$hhinc)/nrow(data))*100,2)</code></pre>
-<pre><code>## 
-##   &lt; $20,000   $20K-$40K   $40K-$60K   $60K-$80K  $80K-$100K $100K-$120K 
-##        0.00        8.57        5.71        8.57        5.71        8.57 
-## $120K-$150K $150K-$200K $200K-$250K $250K-$350K $350K-$500K      &gt;$500K 
-##       22.86        8.57        0.00        2.86        0.00        0.00</code></pre>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = hhinc)) +
-  geom_bar(stat = &quot;count&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;,
-       title = &quot;Distribution of household income&quot;) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-</div>
-</div>
-<div id="demographics-by-device-type" class="section level2">
-<h2>Demographics by device type</h2>
-<div id="age-1" class="section level3">
-<h3>Age</h3>
-<pre class="r"><code>age_mod = lm(age ~ devicetype, data = data) 
-
-apa_print(age_mod)$table %&gt;% 
-  kable(booktabs = T) %&gt;% 
-  kable_styling()</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;">
-predictor
-</th>
-<th style="text-align:left;">
-estimate
-</th>
-<th style="text-align:left;">
-ci
-</th>
-<th style="text-align:left;">
-statistic
-</th>
-<th style="text-align:left;">
-p.value
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Intercept
-</td>
-<td style="text-align:left;">
-39.50
-</td>
-<td style="text-align:left;">
-<span class="math inline">\([36.81\)</span>, <span class="math inline">\(42.19]\)</span>
-</td>
-<td style="text-align:left;">
-29.92
-</td>
-<td style="text-align:left;">
-&lt; .001
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DevicetypeMobile
-</td>
-<td style="text-align:left;">
-0.00
-</td>
-<td style="text-align:left;">
-<span class="math inline">\([-4.81\)</span>, <span class="math inline">\(4.81]\)</span>
-</td>
-<td style="text-align:left;">
-0.00
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DevicetypeTablet
-</td>
-<td style="text-align:left;">
--1.17
-</td>
-<td style="text-align:left;">
-<span class="math inline">\([-8.93\)</span>, <span class="math inline">\(6.60]\)</span>
-</td>
-<td style="text-align:left;">
--0.31
-</td>
-<td style="text-align:left;">
-.761
-</td>
-</tr>
-</tbody>
-</table>
-<pre class="r"><code>plot_model(age_mod, type = &quot;pred&quot;)$devicetype +
-  labs(x = NULL, y = &quot;Average age&quot;) +
-  theme_pubclean()</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
-</div>
-<div id="sex" class="section level3">
-<h3>Sex</h3>
-<pre class="r"><code>chisq.test(table(data$sex, data$devicetype))</code></pre>
-<pre><code>Pearson&#39;s Chi-squared test</code></pre>
-<p>data: table(data<span class="math inline">\(sex, data\)</span>devicetype) X-squared = 2.8283, df = 2, p-value = 0.2431</p>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = sex, fill = devicetype)) +
-  geom_bar(stat = &quot;count&quot;) +
-  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
-  guides(fill = &quot;none&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;) +
-  theme_pubr()</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-</div>
-<div id="education-1" class="section level3">
-<h3>Education</h3>
-<pre class="r"><code>chisq.test(table(data$edu, data$devicetype))</code></pre>
-<pre><code>Pearson&#39;s Chi-squared test</code></pre>
-<p>data: table(data<span class="math inline">\(edu, data\)</span>devicetype) X-squared = NaN, df = 14, p-value = NA</p>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = edu, fill = devicetype)) +
-  geom_bar(stat = &quot;count&quot;) +
-  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
-  guides(fill = &quot;none&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
-</div>
-<div id="ethnicity-1" class="section level3">
-<h3>Ethnicity</h3>
-<pre class="r"><code>chisq.test(table(data$ethnic, data$devicetype))</code></pre>
-<pre><code>Pearson&#39;s Chi-squared test</code></pre>
-<p>data: table(data<span class="math inline">\(ethnic, data\)</span>devicetype) X-squared = 3.9678, df = 8, p-value = 0.86</p>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = ethnic, fill = devicetype)) +
-  geom_bar(stat = &quot;count&quot;) +
-  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
-  guides(fill = &quot;none&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
-</div>
-<div id="household-income-1" class="section level3">
-<h3>Household income</h3>
-<pre class="r"><code>chisq.test(table(data$hhinc, data$devicetype))</code></pre>
-<pre><code>Pearson&#39;s Chi-squared test</code></pre>
-<p>data: table(data<span class="math inline">\(hhinc, data\)</span>devicetype) X-squared = NaN, df = 22, p-value = NA</p>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = hhinc, fill = devicetype)) +
-  geom_bar(stat = &quot;count&quot;) +
-  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
-  guides(fill = &quot;none&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 </div>
 </div>
 

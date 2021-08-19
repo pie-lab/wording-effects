@@ -26,118 +26,7 @@ load(here("data/items_df.Rds"))
 load(here("data/cleaned_data.Rds"))
 ```
 
-## Personality by block and format
-
-### Block 1
-
-
-```{r, results = 'asis'}
-items_df %>%
-  filter(block == "1") %>% 
-  group_by(format) %>%
-  summarise(
-    mean = mean(response),
-    sd = sd(response),
-    median = median(response),
-    N_responses = n(),
-    N_participants = length(unique(proid))
-  ) %>%
-  kable(booktabs = T, digits = c(0,2,2,0,0,0),
-        caption = "Descriptives of responses to Block 1") %>%
-  kable_styling()
-```
-
-
-```{r, results = 'asis'}
-items_df %>%
-  filter(block == "1") %>% 
-  group_by(item, format) %>%
-  summarise(
-    mean = mean(response),
-    sd = sd(response)
-  ) %>% 
-  mutate(value = paste0(
-    printnum(mean), " (", printnum(sd), ")"
-  )) %>%
-  select(-mean, -sd) %>%
-  spread(format, value) %>% 
-  kable(booktabs = T) %>%
-  kable_styling()
-```
-
-### Block 2
-
-
-```{r, results = 'asis'}
-items_df %>%
-  filter(block == "2") %>% 
-  group_by(format) %>%
-  summarise(
-    mean = mean(response),
-    sd = sd(response),
-    median = median(response),
-    N_responses = n(),
-    N_participants = length(unique(proid))
-  ) %>%
-  kable(booktabs = T, digits = c(0,2,2,0,0,0),
-        caption = "Descriptives of responses to Block 2") %>%
-  kable_styling()
-```
-
-
-```{r, results = 'asis'}
-items_df %>%
-  filter(block == "2") %>%
-  group_by(item, format) %>%
-  summarise(
-    mean = mean(response),
-    sd = sd(response)
-  ) %>% 
-  mutate(value = paste0(
-    printnum(mean), " (", printnum(sd), ")"
-  )) %>%
-  select(-mean, -sd) %>%
-  spread(format, value) %>% 
-  kable(booktabs = T) %>%
-  kable_styling()
-```
-
-### Block 3
-
-
-```{r, results = 'asis'}
-items_df %>%
-  filter(block == "2") %>% 
-  group_by(format) %>%
-  summarise(
-    mean = mean(response),
-    sd = sd(response),
-    median = median(response),
-    N_responses = n(),
-    N_participants = length(unique(proid))
-  ) %>%
-  kable(booktabs = T, digits = c(0,2,2,0,0,0),
-        caption = "Descriptives of responses to Block 2") %>%
-  kable_styling()
-```
-
-
-```{r, results = 'asis'}
-items_df %>%
-  filter(block == "2") %>%
-  group_by(item, format) %>%
-  summarise(
-    mean = mean(response),
-    sd = sd(response)
-  ) %>% 
-  mutate(value = paste0(
-    printnum(mean), " (", printnum(sd), ")"
-  )) %>%
-  select(-mean, -sd) %>%
-  spread(format, value) %>% 
-  kable(booktabs = T) %>%
-  kable_styling()
-```
+Here we present the descriptive statistics reported in the manuscript.
 
 ## Demographics 
 
@@ -316,4 +205,141 @@ data %>%
   labs(x = NULL, y = "Frequency") +
   theme_pubr() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+## Time
+
+How much time elapsed between assessments?
+
+```{r}
+data = data %>% 
+  mutate(difference = as.numeric(start_date2-start_date))
+summary(data$difference)
+```
+
+How long did it take participants to complete the Time 1 survey?
+
+```{r}
+summary(data$duration_in_seconds/60)
+```
+
+How long did it take participants to complete the Time 2 survey?
+
+```{r}
+summary(data$duration_in_seconds2/60)
+```
+
+
+## Personality by block and format
+
+### Block 1
+
+
+```{r, results = 'asis'}
+items_df %>%
+  filter(block == "1") %>% 
+  group_by(format) %>%
+  summarise(
+    mean = mean(response),
+    sd = sd(response),
+    median = median(response),
+    N_responses = n(),
+    N_participants = length(unique(proid))
+  ) %>%
+  kable(booktabs = T, digits = c(0,2,2,0,0,0),
+        caption = "Descriptives of responses to Block 1") %>%
+  kable_styling()
+```
+
+
+```{r, results = 'asis'}
+items_df %>%
+  filter(block == "1") %>% 
+  group_by(item, format) %>%
+  summarise(
+    mean = mean(response),
+    sd = sd(response)
+  ) %>% 
+  mutate(value = paste0(
+    printnum(mean), " (", printnum(sd), ")"
+  )) %>%
+  select(-mean, -sd) %>%
+  spread(format, value) %>% 
+  kable(booktabs = T) %>%
+  kable_styling()
+```
+
+### Block 2
+
+
+```{r, results = 'asis'}
+items_df %>%
+  filter(block == "2") %>% 
+  group_by(format) %>%
+  summarise(
+    mean = mean(response),
+    sd = sd(response),
+    median = median(response),
+    N_responses = n(),
+    N_participants = length(unique(proid))
+  ) %>%
+  kable(booktabs = T, digits = c(0,2,2,0,0,0),
+        caption = "Descriptives of responses to Block 2") %>%
+  kable_styling()
+```
+
+
+```{r, results = 'asis'}
+items_df %>%
+  filter(block == "2") %>%
+  group_by(item, format) %>%
+  summarise(
+    mean = mean(response),
+    sd = sd(response)
+  ) %>% 
+  mutate(value = paste0(
+    printnum(mean), " (", printnum(sd), ")"
+  )) %>%
+  select(-mean, -sd) %>%
+  spread(format, value) %>% 
+  kable(booktabs = T) %>%
+  kable_styling()
+```
+
+### Block 3
+
+
+```{r, results = 'asis'}
+items_df %>%
+  filter(block == "2") %>% 
+  group_by(format) %>%
+  summarise(
+    mean = mean(response),
+    sd = sd(response),
+    median = median(response),
+    N_responses = n(),
+    N_participants = length(unique(proid))
+  ) %>%
+  kable(booktabs = T, digits = c(0,2,2,0,0,0),
+        caption = "Descriptives of responses to Block 2") %>%
+  kable_styling()
+```
+
+
+```{r, results = 'asis'}
+items_df %>%
+  filter(block == "2") %>%
+  group_by(item, format) %>%
+  summarise(
+    mean = mean(response),
+    sd = sd(response)
+  ) %>% 
+  mutate(value = paste0(
+    printnum(mean), " (", printnum(sd), ")"
+  )) %>%
+  select(-mean, -sd) %>%
+  spread(format, value) %>% 
+  kable(booktabs = T) %>%
+  kable_styling()
 ```

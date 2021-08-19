@@ -39,7 +39,7 @@ load(here("data/reverse_vector.Rds"))
 
 ## Effect of format (Block 1 data)
 
-We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data.
+We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data; in other words, effects are largely between person, although each person contributes 31 unique data points to the analysis (one for each trait). We use the `anova` function to estimate the amount of variability in response due to format. 
 
 ```{r analysis-format-4}
 item_block1 = filter(items_df, block == "1")
@@ -106,7 +106,7 @@ item_block1 %>%
 
 ### One model for each adjective
 
-We can also repeat this analysis separately for each trait.
+We repeat this analysis separately for each trait. Because there is only one response per participant (when using only Block 1 data), we can drop the use of multilevel models and instead rely on a simple general linear model to test our hypothesis. Sepecfically, we test whether the proportion of variance attributable to item format is statistically significant.
 
 ```{r analysis-format-9, results = 'asis'}
 mod_by_item_b1 = item_block1 %>%
@@ -114,7 +114,11 @@ mod_by_item_b1 = item_block1 %>%
   nest() %>%
   mutate(mod = map(data, ~lm(response~format, data = .))) %>%
   mutate(aov = map(mod, anova))
+```
 
+We apply a Holm correction to the _p_-values extracted from these analyses, to adjust for the number of tests conducted. We present results in a table, which is organized by whether items were reverse-coded prior to analysis.
+
+```{r}
 summary_by_item_b1 = mod_by_item_b1 %>%
   ungroup() %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
@@ -140,7 +144,7 @@ summary_by_item_b1 %>%
 
 ### Pairwise t-tests for significant ANOVAs
 
-Here we identify the specific items with significant differences.
+When format was a significant predictor of response for an item (using the un-adjusted _p_-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.
 
 ```{r analysis-format-10}
 sig_item_b1 = summary_by_item_b1 %>%
@@ -178,7 +182,7 @@ plot_model(talkative_model_b1, type = "pred", terms = c("format"))
 
 ## Effect of format (Block 1 and 2)
 
-We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2.
+We again test whether format is a significant predictor of response. However, here we use data from both Blocks 1 and 2. As a reminder, all participants were presented with all four formats during Block 2. We expect this model to have greater power than the previous model, due to both increased sample size (twice as many data points) and because participants now provide data to all four formats, instead of only one (i.e., a within-person analysis).
 
 ```{r analysis-format-13}
 items_12 = items_df %>% filter(block %in% c("1","2"))
@@ -259,6 +263,7 @@ mod_by_item_b2 = items_12 %>%
 ```
 
 To present these results, we use the `tidy` function to summarise the findings and extract just the _F_-test associated with the format variable. We calculate adjusted _p_-values using a Holm correction. We also create a column that indicates whether the item was reverse-scored; we use this to sort the table, in case a pattern emerges.
+
 ```{r analysis-format-19}
 summary_by_item_b2 = mod_by_item_b2 %>%
   ungroup() %>%
@@ -347,6 +352,8 @@ plot_model(thrifty_model_b2, type = "pred", terms = c("format"))
 
 ## Account for memory effects (Blocks 1 and 2)
 
+One limitation of the two-blocks model is that format effects may depend on a person's memory. For example, suppose that participants, in general, are more likely to respond with a 6 to items containing "tend to" (e.g., "tend to be outgoing") than to items that only start with "am" (e.g., "am outgoing"). However, if a participant remembers that on the first presentation of the item they selected 4, they may be more likely choose 4 again to appear consistent. This example posits that memory moderates format's effect on response. We model this possibility using participant's delayed memory scores, or their recall score 10 minutes after seeing the list of words.
+
 ```{r analysis-format-25}
 mod.format_mem = lmer(response~format*delayed_memory + (1|proid),
                   data = items_12)
@@ -382,6 +389,8 @@ plot_model(mod.format_mem,
 ```
 
 ### One model for each adjective
+
+Again, we test this model within each trait adjective, to determine whether the moderating effect of memory is stronger for any particular trait(s).
 
 ```{r analysis-format-27, results = 'asis'}
 mod_by_item_mem = items_12 %>%
@@ -427,7 +436,7 @@ sig_item_mem
 
 ## Inclusion of "I" (Block 1 and Block 3)
 
-We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word "I". Here, we use data from blocks 1 and 3.
+Finally, we test whether the inclusion of the word "I" impacts item response (e.g. "I am outgoing"). We used two multilevel models, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word "I". Because we have no specific rationale for how or why "I" would impact responses, we test both the partialled main effect of "I" as well as the interaction with format. Here, we use data from Blocks 1 and 3.
 
 ```{r analysis-format-29}
 items_13 = items_df %>%
@@ -676,5 +685,4 @@ sympathetic_model_i %>%
 plot_model(sympathetic_model_i, type = "pred",
            terms = c("format", "i")) +
   geom_line()
-
 ```

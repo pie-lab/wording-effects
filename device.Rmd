@@ -8,11 +8,11 @@ output:
 ---
 
 
-```{r, include = FALSE}
+```{r device-1, include = FALSE}
 knitr::opts_chunk$set(warning = F, message = F)
 ```
 
-```{r, echo = F}
+```{r device-2, echo = F}
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
@@ -22,41 +22,162 @@ library(emmeans) # for pairwise comparisons
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
+library(papaja) # for formatting numbers
 ```
 
-```{r, echo = F}
+```{r device-3, echo = F}
 load(here("data/items_df.Rds"))
 ```
 
+In this section, we present exploratory analyses which test the effect of device type More specifically, we're interested to know whether the time it takes to complete personality assessments differs by device type (computer, phone, tablet). We also test whether the typical response to personality items is associated with device type, although we have no theoretical reasons to suspect this is the case.
 
-## Responses
+For these analyses, we use only data collected in Blocks 1 and 2.
 
-### Response by device
 
-We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device format. Here, we use data from blocks 1 and 2.
-
-```{r}
+```{r device-4}
 items_12 = items_df %>% filter(block %in% c("1","2"))
 ```
 
-```{r}
-mod.response = lmer(response~devicetype + (1|proid), 
-                  data = items_12)
-anova(mod.response)
 
+
+## Timing
+
+### Timing by device
+
+We used a multilevel model, nesting timing within participant to account for dependence. Our primary predictor was device type. As a reminder, our outcome variable (seconds) has been log-transformed, as it was strongly skewed.
+
+```{r device-5}
+mod.timing = lmer(seconds_log~devicetype + (1|proid), 
+                  data = items_12)
+anova(mod.timing)
 ```
 
-```{r, fig.cap = "Predicted response on personality items by condition."}
-plot1 = plot_model(mod.response, type = "pred") 
+
+
+```{r device-6, echo = F}
+tD_aov = anova(mod.timing)
+tD_sig = tD_aov$`Pr(>F)`[[1]] < .05
+tD_aov = tD_aov %>% 
+  as_tibble() %>% 
+  rename(Fval = `F value`,
+         Pval = `Pr(>F)`) %>% 
+  mutate(across(starts_with("P"), printp),
+         across(where(is.numeric), printnum))
+```
+
+When examining both Block 1 and Block 2 data, device type was `r ifelse(tD_sig, "associated", "unassociated")` with the time it took to respond to personality items $(F(`r tD_aov$NumDF[[1]]`, `r tD_aov$DenDF[[1]]`) = `r tD_aov$Fval[[1]]`, p = `r tD_aov$Pval[[1]]`)$.
+
+```{r device-7, fig.cap = "Predicted timing on personality items by condition."}
+plot1 = plot_model(mod.timing, type = "pred") 
 
 plot1$devicetype +
   labs(x = NULL,
-       y = "Average response",
-       title = "Average responses by device") +
+       y = "Log-seconds (per item)",
+       title = "Average time per personality item\nby device type",
+       caption = "Bars represent 95% confidence intervals") +
   theme_pubclean()
 ```
 
-```{r, fig.cap = "Distribution of responses by category"}
+```{r device-8, fig.cap = "Distribution of secondss by category"}
+means_by_group = items_12 %>%
+  group_by(devicetype) %>% 
+  summarise(m = mean(timing),
+            s = sd(timing))
+
+items_12 %>%
+  ggplot(aes(x = timing, fill = devicetype)) +
+  geom_histogram(bins = 100) +
+  geom_vline(aes(xintercept = m), data = means_by_group) +
+  facet_wrap(~devicetype, scales = "free_y") +
+  guides(fill = "none") +
+  scale_x_log10() +
+  labs(y = "Number of particpants",
+       title = "Distribution of timing by format",
+       x = "timing (logrithmic scale)") +
+  theme_pubr()
+```
+
+### Device by format
+
+We also check to see whether device type and format interact in the prediction of time to answer personality items.
+
+```{r device-9}
+mod.timing2 = lmer(seconds_log~devicetype*format + (1|proid), 
+                  data = items_12)
+anova(mod.timing2)
+```
+
+
+
+```{r device-10, echo = F}
+tD2_aov = anova(mod.timing2)
+tD2_sig = tD2_aov$`Pr(>F)`[[3]] < .05
+tD2_aov = tD2_aov %>% 
+  as_tibble() %>% 
+  rename(Fval = `F value`,
+         Pval = `Pr(>F)`) %>% 
+  mutate(across(starts_with("P"), printp),
+         across(where(is.numeric), printnum)) %>% 
+  filter(row_number() == 3)
+```
+
+The interaction between device type and format was `r ifelse(tD2_sig, "associated", "unassociated")` with the time it took to respond to personality items $(F(`r tD2_aov$NumDF[[1]]`, `r tD2_aov$DenDF[[1]]`) = `r tD2_aov$Fval[[1]]`, p = `r tD2_aov$Pval[[1]]`)$.
+
+
+```{r device-11, fig.cap = "Predicted timing on personality items by condition."}
+plot1 = plot_model(mod.timing2, type = "pred", terms = c("format", "devicetype")) 
+
+plot1 +
+  geom_line() +
+  labs(x = NULL,
+       y = "Log-seconds (per item)",
+       title = "Average time per personality item\nby device type and item format",
+       color = "Device",
+       caption = "Bars represent 95% confidence intervals") +
+  theme_pubclean()
+```
+
+## Responses
+
+Here we estimate the differences in response to personality items items by device. Again, we have no theoretical rationale for these models -- these are purely exploratory.
+
+### Response by device
+
+We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device type. 
+
+```{r device-12}
+mod.responseD = lmer(response~devicetype + (1|proid), 
+                  data = items_12)
+anova(mod.responseD)
+```
+
+
+
+```{r device-13, echo = F}
+fD_aov = anova(mod.responseD)
+fD_sig = fD_aov$`Pr(>F)`[[1]] < .05
+fD_aov = fD_aov %>% 
+  as_tibble() %>% 
+  rename(Fval = `F value`,
+         Pval = `Pr(>F)`) %>% 
+  mutate(across(starts_with("P"), printp),
+         across(where(is.numeric), printnum))
+```
+
+When examining both Block 1 and Block 2 data, device type was `r ifelse(fD_sig, "associated", "unassociated")` with the time it took to respond to personality items $(F(`r fD_aov$NumDF[[1]]`, `r fD_aov$DenDF[[1]]`) = `r fD_aov$Fval[[1]]`, p = `r fD_aov$Pval[[1]]`)$.
+
+```{r device-14, fig.cap = "Predicted response on personality items by condition."}
+plot1 = plot_model(mod.responseD, type = "pred") 
+
+plot1$devicetype +
+  labs(x = NULL,
+       y = "Expected response",
+       title = "Expected responses by device",
+       caption = "Bars represent 95% confidence intervals") +
+  theme_pubclean()
+```
+
+```{r device-15, fig.cap = "Distribution of responses by category"}
 means_by_group = items_12 %>%
   group_by(devicetype) %>% 
   summarise(m = mean(response),
@@ -79,78 +200,38 @@ items_12 %>%
 
 ### Device by format
 
-```{r}
-mod.response2 = lmer(response~devicetype*format + (1|proid), 
-                  data = items_12)
-anova(mod.response2)
+We also check whether item format moderated the relationship between device type and response.
 
+```{r device-16}
+mod.responseD2 = lmer(response~devicetype*format + (1|proid), 
+                  data = items_12)
+anova(mod.responseD2)
 ```
 
-```{r, fig.cap = "Predicted response on personality items by condition."}
-plot2 = plot_model(mod.response2, type = "pred", terms = c("format", "devicetype")) 
+
+
+```{r device-17, echo = F}
+fD2_aov = anova(mod.responseD2)
+fD2_sig = fD2_aov$`Pr(>F)`[[3]] < .05
+fD2_aov = fD2_aov %>% 
+  as_tibble() %>% 
+  rename(Fval = `F value`,
+         Pval = `Pr(>F)`) %>% 
+  mutate(across(starts_with("P"), printp),
+         across(where(is.numeric), printnum)) %>% 
+  filter(row_number() == 3)
+```
+
+The interaction between device type and format was `r ifelse(fD2_sig, "associated", "unassociated")` with the time it took to respond to personality items $(F(`r fD2_aov$NumDF[[1]]`, `r fD2_aov$DenDF[[1]]`) = `r fD2_aov$Fval[[1]]`, p = `r fD2_aov$Pval[[1]]`)$.
+
+```{r device-18, fig.cap = "Predicted response on personality items by condition."}
+plot2 = plot_model(mod.responseD2, type = "pred", terms = c("format", "devicetype")) 
 
 plot2 +
+  geom_line() +
   labs(x = NULL,
        y = "Average response",
-       title = "Average responses by device") +
-  theme_pubclean()
-```
-
-## Timing
-
-### Timing by device
-
-We used a multilevel model, nesting timing within participant to account for dependence. Our primary predictor was format.
-
-```{r}
-mod.timing = lmer(seconds_log~devicetype + (1|proid), 
-                  data = items_12)
-anova(mod.timing)
-```
-
-```{r, fig.cap = "Predicted timing on personality items by condition."}
-plot1 = plot_model(mod.timing, type = "pred") 
-
-plot1$devicetype +
-  labs(x = NULL,
-       y = "timing (log)",
-       title = "Average timing time by device type") +
-  theme_pubclean()
-```
-
-```{r, fig.cap = "Distribution of secondss by category"}
-means_by_group = items_12 %>%
-  group_by(devicetype) %>% 
-  summarise(m = mean(timing),
-            s = sd(timing))
-
-items_12 %>%
-  ggplot(aes(x = timing, fill = devicetype)) +
-  geom_histogram(bins = 100) +
-  geom_vline(aes(xintercept = m), data = means_by_group) +
-  facet_wrap(~devicetype, scales = "free_y") +
-  guides(fill = "none") +
-  scale_x_log10() +
-  labs(y = "Number of particpants",
-       title = "Distribution of timing by format",
-       x = "timing (logrithmic scale)") +
-  theme_pubr()
-```
-
-### Device by format
-
-```{r}
-mod.timing2 = lmer(seconds_log~devicetype*format + (1|proid), 
-                  data = items_12)
-anova(mod.timing2)
-```
-
-```{r, fig.cap = "Predicted timing on personality items by condition."}
-plot1 = plot_model(mod.timing2, type = "pred", terms = c("format", "devicetype")) 
-
-plot1 +
-  labs(x = NULL,
-       y = "timing (log)",
-       title = "Average timing time by device type") +
+       title = "Average responses by device",
+       caption = "Bars represent 95% confidence intervals") +
   theme_pubclean()
 ```
