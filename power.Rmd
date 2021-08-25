@@ -88,7 +88,7 @@ power_df = data.frame(
 )
 ```
 
-Here we (inefficiently) loop through all sample sizes and calculate power.
+Here we (inefficiently) loop through all sample sizes and calculate power. Final results are presented in Figure \@ref(fig:plotpower1).
 
 ```{r, eval = run_analyses}
 set.seed(20210729)
@@ -107,9 +107,7 @@ save(power_df, file = here("objects/power_format_b1.Rdata"))
 load(here("objects/power_format_b1.Rdata"))
 ```
 
-Finally, we plot these effects to determine needed sample size.
-
-```{r}
+```{r plotpower1, echo = F}
 power_df %>% 
   ggplot(aes(x = N, y = power)) +
   geom_line() +
@@ -212,7 +210,7 @@ power_df_2 = data.frame(
 )
 ```
 
-Here we (inefficiently) loop through all sample sizes and calculate power.
+Here we (inefficiently) loop through all sample sizes and calculate power. Final results are depicted in Figure \@ref(fig:plotpower2).
 
 ```{r, eval = run_analyses}
 set.seed(20210729)
@@ -231,9 +229,8 @@ save(power_df_2, file = here("objects/power_format_b2.Rdata"))
 load(here("objects/power_format_b2.Rdata"))
 ```
 
-Finally, we plot these effects to determine needed sample size.
 
-```{r}
+```{r plotpower2, echo =F}
 power_df_2 %>% 
   ggplot(aes(x = N, y = power)) +
   geom_line() +

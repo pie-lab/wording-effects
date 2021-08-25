@@ -2,9 +2,8 @@
 title: "Test-retest reliability"
 date: "Last updated `r Sys.Date()`"
 output: 
-  bookdown::html_document2:
+  bookdown::pdf_document2:
     toc: TRUE
-    toc_float: TRUE
 ---
 
 We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. In other words, we expect equal or lower retest reliability for the adjectives than for longer phrases. We will also consider the effect of performance on the word recall task on retest reliability.
@@ -22,9 +21,9 @@ library(tidyverse) # for cleaning
 library(janitor) # for variable names
 library(lme4) # for mulitlevel modeling
 library(lmerTest) # for p-values
+library(broom.mixed) # for tables
 library(emmeans) # for comparisons
 library(sjPlot) # for figures
-library(stargazer) # for tables
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
 library(papaja) # for number formatting
@@ -77,9 +76,9 @@ items_matchb1 = items_matchb1 %>%
   ))
 ```
 
+## Test-retest reliability (all items pooled)
 
-
-To estimate the reliability coefficients, we use a multilevel model, predicting the latter block from the earlier one. These models nest responses within participant, allowing us to estimate standard errors which account for the dependency of scores.
+To estimate the reliability coefficients, we use a multilevel model, predicting the latter block from the earlier one. These models nest responses within participant, allowing us to estimate standard errors which account for the dependency of scores. Results are shown in Table \@ref(tab:testretest7b).
 
 ```{r test-retest-7, results = ifelse(is_html, "asis", "hide")}
 tr_mod1_b1b2 = lmer(block_2 ~ block_1 + (1 |proid), data = items_matchb1)
@@ -87,39 +86,58 @@ tr_mod1_b1b3 = lmer(block_3 ~ block_1 + (1 |proid), data = items_matchb1)
 
 ```
 
-```{r, results = 'asis', echo = F}
-output_type = ifelse(is_pdf, "latex", "html")
-class(tr_mod1_b1b2) <- class(tr_mod1_b1b3) <- "lmerMod"
-stargazer(tr_mod1_b1b2, tr_mod1_b1b3, 
-          type = output_type, 
-          intercept.top = T, 
-          intercept.bottom = F, 
-          digits = 2,
-          title = "Test-retest reliability (items pooled) across time")
+```{r testretest7b, results = 'asis', echo = F}
+tibble(models = c("Block 1 - Block 2", "Block 1 - Block 3"),
+       out = list(tr_mod1_b1b2, tr_mod1_b1b3)) %>% 
+  mutate(tidy = map(out, tidy, conf.int = T)) %>% 
+  select(-out) %>% 
+  unnest(cols = c(tidy)) %>% 
+  mutate(across(is.numeric, printnum)) %>% 
+  mutate(est = paste0(estimate, " [",conf.low, ", ", conf.high, "]")) %>% 
+  filter(term == "block_1") %>% 
+  select(models, est) %>% 
+  kable(booktabs = T, 
+        col.names = c("Assessments", "Slope coefficient"),
+        caption = "Test-retest estimates from multilevel models") %>% 
+  kable_styling()
 ```
 
 
-## Test-retest reliability (all items pooled, by memory)
+## Test-retest reliability (all items pooled, moderated by memory)
 
-Here we fit models moderated by memory -- that it, perhaps the test-retest coefficient is affected by the memory of the participant.
+Here we fit models moderated by memory -- that it, perhaps the test-retest coefficient is affected by the memory of the participant. Results are shown in Table \@ref(tab:testretest8b)
 
 ```{r test-retest-8, results = 'asis'}
-tr_mod2_b1b2 = lmer(block_2 ~ block_1*delayed_memory + 
+tr_mod2_b1b2 = lmer(block_2 ~ block_1*delayed_memory +
                       (1 |proid),
                     data = items_matchb1)
-tr_mod2_b1b3 = lmer(block_3 ~ block_1*very_delayed_memory + 
+tr_mod2_b1b3 = lmer(block_3 ~ block_1*very_delayed_memory +
                       (1 |proid),
                     data = items_matchb1)
 ```
 
-```{r, results = 'asis', echo = F}
-class(tr_mod2_b1b2) <- class(tr_mod2_b1b3) <- "lmerMod"
-stargazer(tr_mod2_b1b2, tr_mod2_b1b3, 
-          type = output_type, 
-          intercept.top = T, 
-          intercept.bottom = F,
-          digits = 2,
-          title = "Test-retest reliability (items pooled) across time and moderated by participant memory")
+```{r testretest8b, results = 'asis', echo = F}
+tibble(models = c("Block 1 - Block 2", "Block 1 - Block 3"),
+       out = list(tr_mod2_b1b2, tr_mod2_b1b3)) %>% 
+  mutate(tidy = map(out, tidy, conf.int = T)) %>% 
+  select(-out) %>% 
+  unnest(cols = c(tidy)) %>% 
+  mutate(across(is.numeric, printnum)) %>% 
+  mutate(est = paste0(estimate, " [",conf.low, ", ", conf.high, "]")) %>% 
+  filter(str_detect(term, "block") | str_detect(term, "memory") ) %>% 
+  select(models, term, est) %>%
+  mutate(
+    interpretation = case_when(
+      term == "block_1" ~ "Test-retest at average memory",
+      str_detect(term,"\\:") ~ "Change in test-retest by increase in memory",
+      TRUE ~ "Effect of memory on response"),
+    term = str_remove(term, "very_"),
+    term = str_remove(term, "delayed_")) %>% 
+  spread(models, est) %>% 
+  kable(booktabs = T, 
+        caption = "Effect of memory on test-retest",
+        col.names = c("Term", "Interpretation", "Block 1 - Block 2", "Block 1 - Block 3")) %>% 
+  kable_styling()
 ```
 
 
@@ -130,9 +148,9 @@ We also extract the simple slopes estimates of these models, which allow us to m
 ```{r test-retest-9 }
 mem_list = list(delayed_memory = c(-1,0,1))
 
-emtrends(tr_mod2_b1b2, 
-         pairwise~delayed_memory, 
-         var = "block_1", 
+emtrends(tr_mod2_b1b2,
+         pairwise~delayed_memory,
+         var = "block_1",
          at = mem_list)
 ```
 
@@ -143,17 +161,17 @@ emtrends(tr_mod2_b1b2,
 ```{r test-retest-10 }
 mem_list = list(very_delayed_memory = c(-1,0,1))
 
-emtrends(tr_mod2_b1b3, 
-         pairwise~very_delayed_memory, 
-         var = "block_1", 
+emtrends(tr_mod2_b1b3,
+         pairwise~very_delayed_memory,
+         var = "block_1",
          at = mem_list)
 ```
 
 ## Test-retest reliability (all items pooled, by format)
 
-We fit these same models, except now we moderate by format, to determine whether the test-retest reliabilty differs as a function of item wording.
+We fit these same models, except now we moderate by format, to determine whether the test-retest reliability differs as a function of item wording.
 
-```{r test-retest-11, results = 'asis'}
+```{r test-retest-11}
 tr_mod3_b1b2 = lmer(block_2 ~ block_1*condition + (1 |proid),
                     data = items_matchb1)
 tr_mod3_b1b3 = lmer(block_3 ~ block_1*condition + (1 |proid),
@@ -199,7 +217,7 @@ items_matchb1 %>%
   )
 ```
 
-```{r test-retest-15, fig.cap = "(#fig:testre) Sample sizes for item-level test-retest correlations."}
+```{r test-retest-15, echo = F, eval = F, fig.cap = "Sample sizes for item-level test-retest correlations."}
 items_matchb1 %>%
   group_by(item, condition) %>%
   count() %>%
@@ -227,7 +245,9 @@ items_cors = items_matchb1 %>%
   unnest(cols = c(cors))
 ```
 
-```{r test-retest-17, results = 'asis'}
+The test-retest correlations of each item-format combination are presented in Table \@ref(tab:testretest17). We also visualize these correlations in Figure \@ref(fig:testretest18),
+
+```{r testretest17, results = 'asis', echo = F}
 items_cors %>%
   mutate(raw.r = printnum(raw.r),
          raw.r = case_when(
@@ -238,38 +258,38 @@ items_cors %>%
   mutate(reverse = case_when(
     item %in% reverse ~ "Y",
     TRUE ~ "N"
-  )) %>% 
-  filter(comp != "blc_2-blc_3") %>% 
+  )) %>%
+  filter(comp != "blc_2-blc_3") %>%
   mutate(condition = case_when(
     condition == "Adjective\nOnly" ~ "a",
     condition == "Am\nAdjective" ~ "b",
     condition == "Tend to be\nAdjective" ~ "c",
     condition == "Am someone\nwho tends to be\nAdjective" ~ "d"
-  )) %>% 
-  unite(comp, condition, comp) %>% 
+  )) %>%
+  unite(comp, condition, comp) %>%
   spread(comp, raw.r) %>%
-  arrange(reverse, item) %>% 
+  arrange(reverse, item) %>%
   kable(caption = "Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.",
         col.names = c("Item", "Reverse scored?", rep(c("5 min", "2 weeks"), 4)),
         booktabs = T) %>%
-  kable_styling() %>% 
+  kable_styling() %>%
   add_header_above(c(" " = 2, "Adjective Only" = 2, "Am Adjective" = 2,
                      "Tend to be" = 2, "Am someone who tends to be" = 2))
 ```
 
-```{r test-retest-18, fig.cap = "Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item."}
+```{r testretest18, fig.cap = "Test-retest correlations of specific items across word format.", echo = F}
+
 items_cors %>%
   mutate(comp_num = case_when(
     comp == "blc_1-blc_2" ~ 1,
     comp == "blc_1-blc_3" ~ 2,
     comp == "blc_2-blc_3" ~ NA_real_,
   )) %>%
-  filter(!is.na(comp_num)) %>% 
-  ggplot(aes(x = comp_num, y = raw.r, color = condition)) +
-  geom_jitter(width = .1) +
-  scale_x_continuous(breaks = c(1:2),
-                     labels = c("1-2", "1-3")) +
-  labs(x = NULL, y = "Correlation") +
-  theme_pubclean()
+  filter(!is.na(comp_num)) %>%
+  ggplot(aes(x = raw.r)) +
+  geom_histogram(binwidth = .1, color = "white") +
+  facet_grid(condition~comp) +
+  labs(x = "correlation", y = "Freqency") +
+  theme_pubr()
 ```
 

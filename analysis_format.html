@@ -29,9 +29,6 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -225,69 +222,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -295,16 +229,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -375,7 +299,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact response?</h1>
-<h4 class="date">Last updated 2021-08-24</h4>
+<h4 class="date">Last updated 2021-08-25</h4>
 
 </div>
 
@@ -383,8 +307,8 @@ div.tocify {
 <p>The primary aims of this study are to evaluate the effects of item wording in online, self-report personality assessment. Specifically, we intend to consider the extent to which incremental wording changes may influence differences in the distributions of responses, response times, and psychometric properties of the items. These wording changes will include a progression from using (1) trait-descriptive adjectives by themselves, (2) with the linking verb “to be” (Am…), (3) with the additional verb “to tend” (Tend to be…), and (4) with the pronoun “someone” (Am someone who tends to be…).</p>
 <p>Using a protocol that administers each adjective twice to the same participant (in different combinations of item format administered randomly across participants), we will use between-person analyses to compare responses using group-level data for the different formats.</p>
 <p>These analyses will attempt to account for delayed_memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a delayed_memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).</p>
-<div id="effect-of-format-block-1-data" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Effect of format (Block 1 data)</h2>
+<div id="effect-of-format-block-1-data" class="section level2">
+<h2>Effect of format (Block 1 data)</h2>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data; in other words, effects are largely between person, although each person contributes 31 unique data points to the analysis (one for each trait). We use the <code>anova</code> function to estimate the amount of variability in response due to format.</p>
 <pre class="r"><code>item_block1 = filter(items_df, block == &quot;1&quot;)
 
@@ -394,31 +318,31 @@ anova(mod.format_b1)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##        Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
 ## format 1.3559 0.45198     3    31  0.3033 0.8228</code></pre>
-<p>When examining only Block 1 data, item format was unassociated with participants’ responses to personality items <span class="math inline">\((F(3, 31.00) = 0.30, p = .823)\)</span>. See Figure <a href="#fig:analysis-format-7">1</a> for a visualization of this effect. In addition, Figure <a href="#fig:analysis-format-8">2</a> shows the full distribution of responses across format.</p>
-<div class="figure"><span style="display:block;" id="fig:analysis-format-7"></span>
-<img src="analysis_format_files/figure-html/analysis-format-7-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
+<p>When examining only Block 1 data, item format was unassociated with participants’ responses to personality items <span class="math inline">\((F(3, 31.00) = 0.30, p = .823)\)</span>. See Figure @ref(fig:analysisFormat7) for a visualization of this effect. In addition, Figure @ref(fig:analysisFormat8) shows the full distribution of responses across format.</p>
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat7-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
 <p class="caption">
-Figure 1: Predicted response on personality items by condition, using only Block 1 data.
+Predicted response on personality items by condition, using only Block 1 data.
 </p>
 </div>
-<div class="figure"><span style="display:block;" id="fig:analysis-format-8"></span>
-<img src="analysis_format_files/figure-html/analysis-format-8-1.png" alt="Distribution of responses by category, block 1 data only" width="672" />
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat8-1.png" alt="Distribution of responses by category, block 1 data only" width="672" />
 <p class="caption">
-Figure 2: Distribution of responses by category, block 1 data only
+Distribution of responses by category, block 1 data only
 </p>
 </div>
-<div id="one-model-for-each-adjective" class="section level3" number="0.1.1">
-<h3><span class="header-section-number">0.1.1</span> One model for each adjective</h3>
+<div id="one-model-for-each-adjective" class="section level3">
+<h3>One model for each adjective</h3>
 <p>We repeat this analysis separately for each trait. Because there is only one response per participant (when using only Block 1 data), we can drop the use of multilevel models and instead rely on a simple general linear model to test our hypothesis. Sepecfically, we test whether the proportion of variance attributable to item format is statistically significant.</p>
 <pre class="r"><code>mod_by_item_b1 = item_block1 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
   mutate(mod = map(data, ~lm(response~format, data = .))) %&gt;%
   mutate(aov = map(mod, anova))</code></pre>
-<p>We apply a Holm correction to the <em>p</em>-values extracted from these analyses, to adjust for the number of tests conducted. We present results in Table @ref(tab:mod1_item), which is organized by whether items were reverse-coded prior to analysis.</p>
+<p>We apply a Holm correction to the <em>p</em>-values extracted from these analyses, to adjust for the number of tests conducted. We present results in Table @ref(tab:mod1item), which is organized by whether items were reverse-coded prior to analysis.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-(#tab:mod1_item)Format effects on response by item (block 1 data only)
+Format effects on response by item (Block 1 data only)
 </caption>
 <thead>
 <tr>
@@ -426,8 +350,7 @@ Figure 2: Distribution of responses by category, block 1 data only
 Item
 </th>
 <th style="text-align:left;">
-Reverse
-Scored?
+Reverse Scored?
 </th>
 <th style="text-align:right;">
 SS
@@ -1259,8 +1182,8 @@ Y
 </tbody>
 </table>
 </div>
-<div id="pairwise-t-tests-for-significant-anovas" class="section level3" number="0.1.2">
-<h3><span class="header-section-number">0.1.2</span> Pairwise t-tests for significant ANOVAs</h3>
+<div id="pairwise-t-tests-for-significant-anovas" class="section level3">
+<h3>Pairwise t-tests for significant ANOVAs</h3>
 <p>When format was a significant predictor of response for an item (using the un-adjusted <em>p</em>-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.</p>
 <pre class="r"><code>sig_item_b1 = summary_by_item_b1 %&gt;%
   filter(p.value &lt; .05)
@@ -1271,12 +1194,12 @@ sig_item_b1</code></pre>
 <p>Then we create models for each adjective. We use the <code>emmeans</code> package to perform pairwise comparisons, again with a Holm correction on the <em>p</em>-values. We also plot the means and 95% confidence intervals of each mean.</p>
 <p><strong>This code will have to be changed after final data collection. It is not self-adapting!</strong></p>
 </div>
-<div id="talkative" class="section level3" number="0.1.3">
-<h3><span class="header-section-number">0.1.3</span> Talkative</h3>
-<p>The pairwise comparisons of responses to different forms of “talkative” are displayed in Table <a href="#tab:analysis-format-11">1</a> and Figure <a href="#fig:analysis-format-12">3</a>.</p>
+<div id="talkative" class="section level3">
+<h3>Talkative</h3>
+<p>The pairwise comparisons of responses to different forms of “talkative” are displayed in Table @ref(tab:analysisformat11) and Figure @ref(fig:analysisFormat12).</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:analysis-format-11">Table 1: </span>Differences in response to Talkative by format (Block 1 data only)
+Differences in response to Talkative by format (Block 1 data only)
 </caption>
 <thead>
 <tr>
@@ -1303,9 +1226,7 @@ p
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective
-Only - Am
-Adjective
+Adjective Only - Am Adjective
 </td>
 <td style="text-align:right;">
 -1.49
@@ -1325,9 +1246,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective
-Only - Tend to be
-Adjective
+Adjective Only - Tend to be Adjective
 </td>
 <td style="text-align:right;">
 -1.40
@@ -1347,10 +1266,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective
-Only - Am someone
-who tends to be
-Adjective
+Adjective Only - Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 0.01
@@ -1370,9 +1286,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am
-Adjective - Tend to be
-Adjective
+Am Adjective - Tend to be Adjective
 </td>
 <td style="text-align:right;">
 0.10
@@ -1392,10 +1306,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am
-Adjective - Am someone
-who tends to be
-Adjective
+Am Adjective - Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 1.51
@@ -1415,10 +1326,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be
-Adjective - Am someone
-who tends to be
-Adjective
+Tend to be Adjective - Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 1.41
@@ -1438,16 +1346,16 @@ Adjective
 </tr>
 </tbody>
 </table>
-<div class="figure"><span style="display:block;" id="fig:analysis-format-12"></span>
-<img src="analysis_format_files/figure-html/analysis-format-12-1.png" alt="Average response to &quot;talkative&quot; by format (block 1 data only)" width="672" />
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat12-1.png" alt="Average response to &quot;talkative&quot; by format (block 1 data only)" width="672" />
 <p class="caption">
-Figure 3: Average response to “talkative” by format (block 1 data only)
+Average response to “talkative” by format (block 1 data only)
 </p>
 </div>
 </div>
 </div>
-<div id="effect-of-format-block-1-and-2" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Effect of format (Block 1 and 2)</h2>
+<div id="effect-of-format-block-1-and-2" class="section level2">
+<h2>Effect of format (Block 1 and 2)</h2>
 <p>We again test whether format is a significant predictor of response. However, here we use data from both Blocks 1 and 2. As a reminder, all participants were presented with all four formats during Block 2. We expect this model to have greater power than the previous model, due to both increased sample size (twice as many data points) and because participants now provide data to all four formats, instead of only one (i.e., a within-person analysis).</p>
 <pre class="r"><code>items_12 = items_df %&gt;% filter(block %in% c(&quot;1&quot;,&quot;2&quot;))</code></pre>
 <pre class="r"><code>mod.format_b2 = lmer(response~format + (1|proid),
@@ -1456,31 +1364,31 @@ anova(mod.format_b2)</code></pre>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##        Sum Sq Mean Sq NumDF  DenDF F value Pr(&gt;F)
 ## format 4.1445  1.3815     3 2104.9  0.9193 0.4307</code></pre>
-<p>When examining both Block 1 and Block 2 data, item format was unassociated with participants’ responses to personality items <span class="math inline">\((F(3, 2,104.92) = 0.92, p = .431)\)</span>. You can see the effect visualized in Figure <a href="#fig:analysis-format-16">4</a>. In addition, the full histogram of responses to each format are presented in Figure <a href="#fig:analysis-format-17">5</a>.</p>
-<div class="figure"><span style="display:block;" id="fig:analysis-format-16"></span>
-<img src="analysis_format_files/figure-html/analysis-format-16-1.png" alt="Predicted response on personality items by condition, using Block 1 and Block 2." width="672" />
+<p>When examining both Block 1 and Block 2 data, item format was unassociated with participants’ responses to personality items <span class="math inline">\((F(3, 2,104.92) = 0.92, p = .431)\)</span>. You can see the effect visualized in Figure @ref(fig:analysisFormat16). In addition, the full histogram of responses to each format are presented in Figure @ref(fig:analysisFormat17).</p>
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat16-1.png" alt="Predicted response on personality items by condition, using Block 1 and Block 2." width="672" />
 <p class="caption">
-Figure 4: Predicted response on personality items by condition, using Block 1 and Block 2.
+Predicted response on personality items by condition, using Block 1 and Block 2.
 </p>
 </div>
-<div class="figure"><span style="display:block;" id="fig:analysis-format-17"></span>
-<img src="analysis_format_files/figure-html/analysis-format-17-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat17-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
 <p class="caption">
-Figure 5: Distribution of responses by category, block 1 and block 2
+Distribution of responses by category, block 1 and block 2
 </p>
 </div>
-<div id="one-model-for-each-adjective-1" class="section level3" number="0.2.1">
-<h3><span class="header-section-number">0.2.1</span> One model for each adjective</h3>
+<div id="one-model-for-each-adjective-1" class="section level3">
+<h3>One model for each adjective</h3>
 <p>We can also repeat this analysis separately for each trait. We use the <code>anova</code> function to estimate the variability due to format and print the corresponding <em>F</em>-test.</p>
 <pre class="r"><code>mod_by_item_b2 = items_12 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
   mutate(mod = map(data, ~lmer(response~format + (1|proid), data = .))) %&gt;%
   mutate(aov = map(mod, anova))</code></pre>
-<p>To present these results, we use the <code>tidy</code> function to summarize the findings and extract just the <em>F</em>-test associated with the format variable. We calculate adjusted <em>p</em>-values using a Holm correction. We also create a column that indicates whether the item was reverse-scored; we use this to sort the table, in case a pattern emerges. See the final version of this in Table <a href="#tab:analysis-format-19">2</a>.</p>
+<p>To present these results, we use the <code>tidy</code> function to summarize the findings and extract just the <em>F</em>-test associated with the format variable. We calculate adjusted <em>p</em>-values using a Holm correction. We also create a column that indicates whether the item was reverse-scored; we use this to sort the table, in case a pattern emerges. See the final version of this in Table @ref(tab:analysisFormat19).</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:analysis-format-19">Table 2: </span>Format effects on response by item (block 1 data only)
+Format effects on response by item (block 1 data only)
 </caption>
 <thead>
 <tr>
@@ -1497,8 +1405,7 @@ p-value
 Item
 </th>
 <th style="text-align:left;">
-Reverse
-Scored?
+Reverse Scored?
 </th>
 <th style="text-align:right;">
 SS
@@ -2426,8 +2333,8 @@ Y
 </tbody>
 </table>
 </div>
-<div id="pairwise-t-tests-for-significant-anovas-1" class="section level3" number="0.2.2">
-<h3><span class="header-section-number">0.2.2</span> Pairwise t-tests for significant ANOVAs</h3>
+<div id="pairwise-t-tests-for-significant-anovas-1" class="section level3">
+<h3>Pairwise t-tests for significant ANOVAs</h3>
 <p>Here we identify the specific items with significant differences.</p>
 <pre class="r"><code>sig_item_b2 = summary_by_item_b2 %&gt;%
   filter(p.value &lt; .05)
@@ -2438,12 +2345,12 @@ sig_item_b2</code></pre>
 <p>Then we create models for each adjective. We use the <code>emmeans</code> package to perform pairwise comparisons, again with a Holm correction on the <em>p</em>-values. We also plot the means and 95% confidence intervals of each mean.</p>
 <p><strong>This code will have to be changed after final data collection. It is not self-adapting!</strong></p>
 </div>
-<div id="careless" class="section level3" number="0.2.3">
-<h3><span class="header-section-number">0.2.3</span> Careless</h3>
-<p>The pairwise comparisons of responses to different forms of “careless” are displayed in Table <a href="#tab:analysis-format-21">3</a> and Figure <a href="#fig:analysis-format-22">6</a>.</p>
+<div id="careless" class="section level3">
+<h3>Careless</h3>
+<p>The pairwise comparisons of responses to different forms of “careless” are displayed in Table @ref(tab:analysisFormat21) and Figure @ref(fig:analysisFormat22).</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:analysis-format-21">Table 3: </span>Differences in response to Careless by format (Block 1 and Block 2)
+Differences in response to Careless by format (Block 1 and Block 2)
 </caption>
 <thead>
 <tr>
@@ -2470,9 +2377,7 @@ p
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective
-Only - Am
-Adjective
+Adjective Only - Am Adjective
 </td>
 <td style="text-align:right;">
 0.82
@@ -2492,9 +2397,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective
-Only - Tend to be
-Adjective
+Adjective Only - Tend to be Adjective
 </td>
 <td style="text-align:right;">
 0.14
@@ -2514,10 +2417,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective
-Only - Am someone
-who tends to be
-Adjective
+Adjective Only - Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 -0.44
@@ -2537,9 +2437,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am
-Adjective - Tend to be
-Adjective
+Am Adjective - Tend to be Adjective
 </td>
 <td style="text-align:right;">
 -0.68
@@ -2559,10 +2457,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am
-Adjective - Am someone
-who tends to be
-Adjective
+Am Adjective - Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 -1.26
@@ -2582,10 +2477,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be
-Adjective - Am someone
-who tends to be
-Adjective
+Tend to be Adjective - Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 -0.58
@@ -2605,19 +2497,19 @@ Adjective
 </tr>
 </tbody>
 </table>
-<div class="figure"><span style="display:block;" id="fig:analysis-format-22"></span>
-<img src="analysis_format_files/figure-html/analysis-format-22-1.png" alt="Average response to &quot;careless&quot; by format (Block 1 and Block 2)" width="672" />
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat22-1.png" alt="Average response to &quot;careless&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
-Figure 6: Average response to “careless” by format (Block 1 and Block 2)
+Average response to “careless” by format (Block 1 and Block 2)
 </p>
 </div>
 </div>
-<div id="thrifty" class="section level3" number="0.2.4">
-<h3><span class="header-section-number">0.2.4</span> Thrifty</h3>
-<p>The pairwise comparisons of responses to different forms of “thrifty” are displayed in Table <a href="#tab:analysis-format-23">4</a> and Figure <a href="#fig:analysis-format-24">7</a>.</p>
+<div id="thrifty" class="section level3">
+<h3>Thrifty</h3>
+<p>The pairwise comparisons of responses to different forms of “thrifty” are displayed in Table @ref(tab:analysisFormat23) and Figure @ref(fig:analysisFormat24).</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:analysis-format-23">Table 4: </span>Differences in response to Thifty by format (Block 1 and Block 2)
+Differences in response to Thifty by format (Block 1 and Block 2)
 </caption>
 <thead>
 <tr>
@@ -2644,9 +2536,7 @@ p
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective
-Only - Am
-Adjective
+Adjective Only - Am Adjective
 </td>
 <td style="text-align:right;">
 -0.02
@@ -2666,9 +2556,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective
-Only - Tend to be
-Adjective
+Adjective Only - Tend to be Adjective
 </td>
 <td style="text-align:right;">
 -0.92
@@ -2688,10 +2576,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective
-Only - Am someone
-who tends to be
-Adjective
+Adjective Only - Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 -0.09
@@ -2711,9 +2596,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am
-Adjective - Tend to be
-Adjective
+Am Adjective - Tend to be Adjective
 </td>
 <td style="text-align:right;">
 -0.90
@@ -2733,10 +2616,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am
-Adjective - Am someone
-who tends to be
-Adjective
+Am Adjective - Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 -0.08
@@ -2756,10 +2636,7 @@ Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be
-Adjective - Am someone
-who tends to be
-Adjective
+Tend to be Adjective - Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 0.83
@@ -2779,16 +2656,16 @@ Adjective
 </tr>
 </tbody>
 </table>
-<div class="figure"><span style="display:block;" id="fig:analysis-format-24"></span>
-<img src="analysis_format_files/figure-html/analysis-format-24-1.png" alt="Average response to &quot;thrifty&quot; by format (Block 1 and Block 2)" width="672" />
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat24-1.png" alt="Average response to &quot;thrifty&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
-Figure 7: Average response to “thrifty” by format (Block 1 and Block 2)
+Average response to “thrifty” by format (Block 1 and Block 2)
 </p>
 </div>
 </div>
 </div>
-<div id="account-for-memory-effects-blocks-1-and-2" class="section level2" number="0.3">
-<h2><span class="header-section-number">0.3</span> Account for memory effects (Blocks 1 and 2)</h2>
+<div id="account-for-memory-effects-blocks-1-and-2" class="section level2">
+<h2>Account for memory effects (Blocks 1 and 2)</h2>
 <p>One limitation of the two-blocks model is that format effects may depend on a person’s memory. For example, suppose that participants, in general, are more likely to respond with a 6 to items containing “tend to” (e.g., “tend to be outgoing”) than to items that only start with “am” (e.g., “am outgoing”). However, if a participant remembers that on the first presentation of the item they selected 4, they may be more likely choose 4 again to appear consistent. This example posits that memory moderates format’s effect on response. We model this possibility using participant’s delayed memory scores, or their recall score 10 minutes after seeing the list of words.</p>
 <pre class="r"><code>mod.format_mem = lmer(response~format*delayed_memory + (1|proid),
                   data = items_12)
@@ -2798,92 +2675,20 @@ anova(mod.format_mem)</code></pre>
 ## format                4.8144 1.60479     3 2117.22  1.0675 0.3617
 ## delayed_memory        2.4823 2.48233     1   33.18  1.6513 0.2077
 ## format:delayed_memory 2.9060 0.96867     3 2118.52  0.6444 0.5865</code></pre>
-<pre class="r"><code>summary(mod.format_mem)</code></pre>
-<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
-## lmerModLmerTest]
-## Formula: response ~ format * delayed_memory + (1 | proid)
-##    Data: items_12
-## 
-## REML criterion at convergence: 7144.7
-## 
-## Scaled residuals: 
-##     Min      1Q  Median      3Q     Max 
-## -3.4343 -0.4565  0.2507  0.6893  1.7916 
-## 
-## Random effects:
-##  Groups   Name        Variance Std.Dev.
-##  proid    (Intercept) 0.1804   0.4248  
-##  Residual             1.5033   1.2261  
-## Number of obs: 2170, groups:  proid, 35
-## 
-## Fixed effects:
-##                                                               Estimate
-## (Intercept)                                                    4.58932
-## formatAm\nAdjective                                           -0.27329
-## formatTend to be\nAdjective                                   -0.07698
-## formatAm someone\nwho tends to be\nAdjective                  -0.14891
-## delayed_memory                                                 0.01320
-## formatAm\nAdjective:delayed_memory                             0.03632
-## formatTend to be\nAdjective:delayed_memory                     0.02519
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory    0.02048
-##                                                             Std. Error
-## (Intercept)                                                    0.18198
-## formatAm\nAdjective                                            0.15843
-## formatTend to be\nAdjective                                    0.16694
-## formatAm someone\nwho tends to be\nAdjective                   0.17237
-## delayed_memory                                                 0.03108
-## formatAm\nAdjective:delayed_memory                             0.02641
-## formatTend to be\nAdjective:delayed_memory                     0.02944
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory    0.02956
-##                                                                     df t value
-## (Intercept)                                                   62.17156  25.219
-## formatAm\nAdjective                                         2128.91591  -1.725
-## formatTend to be\nAdjective                                 2092.17673  -0.461
-## formatAm someone\nwho tends to be\nAdjective                2139.15284  -0.864
-## delayed_memory                                                63.52491   0.425
-## formatAm\nAdjective:delayed_memory                          2116.48721   1.375
-## formatTend to be\nAdjective:delayed_memory                  2070.60879   0.856
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory 2147.54209   0.693
-##                                                             Pr(&gt;|t|)    
-## (Intercept)                                                   &lt;2e-16 ***
-## formatAm\nAdjective                                           0.0847 .  
-## formatTend to be\nAdjective                                   0.6447    
-## formatAm someone\nwho tends to be\nAdjective                  0.3878    
-## delayed_memory                                                0.6725    
-## formatAm\nAdjective:delayed_memory                            0.1692    
-## formatTend to be\nAdjective:delayed_memory                    0.3922    
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory   0.4885    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Correlation of Fixed Effects:
-##             (Intr) frmtAA frTtbA frAswttbA dlyd_m frAA:_ fTtbA:
-## frmtAmAdjct -0.439                                             
-## frmtTndtbAd -0.433  0.478                                      
-## frmtAswttbA -0.407  0.455  0.470                               
-## delayd_mmry -0.869  0.387  0.381  0.355                        
-## frmtAAdjc:_  0.397 -0.859 -0.433 -0.413    -0.465              
-## frmtTtbAd:_  0.370 -0.409 -0.865 -0.398    -0.431  0.495       
-## frAswttbA:_  0.354 -0.400 -0.410 -0.873    -0.410  0.484  0.460</code></pre>
-<p>When examining both Block 1 and Block 2 data, memory did not have a main effect on participant responses <span class="math inline">\((F(1, 33.18) = 1.65, p = .208)\)</span> and did not moderate differences between formats <span class="math inline">\((F(3, 2,118.52) = 0.64, p = .586)\)</span>. See these results in Figure <a href="#fig:analysis-format-26">8</a>.</p>
-<pre class="r"><code>plot_model(mod.format_mem,
-           type = &quot;pred&quot;,
-           term = c(&quot;format&quot;, &quot;delayed_memory[meansd]&quot;)) +
-  geom_line() +
-  labs(x = NULL,
-       y = &quot;Average response&quot;) +
-  scale_color_discrete(&quot;Memory&quot;, labels = c(&quot;-1SD&quot;, &quot;Mean&quot;, &quot;+1SD&quot;))+
-  theme_pubclean()</code></pre>
-<div class="figure"><span style="display:block;" id="fig:analysis-format-26"></span>
-<img src="analysis_format_files/figure-html/analysis-format-26-1.png" alt="Predicted response on personality items by condition after controlling for delayed_memory." width="672" />
+<p>When examining both Block 1 and Block 2 data, memory did not have a main effect on participant responses <span class="math inline">\((F(1, 33.18) = 1.65, p = .208)\)</span> and did not moderate differences between formats <span class="math inline">\((F(3, 2,118.52) = 0.64, p = .586)\)</span>. See these results in Figure @ref(fig:analysisFormat26).</p>
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat26-1.png" alt="Predicted response on personality items by condition after controlling for memory (10 minute)." width="672" />
 <p class="caption">
-Figure 8: Predicted response on personality items by condition after controlling for delayed_memory.
+Predicted response on personality items by condition after controlling for memory (10 minute).
 </p>
 </div>
-<div id="one-model-for-each-adjective-2" class="section level3" number="0.3.1">
-<h3><span class="header-section-number">0.3.1</span> One model for each adjective</h3>
-<p>Again, we test this model within each trait adjective, to determine whether the moderating effect of memory is stronger for any particular trait(s). The results are summarized in Table <a href="#tab:analysis-format-27"><strong>??</strong></a>.</p>
+<div id="one-model-for-each-adjective-2" class="section level3">
+<h3>One model for each adjective</h3>
+<p>Again, we test this model within each trait adjective, to determine whether the moderating effect of memory is stronger for any particular trait(s). The results are summarized in Table @ref(tab:analysisformat27).</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Test of interaction of format and memory for individual adjectives
+</caption>
 <thead>
 <tr>
 <th style="empty-cells: hide;border-bottom:hidden;" colspan="6">
@@ -2899,8 +2704,7 @@ p-value
 Item
 </th>
 <th style="text-align:left;">
-Reverse
-Scored?
+Reverse Scored?
 </th>
 <th style="text-align:right;">
 SS
@@ -3732,8 +3536,8 @@ Y
 </tbody>
 </table>
 </div>
-<div id="pairwise-t-tests-for-significant-anovas-2" class="section level3" number="0.3.2">
-<h3><span class="header-section-number">0.3.2</span> Pairwise t-tests for significant ANOVAs</h3>
+<div id="pairwise-t-tests-for-significant-anovas-2" class="section level3">
+<h3>Pairwise t-tests for significant ANOVAs</h3>
 <p>Here we identify the specific items with significant differences.</p>
 <pre class="r"><code>sig_item_mem = summary_by_item_mem %&gt;%
   filter(p.value &lt; .05)
@@ -3743,9 +3547,9 @@ sig_item_mem</code></pre>
 <pre><code>## character(0)</code></pre>
 </div>
 </div>
-<div id="inclusion-of-i-block-1-and-block-3" class="section level2" number="0.4">
-<h2><span class="header-section-number">0.4</span> Inclusion of “I” (Block 1 and Block 3)</h2>
-<p>Finally, we test whether the inclusion of the word “I” impacts item response (e.g. “I am outgoing”). We used two multilevel models, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word “I”. Because we have no specific rationale for how or why “I” would impact responses, we test both the partialled main effect of “I” as well as the interaction with format. Here, we use data from Blocks 1 and 3. Results are presented in Figure <a href="#fig:analysis-format-32">9</a> and the full distribution of responses by format and “i” are presented in Figure <a href="#fig:analysis-format-33">10</a>.</p>
+<div id="inclusion-of-i-block-1-and-block-3" class="section level2">
+<h2>Inclusion of “I” (Block 1 and Block 3)</h2>
+<p>Finally, we test whether the inclusion of the word “I” impacts item response (e.g. “I am outgoing”). We used two multilevel models, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word “I”. Because we have no specific rationale for how or why “I” would impact responses, we test both the partialled main effect of “I” as well as the interaction with format. Here, we use data from Blocks 1 and 3. Results are presented in Figure @ref(fig:analysisFormat32) and the full distribution of responses by format and “i” are presented in Figure @ref(fig:analysisFormat33).</p>
 <pre class="r"><code>items_13 = items_df %&gt;%
   filter(block %in% c(&quot;1&quot;,&quot;3&quot;)) %&gt;%
   filter(condition != &quot;A&quot;) %&gt;%
@@ -3765,43 +3569,21 @@ anova(mod.format_b3_2)</code></pre>
 ## format   3.3194 1.65969     2  14.78  1.1006 0.3584
 ## i        1.7404 1.74044     1 976.53  1.1542 0.2829
 ## format:i 1.5669 0.78345     2 976.81  0.5195 0.5950</code></pre>
-<div class="figure"><span style="display:block;" id="fig:analysis-format-32"></span>
-<img src="analysis_format_files/figure-html/analysis-format-32-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat32-1.png" alt="Predicted response on personality items by condition, using only Block 1 data." width="672" />
 <p class="caption">
-Figure 9: Predicted response on personality items by condition, using only Block 1 data.
+Predicted response on personality items by condition, using only Block 1 data.
 </p>
 </div>
-<pre class="r"><code>means_by_group = items_13 %&gt;%
-  group_by(format, i) %&gt;%
-  summarise(m = mean(response),
-            s = sd(response))
-
-items_13 %&gt;%
-  ggplot(aes(x = response, fill = i)) +
-  geom_histogram(bins = 6, color = &quot;white&quot;) +
-  geom_vline(aes(xintercept = m), data = means_by_group) +
-  geom_text(aes(x = 1,
-                y = 100,
-                label = paste(&quot;M =&quot;, round(m,2),
-                              &quot;\nSD =&quot;, round(s,2))),
-            data = means_by_group,
-            hjust =0,
-            vjust = 1) +
-  facet_grid(i~format, scales = &quot;free&quot;) +
-  guides(fill = &quot;none&quot;) +
-  scale_x_continuous(breaks = 1:6) +
-  labs(y = &quot;Number of particpants&quot;,
-       title = &quot;Distribution of responses by format (Block 1 and Block 2)&quot;) +
-  theme_pubr()</code></pre>
-<div class="figure"><span style="display:block;" id="fig:analysis-format-33"></span>
-<img src="analysis_format_files/figure-html/analysis-format-33-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat33-1.png" alt="Distribution of responses by category, block 1 and block 2" width="672" />
 <p class="caption">
-Figure 10: Distribution of responses by category, block 1 and block 2
+Distribution of responses by category, block 1 and block 2
 </p>
 </div>
-<div id="one-model-for-each-adjective-3" class="section level3" number="0.4.1">
-<h3><span class="header-section-number">0.4.1</span> One model for each adjective</h3>
-<p>As before, we test both the additive (Table <a href="#tab:analysis-format-34b">5</a>) and interaction (Table <a href="#tab:analysis-format-35b">6</a>) terms of <code>format</code> and <code>i</code> for each item.</p>
+<div id="one-model-for-each-adjective-3" class="section level3">
+<h3>One model for each adjective</h3>
+<p>As before, we test both the additive (Table @ref(tab:analysisformat34b)) and interaction (Table @ref(tab:analysisformat35b)) terms of <code>format</code> and <code>i</code> for each item.</p>
 <pre class="r"><code>mod_by_item_i = items_13 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
@@ -3809,7 +3591,7 @@ Figure 10: Distribution of responses by category, block 1 and block 2
   mutate(aov = map(mod, anova))</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:analysis-format-34b">Table 5: </span>Effect of “I” (block 1 and 3 data)
+Effect of “I” (block 1 and 3 data)
 </caption>
 <thead>
 <tr>
@@ -3826,8 +3608,7 @@ p-value
 Item
 </th>
 <th style="text-align:left;">
-Reverse
-Scored?
+Reverse Scored?
 </th>
 <th style="text-align:right;">
 SS
@@ -4761,7 +4542,7 @@ Y
   mutate(aov = map(mod, anova))</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:analysis-format-35b">Table 6: </span>Interaction of format and “I” (block 1 and 3 data)
+Interaction of format and “I” (block 1 and 3 data)
 </caption>
 <thead>
 <tr>
@@ -4778,8 +4559,7 @@ p-value
 Item
 </th>
 <th style="text-align:left;">
-Reverse
-Scored?
+Reverse Scored?
 </th>
 <th style="text-align:right;">
 SS
@@ -5707,8 +5487,8 @@ Y
 </tbody>
 </table>
 </div>
-<div id="pairwise-t-tests-for-significant-anovas-3" class="section level3" number="0.4.2">
-<h3><span class="header-section-number">0.4.2</span> Pairwise t-tests for significant ANOVAs</h3>
+<div id="pairwise-t-tests-for-significant-anovas-3" class="section level3">
+<h3>Pairwise t-tests for significant ANOVAs</h3>
 <p>Here we identify the specific items with significant differences.</p>
 <pre class="r"><code>sig_item_i = summary_by_item_i %&gt;%
   filter(p.value &lt; .05)
@@ -5717,16 +5497,16 @@ sig_item_i = sig_item_i$item
 sig_item_i</code></pre>
 <pre><code>## [1] &quot;lively&quot;   &quot;thorough&quot;</code></pre>
 </div>
-<div id="curious" class="section level3" number="0.4.3">
-<h3><span class="header-section-number">0.4.3</span> Curious</h3>
-<p>The pairwise comparisons of responses to different forms of “curious” are displayed in Table <a href="#tab:analysis-format-37b">7</a> and Figure <a href="#fig:analysis-format-38"><strong>??</strong></a>.</p>
+<div id="curious" class="section level3">
+<h3>Curious</h3>
+<p>The pairwise comparisons of responses to different forms of “curious” are displayed in Table @ref(tab:analysisFormat37b) and Figure @ref(fig:analysisFormat38).</p>
 <pre class="r"><code>curious_model_i = items_13 %&gt;%
   filter(item == &quot;curious&quot;) %&gt;%
   lmer(response~format*i + (1|proid),
                                data = .)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:analysis-format-37b">Table 7: </span>Interaction of format and “I”
+Interaction of format and “I”
 </caption>
 <thead>
 <tr>
@@ -5793,8 +5573,7 @@ Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am someone who tends to be
-Adjective
+Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 -0.18
@@ -5854,8 +5633,7 @@ Tend to be Adjective:I
 </tr>
 <tr>
 <td style="text-align:left;">
-Am someone who tends to be
-Adjective:I
+Am someone who tends to be Adjective:I
 </td>
 <td style="text-align:right;">
 -2.43
@@ -5875,18 +5653,23 @@ Adjective:I
 </tr>
 </tbody>
 </table>
-<p><img src="analysis_format_files/figure-html/analysis-format-38-1.png" width="672" /></p>
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat38-1.png" alt="Effect of format and I on responses to the adjective curious" width="672" />
+<p class="caption">
+Effect of format and I on responses to the adjective curious
+</p>
 </div>
-<div id="lively" class="section level3" number="0.4.4">
-<h3><span class="header-section-number">0.4.4</span> Lively</h3>
-<p>The pairwise comparisons of responses to different forms of “lively” are displayed in Table <a href="#tab:analysis-format-39b">8</a> and Figure <a href="#fig:analysis-format-40"><strong>??</strong></a>.</p>
+</div>
+<div id="lively" class="section level3">
+<h3>Lively</h3>
+<p>The pairwise comparisons of responses to different forms of “lively” are displayed in Table @ref(tab:analysisFormat39b) and Figure @ref(fig:analysisFormat40).</p>
 <pre class="r"><code>lively_model_i = items_13 %&gt;%
   filter(item == &quot;lively&quot;) %&gt;%
   lmer(response~format*i + (1|proid),
                                data = .)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:analysis-format-39b">Table 8: </span>Interaction of format and “I”
+Interaction of format and “I”
 </caption>
 <thead>
 <tr>
@@ -5953,8 +5736,7 @@ Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am someone who tends to be
-Adjective
+Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 0.65
@@ -6014,8 +5796,7 @@ Tend to be Adjective:I
 </tr>
 <tr>
 <td style="text-align:left;">
-Am someone who tends to be
-Adjective:I
+Am someone who tends to be Adjective:I
 </td>
 <td style="text-align:right;">
 2.27
@@ -6035,21 +5816,23 @@ Adjective:I
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>plot_model(lively_model_i, type = &quot;pred&quot;,
-           terms = c(&quot;format&quot;, &quot;i&quot;)) +
-  geom_line()</code></pre>
-<p><img src="analysis_format_files/figure-html/analysis-format-40-1.png" width="672" /></p>
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat40-1.png" alt="Effect of format and I on responses to the adjective lively" width="672" />
+<p class="caption">
+Effect of format and I on responses to the adjective lively
+</p>
 </div>
-<div id="responsible" class="section level3" number="0.4.5">
-<h3><span class="header-section-number">0.4.5</span> Responsible</h3>
-<p>The pairwise comparisons of responses to different forms of “responsible” are displayed in Table <a href="#tab:analysis-format-41b">9</a> and Figure <a href="#fig:analysis-format-42"><strong>??</strong></a>.</p>
+</div>
+<div id="responsible" class="section level3">
+<h3>Responsible</h3>
+<p>The pairwise comparisons of responses to different forms of “responsible” are displayed in Table @ref(tab:analysisFormat41b) and Figure @ref(fig:analysisFormat42).</p>
 <pre class="r"><code>responsible_model_i = items_13 %&gt;%
   filter(item == &quot;responsible&quot;) %&gt;%
   lmer(response~format*i + (1|proid),
                                data = .)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:analysis-format-41b">Table 9: </span>Interaction of format and “I”
+Interaction of format and “I”
 </caption>
 <thead>
 <tr>
@@ -6116,8 +5899,7 @@ Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am someone who tends to be
-Adjective
+Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 0.06
@@ -6177,8 +5959,7 @@ Tend to be Adjective:I
 </tr>
 <tr>
 <td style="text-align:left;">
-Am someone who tends to be
-Adjective:I
+Am someone who tends to be Adjective:I
 </td>
 <td style="text-align:right;">
 0.38
@@ -6198,18 +5979,23 @@ Adjective:I
 </tr>
 </tbody>
 </table>
-<p><img src="analysis_format_files/figure-html/analysis-format-42-1.png" width="672" /></p>
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat42-1.png" alt="Effect of format and I on responses to the adjective responsible" width="672" />
+<p class="caption">
+Effect of format and I on responses to the adjective responsible
+</p>
 </div>
-<div id="sympathetic" class="section level3" number="0.4.6">
-<h3><span class="header-section-number">0.4.6</span> Sympathetic</h3>
-<p>The pairwise comparisons of responses to different forms of “sympathetic” are displayed in Table <a href="#tab:analysis-format-43b">10</a> and Figure <a href="#fig:analysis-format-44"><strong>??</strong></a>.</p>
+</div>
+<div id="sympathetic" class="section level3">
+<h3>Sympathetic</h3>
+<p>The pairwise comparisons of responses to different forms of “sympathetic” are displayed in Table @ref(tab:analysisFormat43b) and Figure @ref(fig:analysisFormat44).</p>
 <pre class="r"><code>sympathetic_model_i = items_13 %&gt;%
   filter(item == &quot;sympathetic&quot;) %&gt;%
   lmer(response~format*i + (1|proid),
                                data = .)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:analysis-format-43b">Table 10: </span>Interaction of format and “I”
+Interaction of format and “I”
 </caption>
 <thead>
 <tr>
@@ -6276,8 +6062,7 @@ Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am someone who tends to be
-Adjective
+Am someone who tends to be Adjective
 </td>
 <td style="text-align:right;">
 -0.50
@@ -6337,8 +6122,7 @@ Tend to be Adjective:I
 </tr>
 <tr>
 <td style="text-align:left;">
-Am someone who tends to be
-Adjective:I
+Am someone who tends to be Adjective:I
 </td>
 <td style="text-align:right;">
 2.10
@@ -6358,17 +6142,17 @@ Adjective:I
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>plot_model(sympathetic_model_i, type = &quot;pred&quot;,
-           terms = c(&quot;format&quot;, &quot;i&quot;)) +
-  geom_line()</code></pre>
-<p><img src="analysis_format_files/figure-html/analysis-format-44-1.png" width="672" /></p>
+<div class="figure">
+<img src="analysis_format_files/figure-html/analysisFormat44-1.png" alt="Effect of format and I on responses to the adjective sympathetic" width="672" />
+<p class="caption">
+Effect of format and I on responses to the adjective sympathetic
+</p>
+</div>
 </div>
 </div>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -6401,35 +6185,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

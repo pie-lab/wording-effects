@@ -29,9 +29,6 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -225,69 +222,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -295,16 +229,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -375,14 +299,14 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Test-retest reliability</h1>
-<h4 class="date">Last updated 2021-08-24</h4>
+<h4 class="date">Last updated 2021-08-25</h4>
 
 </div>
 
 
 <p>We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific – formats #3 and #4 above vs the use of adjectives alone. In other words, we expect equal or lower retest reliability for the adjectives than for longer phrases. We will also consider the effect of performance on the word recall task on retest reliability.</p>
-<div id="prep-dataset" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Prep dataset</h2>
+<div id="prep-dataset" class="section level2">
+<h2>Prep dataset</h2>
 <p>The data structure needed for these analyses is in wide-format. That is, we require one column for each time point. In addition, we hope to examine reliability <em>within</em> format, which requires selecting only the response options which match the original, Block 1, assessment.</p>
 <pre class="r"><code>items_df = items_df %&gt;% 
   mutate(condition = tolower(condition)) %&gt;% 
@@ -408,463 +332,128 @@ items_matchb1 = items_df %&gt;%
   mutate(across(
     ends_with(&quot;memory&quot;), ~(.-mean(., na.rm=T))/sd(., na.rm = T)
   ))</code></pre>
-<p>To estimate the reliability coefficients, we use a multilevel model, predicting the latter block from the earlier one. These models nest responses within participant, allowing us to estimate standard errors which account for the dependency of scores.</p>
+</div>
+<div id="test-retest-reliability-all-items-pooled" class="section level2">
+<h2>Test-retest reliability (all items pooled)</h2>
+<p>To estimate the reliability coefficients, we use a multilevel model, predicting the latter block from the earlier one. These models nest responses within participant, allowing us to estimate standard errors which account for the dependency of scores. Results are shown in Table @ref(tab:testretest7b).</p>
 <pre class="r"><code>tr_mod1_b1b2 = lmer(block_2 ~ block_1 + (1 |proid), data = items_matchb1)
 tr_mod1_b1b3 = lmer(block_3 ~ block_1 + (1 |proid), data = items_matchb1)</code></pre>
-<table style="text-align:center">
+<table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<strong>Test-retest reliability (items pooled) across time</strong>
+Test-retest estimates from multilevel models
 </caption>
+<thead>
 <tr>
-<td colspan="3" style="border-bottom: 1px solid black">
+<th style="text-align:left;">
+Assessments
+</th>
+<th style="text-align:left;">
+Slope coefficient
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Block 1 - Block 2
+</td>
+<td style="text-align:left;">
+0.78 [0.70, 0.85]
 </td>
 </tr>
 <tr>
-<td style="text-align:left">
+<td style="text-align:left;">
+Block 1 - Block 3
 </td>
-<td colspan="2">
-<em>Dependent variable:</em>
-</td>
-</tr>
-<tr>
-<td>
-</td>
-<td colspan="2" style="border-bottom: 1px solid black">
+<td style="text-align:left;">
+0.64 [0.58, 0.70]
 </td>
 </tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-block_2
-</td>
-<td>
-block_3
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(1)
-</td>
-<td>
-(2)
-</td>
-</tr>
-<tr>
-<td colspan="3" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Constant
-</td>
-<td>
--0.02
-</td>
-<td>
--0.05
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.05)
-</td>
-<td>
-(0.05)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-block_1
-</td>
-<td>
-0.78<sup>***</sup>
-</td>
-<td>
-0.64<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.04)
-</td>
-<td>
-(0.03)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td colspan="3" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Observations
-</td>
-<td>
-252
-</td>
-<td>
-682
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Log Likelihood
-</td>
-<td>
--243.38
-</td>
-<td>
--796.09
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Akaike Inf. Crit.
-</td>
-<td>
-494.76
-</td>
-<td>
-1,600.17
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Bayesian Inf. Crit.
-</td>
-<td>
-508.88
-</td>
-<td>
-1,618.27
-</td>
-</tr>
-<tr>
-<td colspan="3" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-<em>Note:</em>
-</td>
-<td colspan="2" style="text-align:right">
-<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05; <sup></strong></em></sup>p&lt;0.01
-</td>
-</tr>
+</tbody>
 </table>
 </div>
-<div id="test-retest-reliability-all-items-pooled-by-memory" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Test-retest reliability (all items pooled, by memory)</h2>
-<p>Here we fit models moderated by memory – that it, perhaps the test-retest coefficient is affected by the memory of the participant.</p>
-<pre class="r"><code>tr_mod2_b1b2 = lmer(block_2 ~ block_1*delayed_memory + 
+<div id="test-retest-reliability-all-items-pooled-moderated-by-memory" class="section level2">
+<h2>Test-retest reliability (all items pooled, moderated by memory)</h2>
+<p>Here we fit models moderated by memory – that it, perhaps the test-retest coefficient is affected by the memory of the participant. Results are shown in Table @ref(tab:testretest8b)</p>
+<pre class="r"><code>tr_mod2_b1b2 = lmer(block_2 ~ block_1*delayed_memory +
                       (1 |proid),
                     data = items_matchb1)
-tr_mod2_b1b3 = lmer(block_3 ~ block_1*very_delayed_memory + 
+tr_mod2_b1b3 = lmer(block_3 ~ block_1*very_delayed_memory +
                       (1 |proid),
                     data = items_matchb1)</code></pre>
-<table style="text-align:center">
+<table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<strong>Test-retest reliability (items pooled) across time and moderated by participant memory</strong>
+Effect of memory on test-retest
 </caption>
+<thead>
 <tr>
-<td colspan="3" style="border-bottom: 1px solid black">
-</td>
+<th style="text-align:left;">
+Term
+</th>
+<th style="text-align:left;">
+Interpretation
+</th>
+<th style="text-align:left;">
+Block 1 - Block 2
+</th>
+<th style="text-align:left;">
+Block 1 - Block 3
+</th>
 </tr>
+</thead>
+<tbody>
 <tr>
-<td style="text-align:left">
-</td>
-<td colspan="2">
-<em>Dependent variable:</em>
-</td>
-</tr>
-<tr>
-<td>
-</td>
-<td colspan="2" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-block_2
-</td>
-<td>
-block_3
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(1)
-</td>
-<td>
-(2)
-</td>
-</tr>
-<tr>
-<td colspan="3" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Constant
-</td>
-<td>
--0.01
-</td>
-<td>
--0.05
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.05)
-</td>
-<td>
-(0.05)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+<td style="text-align:left;">
 block_1
 </td>
-<td>
-0.77<sup>***</sup>
+<td style="text-align:left;">
+Test-retest at average memory
 </td>
-<td>
-0.64<sup>***</sup>
+<td style="text-align:left;">
+0.77 [0.68, 0.85]
 </td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.04)
-</td>
-<td>
-(0.03)
+<td style="text-align:left;">
+0.64 [0.58, 0.70]
 </td>
 </tr>
 <tr>
-<td style="text-align:left">
+<td style="text-align:left;">
+block_1:memory
 </td>
-<td>
+<td style="text-align:left;">
+Change in test-retest by increase in memory
 </td>
-<td>
+<td style="text-align:left;">
+-0.05 [-0.14, 0.04]
 </td>
-</tr>
-<tr>
-<td style="text-align:left">
-delayed_memory
-</td>
-<td>
-0.02
-</td>
-<td>
+<td style="text-align:left;">
+0.01 [-0.06, 0.08]
 </td>
 </tr>
 <tr>
-<td style="text-align:left">
+<td style="text-align:left;">
+memory
 </td>
-<td>
-(0.06)
+<td style="text-align:left;">
+Effect of memory on response
 </td>
-<td>
+<td style="text-align:left;">
+0.02 [-0.10, 0.13]
 </td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-<td>
+<td style="text-align:left;">
+0.00 [-0.11, 0.10]
 </td>
 </tr>
-<tr>
-<td style="text-align:left">
-block_1:delayed_memory
-</td>
-<td>
--0.05
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.05)
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-very_delayed_memory
-</td>
-<td>
-</td>
-<td>
--0.003
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-<td>
-(0.05)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-block_1:very_delayed_memory
-</td>
-<td>
-</td>
-<td>
-0.01
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-<td>
-(0.04)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td colspan="3" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Observations
-</td>
-<td>
-252
-</td>
-<td>
-682
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Log Likelihood
-</td>
-<td>
--246.89
-</td>
-<td>
--800.52
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Akaike Inf. Crit.
-</td>
-<td>
-505.79
-</td>
-<td>
-1,613.05
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Bayesian Inf. Crit.
-</td>
-<td>
-526.96
-</td>
-<td>
-1,640.20
-</td>
-</tr>
-<tr>
-<td colspan="3" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-<em>Note:</em>
-</td>
-<td colspan="2" style="text-align:right">
-<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05; <sup></strong></em></sup>p&lt;0.01
-</td>
-</tr>
+</tbody>
 </table>
 <p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
-<div id="block-1block-2" class="section level3" number="0.2.1">
-<h3><span class="header-section-number">0.2.1</span> Block 1/Block 2</h3>
+<div id="block-1block-2" class="section level3">
+<h3>Block 1/Block 2</h3>
 <pre class="r"><code>mem_list = list(delayed_memory = c(-1,0,1))
 
-emtrends(tr_mod2_b1b2, 
-         pairwise~delayed_memory, 
-         var = &quot;block_1&quot;, 
+emtrends(tr_mod2_b1b2,
+         pairwise~delayed_memory,
+         var = &quot;block_1&quot;,
          at = mem_list)</code></pre>
 <pre><code>## $emtrends
 ##  delayed_memory block_1.trend     SE  df lower.CL upper.CL
@@ -884,14 +473,14 @@ emtrends(tr_mod2_b1b2,
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
-<div id="block-1block-3" class="section level3" number="0.2.2">
-<h3><span class="header-section-number">0.2.2</span> Block 1/Block 3</h3>
+<div id="block-1block-3" class="section level3">
+<h3>Block 1/Block 3</h3>
 <p><strong>This chunk is turned off due to low coverage. Be sure to turn on with real data.</strong></p>
 <pre class="r"><code>mem_list = list(very_delayed_memory = c(-1,0,1))
 
-emtrends(tr_mod2_b1b3, 
-         pairwise~very_delayed_memory, 
-         var = &quot;block_1&quot;, 
+emtrends(tr_mod2_b1b3,
+         pairwise~very_delayed_memory,
+         var = &quot;block_1&quot;,
          at = mem_list)</code></pre>
 <pre><code>## $emtrends
 ##  very_delayed_memory block_1.trend     SE  df lower.CL upper.CL
@@ -912,33 +501,33 @@ emtrends(tr_mod2_b1b3,
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
 </div>
-<div id="test-retest-reliability-all-items-pooled-by-format" class="section level2" number="0.3">
-<h2><span class="header-section-number">0.3</span> Test-retest reliability (all items pooled, by format)</h2>
-<p>We fit these same models, except now we moderate by format, to determine whether the test-retest reliabilty differs as a function of item wording.</p>
+<div id="test-retest-reliability-all-items-pooled-by-format" class="section level2">
+<h2>Test-retest reliability (all items pooled, by format)</h2>
+<p>We fit these same models, except now we moderate by format, to determine whether the test-retest reliability differs as a function of item wording.</p>
 <pre class="r"><code>tr_mod3_b1b2 = lmer(block_2 ~ block_1*condition + (1 |proid),
                     data = items_matchb1)
 tr_mod3_b1b3 = lmer(block_3 ~ block_1*condition + (1 |proid),
                     data = items_matchb1)
 
 anova(tr_mod3_b1b2)</code></pre>
-<p>Type III Analysis of Variance Table with Satterthwaite’s method
-Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)<br />
-block_1 129.868 129.868 1 242.83 368.1068 &lt; 2e-16 ***
-condition 0.961 0.320 3 27.78 0.9082 0.44968<br />
-block_1:condition 2.518 0.839 3 238.81 2.3793 0.07039 .<br />
-—
-Signif. codes: 0 ‘<em><strong>’ 0.001 ’</strong>’ 0.01 ’</em>’ 0.05 ‘.’ 0.1 ’ ’ 1</p>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##                    Sum Sq Mean Sq NumDF  DenDF  F value  Pr(&gt;F)    
+## block_1           129.868 129.868     1 242.83 368.1068 &lt; 2e-16 ***
+## condition           0.961   0.320     3  27.78   0.9082 0.44968    
+## block_1:condition   2.518   0.839     3 238.81   2.3793 0.07039 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>anova(tr_mod3_b1b3)</code></pre>
-<p>Type III Analysis of Variance Table with Satterthwaite’s method
-Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)<br />
-block_1 240.879 240.88 1 646.33 416.9331 &lt; 2e-16 **<em>
-condition 8.459 2.82 3 17.56 4.8803 0.01212 </em><br />
-block_1:condition 1.201 0.40 3 644.48 0.6927 0.55673<br />
-—
-Signif. codes: 0 ‘<em><strong>’ 0.001 ’</strong>’ 0.01 ’</em>’ 0.05 ‘.’ 0.1 ’ ’ 1</p>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##                    Sum Sq Mean Sq NumDF  DenDF  F value  Pr(&gt;F)    
+## block_1           240.879  240.88     1 646.33 416.9331 &lt; 2e-16 ***
+## condition           8.459    2.82     3  17.56   4.8803 0.01212 *  
+## block_1:condition   1.201    0.40     3 644.48   0.6927 0.55673    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
-<div id="block-1block-2-1" class="section level3" number="0.3.1">
-<h3><span class="header-section-number">0.3.1</span> Block 1/Block 2</h3>
+<div id="block-1block-2-1" class="section level3">
+<h3>Block 1/Block 2</h3>
 <pre class="r"><code>emtrends(tr_mod3_b1b2, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
 <pre><code>## $emtrends
 ##   condition                             block_1.trend     SE  df lower.CL
@@ -974,8 +563,8 @@ Signif. codes: 0 ‘<em><strong>’ 0.001 ’</strong>’ 0.01 ’</em>’ 0.05 
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 </div>
-<div id="block-1block-3-1" class="section level3" number="0.3.2">
-<h3><span class="header-section-number">0.3.2</span> Block 1/Block 3</h3>
+<div id="block-1block-3-1" class="section level3">
+<h3>Block 1/Block 3</h3>
 <pre class="r"><code>emtrends(tr_mod3_b1b3, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
 <pre><code>## $emtrends
 ##   condition                             block_1.trend     SE  df lower.CL
@@ -1012,8 +601,8 @@ Signif. codes: 0 ‘<em><strong>’ 0.001 ’</strong>’ 0.01 ’</em>’ 0.05 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 </div>
 </div>
-<div id="test-retest-reliability-items-separated-by-format" class="section level2" number="0.4">
-<h2><span class="header-section-number">0.4</span> Test-retest reliability (items separated, by format)</h2>
+<div id="test-retest-reliability-items-separated-by-format" class="section level2">
+<h2>Test-retest reliability (items separated, by format)</h2>
 <p>To assess test-retest reliability for each item, we can rely on more simple correlation analyses, as each participant only contributed one response to each item in each block. We first not the sample size coverage for these comparisons:</p>
 <pre class="r"><code>items_matchb1 %&gt;%
   group_by(item, condition) %&gt;%
@@ -1032,24 +621,6 @@ Signif. codes: 0 ‘<em><strong>’ 0.001 ’</strong>’ 0.01 ’</em>’ 0.05 
 ##     min   max  mean median
 ##   &lt;int&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
 ## 1     7    11  8.75    8.5</code></pre>
-<pre class="r"><code>items_matchb1 %&gt;%
-  group_by(item, condition) %&gt;%
-  count() %&gt;%
-  ungroup() %&gt;%
-  full_join(expand_grid(item = unique(items_matchb1$item),
-                        condition = unique(items_matchb1$condition))) %&gt;%
-  mutate(n = ifelse(is.na(n), 0, n)) %&gt;%
-  ggplot(aes(x = n)) +
-  geom_histogram(bins = 50) +
-  labs(x = &quot;Sample size&quot;,
-       y = &quot;Number of tests&quot;) +
-  facet_wrap(~condition)</code></pre>
-<div class="figure"><span style="display:block;" id="fig:test-retest-15"></span><span style="display:block;" id="fig:testre"></span>
-<img src="test_retest_files/figure-html/test-retest-15-1.png" alt=" Sample sizes for item-level test-retest correlations." width="672" />
-<p class="caption">
-Figure 2: Figure 1:  Sample sizes for item-level test-retest correlations.
-</p>
-</div>
 <pre class="r"><code>items_cors = items_matchb1 %&gt;%
   select(item, condition, contains(&quot;block&quot;)) %&gt;%
   group_by(item, condition) %&gt;%
@@ -1059,36 +630,10 @@ Figure 2: Figure 1:  Sample sizes for item-level test-retest correlations.
          cors = map(cors, ~.x %&gt;% mutate(comp = rownames(.)))) %&gt;%
   select(item, condition, cors) %&gt;%
   unnest(cols = c(cors))</code></pre>
-<pre class="r"><code>items_cors %&gt;%
-  mutate(raw.r = printnum(raw.r),
-         raw.r = case_when(
-           is.na(raw.p) ~ NA_character_,
-           raw.p &lt; .05 ~ paste0(raw.r, &quot;*&quot;),
-           TRUE ~ raw.r)) %&gt;%
-  select(item, condition, comp, raw.r) %&gt;%
-  mutate(reverse = case_when(
-    item %in% reverse ~ &quot;Y&quot;,
-    TRUE ~ &quot;N&quot;
-  )) %&gt;% 
-  filter(comp != &quot;blc_2-blc_3&quot;) %&gt;% 
-  mutate(condition = case_when(
-    condition == &quot;Adjective\nOnly&quot; ~ &quot;a&quot;,
-    condition == &quot;Am\nAdjective&quot; ~ &quot;b&quot;,
-    condition == &quot;Tend to be\nAdjective&quot; ~ &quot;c&quot;,
-    condition == &quot;Am someone\nwho tends to be\nAdjective&quot; ~ &quot;d&quot;
-  )) %&gt;% 
-  unite(comp, condition, comp) %&gt;% 
-  spread(comp, raw.r) %&gt;%
-  arrange(reverse, item) %&gt;% 
-  kable(caption = &quot;Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.&quot;,
-        col.names = c(&quot;Item&quot;, &quot;Reverse scored?&quot;, rep(c(&quot;5 min&quot;, &quot;2 weeks&quot;), 4)),
-        booktabs = T) %&gt;%
-  kable_styling() %&gt;% 
-  add_header_above(c(&quot; &quot; = 2, &quot;Adjective Only&quot; = 2, &quot;Am Adjective&quot; = 2,
-                     &quot;Tend to be&quot; = 2, &quot;Am someone who tends to be&quot; = 2))</code></pre>
+<p>The test-retest correlations of each item-format combination are presented in Table @ref(tab:testretest17). We also visualize these correlations in Figure @ref(fig:testretest18),</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:test-retest-17">Table 1: </span>Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.
+Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.
 </caption>
 <thead>
 <tr>
@@ -2047,31 +1592,16 @@ Y
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>items_cors %&gt;%
-  mutate(comp_num = case_when(
-    comp == &quot;blc_1-blc_2&quot; ~ 1,
-    comp == &quot;blc_1-blc_3&quot; ~ 2,
-    comp == &quot;blc_2-blc_3&quot; ~ NA_real_,
-  )) %&gt;%
-  filter(!is.na(comp_num)) %&gt;% 
-  ggplot(aes(x = comp_num, y = raw.r, color = condition)) +
-  geom_jitter(width = .1) +
-  scale_x_continuous(breaks = c(1:2),
-                     labels = c(&quot;1-2&quot;, &quot;1-3&quot;)) +
-  labs(x = NULL, y = &quot;Correlation&quot;) +
-  theme_pubclean()</code></pre>
-<div class="figure"><span style="display:block;" id="fig:test-retest-18"></span>
-<img src="test_retest_files/figure-html/test-retest-18-1.png" alt="Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item." width="672" />
+<div class="figure">
+<img src="test_retest_files/figure-html/testretest18-1.png" alt="Test-retest correlations of specific items across word format." width="672" />
 <p class="caption">
-Figure 3: Test-retest correlations of specific items across word format. Each dot represents the test-retest correlation within a specific item.
+Test-retest correlations of specific items across word format.
 </p>
 </div>
 </div>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -2104,35 +1634,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

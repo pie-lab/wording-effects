@@ -101,7 +101,7 @@ format_data = format_data %>%
   mutate(alpha = map(data, psych::alpha))
 ```
 
-We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.)
+We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table \@ref(tab:internal10b) and Figure \@ref(fig:internal11).
 
 ```{r internal-10, results = 'asis'}
 format_data = format_data %>% 
@@ -110,7 +110,8 @@ format_data = format_data %>%
          se_est = map_dbl(alpha_list, "ase"),
          lower_est = alpha_est - (1.96*se_est),
          upper_est = alpha_est + (1.96*se_est)) 
-
+```
+```{r internal10b, results = 'asis', echo = F }
 format_data %>% 
   select(condition, variable, alpha_est, lower_est, upper_est) %>% 
   mutate(
@@ -118,11 +119,12 @@ format_data %>%
     value = paste0(alpha_est, " [", lower_est, ", ", upper_est, "]")) %>% 
   select(-contains("est")) %>% 
   spread(condition, value) %>% 
-  kable(booktabs = T) %>% 
+  kable(booktabs = T,
+        caption = "Cronbach's alpha across format and trait.") %>% 
   kable_styling()
 ```
 
-```{r internal-11}
+```{r internal11, echo = F, fig.cap = "Estimates of Cronbach's alpha across format and trait."}
 format_data %>% 
   ggplot(aes(x = condition, y = alpha_est)) +
   geom_errorbar(aes(ymin = lower_est, ymax = upper_est)) +
@@ -132,14 +134,16 @@ format_data %>%
   theme_pubclean()
 ```
 
-Alpha is the average split-half reliability; given space, it can be useful to report the distribution of all split-half reliability estimates. We use the `splitHalf` function to calculate those. We use smoothed correlation matrices here because when developing code on the pilot data, we had non-positive definite correlation matrices. 
+Alpha is the average split-half reliability; given space, it can be useful to report the distribution of all split-half reliability estimates. We use the `splitHalf` function to calculate those. We use smoothed correlation matrices here because when developing code on the pilot data, we had non-positive definite correlation matrices. See Figure \@ref(fig:internal12b) for these distributions. 
 
 ```{r internal-12}
 format_data = format_data %>% 
   mutate(cor_mat = map(data, cor),
          cor_mat = map(cor_mat, cor.smooth)) %>% 
   mutate(splithalf = map(cor_mat, splitHalf, raw = T))
+```
 
+```{r internal12b, echo = F, fig.cap = "Distribution of split-half reliabilities"}
 format_data %>% 
   mutate(sh_est = map(splithalf, "raw")) %>% 
   select(variable, condition, sh_est) %>% 
