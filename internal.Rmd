@@ -2,7 +2,7 @@
 title: "Does the internal consistency of Big Five traits vary by item wording?"
 date: "Last updated `r Sys.Date()`"
 output: 
-  html_document:
+  bookdown::html_document2:
     toc: TRUE
     toc_float: TRUE
 ---
@@ -96,7 +96,7 @@ format_data = format_data %>%
 
 Next we apply the alpha function to the datasets. We do not need to use the `check.keys` function, as items were reverse-scored during the cleaning process.
 
-```{r internal-9}
+```{r internal-9, results = 'hide'}
 format_data = format_data %>% 
   mutate(alpha = map(data, psych::alpha))
 ```

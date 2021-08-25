@@ -2,16 +2,18 @@
 title: "Test-retest reliability"
 date: "Last updated `r Sys.Date()`"
 output: 
-  html_document:
+  bookdown::html_document2:
     toc: TRUE
     toc_float: TRUE
 ---
 
-We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. In other words, we expect equal or lower retest reliability for the adjectives than for longer phrases. We will also consider the effect of performance on the word recall task on retest reliability .
+We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. In other words, we expect equal or lower retest reliability for the adjectives than for longer phrases. We will also consider the effect of performance on the word recall task on retest reliability.
 
 
 ```{r test-retest-1, include = FALSE}
 knitr::opts_chunk$set(warning = F, message = F)
+is_pdf = "pdf_document" %in% rmarkdown::all_output_formats(knitr::current_input())
+is_html = !is_pdf
 ```
 
 ```{r test-retest-2, echo = F}
@@ -22,6 +24,7 @@ library(lme4) # for mulitlevel modeling
 library(lmerTest) # for p-values
 library(emmeans) # for comparisons
 library(sjPlot) # for figures
+library(stargazer) # for tables
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
 library(papaja) # for number formatting
@@ -44,7 +47,9 @@ items_df = items_df %>%
   mutate(condition = tolower(condition)) %>% 
   mutate(condition = factor(condition, 
                             levels = c("a", "b", "c", "d"),
-                            labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "Am someone\nwho tends to be\nAdjective")))
+                            labels = c("Adjective\nOnly", "Am\nAdjective", 
+                                       "Tend to be\nAdjective", 
+                                       "Am someone\nwho tends to be\nAdjective")))
 
 items_matchb1 = items_df %>% 
   mutate(across(c(format, condition), as.character)) %>% 
@@ -73,15 +78,24 @@ items_matchb1 = items_matchb1 %>%
 ```
 
 
-## Test-retest reliability (all items pooled)
 
 To estimate the reliability coefficients, we use a multilevel model, predicting the latter block from the earlier one. These models nest responses within participant, allowing us to estimate standard errors which account for the dependency of scores.
 
-```{r test-retest-7 }
+```{r test-retest-7, results = ifelse(is_html, "asis", "hide")}
 tr_mod1_b1b2 = lmer(block_2 ~ block_1 + (1 |proid), data = items_matchb1)
 tr_mod1_b1b3 = lmer(block_3 ~ block_1 + (1 |proid), data = items_matchb1)
 
-tab_model(tr_mod1_b1b2, tr_mod1_b1b3, show.re.var = F)
+```
+
+```{r, results = 'asis', echo = F}
+output_type = ifelse(is_pdf, "latex", "html")
+class(tr_mod1_b1b2) <- class(tr_mod1_b1b3) <- "lmerMod"
+stargazer(tr_mod1_b1b2, tr_mod1_b1b3, 
+          type = output_type, 
+          intercept.top = T, 
+          intercept.bottom = F, 
+          digits = 2,
+          title = "Test-retest reliability (items pooled) across time")
 ```
 
 
@@ -96,10 +110,18 @@ tr_mod2_b1b2 = lmer(block_2 ~ block_1*delayed_memory +
 tr_mod2_b1b3 = lmer(block_3 ~ block_1*very_delayed_memory + 
                       (1 |proid),
                     data = items_matchb1)
-
-tab_model(tr_mod2_b1b2, tr_mod2_b1b3, show.re.var = F)
-
 ```
+
+```{r, results = 'asis', echo = F}
+class(tr_mod2_b1b2) <- class(tr_mod2_b1b3) <- "lmerMod"
+stargazer(tr_mod2_b1b2, tr_mod2_b1b3, 
+          type = output_type, 
+          intercept.top = T, 
+          intercept.bottom = F,
+          digits = 2,
+          title = "Test-retest reliability (items pooled) across time and moderated by participant memory")
+```
+
 
 We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.
 

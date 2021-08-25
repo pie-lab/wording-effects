@@ -9,12 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Kelsey Condon, Cameron Kay, Sara Weston, &amp; David Condon" />
 
 
 <title>On item wording effects</title>
 
-<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -360,7 +359,7 @@ div.tocify {
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/pie-lab/wording-effects">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -375,14 +374,14 @@ div.tocify {
 
 <h1 class="title toc-ignore">On item wording effects</h1>
 <h3 class="subtitle">Code and supplemental material</h3>
-<h4 class="author">Kelsey Condon, Cameron Kay, Sara Weston, &amp; David Condon</h4>
+<h4 class="author"></h4>
 
 </div>
 
 
 <p>Would you prefer to see the code and results in PDF form? <a href="supplemental-pdf/supplemental.pdf">You can download a PDF here</a>.</p>
-<div id="overview" class="section level1">
-<h1>Overview</h1>
+<div id="overview" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Overview</h1>
 <p>A fundamental assumption in the methodology of psychological assessment relates to the equivalence of self-report ratings based on single-word descriptors (typically, adjectives) and brief phrases containing the same terms (i.e., “Calm” vs “I am typically calm.”). The assumption is that seemingly trivial differences in stimuli have no effect on response patterns or the interpretations that can be made from data collected using either of these formats. Indeed, there are numerous cases where the assumption of functional equivalence is self-evident. To give another example, “Talkative” and “Talk a lot” are essentially identical.</p>
 <p>Yet, claims of equivalence based on face validity have some limits. For example, the absence of an effect due to item wording changes seems less clear for some descriptors than others. Consider being instructed to rate yourself as “active” or “warm” relative to “Tend to be active” or “Tend to be warm.” By specifically invoking tendency, the latter phrasing is more clearly prompting the respondents to rate trait-level psychological characteristics across situations, reducing the likelihood that they will respond based on transient physical (or even psychological) states. Similarly, the extent of the differences in phrasing should also be expected to increase the likelihood of a meaningful difference, i.e., “Organized” vs “I am someone who tends to be organized.” The latter format improves upon the simple adjective prompt in this case by clarifying both the trait/state ambiguity (by referencing tendency) and the lack of clarity around between-person and within-person ratings (with “… am someone who…”). To be specific, the second format is prompting respondents to rate the tendency to be organized relative to other people.</p>
 <p>The primary aim of the current study is to evaluate the effect of different item wording options using both between-person and within-person analyses. The study design required to evaluate this question will also allow for evaluation of test-retest reliability at the item-level. Main effects of item-wording format are not expected, though minor variability is expected depending on the content of the item stem – the single-word descriptor. In addition, the absence of a significant main effect is likely to be a meaningful contribution for research on personality structure and assessment.</p>
@@ -426,6 +425,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

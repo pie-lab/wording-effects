@@ -2,7 +2,7 @@
 title: "Workspace Information"
 date: "Last updated `r Sys.Date()`"
 output: 
-  html_document:
+  bookdown::html_document2:
     toc: TRUE
     toc_float: TRUE
 ---

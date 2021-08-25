@@ -2,7 +2,7 @@
 title: "Does item format impact response?"
 date: "Last updated `r Sys.Date()`"
 output: 
-  html_document:
+  bookdown::html_document2:
     toc: TRUE
     toc_float: TRUE
 ---
@@ -60,7 +60,7 @@ fb1_aov = fb1_aov %>%
          across(where(is.numeric), printnum))
 ```
 
-When examining only Block 1 data, item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ responses to personality items $(F(`r fb1_aov$NumDF[[1]]`, `r fb1_aov$DenDF[[1]]`) = `r fb1_aov$Fval[[1]]`, p = `r fb1_aov$Pval[[1]]`)$.
+When examining only Block 1 data, item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ responses to personality items $(F(`r fb1_aov$NumDF[[1]]`, `r fb1_aov$DenDF[[1]]`) = `r fb1_aov$Fval[[1]]`, p = `r fb1_aov$Pval[[1]]`)$. See Figure \@ref(fig:analysis-format-7) for a visualization of this effect. In addition, Figure \@ref(fig:analysis-format-8) shows the full distribution of responses across format.
 
 
 ```{r analysis-format-6, echo = F}
@@ -69,7 +69,7 @@ save(mod.format_b1, file = here("objects/mod_format_b1.Rdata"))
 ```
 
 
-```{r analysis-format-7, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
+```{r analysis-format-7, fig.cap = "Predicted response on personality items by condition, using only Block 1 data.", echo = F}
 plot_b1 = plot_model(mod.format_b1, type = "pred")
 
 plot_b1$format +
@@ -79,7 +79,7 @@ plot_b1$format +
   theme_pubclean()
 ```
 
-```{r analysis-format-8, fig.cap = "Distribution of responses by category, block 1 data only"}
+```{r analysis-format-8, fig.cap = "Distribution of responses by category, block 1 data only", echo = F}
 means_by_group = item_block1 %>%
   group_by(format) %>%
   summarise(m = mean(response),
@@ -116,9 +116,9 @@ mod_by_item_b1 = item_block1 %>%
   mutate(aov = map(mod, anova))
 ```
 
-We apply a Holm correction to the _p_-values extracted from these analyses, to adjust for the number of tests conducted. We present results in a table, which is organized by whether items were reverse-coded prior to analysis.
+We apply a Holm correction to the _p_-values extracted from these analyses, to adjust for the number of tests conducted. We present results in Table \@ref(tab:mod1_item), which is organized by whether items were reverse-coded prior to analysis.
 
-```{r}
+```{r mod1_item, echo = F}
 summary_by_item_b1 = mod_by_item_b1 %>%
   ungroup() %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
@@ -160,7 +160,9 @@ Then we create models for each adjective. We use the `emmeans` package to perfor
 
 ### Talkative
 
-```{r analysis-format-11, results = 'asis'}
+The pairwise comparisons of responses to different forms of "talkative" are displayed in Table \@ref(tab:analysis-format-11) and Figure \@ref(fig:analysis-format-12).
+
+```{r analysis-format-11, results = 'asis', echo = F}
 talkative_model_b1 = item_block1 %>%
   filter(item == "talkative") %>%
   lm(response~format, data = .)
@@ -176,13 +178,13 @@ pairs(talkative_em_b1, adjust = "holm") %>%
   kable_styling()
 ```
 
-```{r analysis-format-12, fig.cap = "Average response to \"talkative\" by format (block 1 data only)" }
+```{r analysis-format-12, fig.cap = "Average response to \"talkative\" by format (block 1 data only)", echo = F}
 plot_model(talkative_model_b1, type = "pred", terms = c("format"))
 ```
 
 ## Effect of format (Block 1 and 2)
 
-We again test whether format is a significant predictor of response. However, here we use data from both Blocks 1 and 2. As a reminder, all participants were presented with all four formats during Block 2. We expect this model to have greater power than the previous model, due to both increased sample size (twice as many data points) and because participants now provide data to all four formats, instead of only one (i.e., a within-person analysis).
+We again test whether format is a significant predictor of response. However, here we use data from both Blocks 1 and 2. As a reminder, all participants were presented with all four formats during Block 2. We expect this model to have greater power than the previous model, due to both increased sample size (twice as many data points) and because participants now provide data to all four formats, instead of only one (i.e., a within-person analysis). 
 
 ```{r analysis-format-13}
 items_12 = items_df %>% filter(block %in% c("1","2"))
@@ -207,7 +209,7 @@ fb2_aov = fb2_aov %>%
          across(where(is.numeric), printnum))
 ```
 
-When examining both Block 1 and Block 2 data, item format was `r ifelse(fb2_sig, "associated", "unassociated")` with participants’ responses to personality items $(F(`r fb2_aov$NumDF[[1]]`, `r fb2_aov$DenDF[[1]]`) = `r fb2_aov$Fval[[1]]`, p = `r fb2_aov$Pval[[1]]`)$.
+When examining both Block 1 and Block 2 data, item format was `r ifelse(fb2_sig, "associated", "unassociated")` with participants’ responses to personality items $(F(`r fb2_aov$NumDF[[1]]`, `r fb2_aov$DenDF[[1]]`) = `r fb2_aov$Fval[[1]]`, p = `r fb2_aov$Pval[[1]]`)$. You can see the effect visualized in Figure \@ref(fig:analysis-format-16). In addition, the full histogram of responses to each format are presented in Figure \@ref(fig:analysis-format-17).
 
 ```{r analysis-format-15, echo = F}
 # save for power analysis
@@ -215,7 +217,7 @@ save(mod.format_b2, file = here("objects/mod_format_b2.Rdata"))
 ```
 
 
-```{r analysis-format-16, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
+```{r analysis-format-16, fig.cap = "Predicted response on personality items by condition, using Block 1 and Block 2.", echo =F}
 plot_b2 = plot_model(mod.format_b2, type = "pred")
 
 plot_b2$format +
@@ -225,7 +227,7 @@ plot_b2$format +
   theme_pubclean()
 ```
 
-```{r analysis-format-17, fig.cap = "Distribution of responses by category, block 1 and block 2"}
+```{r analysis-format-17, fig.cap = "Distribution of responses by category, block 1 and block 2", echo = F}
 means_by_group = items_12 %>%
   group_by(format) %>%
   summarise(m = mean(response),
@@ -262,9 +264,9 @@ mod_by_item_b2 = items_12 %>%
   mutate(aov = map(mod, anova))
 ```
 
-To present these results, we use the `tidy` function to summarise the findings and extract just the _F_-test associated with the format variable. We calculate adjusted _p_-values using a Holm correction. We also create a column that indicates whether the item was reverse-scored; we use this to sort the table, in case a pattern emerges.
+To present these results, we use the `tidy` function to summarize the findings and extract just the _F_-test associated with the format variable. We calculate adjusted _p_-values using a Holm correction. We also create a column that indicates whether the item was reverse-scored; we use this to sort the table, in case a pattern emerges. See the final version of this in Table \@ref(tab:analysis-format-19).
 
-```{r analysis-format-19}
+```{r analysis-format-19, echo = F}
 summary_by_item_b2 = mod_by_item_b2 %>%
   ungroup() %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
@@ -306,7 +308,9 @@ Then we create models for each adjective. We use the `emmeans` package to perfor
 
 ### Careless
 
-```{r analysis-format-21, results = 'asis'}
+The pairwise comparisons of responses to different forms of "careless" are displayed in Table \@ref(tab:analysis-format-21) and Figure \@ref(fig:analysis-format-22).
+
+```{r analysis-format-21, echo = F, results = 'asis'}
 careless_model_b2 = items_12 %>%
   filter(item == "careless") %>%
   lmer(response~format + (1|proid),
@@ -323,13 +327,17 @@ pairs(careless_em_b2, adjust = "holm") %>%
   kable_styling()
 ```
 
-```{r analysis-format-22, fig.cap = "Average response to \"careless\" by format (Block 1 and Block 2)" }
+```{r analysis-format-22, echo = F, fig.cap = "Average response to \"careless\" by format (Block 1 and Block 2)" }
 plot_model(careless_model_b2, type = "pred", terms = c("format"))
 ```
 
+
 ### Thrifty
 
-```{r analysis-format-23, results = 'asis'}
+The pairwise comparisons of responses to different forms of "thrifty" are displayed in Table \@ref(tab:analysis-format-23) and Figure \@ref(fig:analysis-format-24).
+
+
+```{r analysis-format-23, results = 'asis', echo = F}
 thrifty_model_b2 = items_12 %>%
   filter(item == "thrifty") %>%
   lmer(response~format + (1|proid),
@@ -346,7 +354,7 @@ pairs(thrifty_em_b2, adjust = "holm") %>%
   kable_styling()
 ```
 
-```{r analysis-format-24, fig.cap = "Average response to \"thrifty\" by format (Block 1 and Block 2)" }
+```{r analysis-format-24, fig.cap = "Average response to \"thrifty\" by format (Block 1 and Block 2)", echo = F}
 plot_model(thrifty_model_b2, type = "pred", terms = c("format"))
 ```
 
@@ -374,7 +382,7 @@ fmem_aov = fmem_aov %>%
          across(where(is.numeric), printnum))
 ```
 
-When examining both Block 1 and Block 2 data, memory `r ifelse(fmem_sig1, "had", "did not have")` a main effect on participant responses $(F(`r fmem_aov$NumDF[[2]]`, `r fmem_aov$DenDF[[2]]`) = `r fmem_aov$Fval[[2]]`, p = `r fmem_aov$Pval[[2]]`)$ and `r ifelse(fmem_sig2, "did", "did not")` moderate differences between formats $(F(`r fmem_aov$NumDF[[3]]`, `r fmem_aov$DenDF[[3]]`) = `r fmem_aov$Fval[[3]]`, p = `r fmem_aov$Pval[[3]]`)$.
+When examining both Block 1 and Block 2 data, memory `r ifelse(fmem_sig1, "had", "did not have")` a main effect on participant responses $(F(`r fmem_aov$NumDF[[2]]`, `r fmem_aov$DenDF[[2]]`) = `r fmem_aov$Fval[[2]]`, p = `r fmem_aov$Pval[[2]]`)$ and `r ifelse(fmem_sig2, "did", "did not")` moderate differences between formats $(F(`r fmem_aov$NumDF[[3]]`, `r fmem_aov$DenDF[[3]]`) = `r fmem_aov$Fval[[3]]`, p = `r fmem_aov$Pval[[3]]`)$. See these results in Figure \@ref(fig:analysis-format-26). 
 
 
 ```{r analysis-format-26, fig.cap = "Predicted response on personality items by condition after controlling for delayed_memory."}
@@ -390,9 +398,9 @@ plot_model(mod.format_mem,
 
 ### One model for each adjective
 
-Again, we test this model within each trait adjective, to determine whether the moderating effect of memory is stronger for any particular trait(s).
+Again, we test this model within each trait adjective, to determine whether the moderating effect of memory is stronger for any particular trait(s). The results are summarized in Table \@ref(tab:analysis-format-27).
 
-```{r analysis-format-27, results = 'asis'}
+```{r analysis-format-27, results = 'asis', echo = F}
 mod_by_item_mem = items_12 %>%
   group_by(item) %>%
   nest() %>%
@@ -436,7 +444,7 @@ sig_item_mem
 
 ## Inclusion of "I" (Block 1 and Block 3)
 
-Finally, we test whether the inclusion of the word "I" impacts item response (e.g. "I am outgoing"). We used two multilevel models, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word "I". Because we have no specific rationale for how or why "I" would impact responses, we test both the partialled main effect of "I" as well as the interaction with format. Here, we use data from Blocks 1 and 3.
+Finally, we test whether the inclusion of the word "I" impacts item response (e.g. "I am outgoing"). We used two multilevel models, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word "I". Because we have no specific rationale for how or why "I" would impact responses, we test both the partialled main effect of "I" as well as the interaction with format. Here, we use data from Blocks 1 and 3. Results are presented in Figure \@ref(fig:analysis-format-32) and the full distribution of responses by format and "i" are presented in Figure \@ref(fig:analysis-format-33).
 
 ```{r analysis-format-29}
 items_13 = items_df %>%
@@ -461,7 +469,7 @@ save(mod.format_b3_2, file = here("objects/mod_format_b3.Rdata"))
 ```
 
 
-```{r analysis-format-32, fig.cap = "Predicted response on personality items by condition, using only Block 1 data."}
+```{r analysis-format-32, fig.cap = "Predicted response on personality items by condition, using only Block 1 data.", echo = F}
 plot_b3 = plot_model(mod.format_b3_2, type = "pred", terms = c("format", "i"))
 plot_b3 +
   geom_line() +
@@ -498,13 +506,16 @@ items_13 %>%
 
 ### One model for each adjective
 
+As before, we test both the additive (Table \@ref(tab:analysis-format-34b)) and interaction (Table \@ref(tab:analysis-format-35b)) terms of `format` and `i` for each item. 
+
 ```{r analysis-format-34, results = 'asis'}
 mod_by_item_i = items_13 %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~lmer(response~format + i + (1|proid), data = .))) %>%
   mutate(aov = map(mod, anova))
-
+```
+```{r analysis-format-34b, results = 'asis', echo = F}
 summary_by_item_i = mod_by_item_i %>%
   ungroup() %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
@@ -535,7 +546,8 @@ mod_by_item_i2 = items_13 %>%
   nest() %>%
   mutate(mod = map(data, ~lmer(response~format*i + (1|proid), data = .))) %>%
   mutate(aov = map(mod, anova))
-
+```
+```{r analysis-format-35b, results = 'asis', echo = F}
 summary_by_item_i2 = mod_by_item_i2 %>%
   ungroup() %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
@@ -573,12 +585,15 @@ sig_item_i
 
 ### Curious
 
+The pairwise comparisons of responses to different forms of "curious" are displayed in Table \@ref(tab:analysis-format-37b) and Figure \@ref(fig:analysis-format-38).
+
 ```{r analysis-format-37, results = 'asis'}
 curious_model_i = items_13 %>%
   filter(item == "curious") %>%
   lmer(response~format*i + (1|proid),
                                data = .)
-
+```
+```{r analysis-format-37b, results = 'asis', echo = F}
 curious_model_i %>%
   tidy() %>%
   mutate(term = str_replace(term, "\n", " "),
@@ -594,7 +609,7 @@ curious_model_i %>%
   kable_styling()
 ```
 
-```{r analysis-format-38}
+```{r analysis-format-38, echo = F}
 plot_model(curious_model_i, type = "pred",
            terms = c("format", "i")) +
   geom_line()
@@ -602,12 +617,17 @@ plot_model(curious_model_i, type = "pred",
 
 ### Lively
 
+The pairwise comparisons of responses to different forms of "lively" are displayed in Table \@ref(tab:analysis-format-39b) and Figure \@ref(fig:analysis-format-40).
+
+
 ```{r analysis-format-39, results = 'asis'}
 lively_model_i = items_13 %>%
   filter(item == "lively") %>%
   lmer(response~format*i + (1|proid),
                                data = .)
+```
 
+```{r analysis-format-39b, results = 'asis', echo = F}
 lively_model_i %>%
   tidy() %>%
   mutate(term = str_replace(term, "\n", " "),
@@ -631,12 +651,17 @@ plot_model(lively_model_i, type = "pred",
 
 ### Responsible
 
+The pairwise comparisons of responses to different forms of "responsible" are displayed in Table \@ref(tab:analysis-format-41b) and Figure \@ref(fig:analysis-format-42).
+
+
 ```{r analysis-format-41, results = 'asis'}
 responsible_model_i = items_13 %>%
   filter(item == "responsible") %>%
   lmer(response~format*i + (1|proid),
                                data = .)
+```
 
+```{r analysis-format-41b, results = 'asis', echo = F}
 responsible_model_i %>%
   tidy() %>%
   mutate(term = str_replace(term, "\n", " "),
@@ -652,7 +677,7 @@ responsible_model_i %>%
   kable_styling()
 ```
 
-```{r analysis-format-42}
+```{r analysis-format-42, echo = F}
 plot_model(responsible_model_i, type = "pred",
            terms = c("format", "i")) +
   geom_line()
@@ -660,11 +685,16 @@ plot_model(responsible_model_i, type = "pred",
 
 ### Sympathetic
 
+The pairwise comparisons of responses to different forms of "sympathetic" are displayed in Table \@ref(tab:analysis-format-43b) and Figure \@ref(fig:analysis-format-44).
+
+
 ```{r analysis-format-43, results = 'asis'}
 sympathetic_model_i = items_13 %>%
   filter(item == "sympathetic") %>%
   lmer(response~format*i + (1|proid),
                                data = .)
+```
+```{r analysis-format-43b, results = 'asis', echo = F}
 
 sympathetic_model_i %>%
   tidy() %>%

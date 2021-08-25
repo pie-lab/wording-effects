@@ -13,7 +13,7 @@
 
 <title>Descriptive statistics</title>
 
-<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -361,7 +361,7 @@ div.tocify {
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/pie-lab/wording-effects">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -375,296 +375,20 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Descriptive statistics</h1>
-<h4 class="date">Last updated 2021-08-19</h4>
+<h4 class="date">Last updated 2021-08-24</h4>
 
 </div>
 
 
-<p>Here we present the descriptive statistics reported in the manuscript.</p>
-<div id="demographics" class="section level2">
-<h2>Demographics</h2>
-<div id="age" class="section level3">
-<h3>Age</h3>
-<pre class="r"><code>data %&gt;% 
-  select(age) %&gt;% 
-  summarise(across(age, list(mean = mean, 
-                             sd = sd, 
-                             min = min, 
-                             max = max)))</code></pre>
-<pre><code>## # A tibble: 1 x 4
-##   age_mean age_sd age_min age_max
-##      &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-## 1     39.4   6.02      31      51</code></pre>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = age)) +
-  geom_histogram(binwidth = 5, color = &quot;white&quot;) +
-  labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;,
-       title = &quot;Distribution of ages&quot;) +
-  theme_pubr()</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Participants (<em>N</em> = 35; 22.86% female) were, on average, 39.40 years old (<em>SD</em> = 6.02, minimum = 31, maximum = 51; see Figure <a href="#fig:descriptives-5">1</a>A for the full distribution). A majority (65.71%) of participants identified as White only (25.71% only); Figure <a href="#fig:descriptives-5">1</a>B shows the other response options and frequencies. See Figure <a href="#fig:descriptives-5">1</a>C for the distribution of education, and <a href="#fig:descriptives-5">1</a>D for the distribution of household income.</p>
+<div class="figure"><span style="display:block;" id="fig:descriptives-5"></span>
+<img src="descriptives_files/figure-html/descriptives-5-1.png" alt="Distributions of key demographics across the entire sample" width="768" />
+<p class="caption">
+Figure 1: Distributions of key demographics across the entire sample
+</p>
 </div>
-<div id="gender" class="section level3">
-<h3>Gender</h3>
-<pre class="r"><code>table(data$sex)</code></pre>
-<pre><code>## 
-## Female   Male 
-##      8     27</code></pre>
-<pre class="r"><code>round((table(data$sex)/nrow(data))*100,2)</code></pre>
-<pre><code>## 
-## Female   Male 
-##  22.86  77.14</code></pre>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = sex)) +
-  geom_bar(stat = &quot;count&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;,
-       title = &quot;Distribution of sex&quot;) +
-  theme_pubr()</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-</div>
-<div id="education" class="section level3">
-<h3>Education</h3>
-<pre class="r"><code>table(data$edu)</code></pre>
-<pre><code>## 
-##                            Less than 12 years 
-##                                             0 
-##                      High school graduate/GED 
-##                                             2 
-##               Currently in college/university 
-##                                             0 
-## Some college/university, but did not graduate 
-##                                             0 
-##                     Associate degree (2 year) 
-##                                             1 
-##            College/university degree (4 year) 
-##                                             8 
-##  Currently in graduate or professional school 
-##                                             2 
-##        Graduate or professional school degree 
-##                                            22</code></pre>
-<pre class="r"><code>round((table(data$edu)/nrow(data))*100,2)</code></pre>
-<pre><code>## 
-##                            Less than 12 years 
-##                                          0.00 
-##                      High school graduate/GED 
-##                                          5.71 
-##               Currently in college/university 
-##                                          0.00 
-## Some college/university, but did not graduate 
-##                                          0.00 
-##                     Associate degree (2 year) 
-##                                          2.86 
-##            College/university degree (4 year) 
-##                                         22.86 
-##  Currently in graduate or professional school 
-##                                          5.71 
-##        Graduate or professional school degree 
-##                                         62.86</code></pre>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = edu)) +
-  geom_bar(stat = &quot;count&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;,
-       title = &quot;Distribution of education&quot;) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-</div>
-<div id="ethnicity" class="section level3">
-<h3>Ethnicity</h3>
-<pre class="r"><code>table(data$ethnic)</code></pre>
-<pre><code>## 
-##               Asian               Black            Hispanic Mixed (two or more) 
-##                   1                   9                   1                   1 
-##               White 
-##                  23</code></pre>
-<pre class="r"><code>round((table(data$ethnic)/nrow(data))*100,2)</code></pre>
-<pre><code>## 
-##               Asian               Black            Hispanic Mixed (two or more) 
-##                2.86               25.71                2.86                2.86 
-##               White 
-##               65.71</code></pre>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = ethnic)) +
-  geom_bar(stat = &quot;count&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;,
-       title = &quot;Distribution of ethnicity&quot;) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-</div>
-<div id="household-income" class="section level3">
-<h3>Household income</h3>
-<pre class="r"><code>table(data$hhinc)</code></pre>
-<pre><code>## 
-##   &lt; $20,000   $20K-$40K   $40K-$60K   $60K-$80K  $80K-$100K $100K-$120K 
-##           0           3           2           3           2           3 
-## $120K-$150K $150K-$200K $200K-$250K $250K-$350K $350K-$500K      &gt;$500K 
-##           8           3           0           1           0           0</code></pre>
-<pre class="r"><code>round((table(data$hhinc)/nrow(data))*100,2)</code></pre>
-<pre><code>## 
-##   &lt; $20,000   $20K-$40K   $40K-$60K   $60K-$80K  $80K-$100K $100K-$120K 
-##        0.00        8.57        5.71        8.57        5.71        8.57 
-## $120K-$150K $150K-$200K $200K-$250K $250K-$350K $350K-$500K      &gt;$500K 
-##       22.86        8.57        0.00        2.86        0.00        0.00</code></pre>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = hhinc)) +
-  geom_bar(stat = &quot;count&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;,
-       title = &quot;Distribution of household income&quot;) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-</div>
-</div>
-<div id="demographics-by-device-type" class="section level2">
-<h2>Demographics by device type</h2>
-<div id="age-1" class="section level3">
-<h3>Age</h3>
-<pre class="r"><code>age_mod = lm(age ~ devicetype, data = data) 
-
-apa_print(age_mod)$table %&gt;% 
-  kable(booktabs = T) %&gt;% 
-  kable_styling()</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;">
-predictor
-</th>
-<th style="text-align:left;">
-estimate
-</th>
-<th style="text-align:left;">
-ci
-</th>
-<th style="text-align:left;">
-statistic
-</th>
-<th style="text-align:left;">
-p.value
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Intercept
-</td>
-<td style="text-align:left;">
-39.50
-</td>
-<td style="text-align:left;">
-<span class="math inline">\([36.81\)</span>, <span class="math inline">\(42.19]\)</span>
-</td>
-<td style="text-align:left;">
-29.92
-</td>
-<td style="text-align:left;">
-&lt; .001
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DevicetypeMobile
-</td>
-<td style="text-align:left;">
-0.00
-</td>
-<td style="text-align:left;">
-<span class="math inline">\([-4.81\)</span>, <span class="math inline">\(4.81]\)</span>
-</td>
-<td style="text-align:left;">
-0.00
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DevicetypeTablet
-</td>
-<td style="text-align:left;">
--1.17
-</td>
-<td style="text-align:left;">
-<span class="math inline">\([-8.93\)</span>, <span class="math inline">\(6.60]\)</span>
-</td>
-<td style="text-align:left;">
--0.31
-</td>
-<td style="text-align:left;">
-.761
-</td>
-</tr>
-</tbody>
-</table>
-<pre class="r"><code>plot_model(age_mod, type = &quot;pred&quot;)$devicetype +
-  labs(x = NULL, y = &quot;Average age&quot;) +
-  theme_pubclean()</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-</div>
-<div id="sex" class="section level3">
-<h3>Sex</h3>
-<pre class="r"><code>chisq.test(table(data$sex, data$devicetype))</code></pre>
-<pre><code>Pearson&#39;s Chi-squared test</code></pre>
-<p>data: table(data<span class="math inline">\(sex, data\)</span>devicetype) X-squared = 2.8283, df = 2, p-value = 0.2431</p>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = sex, fill = devicetype)) +
-  geom_bar(stat = &quot;count&quot;) +
-  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
-  guides(fill = &quot;none&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;) +
-  theme_pubr()</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-</div>
-<div id="education-1" class="section level3">
-<h3>Education</h3>
-<pre class="r"><code>chisq.test(table(data$edu, data$devicetype))</code></pre>
-<pre><code>Pearson&#39;s Chi-squared test</code></pre>
-<p>data: table(data<span class="math inline">\(edu, data\)</span>devicetype) X-squared = NaN, df = 14, p-value = NA</p>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = edu, fill = devicetype)) +
-  geom_bar(stat = &quot;count&quot;) +
-  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
-  guides(fill = &quot;none&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-</div>
-<div id="ethnicity-1" class="section level3">
-<h3>Ethnicity</h3>
-<pre class="r"><code>chisq.test(table(data$ethnic, data$devicetype))</code></pre>
-<pre><code>Pearson&#39;s Chi-squared test</code></pre>
-<p>data: table(data<span class="math inline">\(ethnic, data\)</span>devicetype) X-squared = 3.9678, df = 8, p-value = 0.86</p>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = ethnic, fill = devicetype)) +
-  geom_bar(stat = &quot;count&quot;) +
-  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
-  guides(fill = &quot;none&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
-</div>
-<div id="household-income-1" class="section level3">
-<h3>Household income</h3>
-<pre class="r"><code>chisq.test(table(data$hhinc, data$devicetype))</code></pre>
-<pre><code>Pearson&#39;s Chi-squared test</code></pre>
-<p>data: table(data<span class="math inline">\(hhinc, data\)</span>devicetype) X-squared = NaN, df = 22, p-value = NA</p>
-<pre class="r"><code>data %&gt;% 
-  ggplot(aes(x = hhinc, fill = devicetype)) +
-  geom_bar(stat = &quot;count&quot;) +
-  facet_wrap(~devicetype, scales = &quot;free_y&quot;) +
-  guides(fill = &quot;none&quot;) +
-  labs(x = NULL, y = &quot;Frequency&quot;) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
-<p><img src="descriptives_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-</div>
-</div>
-<div id="time" class="section level2">
-<h2>Time</h2>
+<div id="time" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Time</h2>
 <p>How much time elapsed between assessments?</p>
 <pre class="r"><code>data = data %&gt;% 
   mutate(difference = as.numeric(start_date2-start_date))
@@ -680,59 +404,52 @@ summary(data$difference)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
 ##   2.000   3.329   4.925   8.910   7.875  40.833      13</code></pre>
 </div>
-<div id="personality-by-block-and-format" class="section level2">
-<h2>Personality by block and format</h2>
-<div id="block-1" class="section level3">
-<h3>Block 1</h3>
-<pre class="r"><code>items_df %&gt;%
-  filter(block == &quot;1&quot;) %&gt;% 
-  group_by(format) %&gt;%
-  summarise(
-    mean = mean(response),
-    sd = sd(response),
-    median = median(response),
-    N_responses = n(),
-    N_participants = length(unique(proid))
-  ) %&gt;%
-  kable(booktabs = T, digits = c(0,2,2,0,0,0),
-        caption = &quot;Descriptives of responses to Block 1&quot;) %&gt;%
-  kable_styling()</code></pre>
+<div id="personality-by-block-and-format" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Personality by block and format</h2>
+<p>See Table <a href="#tab:descriptives27">1</a> for the descriptive statistics of each format by block.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Descriptives of responses to Block 1
+<span id="tab:descriptives27">Table 1: </span>Descriptives of responses by format and block
 </caption>
 <thead>
 <tr>
 <th style="text-align:left;">
-format
+Block
+</th>
+<th style="text-align:left;">
+Format
 </th>
 <th style="text-align:right;">
-mean
+M
 </th>
 <th style="text-align:right;">
-sd
+SD
 </th>
 <th style="text-align:right;">
-median
+Median
 </th>
 <th style="text-align:right;">
-N_responses
+N (responses)
 </th>
 <th style="text-align:right;">
-N_participants
+N (participants)
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only
+1
+</td>
+<td style="text-align:left;">
+Adjective
+Only
 </td>
 <td style="text-align:right;">
 4.70
 </td>
 <td style="text-align:right;">
-1.31
+1
 </td>
 <td style="text-align:right;">
 5
@@ -746,13 +463,17 @@ Adjective Only
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective
+1
+</td>
+<td style="text-align:left;">
+Am
+Adjective
 </td>
 <td style="text-align:right;">
 4.52
 </td>
 <td style="text-align:right;">
-1.32
+1
 </td>
 <td style="text-align:right;">
 5
@@ -766,13 +487,17 @@ Am Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be Adjective
+1
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 4.63
 </td>
 <td style="text-align:right;">
-1.22
+1
 </td>
 <td style="text-align:right;">
 5
@@ -786,13 +511,18 @@ Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am someone who tends to be Adjective
+1
+</td>
+<td style="text-align:left;">
+Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 4.73
 </td>
 <td style="text-align:right;">
-1.32
+1
 </td>
 <td style="text-align:right;">
 5
@@ -804,39 +534,228 @@ Am someone who tends to be Adjective
 7
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:right;">
+4.68
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+273
+</td>
+<td style="text-align:right;">
+35
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:right;">
+4.57
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+279
+</td>
+<td style="text-align:right;">
+35
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:right;">
+4.67
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+269
+</td>
+<td style="text-align:right;">
+35
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+Am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:right;">
+4.61
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+264
+</td>
+<td style="text-align:right;">
+35
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+Adjective
+Only
+</td>
+<td style="text-align:right;">
+4.87
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+186
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+Am
+Adjective
+</td>
+<td style="text-align:right;">
+4.67
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+217
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+Tend to be
+Adjective
+</td>
+<td style="text-align:right;">
+4.46
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+186
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+Am someone
+who tends to be
+Adjective
+</td>
+<td style="text-align:right;">
+5.06
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+93
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
 </tbody>
 </table>
-<pre class="r"><code>items_df %&gt;%
-  filter(block == &quot;1&quot;) %&gt;% 
-  group_by(item, format) %&gt;%
-  summarise(
-    mean = mean(response),
-    sd = sd(response)
-  ) %&gt;% 
-  mutate(value = paste0(
-    printnum(mean), &quot; (&quot;, printnum(sd), &quot;)&quot;
-  )) %&gt;%
-  select(-mean, -sd) %&gt;%
-  spread(format, value) %&gt;% 
-  kable(booktabs = T) %&gt;%
-  kable_styling()</code></pre>
+<p>See Table <a href="#tab:descriptives-28">2</a> for the descriptive statistics of each item and format in Block 1 (Time 1).</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:descriptives-28">Table 2: </span>Descriptives of responses to Block 1 by format and item
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
 item
 </th>
 <th style="text-align:left;">
-Adjective Only
+Adjective
+Only
 </th>
 <th style="text-align:left;">
-Am Adjective
+Am
+Adjective
 </th>
 <th style="text-align:left;">
-Tend to be Adjective
+Tend to be
+Adjective
 </th>
 <th style="text-align:left;">
-Am someone who tends to be Adjective
+Am someone
+who tends to be
+Adjective
 </th>
 </tr>
 </thead>
@@ -1370,162 +1289,32 @@ worrying
 </tr>
 </tbody>
 </table>
-</div>
-<div id="block-2" class="section level3">
-<h3>Block 2</h3>
-<pre class="r"><code>items_df %&gt;%
-  filter(block == &quot;2&quot;) %&gt;% 
-  group_by(format) %&gt;%
-  summarise(
-    mean = mean(response),
-    sd = sd(response),
-    median = median(response),
-    N_responses = n(),
-    N_participants = length(unique(proid))
-  ) %&gt;%
-  kable(booktabs = T, digits = c(0,2,2,0,0,0),
-        caption = &quot;Descriptives of responses to Block 2&quot;) %&gt;%
-  kable_styling()</code></pre>
+<p>See Table <a href="#tab:descriptives-30">3</a> for the descriptive statistics of each item and format in Block 2 (Time 1).</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Descriptives of responses to Block 2
+<span id="tab:descriptives-30">Table 3: </span>Descriptives of responses to Block 2 by format and item
 </caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-format
-</th>
-<th style="text-align:right;">
-mean
-</th>
-<th style="text-align:right;">
-sd
-</th>
-<th style="text-align:right;">
-median
-</th>
-<th style="text-align:right;">
-N_responses
-</th>
-<th style="text-align:right;">
-N_participants
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Adjective Only
-</td>
-<td style="text-align:right;">
-4.68
-</td>
-<td style="text-align:right;">
-1.13
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-273
-</td>
-<td style="text-align:right;">
-35
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am Adjective
-</td>
-<td style="text-align:right;">
-4.57
-</td>
-<td style="text-align:right;">
-1.42
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-279
-</td>
-<td style="text-align:right;">
-35
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Tend to be Adjective
-</td>
-<td style="text-align:right;">
-4.67
-</td>
-<td style="text-align:right;">
-1.32
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-269
-</td>
-<td style="text-align:right;">
-35
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am someone who tends to be Adjective
-</td>
-<td style="text-align:right;">
-4.61
-</td>
-<td style="text-align:right;">
-1.30
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-264
-</td>
-<td style="text-align:right;">
-35
-</td>
-</tr>
-</tbody>
-</table>
-<pre class="r"><code>items_df %&gt;%
-  filter(block == &quot;2&quot;) %&gt;%
-  group_by(item, format) %&gt;%
-  summarise(
-    mean = mean(response),
-    sd = sd(response)
-  ) %&gt;% 
-  mutate(value = paste0(
-    printnum(mean), &quot; (&quot;, printnum(sd), &quot;)&quot;
-  )) %&gt;%
-  select(-mean, -sd) %&gt;%
-  spread(format, value) %&gt;% 
-  kable(booktabs = T) %&gt;%
-  kable_styling()</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
 item
 </th>
 <th style="text-align:left;">
-Adjective Only
+Adjective
+Only
 </th>
 <th style="text-align:left;">
-Am Adjective
+Am
+Adjective
 </th>
 <th style="text-align:left;">
-Tend to be Adjective
+Tend to be
+Adjective
 </th>
 <th style="text-align:left;">
-Am someone who tends to be Adjective
+Am someone
+who tends to be
+Adjective
 </th>
 </tr>
 </thead>
@@ -2059,162 +1848,32 @@ worrying
 </tr>
 </tbody>
 </table>
-</div>
-<div id="block-3" class="section level3">
-<h3>Block 3</h3>
-<pre class="r"><code>items_df %&gt;%
-  filter(block == &quot;2&quot;) %&gt;% 
-  group_by(format) %&gt;%
-  summarise(
-    mean = mean(response),
-    sd = sd(response),
-    median = median(response),
-    N_responses = n(),
-    N_participants = length(unique(proid))
-  ) %&gt;%
-  kable(booktabs = T, digits = c(0,2,2,0,0,0),
-        caption = &quot;Descriptives of responses to Block 2&quot;) %&gt;%
-  kable_styling()</code></pre>
+<p>See Table <a href="#tab:descriptives-32">4</a> for the descriptive statistics of each item and format in Block 3 (Time 2).</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Descriptives of responses to Block 2
+<span id="tab:descriptives-32">Table 4: </span>Descriptives of items to Block 3 by format
 </caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-format
-</th>
-<th style="text-align:right;">
-mean
-</th>
-<th style="text-align:right;">
-sd
-</th>
-<th style="text-align:right;">
-median
-</th>
-<th style="text-align:right;">
-N_responses
-</th>
-<th style="text-align:right;">
-N_participants
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Adjective Only
-</td>
-<td style="text-align:right;">
-4.68
-</td>
-<td style="text-align:right;">
-1.13
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-273
-</td>
-<td style="text-align:right;">
-35
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am Adjective
-</td>
-<td style="text-align:right;">
-4.57
-</td>
-<td style="text-align:right;">
-1.42
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-279
-</td>
-<td style="text-align:right;">
-35
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Tend to be Adjective
-</td>
-<td style="text-align:right;">
-4.67
-</td>
-<td style="text-align:right;">
-1.32
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-269
-</td>
-<td style="text-align:right;">
-35
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am someone who tends to be Adjective
-</td>
-<td style="text-align:right;">
-4.61
-</td>
-<td style="text-align:right;">
-1.30
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-264
-</td>
-<td style="text-align:right;">
-35
-</td>
-</tr>
-</tbody>
-</table>
-<pre class="r"><code>items_df %&gt;%
-  filter(block == &quot;2&quot;) %&gt;%
-  group_by(item, format) %&gt;%
-  summarise(
-    mean = mean(response),
-    sd = sd(response)
-  ) %&gt;% 
-  mutate(value = paste0(
-    printnum(mean), &quot; (&quot;, printnum(sd), &quot;)&quot;
-  )) %&gt;%
-  select(-mean, -sd) %&gt;%
-  spread(format, value) %&gt;% 
-  kable(booktabs = T) %&gt;%
-  kable_styling()</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
 item
 </th>
 <th style="text-align:left;">
-Adjective Only
+Adjective
+Only
 </th>
 <th style="text-align:left;">
-Am Adjective
+Am
+Adjective
 </th>
 <th style="text-align:left;">
-Tend to be Adjective
+Tend to be
+Adjective
 </th>
 <th style="text-align:left;">
-Am someone who tends to be Adjective
+Am someone
+who tends to be
+Adjective
 </th>
 </tr>
 </thead>
@@ -2748,7 +2407,6 @@ worrying
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 
 
@@ -2789,6 +2447,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

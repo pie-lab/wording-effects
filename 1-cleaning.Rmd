@@ -2,9 +2,9 @@
 title: "Data cleaning"
 date: "Last updated `r Sys.Date()`"
 output: 
-  html_document:
-    toc: TRUE
-    toc_float: TRUE
+  bookdown::html_document2:
+    toc: true
+    fig_caption: yes
 ---
 
 ```{r 1-cleaning-1, include = FALSE}
@@ -226,6 +226,7 @@ We removed `r nrow(olddata)-nrow(data_t1)` participants that do not speak englis
 We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row.
 
 To proceed, first we create a dataframe containing just the responses to personality items in the first block.
+
 ```{r 1-cleaning-18 }
 # first, identify unique adjectives, in order
 adjectives = p_items %>%
@@ -327,7 +328,7 @@ for(i in 1:nrow(block2)){
 block2$block2_runs = block2_runs
 ```
 
-We combine the variables holding the maximum runs into a single data frame. We will remove participants if their maximum run in either block was greater than or equal to 17.
+We combine the variables holding the maximum runs into a single data frame. We will remove participants if their maximum run in either block was greater than or equal to 17. See Figure \@ref(fig:1-cleaning-24) for a visualization of the spread and associations between run lengths across participants. 
 
 ```{r 1-cleaning-23 }
 #combine results
@@ -342,7 +343,7 @@ runs_data = block1 %>%
     ))
 ```
 
-```{r 1-cleaning-24, fig.cap = "Maximum number of same consecutive responses in personality blocks."}
+```{r 1-cleaning-24, fig.cap="Maximum number of same consecutive responses in personality blocks.", echo = F}
 #visualize
 runs_data %>%
   ggplot(aes(block1_runs, block2_runs)) +
@@ -369,7 +370,7 @@ rm(runs_data)
 
 #### Based on inattentive responding
 
-We expect to exclude any participant who has an average response of 4 (“slightly agree”) or greater to the attention check items. Two items from the Inattentive and Deviant Responding Inventory for Adjectives (IDRIA) scale (Kay & Saucier, in prep) have been included here, in part to help evaluate the extent of inattentive responding but also to consider the effect of item wording on these items. The two items used here (i.e., “Asleep”, “Human”) were chosen to be as inconspicuous as possible, so as to not to inflate item response durations. The frequency item (i.e., “human”) will be reverse-scored, so that higher scores on both the infrequency and frequency items reflect greater inattentive responding.
+We expect to exclude any participant who has an average response of 4 (“slightly agree”) or greater to the attention check items. Two items from the Inattentive and Deviant Responding Inventory for Adjectives (IDRIA) scale (Kay & Saucier, in prep) have been included here, in part to help evaluate the extent of inattentive responding but also to consider the effect of item wording on these items. The two items used here (i.e., “Asleep”, “Human”) were chosen to be as inconspicuous as possible, so as to not to inflate item response duration. The frequency item (i.e., “human”) will be reverse-scored, so that higher scores on both the infrequency and frequency items reflect greater inattentive responding. Figure \@ref(fig:1-cleaning-27) shows the distribution of average responses to attention check items.
 
 ```{r 1-cleaning-26 }
 in_average = data_t1 %>%
@@ -386,7 +387,8 @@ in_average = data_t1 %>%
       avg >= 4 ~ "Remove",
       TRUE ~ "Keep"))
 ```
-```{r 1-cleaning-27, fig.cap = "Average response to inattention check items"}
+
+```{r 1-cleaning-27, fig.cap = "Average response to inattention check items", echo = F}
 in_average %>%
   ggplot(aes(x = avg, fill = remove)) +
   geom_histogram(bins = 20, color = "white") +
@@ -432,7 +434,7 @@ timing_data %>%
   summarise(min(n), max(n))
 ```
 
-Excellent! Now we calculate the average response time per item for each participant. We mark a participant for removal if their average time is less than 1 second or greater than 30. See Figure \@ref(fig:timing_dist) for a distribution of average response time.
+Excellent! Now we calculate the average response time per item for each participant. We mark a participant for removal if their average time is less than 1 second or greater than 30. See Figure \@ref(fig:1-cleaning-33) for a distribution of average response time.
 
 ```{r 1-cleaning-32 }
 timing_data = timing_data %>%
@@ -445,7 +447,7 @@ timing_data = timing_data %>%
   ))
 ```
 
-```{r 1-cleaning-33, fig.cap = "Distribution of average time to respond to personality items."}
+```{r 1-cleaning-33, fig.cap = "Distribution of average time to respond to personality items.", echo = F}
 timing_data %>%
   ggplot(aes(x = m_time, fill = remove)) +
   geom_histogram(color = "white") +
@@ -464,7 +466,7 @@ data_t1 = inner_join(data_t1, filter(timing_data, remove == "Keep")) %>%
 
 Based on timing, we removed `r printnum(nrow(olddata)-nrow(data_t1))` participants.
 
-We create a variable which indicates the Block 1 condition of each participant. This is used in two places: first, in recruitinig participants at Time 2 (participants are given the same format at Time 2 as they received in Block 1), and second, in selecting the corret items during the test-retest analyses. 
+We create a variable which indicates the Block 1 condition of each participant. This is used in two places: first, in recruiting participants at Time 2 (participants are given the same format at Time 2 as they received in Block 1), and second, in selecting the corret items during the test-retest analyses. 
 
 ```{r 1-cleaning-36 }
 data_t1 = data_t1 %>% 
@@ -600,7 +602,7 @@ olddata_2 = data_2
 
 #### Based on patterns
 
-We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row.
+We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row. The distribution of runs in Time 2 is depicted in Figure \@ref(fig:1-cleaning-55).
 
 ```{r 1-cleaning-53 }
 # first, identify unique adjectives, in order
@@ -658,7 +660,7 @@ runs_data_2 = block3 %>%
     ))
 ```
 
-```{r 1-cleaning-55, fig.cap = "Maximum number of same consecutive responses in personality block 3."}
+```{r 1-cleaning-55, fig.cap = "Maximum number of same consecutive responses in personality block 3.", echo = F}
 #visualize
 runs_data_2 %>%
   ggplot(aes(block3_runs)) +
@@ -689,6 +691,8 @@ rm(runs_data_2)
 
 #### Based on inattentive responding
 
+Participants who respond positively to the adjective _asleep_ or negatively to the word _human_ are assumed to be inattentive. We filter out participants whose average response to these two items is greater than or equal to 4 (see Figure \@ref(fig:1-cleaning-59) for the distribution).
+
 ```{r 1-cleaning-58 }
 in_average = data_2 %>%
   # reverse score human
@@ -704,7 +708,7 @@ in_average = data_2 %>%
       avg >= 4 ~ "Remove",
       TRUE ~ "Keep"))
 ```
-```{r 1-cleaning-59, fig.cap = "Average response to inattention check items"}
+```{r 1-cleaning-59, fig.cap = "Average response to inattention check items", echo = F}
 in_average %>%
   ggplot(aes(x = avg, fill = remove)) +
   geom_histogram(bins = 20, color = "white") +
@@ -724,6 +728,8 @@ data_2 = data_2 %>%
 ```
 
 #### Based on average time to respond to personality items
+
+Participants who take too little (< 1 second) or too long (greater than 30 seconds) on average to answer each personality item are excluded. See Figure \@ref(fig:1-cleaning-64) for the distribution of average response time per item.
 
 ```{r 1-cleaning-61 }
 timing_data_2 = data_2 %>%
@@ -755,7 +761,7 @@ timing_data_2 = timing_data_2 %>%
   ))
 ```
 
-```{r 1-cleaning-64, fig.cap = "Distribution of average time to respond to personality items in Block 3."}
+```{r 1-cleaning-64, fig.cap = "Distribution of average time to respond to personality items in Block 3.", echo = F}
 timing_data_2 %>%
   ggplot(aes(x = m_time, fill = remove)) +
   geom_histogram(color = "white") +
@@ -936,18 +942,10 @@ data %>%
 
 ```
 
-Participants remember on average `r papaja::printnum(mean(data$memory))` words correctly $(SD = `r papaja::printnum(sd(data$memory))`)$,
+Participants remember on average `r papaja::printnum(mean(data$memory))` words correctly $(SD = `r papaja::printnum(sd(data$memory))`)$.
 
-```{r 1-cleaning-76, fig.cap = "Correct responses on the memory task"}
-data %>%
-  ggplot(aes(x = memory)) +
-  geom_histogram(bins = 11, color = "white") +
-  labs(x = "Number of correct responses") +
-  scale_x_continuous(breaks = 0:10) +
-  theme_pubr()
-```
 
-```{r 1-cleaning-77 }
+```{r 1-cleaning-77, echo = F}
 data %>%
   group_by(mem_condition) %>%
   summarise(
@@ -998,26 +996,7 @@ mem2 = mem2 %>%
 data = inner_join(data, mem2)
 ```
 
-```{r 1-cleaning-79, fig.cap = "Distribution of delayed memory scores"}
-data %>%
-  ggplot(aes(x = delayed_memory)) +
-  geom_histogram(color = "white", bins = 11) +
-  scale_x_continuous("Number correct", breaks = c(0:10)) +
-  labs(y = "Number of participants") +
-  theme_pubr() 
-```
-
-
-```{r 1-cleaning-80, fig.cap = "Relationship between immediate and delayed recall"}
-data %>%
-  ggplot(aes(x = memory, y = delayed_memory)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  scale_x_continuous("Immediate number correct", breaks = c(0:10)) +
-  scale_y_continuous("Delayed number correct", breaks = c(0:10)) +
-  labs(title = paste0("r = ", printnum(cor(data$memory, data$delayed_memory, use = "pairwise")))) +
-  theme_pubr() 
-```
+ Participants remember on average `r papaja::printnum(mean(data$delayed_memory))` words correctly after 5-10 minutes $(SD = `r papaja::printnum(sd(data$delayed_memory))`)$. 
 
 #### Very-delayed recall
 
@@ -1054,28 +1033,9 @@ mem3 = mem3 %>%
 data = full_join(data, mem3)
 ```
 
-```{r 1-cleaning-82, fig.cap = "Distribution of delayed memory scores"}
-data %>%
-  ggplot(aes(x = very_delayed_memory)) +
-  geom_histogram(color = "white", bins = 11) +
-  scale_x_continuous("Number correct", breaks = c(0:10)) +
-  labs(y = "Number of participants") +
-  theme_pubr() 
-```
-
-
-```{r 1-cleaning-83, fig.cap = "Relationship between immediate and delayed recall"}
-data %>%
-  ggplot(aes(x = memory, y = very_delayed_memory)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  scale_x_continuous("Immediate number correct", breaks = c(0:10)) +
-  scale_y_continuous("Very delayed number correct", breaks = c(0:10)) +
-  labs(title = paste0("r = ", printnum(cor(data$memory, data$delayed_memory, use = "pairwise")))) +
-  theme_pubr() 
-```
-
 #### Correlations
+
+Figure \@ref(fig:memory-dist) displays the univariate and bivariate distributions of the memory scores and the bivariate correlations. In general, there was good spread in the immediate recall and delayed (10 minute) recall variables. Few participants remembered any of the words after two weeks.
 
 ```{r 1-cleaning-84 }
 data %>% 
@@ -1083,10 +1043,17 @@ data %>%
   corr.test
 ```
 
+```{r memory-dist, fig.cap="Distributions of memory scores across booth time points.", echo = F}
+data %>% 
+  select(matches("memory$")) %>%
+  pairs.panels()
+```
+
+
 
 ### Change labels of device variable
 
-Longer labels were provided to participants ifor clarity. However, we will use shorter labels in our analyses and figures.
+Longer labels were provided to participants for clarity. However, we will use shorter labels in our analyses and figures.
 
 ```{r 1-cleaning-85 }
 data = data %>% 
@@ -1223,14 +1190,14 @@ items_df$format = factor(items_df$format,
 
 #### Transform seconds
 
-The variable `seconds` appears to have a very severe right skew. We log-transform this variable for later analyses.
+The variable `seconds` appears to have a very severe right skew (see Figure \@ref(fig:1-cleaning-95)). We log-transform this variable for later analyses.
 
 ```{r 1-cleaning-94 }
 items_df = items_df %>% 
   mutate(seconds_log = log(timing))
 ```
 
-```{r 1-cleaning-95, fig.cap= "Distribution of seconds, raw and transformed."}
+```{r 1-cleaning-95, echo =F, fig.cap= "Distribution of seconds, raw and transformed."}
 items_df %>% 
   gather(variable, value, timing, seconds_log) %>% 
   mutate(variable = factor(variable,

@@ -13,7 +13,7 @@
 
 <title>Does the internal consistency of Big Five traits vary by item wording?</title>
 
-<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -361,7 +361,7 @@ div.tocify {
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/pie-lab/wording-effects">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -375,14 +375,14 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does the internal consistency of Big Five traits vary by item wording?</h1>
-<h4 class="date">Last updated 2021-08-19</h4>
+<h4 class="date">Last updated 2021-08-24</h4>
 
 </div>
 
 
 <p>We calculate and report Cronbach’s alpha for all formats using data from Block 1 only. This will include both the average split-half reliability, as well as the 95% confidence interval. Differences in internal consistency will be considered statistically significant if the confidence intervals of two formats do not overlap. We will also show the distribution of all possible split halves for each of the four formats.</p>
-<div id="prep-data" class="section level2">
-<h2>Prep data</h2>
+<div id="prep-data" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Prep data</h2>
 <p>We start by creating a wide-format of the dataset using only the Block 1 data.</p>
 <pre class="r"><code>items_wide = items_df %&gt;%
   # only block 1 responses
@@ -400,8 +400,8 @@ Neuro = c(&quot;moody&quot;, &quot;worrying&quot;, &quot;nervous&quot;, &quot;ca
 Openn = c(&quot;creative&quot;, &quot;imaginative&quot;, &quot;intelligent&quot;, &quot;curious&quot;, &quot;broadminded&quot;, 
           &quot;sophisticated&quot;, &quot;adventurous&quot;)</code></pre>
 </div>
-<div id="calculate-cronbachs-alpha-for-each-format" class="section level2">
-<h2>Calculate Cronbach’s alpha for each format</h2>
+<div id="calculate-cronbachs-alpha-for-each-format" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Calculate Cronbach’s alpha for each format</h2>
 <p>We start by grouping data by condition and then nesting, to create separate data frames for each of the four fomats.</p>
 <pre class="r"><code>format_data = items_wide %&gt;% 
   group_by(condition) %&gt;% 
@@ -424,27 +424,6 @@ Openn = c(&quot;creative&quot;, &quot;imaginative&quot;, &quot;intelligent&quot;
 <p>Next we apply the alpha function to the datasets. We do not need to use the <code>check.keys</code> function, as items were reverse-scored during the cleaning process.</p>
 <pre class="r"><code>format_data = format_data %&gt;% 
   mutate(alpha = map(data, psych::alpha))</code></pre>
-<pre><code>## Some items ( talkative ) were negatively correlated with the total scale and 
-## probably should be reversed.  
-## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( active ) were negatively correlated with the total scale and 
-## probably should be reversed.  
-## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( friendly ) were negatively correlated with the total scale and 
-## probably should be reversed.  
-## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( sympathetic ) were negatively correlated with the total scale and 
-## probably should be reversed.  
-## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( softhearted sympathetic ) were negatively correlated with the total scale and 
-## probably should be reversed.  
-## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( reckless impulsive thrifty ) were negatively correlated with the total scale and 
-## probably should be reversed.  
-## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( hardworking impulsive cautious thrifty ) were negatively correlated with the total scale and 
-## probably should be reversed.  
-## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( reckless careless impulsive thrifty ) were negatively correlated with the total scale and 
-## probably should be reversed.  
-## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( worrying ) were negatively correlated with the total scale and 
-## probably should be reversed.  
-## To do this, run the function again with the &#39;check.keys=TRUE&#39; optionSome items ( sophisticated ) were negatively correlated with the total scale and 
-## probably should be reversed.  
-## To do this, run the function again with the &#39;check.keys=TRUE&#39; option</code></pre>
 <p>We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.)</p>
 <pre class="r"><code>format_data = format_data %&gt;% 
   mutate(alpha_list = map(alpha, &quot;total&quot;),
@@ -634,6 +613,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

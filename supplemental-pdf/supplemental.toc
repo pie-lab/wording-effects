@@ -1,0 +1,55 @@
+\contentsline {section}{\numberline {1}Cleaning}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Workspace}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Change participant ID values}{2}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Time 1}{4}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}Recode personality item responses to numeric}{4}{subsubsection.1.3.1}%
+\contentsline {subsubsection}{\numberline {1.3.2}Drop bots and inattentive participants}{5}{subsubsection.1.3.2}%
+\contentsline {paragraph}{\numberline {1.3.2.1}Based on ID}{5}{paragraph.1.3.2.1}%
+\contentsline {paragraph}{\numberline {1.3.2.2}Based on language}{5}{paragraph.1.3.2.2}%
+\contentsline {paragraph}{\numberline {1.3.2.3}Based on patterns}{5}{paragraph.1.3.2.3}%
+\contentsline {paragraph}{\numberline {1.3.2.4}Based on inattentive responding}{9}{paragraph.1.3.2.4}%
+\contentsline {paragraph}{\numberline {1.3.2.5}Based on average time to respond to personality items}{9}{paragraph.1.3.2.5}%
+\contentsline {subsection}{\numberline {1.4}Time 2}{12}{subsection.1.4}%
+\contentsline {subsubsection}{\numberline {1.4.1}Recode personality item responses to numeric}{13}{subsubsection.1.4.1}%
+\contentsline {subsubsection}{\numberline {1.4.2}Drop bots and inattentive participants}{13}{subsubsection.1.4.2}%
+\contentsline {paragraph}{\numberline {1.4.2.1}Based on ID}{13}{paragraph.1.4.2.1}%
+\contentsline {paragraph}{\numberline {1.4.2.2}Based on patterns}{13}{paragraph.1.4.2.2}%
+\contentsline {paragraph}{\numberline {1.4.2.3}Based on inattentive responding}{16}{paragraph.1.4.2.3}%
+\contentsline {paragraph}{\numberline {1.4.2.4}Based on average time to respond to personality items}{17}{paragraph.1.4.2.4}%
+\contentsline {subsubsection}{\numberline {1.4.3}Merge all datasets together}{17}{subsubsection.1.4.3}%
+\contentsline {subsection}{\numberline {1.5}All data}{17}{subsection.1.5}%
+\contentsline {subsubsection}{\numberline {1.5.1}Reverse score personality items}{17}{subsubsection.1.5.1}%
+\contentsline {subsubsection}{\numberline {1.5.2}Score memory task}{19}{subsubsection.1.5.2}%
+\contentsline {paragraph}{\numberline {1.5.2.1}Immediate recall}{20}{paragraph.1.5.2.1}%
+\contentsline {paragraph}{\numberline {1.5.2.2}Delayed recall}{22}{paragraph.1.5.2.2}%
+\contentsline {paragraph}{\numberline {1.5.2.3}Very-delayed recall}{23}{paragraph.1.5.2.3}%
+\contentsline {paragraph}{\numberline {1.5.2.4}Correlations}{23}{paragraph.1.5.2.4}%
+\contentsline {subsubsection}{\numberline {1.5.3}Change labels of device variable}{24}{subsubsection.1.5.3}%
+\contentsline {subsubsection}{\numberline {1.5.4}Reorder demographic categories}{25}{subsubsection.1.5.4}%
+\contentsline {subsubsection}{\numberline {1.5.5}Long-form dataset}{25}{subsubsection.1.5.5}%
+\contentsline {paragraph}{\numberline {1.5.5.1}Remove `human' and `asleep'}{27}{paragraph.1.5.5.1}%
+\contentsline {paragraph}{\numberline {1.5.5.2}Label formatting conditions}{27}{paragraph.1.5.5.2}%
+\contentsline {paragraph}{\numberline {1.5.5.3}Transform seconds}{27}{paragraph.1.5.5.3}%
+\contentsline {section}{\numberline {2}Descriptives}{28}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Time}{28}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Personality by block and format}{28}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Does item format affect response?}{30}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Effect of format (Block 1 data)}{30}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}One model for each adjective}{34}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Pairwise t-tests for significant ANOVAs}{36}{subsubsection.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.3}Talkative}{37}{subsubsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.2}Effect of format (Block 1 and 2)}{38}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}One model for each adjective}{40}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Pairwise t-tests for significant ANOVAs}{40}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.3}Careless}{40}{subsubsection.3.2.3}%
+\contentsline {subsubsection}{\numberline {3.2.4}Thrifty}{40}{subsubsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.3}Account for memory effects (Blocks 1 and 2)}{40}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}One model for each adjective}{45}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Pairwise t-tests for significant ANOVAs}{45}{subsubsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.4}Inclusion of ``I'' (Block 1 and Block 3)}{48}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}One model for each adjective}{50}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}Pairwise t-tests for significant ANOVAs}{52}{subsubsection.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.3}Curious}{52}{subsubsection.3.4.3}%
+\contentsline {subsubsection}{\numberline {3.4.4}Lively}{54}{subsubsection.3.4.4}%
+\contentsline {subsubsection}{\numberline {3.4.5}Responsible}{55}{subsubsection.3.4.5}%
+\contentsline {subsubsection}{\numberline {3.4.6}Sympathetic}{56}{subsubsection.3.4.6}%

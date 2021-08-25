@@ -2,7 +2,7 @@
 title: "Power analysis"
 date: "Last updated `r Sys.Date()`"
 output: 
-  html_document:
+  bookdown::html_document2:
     toc: TRUE
     toc_float: TRUE
 ---
@@ -33,7 +33,7 @@ n_sims = 1000
 
 ## Model 1
 
-To simplify our code, we write a function that simulates responses to model 1 based on a given sample size, N, and number of repititions.
+To simplify our code, we write a function that simulates responses to model 1 based on a given sample size, N, and number of repetitions.
 
 ```{r, echo = F}
 load(here("objects/mod_format_b1.Rdata"))

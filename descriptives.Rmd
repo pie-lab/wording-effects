@@ -2,17 +2,17 @@
 title: "Descriptive statistics"
 date: "Last updated `r Sys.Date()`"
 output: 
-  html_document:
+  bookdown::html_document2:
     toc: TRUE
     toc_float: TRUE
 ---
 
 
-```{r, include = FALSE}
+```{r descriptives-1, include = FALSE}
 knitr::opts_chunk$set(warning = F, message = F)
 ```
 
-```{r, echo = F}
+```{r descriptives-2, echo = F}
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(sjPlot) # for figures
@@ -21,190 +21,61 @@ library(kableExtra) # for nicer tables
 library(papaja) # for pretty numbers
 ```
 
-```{r, echo = F}
+```{r descriptives-3, echo = F}
 load(here("data/items_df.Rds"))
 load(here("data/cleaned_data.Rds"))
 ```
 
-Here we present the descriptive statistics reported in the manuscript.
 
-## Demographics 
-
-### Age
-
-```{r}
-data %>% 
+```{r descriptives-4, echo = F}
+age_dist = data %>% 
   select(age) %>% 
   summarise(across(age, list(mean = mean, 
                              sd = sd, 
                              min = min, 
                              max = max)))
+
+sex_percent = round((table(data$sex)/nrow(data))*100,2)
+ethnic_percent = round((table(data$ethnic)/nrow(data))*100,2)
 ```
 
-```{r}
-data %>% 
+Participants (_N_ = `r printnum(nrow(data), digits = 0)`; `r sex_percent["Female"][[1]]`\% female) were, on average, `r printnum(age_dist$age_mean[[1]])` years old (_SD_ = `r printnum(age_dist$age_sd[[1]])`, minimum = `r printnum(age_dist$age_min[[1]], digits = 0)`, maximum = `r printnum(age_dist$age_max[[1]], digits = 0)`; see Figure \@ref(fig:descriptives-5)A for the full distribution). A majority (`r ethnic_percent["White"][[1]]`\%) of participants identified as White only (`r ethnic_percent["Black"][[1]]`\% only); Figure \@ref(fig:descriptives-5)B shows the other response options and frequencies. See Figure \@ref(fig:descriptives-5)C for the distribution of education, and \@ref(fig:descriptives-5)D for the distribution of household income.
+
+```{r descriptives-5, echo = F, fig.cap ="Distributions of key demographics across the entire sample", fig.width = 8, fig.height = 10}
+age_plot = data %>% 
   ggplot(aes(x = age)) +
   geom_histogram(binwidth = 5, color = "white") +
   labs(x = "Age", y = "Frequency",
        title = "Distribution of ages") +
   theme_pubr()
-```
 
-
-### Gender
-
-```{r}
-table(data$sex)
-round((table(data$sex)/nrow(data))*100,2)
-```
-
-```{r}
-data %>% 
-  ggplot(aes(x = sex)) +
-  geom_bar(stat = "count") +
-  labs(x = NULL, y = "Frequency",
-       title = "Distribution of sex") +
-  theme_pubr()
-```
-
-
-### Education
-
-```{r}
-table(data$edu)
-round((table(data$edu)/nrow(data))*100,2)
-```
-
-
-```{r}
-data %>% 
+edu_plot = data %>% 
   ggplot(aes(x = edu)) +
   geom_bar(stat = "count") +
   labs(x = NULL, y = "Frequency",
        title = "Distribution of education") +
+  coord_flip() +
   theme_pubr() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
 
-### Ethnicity
-
-```{r}
-table(data$ethnic)
-round((table(data$ethnic)/nrow(data))*100,2)
-```
-
-
-```{r}
-data %>% 
+ethnic_plot = data %>% 
   ggplot(aes(x = ethnic)) +
   geom_bar(stat = "count") +
   labs(x = NULL, y = "Frequency",
        title = "Distribution of ethnicity") +
   theme_pubr() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
 
-### Household income
-
-```{r}
-table(data$hhinc)
-round((table(data$hhinc)/nrow(data))*100,2)
-```
-
-
-```{r}
-data %>% 
+hhinc_plot = data %>% 
   ggplot(aes(x = hhinc)) +
   geom_bar(stat = "count") +
   labs(x = NULL, y = "Frequency",
        title = "Distribution of household income") +
   theme_pubr() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
 
-## Demographics by device type
-
-### Age
-
-```{r, results = 'asis'}
-age_mod = lm(age ~ devicetype, data = data) 
-
-apa_print(age_mod)$table %>% 
-  kable(booktabs = T) %>% 
-  kable_styling()
-```
-
-```{r}
-plot_model(age_mod, type = "pred")$devicetype +
-  labs(x = NULL, y = "Average age") +
-  theme_pubclean()
-```
-
-### Sex
-
-```{r, results = 'asis'}
-chisq.test(table(data$sex, data$devicetype))
-```
-
-```{r}
-data %>% 
-  ggplot(aes(x = sex, fill = devicetype)) +
-  geom_bar(stat = "count") +
-  facet_wrap(~devicetype, scales = "free_y") +
-  guides(fill = "none") +
-  labs(x = NULL, y = "Frequency") +
-  theme_pubr()
-```
-
-### Education
-
-```{r, results = 'asis'}
-chisq.test(table(data$edu, data$devicetype))
-```
-
-```{r}
-data %>% 
-  ggplot(aes(x = edu, fill = devicetype)) +
-  geom_bar(stat = "count") +
-  facet_wrap(~devicetype, scales = "free_y") +
-  guides(fill = "none") +
-  labs(x = NULL, y = "Frequency") +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-
-### Ethnicity
-
-```{r, results = 'asis'}
-chisq.test(table(data$ethnic, data$devicetype))
-```
-
-```{r}
-data %>% 
-  ggplot(aes(x = ethnic, fill = devicetype)) +
-  geom_bar(stat = "count") +
-  facet_wrap(~devicetype, scales = "free_y") +
-  guides(fill = "none") +
-  labs(x = NULL, y = "Frequency") +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-
-### Household income
-
-```{r, results = 'asis'}
-chisq.test(table(data$hhinc, data$devicetype))
-```
-
-```{r}
-data %>% 
-  ggplot(aes(x = hhinc, fill = devicetype)) +
-  geom_bar(stat = "count") +
-  facet_wrap(~devicetype, scales = "free_y") +
-  guides(fill = "none") +
-  labs(x = NULL, y = "Frequency") +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggarrange(ggarrange(age_plot, ethnic_plot, nrow = 1, labels = c("A","B")),
+          edu_plot,hhinc_plot, ncol = 1, labels = c(" ", "C","D"))
 ```
 
 
@@ -212,7 +83,7 @@ data %>%
 
 How much time elapsed between assessments?
 
-```{r}
+```{r descriptives-24}
 data = data %>% 
   mutate(difference = as.numeric(start_date2-start_date))
 summary(data$difference)
@@ -220,26 +91,24 @@ summary(data$difference)
 
 How long did it take participants to complete the Time 1 survey?
 
-```{r}
+```{r descriptives-25}
 summary(data$duration_in_seconds/60)
 ```
 
 How long did it take participants to complete the Time 2 survey?
 
-```{r}
+```{r descriptives-26}
 summary(data$duration_in_seconds2/60)
 ```
 
 
 ## Personality by block and format
 
-### Block 1
+See Table \@ref(tab:descriptives27) for the descriptive statistics of each format by block.
 
-
-```{r, results = 'asis'}
+```{r descriptives27, echo = F}
 items_df %>%
-  filter(block == "1") %>% 
-  group_by(format) %>%
+  group_by(block, format) %>%
   summarise(
     mean = mean(response),
     sd = sd(response),
@@ -247,99 +116,78 @@ items_df %>%
     N_responses = n(),
     N_participants = length(unique(proid))
   ) %>%
+  ungroup() %>%
+  arrange(block, format) %>%
   kable(booktabs = T, digits = c(0,2,2,0,0,0),
-        caption = "Descriptives of responses to Block 1") %>%
-  kable_styling()
+        escape = F, 
+        caption = "Descriptives of responses by format and block",
+        col.names = c("Block", "Format", "M", "SD", "Median",
+                      "N (responses)", "N (participants)")) %>%
+  kable_styling() 
+# %>%
+#   group_rows("Block 1", 1, 4) %>%
+#   group_rows("Block 2", 5, 8) %>%
+  # group_rows("Block 3", 9, 12)
 ```
 
+See Table \@ref(tab:descriptives-28) for the descriptive statistics of each item and format in Block 1 (Time 1).
 
-```{r, results = 'asis'}
+```{r descriptives-28, results = 'asis', echo = F}
 items_df %>%
-  filter(block == "1") %>% 
+  filter(block == "1") %>%
   group_by(item, format) %>%
   summarise(
     mean = mean(response),
     sd = sd(response)
-  ) %>% 
+  ) %>%
   mutate(value = paste0(
     printnum(mean), " (", printnum(sd), ")"
   )) %>%
   select(-mean, -sd) %>%
-  spread(format, value) %>% 
-  kable(booktabs = T) %>%
-  kable_styling()
-```
-
-### Block 2
-
-
-```{r, results = 'asis'}
-items_df %>%
-  filter(block == "2") %>% 
-  group_by(format) %>%
-  summarise(
-    mean = mean(response),
-    sd = sd(response),
-    median = median(response),
-    N_responses = n(),
-    N_participants = length(unique(proid))
-  ) %>%
-  kable(booktabs = T, digits = c(0,2,2,0,0,0),
-        caption = "Descriptives of responses to Block 2") %>%
+  spread(format, value) %>%
+  kable(booktabs = T,
+        caption = "Descriptives of responses to Block 1 by format and item") %>%
   kable_styling()
 ```
 
 
-```{r, results = 'asis'}
+See Table \@ref(tab:descriptives-30) for the descriptive statistics of each item and format in Block 2 (Time 1).
+
+```{r descriptives-30, results = 'asis', echo = F}
 items_df %>%
   filter(block == "2") %>%
   group_by(item, format) %>%
   summarise(
     mean = mean(response),
     sd = sd(response)
-  ) %>% 
+  ) %>%
   mutate(value = paste0(
     printnum(mean), " (", printnum(sd), ")"
   )) %>%
   select(-mean, -sd) %>%
-  spread(format, value) %>% 
-  kable(booktabs = T) %>%
+  spread(format, value) %>%
+  kable(booktabs = T,
+        caption = "Descriptives of responses to Block 2 by format and item") %>%
   kable_styling()
 ```
 
-### Block 3
+See Table \@ref(tab:descriptives-32) for the descriptive statistics of each item and format in Block 3 (Time 2).
 
 
-```{r, results = 'asis'}
-items_df %>%
-  filter(block == "2") %>% 
-  group_by(format) %>%
-  summarise(
-    mean = mean(response),
-    sd = sd(response),
-    median = median(response),
-    N_responses = n(),
-    N_participants = length(unique(proid))
-  ) %>%
-  kable(booktabs = T, digits = c(0,2,2,0,0,0),
-        caption = "Descriptives of responses to Block 2") %>%
-  kable_styling()
-```
-
-
-```{r, results = 'asis'}
+```{r descriptives-32, results = 'asis', echo  = F}
 items_df %>%
   filter(block == "2") %>%
   group_by(item, format) %>%
   summarise(
     mean = mean(response),
     sd = sd(response)
-  ) %>% 
+  ) %>%
   mutate(value = paste0(
     printnum(mean), " (", printnum(sd), ")"
   )) %>%
   select(-mean, -sd) %>%
-  spread(format, value) %>% 
-  kable(booktabs = T) %>%
+  spread(format, value) %>%
+  kable(booktabs = T,
+        caption = "Descriptives of items to Block 3 by format") %>%
   kable_styling()
 ```

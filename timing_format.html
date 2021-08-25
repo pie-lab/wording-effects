@@ -13,7 +13,7 @@
 
 <title>Does item format impact timing?</title>
 
-<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -361,7 +361,7 @@ div.tocify {
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/pie-lab/wording-effects">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -375,13 +375,13 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact timing?</h1>
-<h4 class="date">Last updated 2021-08-19</h4>
+<h4 class="date">Last updated 2021-08-24</h4>
 
 </div>
 
 
-<div id="analysis-block-1-data-only" class="section level2">
-<h2>Analysis: Block 1 data only</h2>
+<div id="analysis-block-1-data-only" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Analysis: Block 1 data only</h2>
 <p>We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data.</p>
 <pre class="r"><code>item_block1 = filter(items_df, block == &quot;1&quot;)
 
@@ -400,10 +400,10 @@ plot_b1$format +
        y = &quot;Average time (log seconds)&quot;,
        title = &quot;Average time by item formatting (Block 1 Data)&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-5-1.png" alt="Predicted seconds (log) on personality items by condition, using only Block 1 data." width="672" />
 <p class="caption">
-Predicted seconds (log) on personality items by condition, using only Block 1 data.
+Figure 1: Predicted seconds (log) on personality items by condition, using only Block 1 data.
 </p>
 </div>
 <pre class="r"><code>plot_b1$format$data %&gt;% 
@@ -420,10 +420,10 @@ Predicted seconds (log) on personality items by condition, using only Block 1 da
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) + 
   labs(x = NULL, y = &quot;seconds&quot;, title = &quot;Average time by item formatting (Block 1 Data)&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-6"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-6-1.png" alt="Predicted seconds on personality items by condition, using only Block 1 data." width="672" />
 <p class="caption">
-Predicted seconds on personality items by condition, using only Block 1 data.
+Figure 2: Predicted seconds on personality items by condition, using only Block 1 data.
 </p>
 </div>
 <pre class="r"><code>means_by_group = item_block1 %&gt;%
@@ -448,14 +448,14 @@ item_block1 %&gt;%
     y = &quot;Number of particpants&quot;,
        title = &quot;Distribution of log-seconds by format (Block 1 data)&quot;) +
   theme_pubr()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-7-1.png" alt="Distribution of time by category, block 1 data only" width="672" />
 <p class="caption">
-Distribution of time by category, block 1 data only
+Figure 3: Distribution of time by category, block 1 data only
 </p>
 </div>
-<div id="pairwise-comparisons" class="section level4">
-<h4>Pairwise comparisons</h4>
+<div id="pairwise-comparisons" class="section level4" number="0.1.0.1">
+<h4><span class="header-section-number">0.1.0.1</span> Pairwise comparisons</h4>
 <pre class="r"><code>pairs(emmeans(mod.format_b1, &quot;format&quot;), adjust = &quot;holm&quot;) %&gt;% 
   kable(booktabs = T, digits = c(0, 2,2,1,2,3)) %&gt;% 
   kable_styling()</code></pre>
@@ -485,7 +485,9 @@ p.value
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am Adjective
+Adjective
+Only - Am
+Adjective
 </td>
 <td style="text-align:right;">
 -0.39
@@ -505,7 +507,9 @@ Adjective Only - Am Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Tend to be Adjective
+Adjective
+Only - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.60
@@ -525,7 +529,10 @@ Adjective Only - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am someone who tends to be Adjective
+Adjective
+Only - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.09
@@ -545,7 +552,9 @@ Adjective Only - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Tend to be Adjective
+Am
+Adjective - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.21
@@ -565,7 +574,10 @@ Am Adjective - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Am someone who tends to be Adjective
+Am
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.30
@@ -585,7 +597,10 @@ Am Adjective - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be Adjective - Am someone who tends to be Adjective
+Tend to be
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.51
@@ -606,8 +621,8 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </tbody>
 </table>
 </div>
-<div id="one-model-for-each-adjective" class="section level3">
-<h3>One model for each adjective</h3>
+<div id="one-model-for-each-adjective" class="section level3" number="0.1.1">
+<h3><span class="header-section-number">0.1.1</span> One model for each adjective</h3>
 <p>We can also repeat this analysis separately for each trait.</p>
 <pre class="r"><code>mod_by_item_b1 = item_block1 %&gt;%
   group_by(item) %&gt;%
@@ -638,7 +653,7 @@ summary_by_item_b1 %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Format effects on log-seconds by item (block 1 data only)
+<span id="tab:unnamed-chunk-9">Table 1: </span>Format effects on log-seconds by item (block 1 data only)
 </caption>
 <thead>
 <tr>
@@ -646,7 +661,8 @@ Format effects on log-seconds by item (block 1 data only)
 Item
 </th>
 <th style="text-align:left;">
-Reverse Scored?
+Reverse
+Scored?
 </th>
 <th style="text-align:right;">
 SS
@@ -1478,8 +1494,8 @@ Y
 </tbody>
 </table>
 </div>
-<div id="pairwise-t-tests-for-significant-anovas" class="section level3">
-<h3>Pairwise t-tests for significant ANOVAs</h3>
+<div id="pairwise-t-tests-for-significant-anovas" class="section level3" number="0.1.2">
+<h3><span class="header-section-number">0.1.2</span> Pairwise t-tests for significant ANOVAs</h3>
 <p>Here we identify the specific items with significant differences.</p>
 <pre class="r"><code>sig_item_b1 = summary_by_item_b1 %&gt;%
   filter(p.value &lt; .05) 
@@ -1491,8 +1507,8 @@ sig_item_b1</code></pre>
 <p>Then we create models for each adjective. We use the <code>emmeans</code> package to perform pairwise comparisons, again with a Holm correction on the <em>p</em>-values. We also plot the means and 95% confidence intervals of each mean.</p>
 <p><strong>This code will have to be changed after final data collection. It is not self-adapting!</strong></p>
 </div>
-<div id="helpful" class="section level3">
-<h3>Helpful</h3>
+<div id="helpful" class="section level3" number="0.1.3">
+<h3><span class="header-section-number">0.1.3</span> Helpful</h3>
 <pre class="r"><code>helpful_model_b1 = item_block1 %&gt;%
   filter(item == &quot;helpful&quot;) %&gt;%
   lm(seconds_log~format, data = .)
@@ -1508,7 +1524,7 @@ pairs(helpful_em_b1, adjust = &quot;holm&quot;) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Differences in log-seconds to Helpful by format (Block 1 data only)
+<span id="tab:unnamed-chunk-11">Table 2: </span>Differences in log-seconds to Helpful by format (Block 1 data only)
 </caption>
 <thead>
 <tr>
@@ -1535,7 +1551,9 @@ p
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am Adjective
+Adjective
+Only - Am
+Adjective
 </td>
 <td style="text-align:right;">
 -0.40
@@ -1555,7 +1573,9 @@ Adjective Only - Am Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Tend to be Adjective
+Adjective
+Only - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.46
@@ -1575,7 +1595,10 @@ Adjective Only - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am someone who tends to be Adjective
+Adjective
+Only - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.66
@@ -1595,7 +1618,9 @@ Adjective Only - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Tend to be Adjective
+Am
+Adjective - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.06
@@ -1615,7 +1640,10 @@ Am Adjective - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Am someone who tends to be Adjective
+Am
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.26
@@ -1635,7 +1663,10 @@ Am Adjective - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be Adjective - Am someone who tends to be Adjective
+Tend to be
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.20
@@ -1656,15 +1687,15 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </tbody>
 </table>
 <pre class="r"><code>plot_model(helpful_model_b1, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-12"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-12-1.png" alt="Average log-seconds to &quot;helpful&quot; by format (block 1 data only)" width="672" />
 <p class="caption">
-Average log-seconds to “helpful” by format (block 1 data only)
+Figure 4: Average log-seconds to “helpful” by format (block 1 data only)
 </p>
 </div>
 </div>
-<div id="caring" class="section level3">
-<h3>Caring</h3>
+<div id="caring" class="section level3" number="0.1.4">
+<h3><span class="header-section-number">0.1.4</span> Caring</h3>
 <pre class="r"><code>caring_model_b1 = item_block1 %&gt;%
   filter(item == &quot;caring&quot;) %&gt;%
   lm(seconds_log~format, data = .)
@@ -1680,7 +1711,7 @@ pairs(caring_em_b1, adjust = &quot;holm&quot;) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Differences in log-seconds to Caring by format (Block 1 data only)
+<span id="tab:unnamed-chunk-13">Table 3: </span>Differences in log-seconds to Caring by format (Block 1 data only)
 </caption>
 <thead>
 <tr>
@@ -1707,7 +1738,9 @@ p
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am Adjective
+Adjective
+Only - Am
+Adjective
 </td>
 <td style="text-align:right;">
 -1.03
@@ -1727,7 +1760,9 @@ Adjective Only - Am Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Tend to be Adjective
+Adjective
+Only - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.66
@@ -1747,7 +1782,10 @@ Adjective Only - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am someone who tends to be Adjective
+Adjective
+Only - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.32
@@ -1767,7 +1805,9 @@ Adjective Only - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Tend to be Adjective
+Am
+Adjective - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.37
@@ -1787,7 +1827,10 @@ Am Adjective - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Am someone who tends to be Adjective
+Am
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.71
@@ -1807,7 +1850,10 @@ Am Adjective - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be Adjective - Am someone who tends to be Adjective
+Tend to be
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.34
@@ -1828,15 +1874,15 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </tbody>
 </table>
 <pre class="r"><code>plot_model(caring_model_b1, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-14"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-14-1.png" alt="Average log-seconds to &quot;caring&quot; by format (block 1 data only)" width="672" />
 <p class="caption">
-Average log-seconds to “caring” by format (block 1 data only)
+Figure 5: Average log-seconds to “caring” by format (block 1 data only)
 </p>
 </div>
 </div>
-<div id="soft-hearted" class="section level3">
-<h3>Soft-hearted</h3>
+<div id="soft-hearted" class="section level3" number="0.1.5">
+<h3><span class="header-section-number">0.1.5</span> Soft-hearted</h3>
 <pre class="r"><code>softhearted_model_b1 = item_block1 %&gt;%
   filter(item == &quot;softhearted&quot;) %&gt;%
   lm(seconds_log~format, data = .)
@@ -1852,7 +1898,7 @@ pairs(softhearted_em_b1, adjust = &quot;holm&quot;) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Differences in log-seconds to Soft-hearted by format (Block 1 data only)
+<span id="tab:unnamed-chunk-15">Table 4: </span>Differences in log-seconds to Soft-hearted by format (Block 1 data only)
 </caption>
 <thead>
 <tr>
@@ -1879,7 +1925,9 @@ p
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am Adjective
+Adjective
+Only - Am
+Adjective
 </td>
 <td style="text-align:right;">
 -1.01
@@ -1899,7 +1947,9 @@ Adjective Only - Am Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Tend to be Adjective
+Adjective
+Only - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.96
@@ -1919,7 +1969,10 @@ Adjective Only - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am someone who tends to be Adjective
+Adjective
+Only - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.06
@@ -1939,7 +1992,9 @@ Adjective Only - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Tend to be Adjective
+Am
+Adjective - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.05
@@ -1959,7 +2014,10 @@ Am Adjective - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Am someone who tends to be Adjective
+Am
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.95
@@ -1979,7 +2037,10 @@ Am Adjective - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be Adjective - Am someone who tends to be Adjective
+Tend to be
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.90
@@ -2000,15 +2061,15 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </tbody>
 </table>
 <pre class="r"><code>plot_model(softhearted_model_b1, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-16"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-16-1.png" alt="Average log-seconds to &quot;softhearted&quot; by format (block 1 data only)" width="672" />
 <p class="caption">
-Average log-seconds to “softhearted” by format (block 1 data only)
+Figure 6: Average log-seconds to “softhearted” by format (block 1 data only)
 </p>
 </div>
 </div>
-<div id="calm" class="section level3">
-<h3>Calm</h3>
+<div id="calm" class="section level3" number="0.1.6">
+<h3><span class="header-section-number">0.1.6</span> Calm</h3>
 <pre class="r"><code>calm_model_b1 = item_block1 %&gt;%
   filter(item == &quot;calm&quot;) %&gt;%
   lm(seconds_log~format, data = .)
@@ -2024,7 +2085,7 @@ pairs(calm_em_b1, adjust = &quot;holm&quot;) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Differences in log-seconds to Calm by format (Block 1 data only)
+<span id="tab:unnamed-chunk-17">Table 5: </span>Differences in log-seconds to Calm by format (Block 1 data only)
 </caption>
 <thead>
 <tr>
@@ -2051,7 +2112,9 @@ p
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am Adjective
+Adjective
+Only - Am
+Adjective
 </td>
 <td style="text-align:right;">
 -1.07
@@ -2071,7 +2134,9 @@ Adjective Only - Am Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Tend to be Adjective
+Adjective
+Only - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.91
@@ -2091,7 +2156,10 @@ Adjective Only - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am someone who tends to be Adjective
+Adjective
+Only - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.01
@@ -2111,7 +2179,9 @@ Adjective Only - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Tend to be Adjective
+Am
+Adjective - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.16
@@ -2131,7 +2201,10 @@ Am Adjective - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Am someone who tends to be Adjective
+Am
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 1.08
@@ -2151,7 +2224,10 @@ Am Adjective - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be Adjective - Am someone who tends to be Adjective
+Tend to be
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.92
@@ -2172,15 +2248,15 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </tbody>
 </table>
 <pre class="r"><code>plot_model(calm_model_b1, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-18"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-18-1.png" alt="Average log-seconds to &quot;calm&quot; by format (block 1 data only)" width="672" />
 <p class="caption">
-Average log-seconds to “calm” by format (block 1 data only)
+Figure 7: Average log-seconds to “calm” by format (block 1 data only)
 </p>
 </div>
 </div>
-<div id="sympathetic" class="section level3">
-<h3>Sympathetic</h3>
+<div id="sympathetic" class="section level3" number="0.1.7">
+<h3><span class="header-section-number">0.1.7</span> Sympathetic</h3>
 <pre class="r"><code>sympathetic_model_b1 = item_block1 %&gt;%
   filter(item == &quot;sympathetic&quot;) %&gt;%
   lm(seconds_log~format, data = .)
@@ -2196,7 +2272,7 @@ pairs(sympathetic_em_b1, adjust = &quot;holm&quot;) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Differences in log-seconds to Sympathetic by format (Block 1 data only)
+<span id="tab:unnamed-chunk-19">Table 6: </span>Differences in log-seconds to Sympathetic by format (Block 1 data only)
 </caption>
 <thead>
 <tr>
@@ -2223,7 +2299,9 @@ p
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am Adjective
+Adjective
+Only - Am
+Adjective
 </td>
 <td style="text-align:right;">
 -0.52
@@ -2243,7 +2321,9 @@ Adjective Only - Am Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Tend to be Adjective
+Adjective
+Only - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -1.45
@@ -2263,7 +2343,10 @@ Adjective Only - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am someone who tends to be Adjective
+Adjective
+Only - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.18
@@ -2283,7 +2366,9 @@ Adjective Only - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Tend to be Adjective
+Am
+Adjective - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.93
@@ -2303,7 +2388,10 @@ Am Adjective - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Am someone who tends to be Adjective
+Am
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.69
@@ -2323,7 +2411,10 @@ Am Adjective - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be Adjective - Am someone who tends to be Adjective
+Tend to be
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 1.62
@@ -2344,15 +2435,15 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </tbody>
 </table>
 <pre class="r"><code>plot_model(sympathetic_model_b1, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-20"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-20-1.png" alt="Average log-seconds to &quot;sympathetic&quot; by format (block 1 data only)" width="672" />
 <p class="caption">
-Average log-seconds to “sympathetic” by format (block 1 data only)
+Figure 8: Average log-seconds to “sympathetic” by format (block 1 data only)
 </p>
 </div>
 </div>
-<div id="adventurous" class="section level3">
-<h3>Adventurous</h3>
+<div id="adventurous" class="section level3" number="0.1.8">
+<h3><span class="header-section-number">0.1.8</span> Adventurous</h3>
 <pre class="r"><code>adventurous_model_b1 = item_block1 %&gt;%
   filter(item == &quot;adventurous&quot;) %&gt;%
   lm(seconds_log~format, data = .)
@@ -2368,7 +2459,7 @@ pairs(adventurous_em_b1, adjust = &quot;holm&quot;) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Differences in log-seconds to Adventurous by format (Block 1 data only)
+<span id="tab:unnamed-chunk-21">Table 7: </span>Differences in log-seconds to Adventurous by format (Block 1 data only)
 </caption>
 <thead>
 <tr>
@@ -2395,7 +2486,9 @@ p
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am Adjective
+Adjective
+Only - Am
+Adjective
 </td>
 <td style="text-align:right;">
 -0.12
@@ -2415,7 +2508,9 @@ Adjective Only - Am Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Tend to be Adjective
+Adjective
+Only - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.82
@@ -2435,7 +2530,10 @@ Adjective Only - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am someone who tends to be Adjective
+Adjective
+Only - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.27
@@ -2455,7 +2553,9 @@ Adjective Only - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Tend to be Adjective
+Am
+Adjective - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.69
@@ -2475,7 +2575,10 @@ Am Adjective - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Am someone who tends to be Adjective
+Am
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.14
@@ -2495,7 +2598,10 @@ Am Adjective - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be Adjective - Am someone who tends to be Adjective
+Tend to be
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.55
@@ -2516,16 +2622,16 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </tbody>
 </table>
 <pre class="r"><code>plot_model(adventurous_model_b1, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-22"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-22-1.png" alt="Average log-seconds to &quot;adventurous&quot; by format (block 1 data only)" width="672" />
 <p class="caption">
-Average log-seconds to “adventurous” by format (block 1 data only)
+Figure 9: Average log-seconds to “adventurous” by format (block 1 data only)
 </p>
 </div>
 </div>
 </div>
-<div id="analysis-block-1-and-block-2" class="section level2">
-<h2>Analysis: Block 1 and Block 2</h2>
+<div id="analysis-block-1-and-block-2" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Analysis: Block 1 and Block 2</h2>
 <p>We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2.</p>
 <pre class="r"><code>items_12 = items_df %&gt;% filter(block %in% c(&quot;1&quot;,&quot;2&quot;))</code></pre>
 <pre class="r"><code>mod.format_b2 = lmer(seconds_log~format + (1|proid), 
@@ -2543,10 +2649,10 @@ plot_b2$format +
        y = &quot;Average log-seconds&quot;,
        title = &quot;Average responses by item formatting (Block 1 and Block 2)&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-25"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-25-1.png" alt="Predicted log-seconds on personality items by condition, using only Block 1 data." width="672" />
 <p class="caption">
-Predicted log-seconds on personality items by condition, using only Block 1 data.
+Figure 10: Predicted log-seconds on personality items by condition, using only Block 1 data.
 </p>
 </div>
 <pre class="r"><code>plot_b2$format$data %&gt;% 
@@ -2563,10 +2669,10 @@ Predicted log-seconds on personality items by condition, using only Block 1 data
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) + 
   labs(x = NULL, y = &quot;seconds&quot;, title = &quot;Average time by item formatting (Block 1 and Block 2)&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-26"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-26-1.png" alt="Predicted seconds on personality items by condition, using only Block 1 data." width="672" />
 <p class="caption">
-Predicted seconds on personality items by condition, using only Block 1 data.
+Figure 11: Predicted seconds on personality items by condition, using only Block 1 data.
 </p>
 </div>
 <pre class="r"><code>means_by_group = items_12 %&gt;%
@@ -2590,14 +2696,14 @@ items_12 %&gt;%
   labs(y = &quot;Number of particpants&quot;,
        title = &quot;Distribution of responses by format (Block 1 and Block 2)&quot;) +
   theme_pubr()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-27"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-27-1.png" alt="Distribution of log-seconds by category, block 1 and block 2" width="672" />
 <p class="caption">
-Distribution of log-seconds by category, block 1 and block 2
+Figure 12: Distribution of log-seconds by category, block 1 and block 2
 </p>
 </div>
-<div id="pairwise-comparisons-1" class="section level4">
-<h4>Pairwise comparisons</h4>
+<div id="pairwise-comparisons-1" class="section level4" number="0.2.0.1">
+<h4><span class="header-section-number">0.2.0.1</span> Pairwise comparisons</h4>
 <pre class="r"><code>pairs(emmeans(mod.format_b2, &quot;format&quot;), adjust = &quot;holm&quot;) %&gt;% 
   kable(booktabs = T, digits = c(0, 2,2,1,2,3)) %&gt;% 
   kable_styling()</code></pre>
@@ -2627,7 +2733,9 @@ p.value
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am Adjective
+Adjective
+Only - Am
+Adjective
 </td>
 <td style="text-align:right;">
 -0.27
@@ -2647,7 +2755,9 @@ Adjective Only - Am Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Tend to be Adjective
+Adjective
+Only - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.24
@@ -2667,7 +2777,10 @@ Adjective Only - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am someone who tends to be Adjective
+Adjective
+Only - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.31
@@ -2687,7 +2800,9 @@ Adjective Only - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Tend to be Adjective
+Am
+Adjective - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.03
@@ -2707,7 +2822,10 @@ Am Adjective - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Am someone who tends to be Adjective
+Am
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.05
@@ -2727,7 +2845,10 @@ Am Adjective - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be Adjective - Am someone who tends to be Adjective
+Tend to be
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.08
@@ -2748,8 +2869,8 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </tbody>
 </table>
 </div>
-<div id="one-model-for-each-adjective-1" class="section level3">
-<h3>One model for each adjective</h3>
+<div id="one-model-for-each-adjective-1" class="section level3" number="0.2.1">
+<h3><span class="header-section-number">0.2.1</span> One model for each adjective</h3>
 <p>We can also repeat this analysis separately for each trait.</p>
 <pre class="r"><code>mod_by_item_b2 = items_12 %&gt;%
   group_by(item) %&gt;%
@@ -2780,7 +2901,7 @@ summary_by_item_b2 %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Format effects on log-seconds by item (block 1 data only)
+<span id="tab:unnamed-chunk-29">Table 8: </span>Format effects on log-seconds by item (block 1 data only)
 </caption>
 <thead>
 <tr>
@@ -2788,7 +2909,8 @@ Format effects on log-seconds by item (block 1 data only)
 Item
 </th>
 <th style="text-align:left;">
-Reverse Scored?
+Reverse
+Scored?
 </th>
 <th style="text-align:right;">
 SS
@@ -3716,8 +3838,8 @@ Y
 </tbody>
 </table>
 </div>
-<div id="pairwise-t-tests-for-significant-anovas-1" class="section level3">
-<h3>Pairwise t-tests for significant ANOVAs</h3>
+<div id="pairwise-t-tests-for-significant-anovas-1" class="section level3" number="0.2.2">
+<h3><span class="header-section-number">0.2.2</span> Pairwise t-tests for significant ANOVAs</h3>
 <p>Here we identify the specific items with significant differences.</p>
 <pre class="r"><code>sig_item_b2 = summary_by_item_b2 %&gt;%
   filter(p.value &lt; .05) 
@@ -3728,8 +3850,8 @@ sig_item_b2</code></pre>
 <p>Then we create models for each adjective. We use the <code>emmeans</code> package to perform pairwise comparisons, again with a Holm correction on the <em>p</em>-values. We also plot the means and 95% confidence intervals of each mean.</p>
 <p><strong>This code will have to be changed after final data collection. It is not self-adapting!</strong></p>
 </div>
-<div id="helfpul" class="section level3">
-<h3>Helfpul</h3>
+<div id="helfpul" class="section level3" number="0.2.3">
+<h3><span class="header-section-number">0.2.3</span> Helfpul</h3>
 <pre class="r"><code>helpful_model_b2 = items_12 %&gt;%
   filter(item == &quot;helpful&quot;) %&gt;%
   lmer(seconds_log~format + (1|proid), 
@@ -3746,7 +3868,7 @@ pairs(helpful_em_b2, adjust = &quot;holm&quot;) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Differences in log-seconds to Helpful by format (Block 1 and Block 2)
+<span id="tab:unnamed-chunk-31">Table 9: </span>Differences in log-seconds to Helpful by format (Block 1 and Block 2)
 </caption>
 <thead>
 <tr>
@@ -3773,7 +3895,9 @@ p
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am Adjective
+Adjective
+Only - Am
+Adjective
 </td>
 <td style="text-align:right;">
 -0.28
@@ -3793,7 +3917,9 @@ Adjective Only - Am Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Tend to be Adjective
+Adjective
+Only - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.32
@@ -3813,7 +3939,10 @@ Adjective Only - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am someone who tends to be Adjective
+Adjective
+Only - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.50
@@ -3833,7 +3962,9 @@ Adjective Only - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Tend to be Adjective
+Am
+Adjective - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.04
@@ -3853,7 +3984,10 @@ Am Adjective - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Am someone who tends to be Adjective
+Am
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.21
@@ -3873,7 +4007,10 @@ Am Adjective - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be Adjective - Am someone who tends to be Adjective
+Tend to be
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.18
@@ -3894,15 +4031,15 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </tbody>
 </table>
 <pre class="r"><code>plot_model(helpful_model_b2, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-32"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-32-1.png" alt="Average log-seconds to &quot;helpful&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
-Average log-seconds to “helpful” by format (Block 1 and Block 2)
+Figure 13: Average log-seconds to “helpful” by format (Block 1 and Block 2)
 </p>
 </div>
 </div>
-<div id="caring-1" class="section level3">
-<h3>Caring</h3>
+<div id="caring-1" class="section level3" number="0.2.4">
+<h3><span class="header-section-number">0.2.4</span> Caring</h3>
 <pre class="r"><code>caring_model_b2 = items_12 %&gt;%
   filter(item == &quot;caring&quot;) %&gt;%
   lmer(seconds_log~format + (1|proid), 
@@ -3919,7 +4056,7 @@ pairs(caring_em_b2, adjust = &quot;holm&quot;) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Differences in log-seconds to Caring by format (Block 1 and Block 2)
+<span id="tab:unnamed-chunk-33">Table 10: </span>Differences in log-seconds to Caring by format (Block 1 and Block 2)
 </caption>
 <thead>
 <tr>
@@ -3946,7 +4083,9 @@ p
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am Adjective
+Adjective
+Only - Am
+Adjective
 </td>
 <td style="text-align:right;">
 -0.65
@@ -3966,7 +4105,9 @@ Adjective Only - Am Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Tend to be Adjective
+Adjective
+Only - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.60
@@ -3986,7 +4127,10 @@ Adjective Only - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am someone who tends to be Adjective
+Adjective
+Only - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.29
@@ -4006,7 +4150,9 @@ Adjective Only - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Tend to be Adjective
+Am
+Adjective - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.05
@@ -4026,7 +4172,10 @@ Am Adjective - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Am someone who tends to be Adjective
+Am
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.36
@@ -4046,7 +4195,10 @@ Am Adjective - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be Adjective - Am someone who tends to be Adjective
+Tend to be
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.31
@@ -4067,15 +4219,15 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </tbody>
 </table>
 <pre class="r"><code>plot_model(caring_model_b2, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-34"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-34-1.png" alt="Average log-seconds to &quot;caring&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
-Average log-seconds to “caring” by format (Block 1 and Block 2)
+Figure 14: Average log-seconds to “caring” by format (Block 1 and Block 2)
 </p>
 </div>
 </div>
-<div id="adventurous-1" class="section level3">
-<h3>Adventurous</h3>
+<div id="adventurous-1" class="section level3" number="0.2.5">
+<h3><span class="header-section-number">0.2.5</span> Adventurous</h3>
 <pre class="r"><code>adventurous_model_b2 = items_12 %&gt;%
   filter(item == &quot;adventurous&quot;) %&gt;%
   lmer(seconds_log~format + (1|proid), 
@@ -4092,7 +4244,7 @@ pairs(adventurous_em_b2, adjust = &quot;holm&quot;) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Differences in log-seconds to Adventurous by format (Block 1 and Block 2)
+<span id="tab:unnamed-chunk-35">Table 11: </span>Differences in log-seconds to Adventurous by format (Block 1 and Block 2)
 </caption>
 <thead>
 <tr>
@@ -4119,7 +4271,9 @@ p
 <tbody>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am Adjective
+Adjective
+Only - Am
+Adjective
 </td>
 <td style="text-align:right;">
 -0.31
@@ -4139,7 +4293,9 @@ Adjective Only - Am Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Tend to be Adjective
+Adjective
+Only - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.68
@@ -4159,7 +4315,10 @@ Adjective Only - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Adjective Only - Am someone who tends to be Adjective
+Adjective
+Only - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.57
@@ -4179,7 +4338,9 @@ Adjective Only - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Tend to be Adjective
+Am
+Adjective - Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.36
@@ -4199,7 +4360,10 @@ Am Adjective - Tend to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Am Adjective - Am someone who tends to be Adjective
+Am
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 -0.26
@@ -4219,7 +4383,10 @@ Am Adjective - Am someone who tends to be Adjective
 </tr>
 <tr>
 <td style="text-align:left;">
-Tend to be Adjective - Am someone who tends to be Adjective
+Tend to be
+Adjective - Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 0.10
@@ -4240,16 +4407,16 @@ Tend to be Adjective - Am someone who tends to be Adjective
 </tbody>
 </table>
 <pre class="r"><code>plot_model(adventurous_model_b2, type = &quot;pred&quot;, terms = c(&quot;format&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-36"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-36-1.png" alt="Average log-seconds to &quot;adventurous&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
-Average log-seconds to “adventurous” by format (Block 1 and Block 2)
+Figure 15: Average log-seconds to “adventurous” by format (Block 1 and Block 2)
 </p>
 </div>
 </div>
 </div>
-<div id="analysis-account-for-memory-effects" class="section level2">
-<h2>Analysis: Account for memory effects</h2>
+<div id="analysis-account-for-memory-effects" class="section level2" number="0.3">
+<h2><span class="header-section-number">0.3</span> Analysis: Account for memory effects</h2>
 <pre class="r"><code>mod.format_mem = lmer(seconds_log~format*delayed_memory + (1|proid), 
                   data = items_12)
 anova(mod.format_mem)</code></pre>
@@ -4337,10 +4504,10 @@ anova(mod.format_mem)</code></pre>
   theme_pubclean()
 
 plot_mem</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-38"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-38-1.png" alt="Predicted log-seconds on personality items by condition after controlling for delayed_memory." width="672" />
 <p class="caption">
-Predicted log-seconds on personality items by condition after controlling for delayed_memory.
+Figure 16: Predicted log-seconds on personality items by condition after controlling for delayed_memory.
 </p>
 </div>
 <pre class="r"><code>plot_mem$data %&gt;% as_tibble %&gt;% 
@@ -4360,14 +4527,14 @@ Predicted log-seconds on personality items by condition after controlling for de
   facet_wrap(~group_col) + 
   guides(color = &quot;none&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-39"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-39-1.png" alt="Predicted seconds on personality items by condition after controlling for delayed_memory." width="768" />
 <p class="caption">
-Predicted seconds on personality items by condition after controlling for delayed_memory.
+Figure 17: Predicted seconds on personality items by condition after controlling for delayed_memory.
 </p>
 </div>
-<div id="one-model-for-each-adjective-2" class="section level3">
-<h3>One model for each adjective</h3>
+<div id="one-model-for-each-adjective-2" class="section level3" number="0.3.1">
+<h3><span class="header-section-number">0.3.1</span> One model for each adjective</h3>
 <pre class="r"><code>mod_by_item_mem = items_12 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
@@ -5327,8 +5494,8 @@ Y
 </tbody>
 </table>
 </div>
-<div id="pairwise-t-tests-for-significant-anovas-2" class="section level3">
-<h3>Pairwise t-tests for significant ANOVAs</h3>
+<div id="pairwise-t-tests-for-significant-anovas-2" class="section level3" number="0.3.2">
+<h3><span class="header-section-number">0.3.2</span> Pairwise t-tests for significant ANOVAs</h3>
 <p>Here we identify the specific items with significant differences.</p>
 <pre class="r"><code>sig_item_mem = summary_by_item_mem %&gt;%
   filter(p.value &lt; .05) 
@@ -5338,93 +5505,93 @@ sig_item_mem</code></pre>
 <pre><code>## [1] &quot;imaginative&quot;   &quot;outgoing&quot;      &quot;responsible&quot;   &quot;sophisticated&quot;
 ## [5] &quot;talkative&quot;     &quot;warm&quot;</code></pre>
 </div>
-<div id="outgoing" class="section level3">
-<h3>Outgoing</h3>
+<div id="outgoing" class="section level3" number="0.3.3">
+<h3><span class="header-section-number">0.3.3</span> Outgoing</h3>
 <pre class="r"><code>outgoing_model_mem = items_12 %&gt;%
   filter(item == &quot;outgoing&quot;) %&gt;%
   lmer(seconds_log~format*delayed_memory + (1|proid), 
                                data = .)</code></pre>
 <pre class="r"><code>plot_model(outgoing_model_mem, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;delayed_memory[meansd]&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-43"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-43-1.png" alt="Average log-seconds to &quot;outgoing&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
-Average log-seconds to “outgoing” by format (Block 1 and Block 2)
+Figure 18: Average log-seconds to “outgoing” by format (Block 1 and Block 2)
 </p>
 </div>
 </div>
-<div id="warm" class="section level3">
-<h3>Warm</h3>
+<div id="warm" class="section level3" number="0.3.4">
+<h3><span class="header-section-number">0.3.4</span> Warm</h3>
 <pre class="r"><code>warm_model_mem = items_12 %&gt;%
   filter(item == &quot;warm&quot;) %&gt;%
   lmer(seconds_log~format*delayed_memory + (1|proid), 
                                data = .)</code></pre>
 <pre class="r"><code>plot_model(warm_model_mem, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;delayed_memory[meansd]&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-45"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-45-1.png" alt="Average log-seconds to &quot;warm&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
-Average log-seconds to “warm” by format (Block 1 and Block 2)
+Figure 19: Average log-seconds to “warm” by format (Block 1 and Block 2)
 </p>
 </div>
 </div>
-<div id="responsible" class="section level3">
-<h3>Responsible</h3>
+<div id="responsible" class="section level3" number="0.3.5">
+<h3><span class="header-section-number">0.3.5</span> Responsible</h3>
 <pre class="r"><code>responsible_model_mem = items_12 %&gt;%
   filter(item == &quot;responsible&quot;) %&gt;%
   lmer(seconds_log~format*delayed_memory + (1|proid), 
                                data = .)</code></pre>
 <pre class="r"><code>plot_model(responsible_model_mem, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;delayed_memory[meansd]&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-47"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-47-1.png" alt="Average log-seconds to &quot;responsible&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
-Average log-seconds to “responsible” by format (Block 1 and Block 2)
+Figure 20: Average log-seconds to “responsible” by format (Block 1 and Block 2)
 </p>
 </div>
 </div>
-<div id="imaginative" class="section level3">
-<h3>Imaginative</h3>
+<div id="imaginative" class="section level3" number="0.3.6">
+<h3><span class="header-section-number">0.3.6</span> Imaginative</h3>
 <pre class="r"><code>imaginative_model_mem = items_12 %&gt;%
   filter(item == &quot;imaginative&quot;) %&gt;%
   lmer(seconds_log~format*delayed_memory + (1|proid), 
                                data = .)</code></pre>
 <pre class="r"><code>plot_model(imaginative_model_mem, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;delayed_memory[meansd]&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-49"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-49-1.png" alt="Average log-seconds to &quot;imaginative&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
-Average log-seconds to “imaginative” by format (Block 1 and Block 2)
+Figure 21: Average log-seconds to “imaginative” by format (Block 1 and Block 2)
 </p>
 </div>
 </div>
-<div id="talkative" class="section level3">
-<h3>Talkative</h3>
+<div id="talkative" class="section level3" number="0.3.7">
+<h3><span class="header-section-number">0.3.7</span> Talkative</h3>
 <pre class="r"><code>talkative_model_mem = items_12 %&gt;%
   filter(item == &quot;talkative&quot;) %&gt;%
   lmer(seconds_log~format*delayed_memory + (1|proid), 
                                data = .)</code></pre>
 <pre class="r"><code>plot_model(talkative_model_mem, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;delayed_memory[meansd]&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-51"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-51-1.png" alt="Average log-seconds to &quot;talkative&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
-Average log-seconds to “talkative” by format (Block 1 and Block 2)
+Figure 22: Average log-seconds to “talkative” by format (Block 1 and Block 2)
 </p>
 </div>
 </div>
-<div id="sophisticated" class="section level3">
-<h3>Sophisticated</h3>
+<div id="sophisticated" class="section level3" number="0.3.8">
+<h3><span class="header-section-number">0.3.8</span> Sophisticated</h3>
 <pre class="r"><code>sophisticated_model_mem = items_12 %&gt;%
   filter(item == &quot;sophisticated&quot;) %&gt;%
   lmer(seconds_log~format*delayed_memory + (1|proid), 
                                data = .)</code></pre>
 <pre class="r"><code>plot_model(sophisticated_model_mem, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;delayed_memory[meansd]&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-53"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-53-1.png" alt="Average log-seconds to &quot;sophisticated&quot; by format (Block 1 and Block 2)" width="672" />
 <p class="caption">
-Average log-seconds to “sophisticated” by format (Block 1 and Block 2)
+Figure 23: Average log-seconds to “sophisticated” by format (Block 1 and Block 2)
 </p>
 </div>
 </div>
 </div>
-<div id="inclusion-of-i-block-1-and-block-3" class="section level2">
-<h2>Inclusion of “I” (Block 1 and Block 3)</h2>
+<div id="inclusion-of-i-block-1-and-block-3" class="section level2" number="0.4">
+<h2><span class="header-section-number">0.4</span> Inclusion of “I” (Block 1 and Block 3)</h2>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word “I”. Here, we use data from blocks 1 and 3.</p>
 <pre class="r"><code>items_13 = items_df %&gt;% 
   filter(block %in% c(&quot;1&quot;,&quot;3&quot;)) %&gt;% 
@@ -5453,14 +5620,14 @@ plot_b2 +
        title = &quot;Average responses by item formatting (Block 1 and Block 3)&quot;,
        color = &quot;I&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-56"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-56-1.png" alt="Predicted log-seconds on personality items by condition and I, using Block 1 and Block 3 data." width="672" />
 <p class="caption">
-Predicted log-seconds on personality items by condition and I, using Block 1 and Block 3 data.
+Figure 24: Predicted log-seconds on personality items by condition and I, using Block 1 and Block 3 data.
 </p>
 </div>
-<div id="one-model-for-each-adjective-3" class="section level3">
-<h3>One model for each adjective</h3>
+<div id="one-model-for-each-adjective-3" class="section level3" number="0.4.1">
+<h3><span class="header-section-number">0.4.1</span> One model for each adjective</h3>
 <pre class="r"><code>mod_by_item_i1 = items_13 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
@@ -7418,6 +7585,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

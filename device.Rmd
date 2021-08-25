@@ -2,7 +2,7 @@
 title: "Device effects"
 date: "Last updated `r Sys.Date()`"
 output: 
-  html_document:
+  bookdown::html_document2:
     toc: TRUE
     toc_float: TRUE
 ---
@@ -38,6 +38,72 @@ For these analyses, we use only data collected in Blocks 1 and 2.
 items_12 = items_df %>% filter(block %in% c("1","2"))
 ```
 
+## Demographics by device type
+
+Device-type analyses in this project are purely exploratory, but may be hampered by potential confounds. We test whether different types of participants (based on demographic variables) used different devices to complete the survey.
+
+```{r descriptives-14, echo = F, fig.cap = ""}
+age_test_print = papaja::apa_print(
+  aov(age~devicetype, data = data))
+age_test = ggpubr::ggboxplot(data, "devicetype", "age") +
+  stat_compare_means(comparisons = list(c("Computer", "Mobile"),
+                                        c("Mobile", "Tablet"),
+                                        c("Computer", "Tablet"))) +
+  labs(x = NULL, y = "Age", caption = "Differences in age across device type used. We present (uncorrected) p-values showing the pairwise comparisons of average age by device type.")
+
+
+
+sex_test = papaja::apa_print(chisq.test(table(data$sex, data$devicetype)), n = nrow(data))
+
+# ethnic_test = papaja::apa_print(chisq.test(table(data$ethnic, data$devicetype)), n = nrow(data))
+# 
+# non_na_edu = filter(data, !is.na(edu))
+# edu_test = papaja::apa_print(chisq.test(table(non_na_edu$edu, non_na_edu$devicetype)), n = nrow(non_na_edu))
+# 
+# hhinc_test = papaja::apa_print(chisq.test(table(data$hhinc, data$devicetype)), n = nrow(data))
+
+```
+
+Figure \@ref(fig:descriptives-17)A shows the distributions of age by device type; the ANOVA test of these differences is `r age_test_print$full_result$devicetype`. The chi-square test of biological sex by device type was `r sex_test$statistic`. 
+
+```{r descriptives-17, echo = F, fig.cap ="Distributions by device type", fig.height = 12}
+
+age_test = ggpubr::ggboxplot(data, "devicetype", "age") +
+  stat_compare_means(comparisons = list(c("Computer", "Mobile"),
+                                        c("Mobile", "Tablet"),
+                                        c("Computer", "Tablet"))) +
+  labs(x = NULL, y = "Age", caption = "Differences in age across device type used. We present (uncorrected) p-values showing the pairwise comparisons of average age by device type.")
+
+edu_device = data %>% 
+  ggplot(aes(x = edu, fill = devicetype)) +
+  geom_bar(stat = "count") +
+  facet_wrap(~devicetype) +
+  guides(fill = "none") +
+  labs(x = NULL, y = "Frequency") +
+  coord_flip() +
+  theme_pubr(base_size = 10) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ethnic_device = data %>% 
+  ggplot(aes(x = ethnic, fill = devicetype)) +
+  geom_bar(stat = "count") +
+  facet_wrap(~devicetype, scales = "free_y") +
+  guides(fill = "none") +
+  labs(x = NULL, y = "Frequency") +
+  theme_pubr(base_size = 10) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+hhinc_device = data %>% 
+  ggplot(aes(x = hhinc, fill = devicetype)) +
+  geom_bar(stat = "count") +
+  facet_wrap(~devicetype, scales = "free_y") +
+  guides(fill = "none") +
+  labs(x = NULL, y = "Frequency") +
+  theme_pubr(base_size = 10) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggarrange(age_test, edu_device, ethnic_device, hhinc_device, ncol = 1)
+```
 
 
 ## Timing
