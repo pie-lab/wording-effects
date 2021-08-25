@@ -303,10 +303,35 @@ $(document).ready(function () {
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#workspace"><span class="toc-section-number">0.1</span> Workspace</a></li>
+<li><a href="#change-participant-id-values"><span class="toc-section-number">0.2</span> Change participant ID values</a></li>
+<li><a href="#time-1"><span class="toc-section-number">0.3</span> Time 1</a>
+<ul>
+<li><a href="#recode-personality-item-responses-to-numeric"><span class="toc-section-number">0.3.1</span> Recode personality item responses to numeric</a></li>
+<li><a href="#drop-bots-and-inattentive-participants"><span class="toc-section-number">0.3.2</span> Drop bots and inattentive participants</a></li>
+</ul></li>
+<li><a href="#time-2"><span class="toc-section-number">0.4</span> Time 2</a>
+<ul>
+<li><a href="#recode-personality-item-responses-to-numeric-1"><span class="toc-section-number">0.4.1</span> Recode personality item responses to numeric</a></li>
+<li><a href="#drop-bots-and-inattentive-participants-1"><span class="toc-section-number">0.4.2</span> Drop bots and inattentive participants</a></li>
+<li><a href="#merge-all-datasets-together"><span class="toc-section-number">0.4.3</span> Merge all datasets together</a></li>
+</ul></li>
+<li><a href="#all-data"><span class="toc-section-number">0.5</span> All data</a>
+<ul>
+<li><a href="#reverse-score-personality-items"><span class="toc-section-number">0.5.1</span> Reverse score personality items</a></li>
+<li><a href="#score-memory-task"><span class="toc-section-number">0.5.2</span> Score memory task</a></li>
+<li><a href="#change-labels-of-device-variable"><span class="toc-section-number">0.5.3</span> Change labels of device variable</a></li>
+<li><a href="#reorder-demographic-categories"><span class="toc-section-number">0.5.4</span> Reorder demographic categories</a></li>
+<li><a href="#long-form-dataset"><span class="toc-section-number">0.5.5</span> Long-form dataset</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p>The current section documents the data cleaning process.</p>
-<div id="workspace" class="section level2">
-<h2>Workspace</h2>
+<div id="workspace" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Workspace</h2>
 <pre class="r"><code>library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
@@ -321,8 +346,8 @@ library(papaja) # for pretty numbers
 library(psych) # for correlation tests
 library(broom.mixed) # for tidying mulitilevel models</code></pre>
 </div>
-<div id="change-participant-id-values" class="section level2">
-<h2>Change participant ID values</h2>
+<div id="change-participant-id-values" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Change participant ID values</h2>
 <p>Before we begin, we create new versions of each data_t1 file that can be shared for purposes of reproducibility. These data_t1 files do not include variables that contain potentially identifying meta-data_t1 (e.g., IP address, latitude and longitude). Importantly, we also replace all Prolific ID values with new, random strings, to prevent the possibility that these participants are later identified. We also fix an error that can be introduced through Qualtrics, specifically that all or parts of the text string “Value will be set from panel or URL” is sometimes entered into the text box for ID. Prolific ID values are always 24 characters long and start with a number – we search for strings that meet this criteria.</p>
 <p>(We note that the code chunks in this subsection are turned off in the RMarkdown file – <code>eval = F</code> – as readers will not be able to run these chunks.)</p>
 <pre class="r"><code># function to load raw file, clean the names, and remove meta-data_t1
@@ -398,8 +423,8 @@ write_csv(data_2B, file = here(&quot;deidentified data/data_time2_B.csv&quot;))
 write_csv(data_2C, file = here(&quot;deidentified data/data_time2_C.csv&quot;))
 write_csv(data_2D, file = here(&quot;deidentified data/data_time2_D.csv&quot;))</code></pre>
 </div>
-<div id="time-1" class="section level2">
-<h2>Time 1</h2>
+<div id="time-1" class="section level2" number="0.3">
+<h2><span class="header-section-number">0.3</span> Time 1</h2>
 <p>We load the deidentified Time 1 data here.</p>
 <pre class="r"><code>data_t1 &lt;- read_csv(here(&quot;deidentified data/data_time1.csv&quot;))</code></pre>
 <p>We rename several columns, in order to facilitate the use of regular expressions later. Specifically, we remove the underscores (_) in the columns pertaining to broad-mindedness and self-disciplined.</p>
@@ -409,8 +434,8 @@ names(data_t1) = str_replace(names(data_t1), &quot;self_disciplind&quot;, &quot;
 <pre class="r"><code>data_t1 = data_t1 %&gt;% 
   select(-starts_with(&quot;t_human&quot;),
          -starts_with(&quot;t_asleep&quot;))</code></pre>
-<div id="recode-personality-item-responses-to-numeric" class="section level3">
-<h3>Recode personality item responses to numeric</h3>
+<div id="recode-personality-item-responses-to-numeric" class="section level3" number="0.3.1">
+<h3><span class="header-section-number">0.3.1</span> Recode personality item responses to numeric</h3>
 <p>We recode the responses to personality items, which we downloaded as text strings. We chose to use text strings as opposed to numbers to avoid any possibility that the Qualtrics-set coding was incorrect. We start this process by identifying the personality items (<code>p_items</code>) using regular expressions. All personality items take a format like <code>outgoing_a</code> or <code>helpful_b_2</code>; that is, they start with the adjective, followed by a letter indicating with which condition or item format the adjective was presented, and sometimes they are followed by a 2, indicating it was the second time the participant saw the adjective. We can represent this pattern using regular expressions.</p>
 <pre class="r"><code>p_items = str_extract(names(data_t1), &quot;^[[:alpha:]]*_[abcd](_2)?$&quot;)
 p_items = p_items[!is.na(p_items)]
@@ -438,21 +463,21 @@ data_t1 = select(data_t1, -all_of(p_items))
 # merge in recoded personality items
 data_t1 = full_join(data_t1, personality_items)</code></pre>
 </div>
-<div id="drop-bots-and-inattentive-participants" class="section level3">
-<h3>Drop bots and inattentive participants</h3>
-<div id="based-on-id" class="section level4">
-<h4>Based on ID</h4>
+<div id="drop-bots-and-inattentive-participants" class="section level3" number="0.3.2">
+<h3><span class="header-section-number">0.3.2</span> Drop bots and inattentive participants</h3>
+<div id="based-on-id" class="section level4" number="0.3.2.1">
+<h4><span class="header-section-number">0.3.2.1</span> Based on ID</h4>
 <p>Recall that when preparing the data files for sharing, we replaced all Prolific IDs with random strings. A consequence of this cleaning is that any ID entered that did not have a string meeting the Prolific ID format requirements (24 character, starting with a number) was replaced with <code>NA</code>. To remove these bots, we can simply filter out missing ID values.</p>
 <p>We removed 9 participants without valid Prolific IDs.</p>
 </div>
-<div id="based-on-language" class="section level4">
-<h4>Based on language</h4>
+<div id="based-on-language" class="section level4" number="0.3.2.2">
+<h4><span class="header-section-number">0.3.2.2</span> Based on language</h4>
 <pre class="r"><code>data_t1 = data_t1 %&gt;%
   filter(english %in% c(&quot;Well&quot;, &quot;Very well (fluent/native)&quot;))</code></pre>
 <p>We removed 0 participants that do not speak english well or very well.</p>
 </div>
-<div id="based-on-patterns" class="section level4">
-<h4>Based on patterns</h4>
+<div id="based-on-patterns" class="section level4" number="0.3.2.3">
+<h4><span class="header-section-number">0.3.2.3</span> Based on patterns</h4>
 <p>We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row.</p>
 <p>To proceed, first we create a dataframe containing just the responses to personality items in the first block.</p>
 <pre class="r"><code># first, identify unique adjectives, in order
@@ -537,7 +562,7 @@ for(i in 1:nrow(block2)){
 
 #add to data_t1 frame
 block2$block2_runs = block2_runs</code></pre>
-<p>We combine the variables holding the maximum runs into a single data frame. We will remove participants if their maximum run in either block was greater than or equal to 17. See Figure @ref(fig:1-cleaning-24) for a visualization of the spread and associations between run lengths across participants.</p>
+<p>We combine the variables holding the maximum runs into a single data frame. We will remove participants if their maximum run in either block was greater than or equal to 17. See Figure <a href="#fig:1-cleaning-24">1</a> for a visualization of the spread and associations between run lengths across participants.</p>
 <pre class="r"><code>#combine results
 runs_data = block1 %&gt;%
   select(proid, block1_runs) %&gt;%
@@ -548,10 +573,10 @@ runs_data = block1 %&gt;%
       block2_runs &gt;= 17 ~ &quot;Remove&quot;,
       TRUE ~ &quot;Keep&quot;
     ))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:1-cleaning-24"></span>
 <img src="1-cleaning_files/figure-html/1-cleaning-24-1.png" alt="Maximum number of same consecutive responses in personality blocks." width="672" />
 <p class="caption">
-Maximum number of same consecutive responses in personality blocks.
+Figure 1: Maximum number of same consecutive responses in personality blocks.
 </p>
 </div>
 <p>There were 2 participants who provided the same answer 17 or more times in a row. These participants were removed from the analyses.</p>
@@ -562,9 +587,9 @@ Maximum number of same consecutive responses in personality blocks.
 
 rm(runs_data)</code></pre>
 </div>
-<div id="based-on-inattentive-responding" class="section level4">
-<h4>Based on inattentive responding</h4>
-<p>We expect to exclude any participant who has an average response of 4 (“slightly agree”) or greater to the attention check items. Two items from the Inattentive and Deviant Responding Inventory for Adjectives (IDRIA) scale (Kay &amp; Saucier, in prep) have been included here, in part to help evaluate the extent of inattentive responding but also to consider the effect of item wording on these items. The two items used here (i.e., “Asleep”, “Human”) were chosen to be as inconspicuous as possible, so as to not to inflate item response duration. The frequency item (i.e., “human”) will be reverse-scored, so that higher scores on both the infrequency and frequency items reflect greater inattentive responding. Figure @ref(fig:1-cleaning-27) shows the distribution of average responses to attention check items.</p>
+<div id="based-on-inattentive-responding" class="section level4" number="0.3.2.4">
+<h4><span class="header-section-number">0.3.2.4</span> Based on inattentive responding</h4>
+<p>We expect to exclude any participant who has an average response of 4 (“slightly agree”) or greater to the attention check items. Two items from the Inattentive and Deviant Responding Inventory for Adjectives (IDRIA) scale (Kay &amp; Saucier, in prep) have been included here, in part to help evaluate the extent of inattentive responding but also to consider the effect of item wording on these items. The two items used here (i.e., “Asleep”, “Human”) were chosen to be as inconspicuous as possible, so as to not to inflate item response duration. The frequency item (i.e., “human”) will be reverse-scored, so that higher scores on both the infrequency and frequency items reflect greater inattentive responding. Figure <a href="#fig:1-cleaning-27">2</a> shows the distribution of average responses to attention check items.</p>
 <pre class="r"><code>in_average = data_t1 %&gt;%
   # reverse score human
   mutate(across(matches(&quot;^human&quot;),  ~(.x*-1)+7)) %&gt;%
@@ -578,10 +603,10 @@ rm(runs_data)</code></pre>
     remove = case_when(
       avg &gt;= 4 ~ &quot;Remove&quot;,
       TRUE ~ &quot;Keep&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:1-cleaning-27"></span>
 <img src="1-cleaning_files/figure-html/1-cleaning-27-1.png" alt="Average response to inattention check items" width="672" />
 <p class="caption">
-Average response to inattention check items
+Figure 2: Average response to inattention check items
 </p>
 </div>
 <p>We remove 1 participants whose responses suggest inattention.</p>
@@ -590,8 +615,8 @@ Average response to inattention check items
   filter(remove != &quot;Remove&quot;) %&gt;%
   select(-remove)</code></pre>
 </div>
-<div id="based-on-average-time-to-respond-to-personality-items" class="section level4">
-<h4>Based on average time to respond to personality items</h4>
+<div id="based-on-average-time-to-respond-to-personality-items" class="section level4" number="0.3.2.5">
+<h4><span class="header-section-number">0.3.2.5</span> Based on average time to respond to personality items</h4>
 <p>First, select just the timing of the personality items. We do this by searching for specific strings: "t_[someword]<em>[a or b or c or d]</em>(maybe 2_)_page_submit."</p>
 <pre class="r"><code>timing_data = data_t1 %&gt;%
   select(proid, matches(&quot;t_[[:alpha:]]*_[abcd](_2)?_page_submit&quot;))</code></pre>
@@ -609,7 +634,7 @@ Average response to inattention check items
 ##   `min(n)` `max(n)`
 ##      &lt;int&gt;    &lt;int&gt;
 ## 1       62       62</code></pre>
-<p>Excellent! Now we calculate the average response time per item for each participant. We mark a participant for removal if their average time is less than 1 second or greater than 30. See Figure @ref(fig:1-cleaning-33) for a distribution of average response time.</p>
+<p>Excellent! Now we calculate the average response time per item for each participant. We mark a participant for removal if their average time is less than 1 second or greater than 30. See Figure <a href="#fig:1-cleaning-33">3</a> for a distribution of average response time.</p>
 <pre class="r"><code>timing_data = timing_data %&gt;%
   group_by(proid) %&gt;%
   summarise(m_time = mean(timing)) %&gt;%
@@ -618,10 +643,10 @@ Average response to inattention check items
     m_time &gt; 30 ~ &quot;Remove&quot;,
     TRUE ~ &quot;Keep&quot;
   ))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:1-cleaning-33"></span>
 <img src="1-cleaning_files/figure-html/1-cleaning-33-1.png" alt="Distribution of average time to respond to personality items." width="672" />
 <p class="caption">
-Distribution of average time to respond to personality items.
+Figure 3: Distribution of average time to respond to personality items.
 </p>
 </div>
 <pre class="r"><code>data_t1 = inner_join(data_t1, filter(timing_data, remove == &quot;Keep&quot;)) %&gt;%
@@ -642,8 +667,8 @@ Distribution of average time to respond to personality items.
 </div>
 </div>
 </div>
-<div id="time-2" class="section level2">
-<h2>Time 2</h2>
+<div id="time-2" class="section level2" number="0.4">
+<h2><span class="header-section-number">0.4</span> Time 2</h2>
 <pre class="r"><code>data_2A &lt;- read_csv(here(&quot;deidentified data/data_time2_A.csv&quot;))
 data_2B &lt;- read_csv(here(&quot;deidentified data/data_time2_B.csv&quot;))
 data_2C &lt;- read_csv(here(&quot;deidentified data/data_time2_C.csv&quot;))
@@ -663,8 +688,8 @@ names(data_2) = str_replace(names(data_2), &quot;self_disciplind&quot;, &quot;se
 <pre class="r"><code>data_t1 = data_t1 %&gt;% 
   select(-starts_with(&quot;t_human&quot;),
          -starts_with(&quot;t_asleep&quot;))</code></pre>
-<div id="recode-personality-item-responses-to-numeric-1" class="section level3">
-<h3>Recode personality item responses to numeric</h3>
+<div id="recode-personality-item-responses-to-numeric-1" class="section level3" number="0.4.1">
+<h3><span class="header-section-number">0.4.1</span> Recode personality item responses to numeric</h3>
 <p>We recode the responses to personality items, which we downloaded as text strings. Here, all items end with <code>_3</code> and sometimes with <code>i</code>.</p>
 <pre class="r"><code>p_items_2 = str_extract(names(data_2), &quot;^[[:alpha:]]*_[abcd]_3(i)?$&quot;)
 p_items_2 = p_items_2[!is.na(p_items_2)]
@@ -678,19 +703,19 @@ personality_items_2 = select(data_2, proid, all_of(p_items_2))</code></pre>
 <pre class="r"><code>data_2 = select(data_2, -all_of(p_items_2))
 data_2 = full_join(data_2, personality_items_2)</code></pre>
 </div>
-<div id="drop-bots-and-inattentive-participants-1" class="section level3">
-<h3>Drop bots and inattentive participants</h3>
+<div id="drop-bots-and-inattentive-participants-1" class="section level3" number="0.4.2">
+<h3><span class="header-section-number">0.4.2</span> Drop bots and inattentive participants</h3>
 <p>This code recreates the steps outlined in detail above for Time 1. Please refer to the descriptions above for justification and explaination of the code presented here.</p>
-<div id="based-on-id-1" class="section level4">
-<h4>Based on ID</h4>
+<div id="based-on-id-1" class="section level4" number="0.4.2.1">
+<h4><span class="header-section-number">0.4.2.1</span> Based on ID</h4>
 <p>We also check that the ID in time 2 matches an ID in time 1.</p>
 <pre class="r"><code>data_2 = data_2 %&gt;% 
   filter(proid %in% data_t1$proid)</code></pre>
 <p>We removed 35 participants without valid Prolific IDs.</p>
 </div>
-<div id="based-on-patterns-1" class="section level4">
-<h4>Based on patterns</h4>
-<p>We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row. The distribution of runs in Time 2 is depicted in Figure @ref(fig:1-cleaning-55).</p>
+<div id="based-on-patterns-1" class="section level4" number="0.4.2.2">
+<h4><span class="header-section-number">0.4.2.2</span> Based on patterns</h4>
+<p>We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row. The distribution of runs in Time 2 is depicted in Figure <a href="#fig:1-cleaning-55">4</a>.</p>
 <pre class="r"><code># first, identify unique adjectives, in order
 adjectives = p_items_2 %&gt;%
   str_remove_all(&quot;_.&quot;) %&gt;%
@@ -740,10 +765,10 @@ runs_data_2 = block3 %&gt;%
       block3_runs &gt;= 17 ~ &quot;Remove&quot;,
       TRUE ~ &quot;Keep&quot;
     ))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:1-cleaning-55"></span>
 <img src="1-cleaning_files/figure-html/1-cleaning-55-1.png" alt="Maximum number of same consecutive responses in personality block 3." width="672" />
 <p class="caption">
-Maximum number of same consecutive responses in personality block 3.
+Figure 4: Maximum number of same consecutive responses in personality block 3.
 </p>
 </div>
 <p>There were 0 participants who provided the same answer 17 or more times in a row. These participants were removed from the analyses.</p>
@@ -754,9 +779,9 @@ Maximum number of same consecutive responses in personality block 3.
 
 rm(runs_data_2)</code></pre>
 </div>
-<div id="based-on-inattentive-responding-1" class="section level4">
-<h4>Based on inattentive responding</h4>
-<p>Participants who respond positively to the adjective <em>asleep</em> or negatively to the word <em>human</em> are assumed to be inattentive. We filter out participants whose average response to these two items is greater than or equal to 4 (see Figure @ref(fig:1-cleaning-59) for the distribution).</p>
+<div id="based-on-inattentive-responding-1" class="section level4" number="0.4.2.3">
+<h4><span class="header-section-number">0.4.2.3</span> Based on inattentive responding</h4>
+<p>Participants who respond positively to the adjective <em>asleep</em> or negatively to the word <em>human</em> are assumed to be inattentive. We filter out participants whose average response to these two items is greater than or equal to 4 (see Figure <a href="#fig:1-cleaning-59">5</a> for the distribution).</p>
 <pre class="r"><code>in_average = data_2 %&gt;%
   # reverse score human
   mutate(across(matches(&quot;^human&quot;),  ~(.x*-1)+7)) %&gt;%
@@ -770,10 +795,10 @@ rm(runs_data_2)</code></pre>
     remove = case_when(
       avg &gt;= 4 ~ &quot;Remove&quot;,
       TRUE ~ &quot;Keep&quot;))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:1-cleaning-59"></span>
 <img src="1-cleaning_files/figure-html/1-cleaning-59-1.png" alt="Average response to inattention check items" width="672" />
 <p class="caption">
-Average response to inattention check items
+Figure 5: Average response to inattention check items
 </p>
 </div>
 <p>We remove 1 participants whose responses suggest inattention.</p>
@@ -782,9 +807,9 @@ Average response to inattention check items
   filter(remove != &quot;Remove&quot;) %&gt;%
   select(-remove)</code></pre>
 </div>
-<div id="based-on-average-time-to-respond-to-personality-items-1" class="section level4">
-<h4>Based on average time to respond to personality items</h4>
-<p>Participants who take too little (&lt; 1 second) or too long (greater than 30 seconds) on average to answer each personality item are excluded. See Figure @ref(fig:1-cleaning-64) for the distribution of average response time per item.</p>
+<div id="based-on-average-time-to-respond-to-personality-items-1" class="section level4" number="0.4.2.4">
+<h4><span class="header-section-number">0.4.2.4</span> Based on average time to respond to personality items</h4>
+<p>Participants who take too little (&lt; 1 second) or too long (greater than 30 seconds) on average to answer each personality item are excluded. See Figure <a href="#fig:1-cleaning-64">6</a> for the distribution of average response time per item.</p>
 <pre class="r"><code>timing_data_2 = data_2 %&gt;%
   select(proid, matches(&quot;t_[[:alpha:]]*_[abcd]_3(i)?_page_submit&quot;))
 
@@ -809,18 +834,18 @@ timing_data_2 = timing_data_2 %&gt;%
     m_time &gt; 30 ~ &quot;Remove&quot;,
     TRUE ~ &quot;Keep&quot;
   ))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:1-cleaning-64"></span>
 <img src="1-cleaning_files/figure-html/1-cleaning-64-1.png" alt="Distribution of average time to respond to personality items in Block 3." width="672" />
 <p class="caption">
-Distribution of average time to respond to personality items in Block 3.
+Figure 6: Distribution of average time to respond to personality items in Block 3.
 </p>
 </div>
 <pre class="r"><code>data_2 = inner_join(data_2, filter(timing_data_2, remove == &quot;Keep&quot;)) %&gt;%
   select(-remove)</code></pre>
 </div>
 </div>
-<div id="merge-all-datasets-together" class="section level3">
-<h3>Merge all datasets together</h3>
+<div id="merge-all-datasets-together" class="section level3" number="0.4.3">
+<h3><span class="header-section-number">0.4.3</span> Merge all datasets together</h3>
 <p>We merge the Time 1 and Time 2 datasets together here.</p>
 <pre class="r"><code>data_2 = data_2 %&gt;% 
   select(proid, start_date2, duration_in_seconds2, very_delayed_recall, contains(&quot;_3&quot;)) %&gt;% 
@@ -829,10 +854,10 @@ Distribution of average time to respond to personality items in Block 3.
 data = data_t1 %&gt;% full_join(data_2)</code></pre>
 </div>
 </div>
-<div id="all-data" class="section level2">
-<h2>All data</h2>
-<div id="reverse-score-personality-items" class="section level3">
-<h3>Reverse score personality items</h3>
+<div id="all-data" class="section level2" number="0.5">
+<h2><span class="header-section-number">0.5</span> All data</h2>
+<div id="reverse-score-personality-items" class="section level3" number="0.5.1">
+<h3><span class="header-section-number">0.5.1</span> Reverse score personality items</h3>
 <p>The following items are (typically) negatively correlated with the others: reckless, moody, worrying, nervous, careless, impulsive. We reverse-score them to ease interpretation of associations and means in the later sections. In short, all traits will be scored such that larger numbers are indicative of the more socially desirable end of the spectrum.</p>
 <pre class="r"><code>data = data %&gt;%
   mutate(
@@ -845,8 +870,8 @@ data = data_t1 %&gt;% full_join(data_2)</code></pre>
 <p>We also create a vector noting the items that are reverse scored. We use this later in tables, to help identify patterns when looking at analyses within-adjective. We use this object elsewhere in the analyses.</p>
 <pre class="r"><code>reverse = c(&quot;reckless&quot;, &quot;moody&quot;, &quot;worrying&quot;, &quot;nervous&quot;, &quot;careless&quot;, &quot;impulsive&quot;)</code></pre>
 </div>
-<div id="score-memory-task" class="section level3">
-<h3>Score memory task</h3>
+<div id="score-memory-task" class="section level3" number="0.5.2">
+<h3><span class="header-section-number">0.5.2</span> Score memory task</h3>
 <p>Now we score the memory task. We start by creating vectors of the correct responses.</p>
 <pre class="r"><code>correct1 = c(&quot;book&quot;, &quot;child&quot;, &quot;gold&quot;, &quot;hotel&quot;, &quot;king&quot;, 
              &quot;market&quot;, &quot;paper&quot;, &quot;river&quot;, &quot;skin&quot;, &quot;tree&quot;)
@@ -873,8 +898,8 @@ correct4 = c(&quot;baby&quot;, &quot;church&quot;, &quot;doctor&quot;, &quot;fir
     across(matches(&quot;recall&quot;), str_remove, pattern = &quot;,$&quot;),
     # split the strings based on the spaces
     across(matches(&quot;recall&quot;), str_split, pattern = &quot;,&quot;))</code></pre>
-<div id="immediate-recall" class="section level4">
-<h4>Immediate recall</h4>
+<div id="immediate-recall" class="section level4" number="0.5.2.1">
+<h4><span class="header-section-number">0.5.2.1</span> Immediate recall</h4>
 <p>Now we use the <code>amatch</code> function in the <code>stringdist</code> package to look for exact (or close) matches to the target words. This function returns for each word either the position of the key in which you can find the target word or <code>NA</code> to indicate the word or a close match does not exist in the string.</p>
 <pre class="r"><code>distance = 1 #maximum distance between target word and correct response
 data = data %&gt;%
@@ -931,11 +956,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall1 = map_chr(recall1, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall1                                 memory
-##   &lt;chr&gt;                                    &lt;dbl&gt;
-## 1 king, market, paper, hotel, river, skin      6
-## 2 book, child, gold, tree, paper, ring         6
-## 3 book, king, market, gold                     4</code></pre>
+##   recall1                                       memory
+##   &lt;chr&gt;                                          &lt;dbl&gt;
+## 1 book, child, gold, hotel, river, tree, market      7
+## 2 book, king, market, gold                           4
+## 3 book, hotel, market, chain, paper, gold            5</code></pre>
 <pre class="r"><code>#from memory condition 2
 data %&gt;% 
   filter(mem_condition == 2) %&gt;% 
@@ -943,11 +968,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall2 = map_chr(recall2, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall2                                                               memory
-##   &lt;chr&gt;                                                                  &lt;dbl&gt;
-## 1 butter, college, dollar, earth, flag, home, machine, ocean, sky, wife     10
-## 2 butter, , earth, , flag, , machine, home, wife, , sky.                     7
-## 3 wife, warm, friendly                                                       1</code></pre>
+##   recall2                                                memory
+##   &lt;chr&gt;                                                   &lt;dbl&gt;
+## 1 machine, wife, health                                       2
+## 2 sky, ocean, wife, butter                                    4
+## 3 butter, , earth, , flag, , machine, home, wife, , sky.      7</code></pre>
 <pre class="r"><code>#from memory condition 3
 data %&gt;% 
   filter(mem_condition == 3) %&gt;% 
@@ -957,9 +982,9 @@ data %&gt;%
 <pre><code>## # A tibble: 3 × 2
 ##   recall3                                                               memory
 ##   &lt;chr&gt;                                                                  &lt;dbl&gt;
-## 1 blood, corner, engine, girl, home, letter, rock, shoes, valley, woman      9
-## 2 blood, corner.girl.woman, house, shoes                                     3
-## 3 blood, corner, woman, rock, shoes, girl, valley                            7</code></pre>
+## 1 girl, woman, valley, shoes, rock, house, engine                            7
+## 2 blood, corner, woman, rock, shoes, girl, valley                            7
+## 3 blood, corner, engine, girl, home, letter, rock, shoes, valley, woman      9</code></pre>
 <pre class="r"><code>#from memory condition 4
 data %&gt;% 
   filter(mem_condition == 4) %&gt;% 
@@ -967,15 +992,15 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall4 = map_chr(recall4, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall4                           memory
-##   &lt;chr&gt;                              &lt;dbl&gt;
-## 1 water, baby, church, garden, fire      5
-## 2 water, baby                            2
-## 3 baby, church, water, fire, garden      5</code></pre>
+##   recall4                                                                memory
+##   &lt;chr&gt;                                                                   &lt;dbl&gt;
+## 1 water, baby                                                                 2
+## 2 church, table, baby, fire, doctor                                           5
+## 3 sea, table, water, doctor, village, baby, fire, church, garden, palace     10</code></pre>
 <p>Participants remember on average 5.80 words correctly <span class="math inline">\((SD = 2.73)\)</span>.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Memory responses by condition
+<span id="tab:1-cleaning-77">Table 1: </span>Memory responses by condition
 </caption>
 <thead>
 <tr>
@@ -1083,8 +1108,8 @@ N
 </tbody>
 </table>
 </div>
-<div id="delayed-recall" class="section level4">
-<h4>Delayed recall</h4>
+<div id="delayed-recall" class="section level4" number="0.5.2.2">
+<h4><span class="header-section-number">0.5.2.2</span> Delayed recall</h4>
 <p>A challenge with the delayed recall task is identifying the memory condition that participants were assigned to, but this is made easier by the work done above. The following code mainly reproduces the steps used for scoring the immediate memory recall task. The main difference is that we have a single column containing all responses (<code>delayed_recall</code>), regardless of which memory condition participants were assigned to. We score this response against all four answer keys, then select the maximum (best) score.</p>
 <pre class="r"><code>mem2 = data %&gt;%
   select(proid, mem_condition, delayed_recall) %&gt;%
@@ -1115,8 +1140,8 @@ mem2 = mem2 %&gt;%
 data = inner_join(data, mem2)</code></pre>
 <p>Participants remember on average 5.11 words correctly after 5-10 minutes <span class="math inline">\((SD = 2.97)\)</span>.</p>
 </div>
-<div id="very-delayed-recall" class="section level4">
-<h4>Very-delayed recall</h4>
+<div id="very-delayed-recall" class="section level4" number="0.5.2.3">
+<h4><span class="header-section-number">0.5.2.3</span> Very-delayed recall</h4>
 <p>Finally, we score the memory challenge posed at Time 2. Like scoring the delayed recall task, we have a single column containing responses fromo all participants, regardless of the original memory condition.</p>
 <pre class="r"><code>mem3 = data %&gt;%
   filter(time2 == &quot;yes&quot;) %&gt;% 
@@ -1147,9 +1172,9 @@ mem3 = mem3 %&gt;%
 
 data = full_join(data, mem3)</code></pre>
 </div>
-<div id="correlations" class="section level4">
-<h4>Correlations</h4>
-<p>Figure @ref(fig:memory-dist) displays the univariate and bivariate distributions of the memory scores and the bivariate correlations. In general, there was good spread in the immediate recall and delayed (10 minute) recall variables. Few participants remembered any of the words after two weeks.</p>
+<div id="correlations" class="section level4" number="0.5.2.4">
+<h4><span class="header-section-number">0.5.2.4</span> Correlations</h4>
+<p>Figure <a href="#fig:memory-dist">7</a> displays the univariate and bivariate distributions of the memory scores and the bivariate correlations. In general, there was good spread in the immediate recall and delayed (10 minute) recall variables. Few participants remembered any of the words after two weeks.</p>
 <pre class="r"><code>data %&gt;% 
   select(matches(&quot;memory$&quot;)) %&gt;% 
   corr.test</code></pre>
@@ -1171,16 +1196,16 @@ data = full_join(data, mem3)</code></pre>
 ## very_delayed_memory   0.76           0.81                   0
 ## 
 ##  To see confidence intervals of the correlations, print with the short=FALSE option</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:memory-dist"></span>
 <img src="1-cleaning_files/figure-html/memory-dist-1.png" alt="Distributions of memory scores across booth time points." width="672" />
 <p class="caption">
-Distributions of memory scores across booth time points.
+Figure 7: Distributions of memory scores across booth time points.
 </p>
 </div>
 </div>
 </div>
-<div id="change-labels-of-device-variable" class="section level3">
-<h3>Change labels of device variable</h3>
+<div id="change-labels-of-device-variable" class="section level3" number="0.5.3">
+<h3><span class="header-section-number">0.5.3</span> Change labels of device variable</h3>
 <p>Longer labels were provided to participants for clarity. However, we will use shorter labels in our analyses and figures.</p>
 <pre class="r"><code>data = data %&gt;% 
   mutate(devicetype = factor(
@@ -1190,8 +1215,8 @@ Distributions of memory scores across booth time points.
     labels = c(&quot;Computer&quot;, &quot;Mobile&quot;, &quot;Tablet&quot;)
   ))</code></pre>
 </div>
-<div id="reorder-demographic-categories" class="section level3">
-<h3>Reorder demographic categories</h3>
+<div id="reorder-demographic-categories" class="section level3" number="0.5.4">
+<h3><span class="header-section-number">0.5.4</span> Reorder demographic categories</h3>
 <p>We set the order of ordinal demographic variables, which helps generate more interpretable figures and tables.</p>
 <pre class="r"><code>data = data %&gt;% 
   mutate(edu = factor(edu, 
@@ -1225,8 +1250,8 @@ Distributions of memory scores across booth time points.
                           &quot;&gt;$500K&quot;
                         )))</code></pre>
 </div>
-<div id="long-form-dataset" class="section level3">
-<h3>Long-form dataset</h3>
+<div id="long-form-dataset" class="section level3" number="0.5.5">
+<h3><span class="header-section-number">0.5.5</span> Long-form dataset</h3>
 <p>We need one dataset that contains the responses to and timing of the personality items in long form. This will be used for nearly all the statistical models, which will nest items within person. To create this, we first select the responses to the items of different formats. For this set of analyses, we use data collected in both Block 1 and Block 2 – that is, each participant saw the same format for every item during Block 1, but a random format for each item in Block 2.</p>
 <p>These variable names have one of four formats: <code>[trait]_[abcd]</code> (for example, <code>talkative_a</code>), <code>[trait]_[abcd]_2</code> (for example, <code>talkative_a_2</code>), <code>[trait]_[abcd]_3</code> (e.g., <code>talkative_a_3</code>), or <code>[trait]_[abcd]_3i</code> (e.g., <code>talkative_a_3i</code>). We search for these items using regular expressions.</p>
 <pre class="r"><code>item_responses = str_subset(
@@ -1263,15 +1288,15 @@ Distributions of memory scores across booth time points.
     item = str_remove(item, &quot;i$&quot;)) %&gt;% 
   separate(item, into = c(&quot;item&quot;, &quot;format&quot;)) %&gt;%
   spread(variable, value)</code></pre>
-<div id="remove-human-and-asleep" class="section level4">
-<h4>Remove ‘human’ and ‘asleep’</h4>
+<div id="remove-human-and-asleep" class="section level4" number="0.5.5.1">
+<h4><span class="header-section-number">0.5.5.1</span> Remove ‘human’ and ‘asleep’</h4>
 <p>We also remove responses to the adjectives “human” and “asleep”, as these are not personality items per-se and included for the purpose of attention checks.</p>
 <pre class="r"><code>items_df = items_df %&gt;% 
   filter(item != &quot;human&quot;) %&gt;% 
   filter(item != &quot;asleep&quot;)</code></pre>
 </div>
-<div id="label-formatting-conditions" class="section level4">
-<h4>Label formatting conditions</h4>
+<div id="label-formatting-conditions" class="section level4" number="0.5.5.2">
+<h4><span class="header-section-number">0.5.5.2</span> Label formatting conditions</h4>
 <p>We give labels to the formats, to clarify interpretations and aid table and figure construction.</p>
 <pre class="r"><code>items_df$format = as.factor(items_df$format)
 items_df$format = relevel(items_df$format, ref = &quot;a&quot;) 
@@ -1279,15 +1304,15 @@ items_df$format = factor(items_df$format,
                                levels = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;),
                                labels = c(&quot;Adjective\nOnly&quot;, &quot;Am\nAdjective&quot;, &quot;Tend to be\nAdjective&quot;, &quot;Am someone\nwho tends to be\nAdjective&quot;))</code></pre>
 </div>
-<div id="transform-seconds" class="section level4">
-<h4>Transform seconds</h4>
-<p>The variable <code>seconds</code> appears to have a very severe right skew (see Figure @ref(fig:1-cleaning-95)). We log-transform this variable for later analyses.</p>
+<div id="transform-seconds" class="section level4" number="0.5.5.3">
+<h4><span class="header-section-number">0.5.5.3</span> Transform seconds</h4>
+<p>The variable <code>seconds</code> appears to have a very severe right skew (see Figure <a href="#fig:1-cleaning-95">8</a>). We log-transform this variable for later analyses.</p>
 <pre class="r"><code>items_df = items_df %&gt;% 
   mutate(seconds_log = log(timing))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:1-cleaning-95"></span>
 <img src="1-cleaning_files/figure-html/1-cleaning-95-1.png" alt="Distribution of seconds, raw and transformed." width="672" />
 <p class="caption">
-Distribution of seconds, raw and transformed.
+Figure 8: Distribution of seconds, raw and transformed.
 </p>
 </div>
 </div>

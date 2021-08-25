@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -222,6 +225,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -229,6 +295,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -304,15 +380,15 @@ $(document).ready(function () {
 </div>
 
 
-<p>Participants (<em>N</em> = 35; 22.86% female) were, on average, 39.40 years old (<em>SD</em> = 6.02, minimum = 31, maximum = 51; see Figure @ref(fig:descriptives-5)A for the full distribution). A majority (65.71%) of participants identified as White only (25.71% only); Figure @ref(fig:descriptives-5)B shows the other response options and frequencies. See Figure @ref(fig:descriptives-5)C for the distribution of education, and @ref(fig:descriptives-5)D for the distribution of household income.</p>
-<div class="figure">
+<p>Participants (<em>N</em> = 35; 22.86% female) were, on average, 39.40 years old (<em>SD</em> = 6.02, minimum = 31, maximum = 51; see Figure <a href="#fig:descriptives-5">1</a>A for the full distribution). A majority (65.71%) of participants identified as White only (25.71% only); Figure <a href="#fig:descriptives-5">1</a>B shows the other response options and frequencies. See Figure <a href="#fig:descriptives-5">1</a>C for the distribution of education, and <a href="#fig:descriptives-5">1</a>D for the distribution of household income.</p>
+<div class="figure"><span style="display:block;" id="fig:descriptives-5"></span>
 <img src="descriptives_files/figure-html/descriptives-5-1.png" alt="Distributions of key demographics across the entire sample" width="768" />
 <p class="caption">
-Distributions of key demographics across the entire sample
+Figure 1: Distributions of key demographics across the entire sample
 </p>
 </div>
-<div id="time" class="section level2">
-<h2>Time</h2>
+<div id="time" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Time</h2>
 <p>How much time elapsed between assessments?</p>
 <pre class="r"><code>data = data %&gt;% 
   mutate(difference = as.numeric(start_date2-start_date))
@@ -328,12 +404,12 @@ summary(data$difference)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
 ##   2.000   3.329   4.925   8.910   7.875  40.833      13</code></pre>
 </div>
-<div id="personality-by-block-and-format" class="section level2">
-<h2>Personality by block and format</h2>
-<p>See Table @ref(tab:descriptives27) for the descriptive statistics of each format by block.</p>
+<div id="personality-by-block-and-format" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Personality by block and format</h2>
+<p>See Table <a href="#tab:descriptives27">1</a> for the descriptive statistics of each format by block.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Descriptives of responses by format and block
+<span id="tab:descriptives27">Table 1: </span>Descriptives of responses by format and block
 </caption>
 <thead>
 <tr>
@@ -366,7 +442,8 @@ N (participants)
 1
 </td>
 <td style="text-align:left;">
-Adjective Only
+Adjective
+Only
 </td>
 <td style="text-align:right;">
 4.70
@@ -389,7 +466,8 @@ Adjective Only
 1
 </td>
 <td style="text-align:left;">
-Am Adjective
+Am
+Adjective
 </td>
 <td style="text-align:right;">
 4.52
@@ -412,7 +490,8 @@ Am Adjective
 1
 </td>
 <td style="text-align:left;">
-Tend to be Adjective
+Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 4.63
@@ -435,7 +514,9 @@ Tend to be Adjective
 1
 </td>
 <td style="text-align:left;">
-Am someone who tends to be Adjective
+Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 4.73
@@ -458,7 +539,8 @@ Am someone who tends to be Adjective
 2
 </td>
 <td style="text-align:left;">
-Adjective Only
+Adjective
+Only
 </td>
 <td style="text-align:right;">
 4.68
@@ -481,7 +563,8 @@ Adjective Only
 2
 </td>
 <td style="text-align:left;">
-Am Adjective
+Am
+Adjective
 </td>
 <td style="text-align:right;">
 4.57
@@ -504,7 +587,8 @@ Am Adjective
 2
 </td>
 <td style="text-align:left;">
-Tend to be Adjective
+Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 4.67
@@ -527,7 +611,9 @@ Tend to be Adjective
 2
 </td>
 <td style="text-align:left;">
-Am someone who tends to be Adjective
+Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 4.61
@@ -550,7 +636,8 @@ Am someone who tends to be Adjective
 3
 </td>
 <td style="text-align:left;">
-Adjective Only
+Adjective
+Only
 </td>
 <td style="text-align:right;">
 4.87
@@ -573,7 +660,8 @@ Adjective Only
 3
 </td>
 <td style="text-align:left;">
-Am Adjective
+Am
+Adjective
 </td>
 <td style="text-align:right;">
 4.67
@@ -596,7 +684,8 @@ Am Adjective
 3
 </td>
 <td style="text-align:left;">
-Tend to be Adjective
+Tend to be
+Adjective
 </td>
 <td style="text-align:right;">
 4.46
@@ -619,7 +708,9 @@ Tend to be Adjective
 3
 </td>
 <td style="text-align:left;">
-Am someone who tends to be Adjective
+Am someone
+who tends to be
+Adjective
 </td>
 <td style="text-align:right;">
 5.06
@@ -639,10 +730,10 @@ Am someone who tends to be Adjective
 </tr>
 </tbody>
 </table>
-<p>See Table @ref(tab:descriptives-28) for the descriptive statistics of each item and format in Block 1 (Time 1).</p>
+<p>See Table <a href="#tab:descriptives-28">2</a> for the descriptive statistics of each item and format in Block 1 (Time 1).</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Descriptives of responses to Block 1 by format and item
+<span id="tab:descriptives-28">Table 2: </span>Descriptives of responses to Block 1 by format and item
 </caption>
 <thead>
 <tr>
@@ -650,16 +741,21 @@ Descriptives of responses to Block 1 by format and item
 item
 </th>
 <th style="text-align:left;">
-Adjective Only
+Adjective
+Only
 </th>
 <th style="text-align:left;">
-Am Adjective
+Am
+Adjective
 </th>
 <th style="text-align:left;">
-Tend to be Adjective
+Tend to be
+Adjective
 </th>
 <th style="text-align:left;">
-Am someone who tends to be Adjective
+Am someone
+who tends to be
+Adjective
 </th>
 </tr>
 </thead>
@@ -1193,10 +1289,10 @@ worrying
 </tr>
 </tbody>
 </table>
-<p>See Table @ref(tab:descriptives-30) for the descriptive statistics of each item and format in Block 2 (Time 1).</p>
+<p>See Table <a href="#tab:descriptives-30">3</a> for the descriptive statistics of each item and format in Block 2 (Time 1).</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Descriptives of responses to Block 2 by format and item
+<span id="tab:descriptives-30">Table 3: </span>Descriptives of responses to Block 2 by format and item
 </caption>
 <thead>
 <tr>
@@ -1204,16 +1300,21 @@ Descriptives of responses to Block 2 by format and item
 item
 </th>
 <th style="text-align:left;">
-Adjective Only
+Adjective
+Only
 </th>
 <th style="text-align:left;">
-Am Adjective
+Am
+Adjective
 </th>
 <th style="text-align:left;">
-Tend to be Adjective
+Tend to be
+Adjective
 </th>
 <th style="text-align:left;">
-Am someone who tends to be Adjective
+Am someone
+who tends to be
+Adjective
 </th>
 </tr>
 </thead>
@@ -1747,10 +1848,10 @@ worrying
 </tr>
 </tbody>
 </table>
-<p>See Table @ref(tab:descriptives-32) for the descriptive statistics of each item and format in Block 3 (Time 2).</p>
+<p>See Table <a href="#tab:descriptives-32">4</a> for the descriptive statistics of each item and format in Block 3 (Time 2).</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Descriptives of items to Block 3 by format
+<span id="tab:descriptives-32">Table 4: </span>Descriptives of items to Block 3 by format
 </caption>
 <thead>
 <tr>
@@ -1758,16 +1859,21 @@ Descriptives of items to Block 3 by format
 item
 </th>
 <th style="text-align:left;">
-Adjective Only
+Adjective
+Only
 </th>
 <th style="text-align:left;">
-Am Adjective
+Am
+Adjective
 </th>
 <th style="text-align:left;">
-Tend to be Adjective
+Tend to be
+Adjective
 </th>
 <th style="text-align:left;">
-Am someone who tends to be Adjective
+Am someone
+who tends to be
+Adjective
 </th>
 </tr>
 </thead>
@@ -2305,6 +2411,8 @@ worrying
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -2337,6 +2445,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -220,6 +223,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -227,6 +293,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -307,8 +383,8 @@ $(document).ready(function () {
 <pre class="r"><code>sample_sizes = seq(50, 500, 25)
 
 n_sims = 1000</code></pre>
-<div id="model-1" class="section level2">
-<h2>Model 1</h2>
+<div id="model-1" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Model 1</h2>
 <p>To simplify our code, we write a function that simulates responses to model 1 based on a given sample size, N, and number of repetitions.</p>
 <pre class="r"><code># function to simulate mod.format_b1
 
@@ -351,7 +427,7 @@ power_df = data.frame(
   N = sample_sizes,
   power = 0
 )</code></pre>
-<p>Here we (inefficiently) loop through all sample sizes and calculate power. Final results are presented in Figure @ref(fig:plotpower1).</p>
+<p>Here we (inefficiently) loop through all sample sizes and calculate power. Final results are presented in Figure <a href="#fig:plotpower1"><strong>??</strong></a>.</p>
 <pre class="r"><code>set.seed(20210729)
 for(i in sample_sizes){
   pvalues = sim_format_b1(i, n_sims)
@@ -367,8 +443,8 @@ power_df_min = power_df %&gt;%
 N_min = min(power_df_min$N)</code></pre>
 <p>The simulation suggests that power would be over the threshold of .95 with a sample size of 150 participants per condition.</p>
 </div>
-<div id="model-2" class="section level2">
-<h2>Model 2</h2>
+<div id="model-2" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Model 2</h2>
 <p>Here we repeat the process for our second model, which uses both blocks of data from Time 1 (i.e., Blocks 1 and 2).</p>
 <pre class="r"><code># function to simulate mod.format_b2
 
@@ -434,7 +510,7 @@ sim_format_b2 = function(n, sims){
   N = sample_sizes,
   power = 0
 )</code></pre>
-<p>Here we (inefficiently) loop through all sample sizes and calculate power. Final results are depicted in Figure @ref(fig:plotpower2).</p>
+<p>Here we (inefficiently) loop through all sample sizes and calculate power. Final results are depicted in Figure <a href="#fig:plotpower2"><strong>??</strong></a>.</p>
 <pre class="r"><code>set.seed(20210729)
 for(i in sample_sizes){
   pvalues = sim_format_b2(i, n_sims)
@@ -453,6 +529,8 @@ N_min2 = min(power_df2_min$N)</code></pre>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -485,6 +563,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

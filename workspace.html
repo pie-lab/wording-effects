@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -222,6 +225,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -229,6 +295,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -328,7 +404,108 @@ knitr
 1.33
 </td>
 <td style="text-align:left;width: 5in; ">
-Yihui Xie [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-0645-5666%3E" class="uri">https://orcid.org/0000-0003-0645-5666&gt;</a>;), Abhraneel Sarma [ctb], Adam Vogt [ctb], Alastair Andrew [ctb], Alex Zvoleff [ctb], Andre Simon [ctb] (the CSS files under inst/themes/ were derived from the Highlight package <a href="http://www.andre-simon.de" class="uri">http://www.andre-simon.de</a>), Aron Atkins [ctb], Aaron Wolen [ctb], Ashley Manton [ctb], Atsushi Yasumoto [ctb] (&lt;<a href="https://orcid.org/0000-0002-8335-495X%3E" class="uri">https://orcid.org/0000-0002-8335-495X&gt;</a>;), Ben Baumer [ctb], Brian Diggs [ctb], Brian Zhang [ctb], Bulat Yapparov [ctb], Cassio Pereira [ctb], Christophe Dervieux [ctb], David Hall [ctb], David Hugh-Jones [ctb], David Robinson [ctb], Doug Hemken [ctb], Duncan Murdoch [ctb], Elio Campitelli [ctb], Ellis Hughes [ctb], Emily Riederer [ctb], Fabian Hirschmann [ctb], Fitch Simeon [ctb], Forest Fang [ctb], Frank E Harrell Jr [ctb] (the Sweavel package at inst/misc/Sweavel.sty), Garrick Aden-Buie [ctb], Gregoire Detrez [ctb], Hadley Wickham [ctb], Hao Zhu [ctb], Heewon Jeon [ctb], Henrik Bengtsson [ctb], Hiroaki Yutani [ctb], Ian Lyttle [ctb], Hodges Daniel [ctb], Jake Burkhead [ctb], James Manton [ctb], Jared Lander [ctb], Jason Punyon [ctb], Javier Luraschi [ctb], Jeff Arnold [ctb], Jenny Bryan [ctb], Jeremy Ashkenas [ctb, cph] (the CSS file at inst/misc/docco-classic.css), Jeremy Stephens [ctb], Jim Hester [ctb], Joe Cheng [ctb], Johannes Ranke [ctb], John Honaker [ctb], John Muschelli [ctb], Jonathan Keane [ctb], JJ Allaire [ctb], Johan Toloe [ctb], Jonathan Sidi [ctb], Joseph Larmarange [ctb], Julien Barnier [ctb], Kaiyin Zhong [ctb], Kamil Slowikowski [ctb], Karl Forner [ctb], Kevin K. Smith [ctb], Kirill Mueller [ctb], Kohske Takahashi [ctb], Lorenz Walthert [ctb], Lucas Gallindo [ctb], Marius Hofert [ctb], Martin Modrák [ctb], Michael Chirico [ctb], Michael Friendly [ctb], Michal Bojanowski [ctb], Michel Kuhlmann [ctb], Miller Patrick [ctb], Nacho Caballero [ctb], Nick Salkowski [ctb], Niels Richard Hansen [ctb], Noam Ross [ctb], Obada Mahdi [ctb], Pavel N. Krivitsky [ctb] (&lt;<a href="https://orcid.org/0000-0002-9101-3362%3E" class="uri">https://orcid.org/0000-0002-9101-3362&gt;</a>;), Qiang Li [ctb], Ramnath Vaidyanathan [ctb], Richard Cotton [ctb], Robert Krzyzanowski [ctb], Romain Francois [ctb], Ruaridh Williamson [ctb], Scott Kostyshak [ctb], Sebastian Meyer [ctb], Sietse Brouwer [ctb], Simon de Bernard [ctb], Sylvain Rousseau [ctb], Taiyun Wei [ctb], Thibaut Assus [ctb], Thibaut Lamadon [ctb], Thomas Leeper [ctb], Tim Mastny [ctb], Tom Torsney-Weir [ctb], Trevor Davis [ctb], Viktoras Veitas [ctb], Weicheng Zhu [ctb], Wush Wu [ctb], Zachary Foster [ctb]
+Yihui Xie [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-0645-5666%3E" class="uri">https://orcid.org/0000-0003-0645-5666&gt;</a>;),
+Abhraneel Sarma [ctb],
+Adam Vogt [ctb],
+Alastair Andrew [ctb],
+Alex Zvoleff [ctb],
+Andre Simon [ctb] (the CSS files under inst/themes/ were derived from
+the Highlight package <a href="http://www.andre-simon.de" class="uri">http://www.andre-simon.de</a>),
+Aron Atkins [ctb],
+Aaron Wolen [ctb],
+Ashley Manton [ctb],
+Atsushi Yasumoto [ctb] (&lt;<a href="https://orcid.org/0000-0002-8335-495X%3E" class="uri">https://orcid.org/0000-0002-8335-495X&gt;</a>;),
+Ben Baumer [ctb],
+Brian Diggs [ctb],
+Brian Zhang [ctb],
+Bulat Yapparov [ctb],
+Cassio Pereira [ctb],
+Christophe Dervieux [ctb],
+David Hall [ctb],
+David Hugh-Jones [ctb],
+David Robinson [ctb],
+Doug Hemken [ctb],
+Duncan Murdoch [ctb],
+Elio Campitelli [ctb],
+Ellis Hughes [ctb],
+Emily Riederer [ctb],
+Fabian Hirschmann [ctb],
+Fitch Simeon [ctb],
+Forest Fang [ctb],
+Frank E Harrell Jr [ctb] (the Sweavel package at inst/misc/Sweavel.sty),
+Garrick Aden-Buie [ctb],
+Gregoire Detrez [ctb],
+Hadley Wickham [ctb],
+Hao Zhu [ctb],
+Heewon Jeon [ctb],
+Henrik Bengtsson [ctb],
+Hiroaki Yutani [ctb],
+Ian Lyttle [ctb],
+Hodges Daniel [ctb],
+Jake Burkhead [ctb],
+James Manton [ctb],
+Jared Lander [ctb],
+Jason Punyon [ctb],
+Javier Luraschi [ctb],
+Jeff Arnold [ctb],
+Jenny Bryan [ctb],
+Jeremy Ashkenas [ctb, cph] (the CSS file at
+inst/misc/docco-classic.css),
+Jeremy Stephens [ctb],
+Jim Hester [ctb],
+Joe Cheng [ctb],
+Johannes Ranke [ctb],
+John Honaker [ctb],
+John Muschelli [ctb],
+Jonathan Keane [ctb],
+JJ Allaire [ctb],
+Johan Toloe [ctb],
+Jonathan Sidi [ctb],
+Joseph Larmarange [ctb],
+Julien Barnier [ctb],
+Kaiyin Zhong [ctb],
+Kamil Slowikowski [ctb],
+Karl Forner [ctb],
+Kevin K. Smith [ctb],
+Kirill Mueller [ctb],
+Kohske Takahashi [ctb],
+Lorenz Walthert [ctb],
+Lucas Gallindo [ctb],
+Marius Hofert [ctb],
+Martin Modrák [ctb],
+Michael Chirico [ctb],
+Michael Friendly [ctb],
+Michal Bojanowski [ctb],
+Michel Kuhlmann [ctb],
+Miller Patrick [ctb],
+Nacho Caballero [ctb],
+Nick Salkowski [ctb],
+Niels Richard Hansen [ctb],
+Noam Ross [ctb],
+Obada Mahdi [ctb],
+Pavel N. Krivitsky [ctb] (&lt;<a href="https://orcid.org/0000-0002-9101-3362%3E" class="uri">https://orcid.org/0000-0002-9101-3362&gt;</a>;),
+Qiang Li [ctb],
+Ramnath Vaidyanathan [ctb],
+Richard Cotton [ctb],
+Robert Krzyzanowski [ctb],
+Romain Francois [ctb],
+Ruaridh Williamson [ctb],
+Scott Kostyshak [ctb],
+Sebastian Meyer [ctb],
+Sietse Brouwer [ctb],
+Simon de Bernard [ctb],
+Sylvain Rousseau [ctb],
+Taiyun Wei [ctb],
+Thibaut Assus [ctb],
+Thibaut Lamadon [ctb],
+Thomas Leeper [ctb],
+Tim Mastny [ctb],
+Tom Torsney-Weir [ctb],
+Trevor Davis [ctb],
+Viktoras Veitas [ctb],
+Weicheng Zhu [ctb],
+Wush Wu [ctb],
+Zachary Foster [ctb]
 </td>
 </tr>
 <tr>
@@ -361,7 +538,12 @@ emmeans
 1.6.3
 </td>
 <td style="text-align:left;width: 5in; ">
-Russell V. Lenth [aut, cre, cph], Paul Buerkner [ctb], Maxime Herve [ctb], Jonathon Love [ctb], Hannes Riebl [ctb], Henrik Singmann [ctb]
+Russell V. Lenth [aut, cre, cph],
+Paul Buerkner [ctb],
+Maxime Herve [ctb],
+Jonathon Love [ctb],
+Hannes Riebl [ctb],
+Henrik Singmann [ctb]
 </td>
 </tr>
 <tr>
@@ -372,7 +554,18 @@ broom.mixed
 0.2.7
 </td>
 <td style="text-align:left;width: 5in; ">
-Ben Bolker [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-2127-0443%3E" class="uri">https://orcid.org/0000-0002-2127-0443&gt;</a>;), David Robinson [aut], Dieter Menne [ctb], Jonah Gabry [ctb], Paul Buerkner [ctb], Christopher Hua [ctb], William Petry [ctb] (&lt;<a href="https://orcid.org/0000-0002-5230-5987%3E" class="uri">https://orcid.org/0000-0002-5230-5987&gt;</a>;), Joshua Wiley [ctb] (&lt;<a href="https://orcid.org/0000-0002-0271-6702%3E" class="uri">https://orcid.org/0000-0002-0271-6702&gt;</a>;), Patrick Kennedy [ctb], Eduard Szöcs [ctb] (&lt;<a href="https://orcid.org/0000-0001-5376-1194%3E" class="uri">https://orcid.org/0000-0001-5376-1194&gt;</a>;, BASF SE), Indrajeet Patil [ctb], Vincent Arel-Bundock [ctb] (&lt;<a href="https://orcid.org/0000-0003-2042-7063%3E" class="uri">https://orcid.org/0000-0003-2042-7063&gt;</a>;)
+Ben Bolker [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-2127-0443%3E" class="uri">https://orcid.org/0000-0002-2127-0443&gt;</a>;),
+David Robinson [aut],
+Dieter Menne [ctb],
+Jonah Gabry [ctb],
+Paul Buerkner [ctb],
+Christopher Hua [ctb],
+William Petry [ctb] (&lt;<a href="https://orcid.org/0000-0002-5230-5987%3E" class="uri">https://orcid.org/0000-0002-5230-5987&gt;</a>;),
+Joshua Wiley [ctb] (&lt;<a href="https://orcid.org/0000-0002-0271-6702%3E" class="uri">https://orcid.org/0000-0002-0271-6702&gt;</a>;),
+Patrick Kennedy [ctb],
+Eduard Szöcs [ctb] (&lt;<a href="https://orcid.org/0000-0001-5376-1194%3E" class="uri">https://orcid.org/0000-0001-5376-1194&gt;</a>;, BASF SE),
+Indrajeet Patil [ctb],
+Vincent Arel-Bundock [ctb] (&lt;<a href="https://orcid.org/0000-0003-2042-7063%3E" class="uri">https://orcid.org/0000-0003-2042-7063&gt;</a>;)
 </td>
 </tr>
 <tr>
@@ -394,7 +587,12 @@ papaja
 0.1.0.9997
 </td>
 <td style="text-align:left;width: 5in; ">
-Frederik Aust [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-4900-788X%3E" class="uri">https://orcid.org/0000-0003-4900-788X&gt;</a>;), Marius Barth [aut] (&lt;<a href="https://orcid.org/0000-0002-3421-6665%3E" class="uri">https://orcid.org/0000-0002-3421-6665&gt;</a>;), Birk Diedenhofen [ctb], Christoph Stahl [ctb], Joseph V. Casillas [ctb], Rudolf Siegel [ctb]
+Frederik Aust [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-4900-788X%3E" class="uri">https://orcid.org/0000-0003-4900-788X&gt;</a>;),
+Marius Barth [aut] (&lt;<a href="https://orcid.org/0000-0002-3421-6665%3E" class="uri">https://orcid.org/0000-0002-3421-6665&gt;</a>;),
+Birk Diedenhofen [ctb],
+Christoph Stahl [ctb],
+Joseph V. Casillas [ctb],
+Rudolf Siegel [ctb]
 </td>
 </tr>
 <tr>
@@ -405,7 +603,12 @@ stringdist
 0.9.6.3
 </td>
 <td style="text-align:left;width: 5in; ">
-Mark van der Loo [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-9807-4686%3E" class="uri">https://orcid.org/0000-0002-9807-4686&gt;</a>;), Jan van der Laan [ctb], R Core Team [ctb], Nick Logan [ctb], Chris Muir [ctb], Johannes Gruber [ctb]
+Mark van der Loo [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-9807-4686%3E" class="uri">https://orcid.org/0000-0002-9807-4686&gt;</a>;),
+Jan van der Laan [ctb],
+R Core Team [ctb],
+Nick Logan [ctb],
+Chris Muir [ctb],
+Johannes Gruber [ctb]
 </td>
 </tr>
 <tr>
@@ -416,7 +619,20 @@ kableExtra
 1.3.4
 </td>
 <td style="text-align:left;width: 5in; ">
-Hao Zhu [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-3386-6076%3E" class="uri">https://orcid.org/0000-0002-3386-6076&gt;</a>;), Thomas Travison [ctb], Timothy Tsai [ctb], Will Beasley [ctb], Yihui Xie [ctb], GuangChuang Yu [ctb], Stéphane Laurent [ctb], Rob Shepherd [ctb], Yoni Sidi [ctb], Brian Salzer [ctb], George Gui [ctb], Yeliang Fan [ctb], Duncan Murdoch [ctb], Bill Evans [ctb]
+Hao Zhu [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-3386-6076%3E" class="uri">https://orcid.org/0000-0002-3386-6076&gt;</a>;),
+Thomas Travison [ctb],
+Timothy Tsai [ctb],
+Will Beasley [ctb],
+Yihui Xie [ctb],
+GuangChuang Yu [ctb],
+Stéphane Laurent [ctb],
+Rob Shepherd [ctb],
+Yoni Sidi [ctb],
+Brian Salzer [ctb],
+George Gui [ctb],
+Yeliang Fan [ctb],
+Duncan Murdoch [ctb],
+Bill Evans [ctb]
 </td>
 </tr>
 <tr>
@@ -438,7 +654,12 @@ sjPlot
 2.8.9
 </td>
 <td style="text-align:left;width: 5in; ">
-Daniel Lüdecke [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-8895-3206%3E" class="uri">https://orcid.org/0000-0002-8895-3206&gt;</a>;), Alexander Bartel [ctb] (&lt;<a href="https://orcid.org/0000-0002-1280-6138%3E" class="uri">https://orcid.org/0000-0002-1280-6138&gt;</a>;), Carsten Schwemmer [ctb], Chuck Powell [ctb] (&lt;<a href="https://orcid.org/0000-0002-3606-2188%3E" class="uri">https://orcid.org/0000-0002-3606-2188&gt;</a>;), Amir Djalovski [ctb], Johannes Titz [ctb] (&lt;<a href="https://orcid.org/0000-0002-1102-5719%3E" class="uri">https://orcid.org/0000-0002-1102-5719&gt;</a>;)
+Daniel Lüdecke [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-8895-3206%3E" class="uri">https://orcid.org/0000-0002-8895-3206&gt;</a>;),
+Alexander Bartel [ctb] (&lt;<a href="https://orcid.org/0000-0002-1280-6138%3E" class="uri">https://orcid.org/0000-0002-1280-6138&gt;</a>;),
+Carsten Schwemmer [ctb],
+Chuck Powell [ctb] (&lt;<a href="https://orcid.org/0000-0002-3606-2188%3E" class="uri">https://orcid.org/0000-0002-3606-2188&gt;</a>;),
+Amir Djalovski [ctb],
+Johannes Titz [ctb] (&lt;<a href="https://orcid.org/0000-0002-1102-5719%3E" class="uri">https://orcid.org/0000-0002-1102-5719&gt;</a>;)
 </td>
 </tr>
 <tr>
@@ -449,7 +670,10 @@ lmerTest
 3.1-3
 </td>
 <td style="text-align:left;width: 5in; ">
-Alexandra Kuznetsova [aut], Per Bruun Brockhoff [aut, ths], Rune Haubo Bojesen Christensen [aut, cre], Sofie Pødenphant Jensen [ctb]
+Alexandra Kuznetsova [aut],
+Per Bruun Brockhoff [aut, ths],
+Rune Haubo Bojesen Christensen [aut, cre],
+Sofie Pødenphant Jensen [ctb]
 </td>
 </tr>
 <tr>
@@ -460,7 +684,21 @@ lme4
 1.1-27.1
 </td>
 <td style="text-align:left;width: 5in; ">
-Douglas Bates [aut] (&lt;<a href="https://orcid.org/0000-0001-8316-9503%3E" class="uri">https://orcid.org/0000-0001-8316-9503&gt;</a>;), Martin Maechler [aut] (&lt;<a href="https://orcid.org/0000-0002-8685-9910%3E" class="uri">https://orcid.org/0000-0002-8685-9910&gt;</a>;), Ben Bolker [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-2127-0443%3E" class="uri">https://orcid.org/0000-0002-2127-0443&gt;</a>;), Steven Walker [aut] (&lt;<a href="https://orcid.org/0000-0002-4394-9078%3E" class="uri">https://orcid.org/0000-0002-4394-9078&gt;</a>;), Rune Haubo Bojesen Christensen [ctb] (&lt;<a href="https://orcid.org/0000-0002-4494-3399%3E" class="uri">https://orcid.org/0000-0002-4494-3399&gt;</a>;), Henrik Singmann [ctb] (&lt;<a href="https://orcid.org/0000-0002-4842-3657%3E" class="uri">https://orcid.org/0000-0002-4842-3657&gt;</a>;), Bin Dai [ctb], Fabian Scheipl [ctb] (&lt;<a href="https://orcid.org/0000-0001-8172-3603%3E" class="uri">https://orcid.org/0000-0001-8172-3603&gt;</a>;), Gabor Grothendieck [ctb], Peter Green [ctb] (&lt;<a href="https://orcid.org/0000-0002-0238-9852%3E" class="uri">https://orcid.org/0000-0002-0238-9852&gt;</a>;), John Fox [ctb], Alexander Bauer [ctb], Pavel N. Krivitsky [ctb, cph] (&lt;<a href="https://orcid.org/0000-0002-9101-3362%3E" class="uri">https://orcid.org/0000-0002-9101-3362&gt;</a>;, shared copyright on simulate.formula)
+Douglas Bates [aut] (&lt;<a href="https://orcid.org/0000-0001-8316-9503%3E" class="uri">https://orcid.org/0000-0001-8316-9503&gt;</a>;),
+Martin Maechler [aut] (&lt;<a href="https://orcid.org/0000-0002-8685-9910%3E" class="uri">https://orcid.org/0000-0002-8685-9910&gt;</a>;),
+Ben Bolker [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-2127-0443%3E" class="uri">https://orcid.org/0000-0002-2127-0443&gt;</a>;),
+Steven Walker [aut] (&lt;<a href="https://orcid.org/0000-0002-4394-9078%3E" class="uri">https://orcid.org/0000-0002-4394-9078&gt;</a>;),
+Rune Haubo Bojesen Christensen [ctb]
+(&lt;<a href="https://orcid.org/0000-0002-4494-3399%3E" class="uri">https://orcid.org/0000-0002-4494-3399&gt;</a>;),
+Henrik Singmann [ctb] (&lt;<a href="https://orcid.org/0000-0002-4842-3657%3E" class="uri">https://orcid.org/0000-0002-4842-3657&gt;</a>;),
+Bin Dai [ctb],
+Fabian Scheipl [ctb] (&lt;<a href="https://orcid.org/0000-0001-8172-3603%3E" class="uri">https://orcid.org/0000-0001-8172-3603&gt;</a>;),
+Gabor Grothendieck [ctb],
+Peter Green [ctb] (&lt;<a href="https://orcid.org/0000-0002-0238-9852%3E" class="uri">https://orcid.org/0000-0002-0238-9852&gt;</a>;),
+John Fox [ctb],
+Alexander Bauer [ctb],
+Pavel N. Krivitsky [ctb, cph] (&lt;<a href="https://orcid.org/0000-0002-9101-3362%3E" class="uri">https://orcid.org/0000-0002-9101-3362&gt;</a>;,
+shared copyright on simulate.formula)
 </td>
 </tr>
 <tr>
@@ -471,7 +709,16 @@ Matrix
 1.3-3
 </td>
 <td style="text-align:left;width: 5in; ">
-Douglas Bates [aut], Martin Maechler [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-8685-9910%3E" class="uri">https://orcid.org/0000-0002-8685-9910&gt;</a>;), Timothy A. Davis [ctb] (SuiteSparse and ‘cs’ C libraries, notably CHOLMOD, AMD; collaborators listed in dir(pattern = ‘<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>+[.]txt$’, full.names=TRUE, system.file(‘doc’, ‘SuiteSparse’, package=‘Matrix’))), Jens Oehlschlägel [ctb] (initial nearPD()), Jason Riedy [ctb] (condest() and onenormest() for octave, Copyright: Regents of the University of California), R Core Team [ctb] (base R matrix implementation)
+Douglas Bates [aut],
+Martin Maechler [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-8685-9910%3E" class="uri">https://orcid.org/0000-0002-8685-9910&gt;</a>;),
+Timothy A. Davis [ctb] (SuiteSparse and ‘cs’ C libraries, notably
+CHOLMOD, AMD; collaborators listed in dir(pattern =
+‘<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>+[.]txt$’, full.names=TRUE, system.file(‘doc’,
+‘SuiteSparse’, package=‘Matrix’))),
+Jens Oehlschlägel [ctb] (initial nearPD()),
+Jason Riedy [ctb] (condest() and onenormest() for octave, Copyright:
+Regents of the University of California),
+R Core Team [ctb] (base R matrix implementation)
 </td>
 </tr>
 <tr>
@@ -482,7 +729,10 @@ stringi
 1.7.3
 </td>
 <td style="text-align:left;width: 5in; ">
-Marek Gagolewski [aut, cre, cph] (&lt;<a href="https://orcid.org/0000-0003-0637-6028%3E" class="uri">https://orcid.org/0000-0003-0637-6028&gt;</a>;), Bartek Tartanus [ctb], and others (stringi source code); IBM, Unicode, Inc. and others (ICU4C source code, Unicode Character Database)
+Marek Gagolewski [aut, cre, cph] (&lt;<a href="https://orcid.org/0000-0003-0637-6028%3E" class="uri">https://orcid.org/0000-0003-0637-6028&gt;</a>;),
+Bartek Tartanus [ctb],
+and others (stringi source code);
+IBM, Unicode, Inc. and others (ICU4C source code, Unicode Character Database)
 </td>
 </tr>
 <tr>
@@ -493,7 +743,12 @@ janitor
 2.1.0
 </td>
 <td style="text-align:left;width: 5in; ">
-Sam Firke [aut, cre], Bill Denney [ctb], Chris Haid [ctb], Ryan Knight [ctb], Malte Grosser [ctb], Jonathan Zadra [ctb]
+Sam Firke [aut, cre],
+Bill Denney [ctb],
+Chris Haid [ctb],
+Ryan Knight [ctb],
+Malte Grosser [ctb],
+Jonathan Zadra [ctb]
 </td>
 </tr>
 <tr>
@@ -504,7 +759,8 @@ forcats
 0.5.1
 </td>
 <td style="text-align:left;width: 5in; ">
-Hadley Wickham [aut, cre], RStudio [cph, fnd]
+Hadley Wickham [aut, cre],
+RStudio [cph, fnd]
 </td>
 </tr>
 <tr>
@@ -515,7 +771,8 @@ stringr
 1.4.0
 </td>
 <td style="text-align:left;width: 5in; ">
-Hadley Wickham [aut, cre, cph], RStudio [cph, fnd]
+Hadley Wickham [aut, cre, cph],
+RStudio [cph, fnd]
 </td>
 </tr>
 <tr>
@@ -526,7 +783,11 @@ dplyr
 1.0.7
 </td>
 <td style="text-align:left;width: 5in; ">
-Hadley Wickham [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-4757-117X%3E" class="uri">https://orcid.org/0000-0003-4757-117X&gt;</a>;), Romain François [aut] (&lt;<a href="https://orcid.org/0000-0002-2444-4226%3E" class="uri">https://orcid.org/0000-0002-2444-4226&gt;</a>;), Lionel Henry [aut], Kirill Müller [aut] (&lt;<a href="https://orcid.org/0000-0002-1416-3412%3E" class="uri">https://orcid.org/0000-0002-1416-3412&gt;</a>;), RStudio [cph, fnd]
+Hadley Wickham [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-4757-117X%3E" class="uri">https://orcid.org/0000-0003-4757-117X&gt;</a>;),
+Romain François [aut] (&lt;<a href="https://orcid.org/0000-0002-2444-4226%3E" class="uri">https://orcid.org/0000-0002-2444-4226&gt;</a>;),
+Lionel Henry [aut],
+Kirill Müller [aut] (&lt;<a href="https://orcid.org/0000-0002-1416-3412%3E" class="uri">https://orcid.org/0000-0002-1416-3412&gt;</a>;),
+RStudio [cph, fnd]
 </td>
 </tr>
 <tr>
@@ -537,7 +798,9 @@ purrr
 0.3.4
 </td>
 <td style="text-align:left;width: 5in; ">
-Lionel Henry [aut, cre], Hadley Wickham [aut], RStudio [cph, fnd]
+Lionel Henry [aut, cre],
+Hadley Wickham [aut],
+RStudio [cph, fnd]
 </td>
 </tr>
 <tr>
@@ -548,7 +811,13 @@ readr
 1.4.0
 </td>
 <td style="text-align:left;width: 5in; ">
-Hadley Wickham [aut], Jim Hester [aut, cre], Romain Francois [ctb], R Core Team [ctb] (Date time code adapted from R), RStudio [cph, fnd], Jukka Jylänki [ctb, cph] (grisu3 implementation), Mikkel Jørgensen [ctb, cph] (grisu3 implementation)
+Hadley Wickham [aut],
+Jim Hester [aut, cre],
+Romain Francois [ctb],
+R Core Team [ctb] (Date time code adapted from R),
+RStudio [cph, fnd],
+Jukka Jylänki [ctb, cph] (grisu3 implementation),
+Mikkel Jørgensen [ctb, cph] (grisu3 implementation)
 </td>
 </tr>
 <tr>
@@ -559,7 +828,8 @@ tidyr
 1.1.3
 </td>
 <td style="text-align:left;width: 5in; ">
-Hadley Wickham [aut, cre], RStudio [cph]
+Hadley Wickham [aut, cre],
+RStudio [cph]
 </td>
 </tr>
 <tr>
@@ -570,7 +840,11 @@ tibble
 3.1.3
 </td>
 <td style="text-align:left;width: 5in; ">
-Kirill Müller [aut, cre], Hadley Wickham [aut], Romain Francois [ctb], Jennifer Bryan [ctb], RStudio [cph]
+Kirill Müller [aut, cre],
+Hadley Wickham [aut],
+Romain Francois [ctb],
+Jennifer Bryan [ctb],
+RStudio [cph]
 </td>
 </tr>
 <tr>
@@ -581,7 +855,17 @@ ggplot2
 3.3.5
 </td>
 <td style="text-align:left;width: 5in; ">
-Hadley Wickham [aut] (&lt;<a href="https://orcid.org/0000-0003-4757-117X%3E" class="uri">https://orcid.org/0000-0003-4757-117X&gt;</a>;), Winston Chang [aut] (&lt;<a href="https://orcid.org/0000-0002-1576-2126%3E" class="uri">https://orcid.org/0000-0002-1576-2126&gt;</a>;), Lionel Henry [aut], Thomas Lin Pedersen [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-5147-4711%3E" class="uri">https://orcid.org/0000-0002-5147-4711&gt;</a>;), Kohske Takahashi [aut], Claus Wilke [aut] (&lt;<a href="https://orcid.org/0000-0002-7470-9261%3E" class="uri">https://orcid.org/0000-0002-7470-9261&gt;</a>;), Kara Woo [aut] (&lt;<a href="https://orcid.org/0000-0002-5125-4188%3E" class="uri">https://orcid.org/0000-0002-5125-4188&gt;</a>;), Hiroaki Yutani [aut] (&lt;<a href="https://orcid.org/0000-0002-3385-7233%3E" class="uri">https://orcid.org/0000-0002-3385-7233&gt;</a>;), Dewey Dunnington [aut] (&lt;<a href="https://orcid.org/0000-0002-9415-4582%3E" class="uri">https://orcid.org/0000-0002-9415-4582&gt;</a>;), RStudio [cph, fnd]
+Hadley Wickham [aut] (&lt;<a href="https://orcid.org/0000-0003-4757-117X%3E" class="uri">https://orcid.org/0000-0003-4757-117X&gt;</a>;),
+Winston Chang [aut] (&lt;<a href="https://orcid.org/0000-0002-1576-2126%3E" class="uri">https://orcid.org/0000-0002-1576-2126&gt;</a>;),
+Lionel Henry [aut],
+Thomas Lin Pedersen [aut, cre]
+(&lt;<a href="https://orcid.org/0000-0002-5147-4711%3E" class="uri">https://orcid.org/0000-0002-5147-4711&gt;</a>;),
+Kohske Takahashi [aut],
+Claus Wilke [aut] (&lt;<a href="https://orcid.org/0000-0002-7470-9261%3E" class="uri">https://orcid.org/0000-0002-7470-9261&gt;</a>;),
+Kara Woo [aut] (&lt;<a href="https://orcid.org/0000-0002-5125-4188%3E" class="uri">https://orcid.org/0000-0002-5125-4188&gt;</a>;),
+Hiroaki Yutani [aut] (&lt;<a href="https://orcid.org/0000-0002-3385-7233%3E" class="uri">https://orcid.org/0000-0002-3385-7233&gt;</a>;),
+Dewey Dunnington [aut] (&lt;<a href="https://orcid.org/0000-0002-9415-4582%3E" class="uri">https://orcid.org/0000-0002-9415-4582&gt;</a>;),
+RStudio [cph, fnd]
 </td>
 </tr>
 <tr>
@@ -592,7 +876,8 @@ tidyverse
 1.3.1
 </td>
 <td style="text-align:left;width: 5in; ">
-Hadley Wickham [aut, cre], RStudio [cph, fnd]
+Hadley Wickham [aut, cre],
+RStudio [cph, fnd]
 </td>
 </tr>
 <tr>
@@ -603,7 +888,8 @@ here
 1.0.1
 </td>
 <td style="text-align:left;width: 5in; ">
-Kirill Müller [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-1416-3412%3E" class="uri">https://orcid.org/0000-0002-1416-3412&gt;</a>;), Jennifer Bryan [ctb] (&lt;<a href="https://orcid.org/0000-0002-6983-2759%3E" class="uri">https://orcid.org/0000-0002-6983-2759&gt;</a>;)
+Kirill Müller [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-1416-3412%3E" class="uri">https://orcid.org/0000-0002-1416-3412&gt;</a>;),
+Jennifer Bryan [ctb] (&lt;<a href="https://orcid.org/0000-0002-6983-2759%3E" class="uri">https://orcid.org/0000-0002-6983-2759&gt;</a>;)
 </td>
 </tr>
 </tbody>
@@ -617,6 +903,8 @@ Kirill Müller [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-1416-3412%3E
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -649,6 +937,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

@@ -23,7 +23,7 @@ library(lmerTest) # for p-values
 library(emmeans) # for comparisons
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
-library(kableExtra) # for nicer tables
+library(kableExtra) # for nicer tablesgi
 library(papaja) # for formatting numbers
 ```
 
