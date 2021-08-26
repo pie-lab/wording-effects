@@ -31,7 +31,7 @@ n_sims = 1000
 ```
 
 
-## Model 1
+## Using Block 1 data
 
 To simplify our code, we write a function that simulates responses to model 1 based on a given sample size, N, and number of repetitions.
 
@@ -130,7 +130,7 @@ N_min = min(power_df_min$N)
 
 The simulation suggests that power would be over the threshold of .95 with a sample size of `r N_min` participants per condition.
 
-## Model 2
+## Using Block 1 and 2 data
 
 Here we repeat the process for our second model, which uses both blocks of data from Time 1 (i.e., Blocks 1 and 2).
 

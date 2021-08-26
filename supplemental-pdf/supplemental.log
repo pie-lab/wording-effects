@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.8.24)  26 AUG 2021 11:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.8.24)  26 AUG 2021 12:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -637,7 +637,7 @@ File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 185.
 [3] [4] [5] [6] [7]
-<supplemental_files/figure-latex/1-cleaning-24-1.pdf, id=219, 463.7325pt x 315.
+<supplemental_files/figure-latex/1-cleaning-24-1.pdf, id=209, 463.7325pt x 315.
 1775pt>
 File: supplemental_files/figure-latex/1-cleaning-24-1.pdf Graphic file (type pd
 f)
@@ -651,7 +651,7 @@ sed on input line 510.
                                                   \__shipout_drop_firstpage_...
 l.525 \end{Shaded}
                    <./supplemental_files/figure-latex/1-cleaning-24-1.pdf>]
-<supplemental_files/figure-latex/1-cleaning-27-1.pdf, id=237, 458.71375pt x 315
+<supplemental_files/figure-latex/1-cleaning-27-1.pdf, id=227, 458.71375pt x 315
 .1775pt>
 File: supplemental_files/figure-latex/1-cleaning-27-1.pdf Graphic file (type pd
 f)
@@ -665,7 +665,7 @@ e.2}) has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.599 \end{Shaded}
                    <./supplemental_files/figure-latex/1-cleaning-27-1.pdf>]
-<supplemental_files/figure-latex/1-cleaning-33-1.pdf, id=260, 463.7325pt x 308.
+<supplemental_files/figure-latex/1-cleaning-33-1.pdf, id=250, 463.7325pt x 308.
 15125pt>
 File: supplemental_files/figure-latex/1-cleaning-33-1.pdf Graphic file (type pd
 f)
@@ -680,7 +680,7 @@ sed on input line 625.
 l.629 \begin{Shaded}
                      <./supplemental_files/figure-latex/1-cleaning-33-1.pdf>] [
 13] [14]
-<supplemental_files/figure-latex/1-cleaning-55-1.pdf, id=293, 463.7325pt x 315.
+<supplemental_files/figure-latex/1-cleaning-55-1.pdf, id=283, 463.7325pt x 315.
 1775pt>
 File: supplemental_files/figure-latex/1-cleaning-55-1.pdf Graphic file (type pd
 f)
@@ -694,7 +694,7 @@ e.4}) has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.851 
        <./supplemental_files/figure-latex/1-cleaning-55-1.pdf>]
-<supplemental_files/figure-latex/1-cleaning-59-1.pdf, id=312, 458.71375pt x 315
+<supplemental_files/figure-latex/1-cleaning-59-1.pdf, id=302, 458.71375pt x 315
 .1775pt>
 File: supplemental_files/figure-latex/1-cleaning-59-1.pdf Graphic file (type pd
 f)
@@ -708,7 +708,7 @@ sed on input line 872.
                                                   \__shipout_drop_firstpage_...
 l.891 
        <./supplemental_files/figure-latex/1-cleaning-59-1.pdf>]
-<supplemental_files/figure-latex/1-cleaning-64-1.pdf, id=328, 463.7325pt x 308.
+<supplemental_files/figure-latex/1-cleaning-64-1.pdf, id=318, 463.7325pt x 308.
 15125pt>
 File: supplemental_files/figure-latex/1-cleaning-64-1.pdf Graphic file (type pd
 f)
@@ -728,7 +728,7 @@ ame{table.1}) has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.1237 \end{Shaded}
                    ] [24]
-<supplemental_files/figure-latex/memory-dist-1.pdf, id=387, 419.5675pt x 275.02
+<supplemental_files/figure-latex/memory-dist-1.pdf, id=377, 419.5675pt x 275.02
 75pt>
 File: supplemental_files/figure-latex/memory-dist-1.pdf Graphic file (type pdf)
 
@@ -756,7 +756,7 @@ Underfull \hbox (badness 3471) in paragraph at lines 1382--1383
  []
 
 [26] [27]
-<supplemental_files/figure-latex/1-cleaning-95-1.pdf, id=416, 463.7325pt x 312.
+<supplemental_files/figure-latex/1-cleaning-95-1.pdf, id=406, 463.7325pt x 312.
 16624pt>
 File: supplemental_files/figure-latex/1-cleaning-95-1.pdf Graphic file (type pd
 f)
@@ -770,7 +770,7 @@ sed on input line 1483.
                                                   \__shipout_drop_firstpage_...
 l.1487 \newpage
                 <./supplemental_files/figure-latex/1-cleaning-95-1.pdf>]
-<supplemental_files/figure-latex/descriptives-5-1.pdf, id=439, 572.1375pt x 710
+<supplemental_files/figure-latex/descriptives-5-1.pdf, id=428, 572.1375pt x 710
 .655pt>
 File: supplemental_files/figure-latex/descriptives-5-1.pdf Graphic file (type p
 df)
@@ -804,7 +804,7 @@ e.9}) has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.1758 \newpage
                 <./supplemental_files/figure-latex/descriptives-5-1.pdf>]
-<supplemental_files/figure-latex/analysisFormat7-1.pdf, id=470, 468.75125pt x 3
+<supplemental_files/figure-latex/analysisFormat7-1.pdf, id=460, 468.75125pt x 3
 15.1775pt>
 File: supplemental_files/figure-latex/analysisFormat7-1.pdf Graphic file (type 
 pdf)
@@ -833,7 +833,7 @@ fier (name{table.5}) has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.1796 \end{figure}
                    ]
-<supplemental_files/figure-latex/analysisFormat8-1.pdf, id=490, 463.7325pt x 31
+<supplemental_files/figure-latex/analysisFormat8-1.pdf, id=480, 463.7325pt x 31
 4.17375pt>
 File: supplemental_files/figure-latex/analysisFormat8-1.pdf Graphic file (type 
 pdf)
@@ -863,7 +863,7 @@ Overfull \hbox (41.46672pt too wide) in paragraph at lines 1903--1931
  [][] 
  []
 
-<supplemental_files/figure-latex/analysisFormat12-1.pdf, id=527, 462.72874pt x 
+<supplemental_files/figure-latex/analysisFormat12-1.pdf, id=517, 462.72874pt x 
 313.17pt>
 File: supplemental_files/figure-latex/analysisFormat12-1.pdf Graphic file (type
  pdf)
@@ -883,7 +883,7 @@ tifier (name{figure.12}) has been already used, duplicate ignored
 l.1962 \end{verbatim}
                       <./supplemental_files/figure-latex/analysisFormat12-1.pdf
 >]
-<supplemental_files/figure-latex/analysisFormat16-1.pdf, id=551, 468.75125pt x 
+<supplemental_files/figure-latex/analysisFormat16-1.pdf, id=541, 468.75125pt x 
 315.1775pt>
 File: supplemental_files/figure-latex/analysisFormat16-1.pdf Graphic file (type
  pdf)
@@ -891,7 +891,7 @@ File: supplemental_files/figure-latex/analysisFormat16-1.pdf Graphic file (type
 Package pdftex.def Info: supplemental_files/figure-latex/analysisFormat16-1.pdf
   used on input line 1968.
 (pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
-<supplemental_files/figure-latex/analysisFormat17-1.pdf, id=552, 463.7325pt x 3
+<supplemental_files/figure-latex/analysisFormat17-1.pdf, id=542, 463.7325pt x 3
 14.17375pt>
 File: supplemental_files/figure-latex/analysisFormat17-1.pdf Graphic file (type
  pdf)
@@ -921,7 +921,7 @@ Overfull \hbox (43.13316pt too wide) in paragraph at lines 2079--2107
  [][] 
  []
 
-<supplemental_files/figure-latex/analysisFormat22-1.pdf, id=589, 462.72874pt x 
+<supplemental_files/figure-latex/analysisFormat22-1.pdf, id=579, 462.72874pt x 
 313.17pt>
 File: supplemental_files/figure-latex/analysisFormat22-1.pdf Graphic file (type
  pdf)
@@ -934,7 +934,7 @@ Overfull \hbox (54.24448pt too wide) in paragraph at lines 2124--2152
  [][] 
  []
 
-<supplemental_files/figure-latex/analysisFormat24-1.pdf, id=592, 462.72874pt x 
+<supplemental_files/figure-latex/analysisFormat24-1.pdf, id=582, 462.72874pt x 
 313.17pt>
 File: supplemental_files/figure-latex/analysisFormat24-1.pdf Graphic file (type
  pdf)
@@ -964,7 +964,7 @@ already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.2164 
         <./supplemental_files/figure-latex/analysisFormat24-1.pdf>]
-<supplemental_files/figure-latex/analysisFormat26-1.pdf, id=631, 468.75125pt x 
+<supplemental_files/figure-latex/analysisFormat26-1.pdf, id=621, 468.75125pt x 
 315.1775pt>
 File: supplemental_files/figure-latex/analysisFormat26-1.pdf Graphic file (type
  pdf)
@@ -984,7 +984,7 @@ l.2277 \end{Shaded}
                                                   \__shipout_drop_firstpage_...
 l.2277 \end{Shaded}
                    ]
-<supplemental_files/figure-latex/analysisFormat32-1.pdf, id=663, 468.75125pt x 
+<supplemental_files/figure-latex/analysisFormat32-1.pdf, id=653, 468.75125pt x 
 315.1775pt>
 File: supplemental_files/figure-latex/analysisFormat32-1.pdf Graphic file (type
  pdf)
@@ -992,7 +992,7 @@ File: supplemental_files/figure-latex/analysisFormat32-1.pdf Graphic file (type
 Package pdftex.def Info: supplemental_files/figure-latex/analysisFormat32-1.pdf
   used on input line 2312.
 (pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
-<supplemental_files/figure-latex/analysisFormat33-1.pdf, id=664, 463.7325pt x 3
+<supplemental_files/figure-latex/analysisFormat33-1.pdf, id=654, 463.7325pt x 3
 14.17375pt>
 File: supplemental_files/figure-latex/analysisFormat33-1.pdf Graphic file (type
  pdf)
@@ -1023,7 +1023,7 @@ tifier (name{table.13}) has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.2468 \end{verbatim}
                      ]
-<supplemental_files/figure-latex/analysisFormat38-1.pdf, id=711, 451.6875pt x 3
+<supplemental_files/figure-latex/analysisFormat38-1.pdf, id=701, 451.6875pt x 3
 13.17pt>
 File: supplemental_files/figure-latex/analysisFormat38-1.pdf Graphic file (type
  pdf)
@@ -1043,7 +1043,7 @@ r (name{figure.20}) has been already used, duplicate ignored
 l.2516 \begin{Shaded}
                       <./supplemental_files/figure-latex/analysisFormat38-1.pdf
 >]
-<supplemental_files/figure-latex/analysisFormat40-1.pdf, id=730, 451.6875pt x 3
+<supplemental_files/figure-latex/analysisFormat40-1.pdf, id=720, 451.6875pt x 3
 13.17pt>
 File: supplemental_files/figure-latex/analysisFormat40-1.pdf Graphic file (type
  pdf)
@@ -1063,7 +1063,7 @@ r (name{figure.21}) has been already used, duplicate ignored
 l.2557 \begin{Shaded}
                       <./supplemental_files/figure-latex/analysisFormat40-1.pdf
 >]
-<supplemental_files/figure-latex/analysisFormat42-1.pdf, id=749, 451.6875pt x 3
+<supplemental_files/figure-latex/analysisFormat42-1.pdf, id=739, 451.6875pt x 3
 13.17pt>
 File: supplemental_files/figure-latex/analysisFormat42-1.pdf Graphic file (type
  pdf)
@@ -1083,7 +1083,7 @@ r (name{figure.22}) has been already used, duplicate ignored
 l.2598 \begin{Shaded}
                       <./supplemental_files/figure-latex/analysisFormat42-1.pdf
 >]
-<supplemental_files/figure-latex/analysisFormat44-1.pdf, id=767, 451.6875pt x 3
+<supplemental_files/figure-latex/analysisFormat44-1.pdf, id=757, 451.6875pt x 3
 13.17pt>
 File: supplemental_files/figure-latex/analysisFormat44-1.pdf Graphic file (type
  pdf)
@@ -1103,260 +1103,260 @@ e{figure.23}) has been already used, duplicate ignored
 l.2634 \newpage
                 <./supplemental_files/figure-latex/analysisFormat44-1.pdf>] [58
 ]
-<supplemental_files/figure-latex/internal11-1.pdf, id=792, 459.7175pt x 313.17p
+<supplemental_files/figure-latex/internal11-1.pdf, id=781, 459.7175pt x 313.17p
 t>
 File: supplemental_files/figure-latex/internal11-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/internal11-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/internal11-1.pdf  used
- on input line 2753.
+ on input line 2750.
 (pdftex.def)             Requested size: 459.7304pt x 313.17877pt.
-<supplemental_files/figure-latex/internal12b-1.pdf, id=794, 459.7175pt x 314.17
+<supplemental_files/figure-latex/internal12b-1.pdf, id=783, 459.7175pt x 314.17
 375pt>
 File: supplemental_files/figure-latex/internal12b-1.pdf Graphic file (type pdf)
 
 <use supplemental_files/figure-latex/internal12b-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/internal12b-1.pdf  use
-d on input line 2770.
+d on input line 2767.
 (pdftex.def)             Requested size: 459.73741pt x 314.18735pt.
 [59pdfTeX warning (ext4): destination with the same identifier (name{table.18})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2774 \newpage
+l.2771 \newpage
                ] [60pdfTeX warning (ext4): destination with the same identifier
  (name{figure.24}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2774 \newpage
+l.2771 \newpage
                 <./supplemental_files/figure-latex/internal11-1.pdf>] [61pdfTeX
  warning (ext4): destination with the same identifier (name{figure.25}) has bee
 n already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2774 \newpage
+l.2771 \newpage
                 <./supplemental_files/figure-latex/internal12b-1.pdf>] [62] [63
 pdfTeX warning (ext4): destination with the same identifier (name{table.19}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2918 \end{verbatim}
+l.2912 \end{verbatim}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{table.20}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2918 \end{verbatim}
+l.2912 \end{verbatim}
                      ] [64] [65] [66]
-Overfull \hbox (73.38278pt too wide) in paragraph at lines 3140--3185
+Overfull \hbox (73.38278pt too wide) in paragraph at lines 3134--3179
  [][] 
  []
 
-<supplemental_files/figure-latex/testretest18-1.pdf, id=866, 459.7175pt x 312.1
+<supplemental_files/figure-latex/testretest18-1.pdf, id=854, 459.7175pt x 312.1
 6624pt>
 File: supplemental_files/figure-latex/testretest18-1.pdf Graphic file (type pdf
 )
 <use supplemental_files/figure-latex/testretest18-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/testretest18-1.pdf  us
-ed on input line 3189.
+ed on input line 3183.
 (pdftex.def)             Requested size: 459.72337pt x 312.17024pt.
 [67] [68pdfTeX warning (ext4): destination with the same identifier (name{table
 .21}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3193 \newpage
+l.3187 \newpage
                ] [69pdfTeX warning (ext4): destination with the same identifier
  (name{figure.26}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3193 \newpage
+l.3187 \newpage
                 <./supplemental_files/figure-latex/testretest18-1.pdf>]
-<supplemental_files/figure-latex/timingmod1-1.pdf, id=892, 468.75125pt x 319.19
+<supplemental_files/figure-latex/timingmod1-1.pdf, id=880, 468.75125pt x 319.19
 25pt>
 File: supplemental_files/figure-latex/timingmod1-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/timingmod1-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/timingmod1-1.pdf  used
- on input line 3223.
+ on input line 3217.
 (pdftex.def)             Requested size: 468.75009pt x 319.19171pt.
-<supplemental_files/figure-latex/timingdist-1.pdf, id=893, 463.7325pt x 314.173
+<supplemental_files/figure-latex/timingdist-1.pdf, id=881, 463.7325pt x 314.173
 75pt>
 File: supplemental_files/figure-latex/timingdist-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/timingdist-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/timingdist-1.pdf  used
- on input line 3229.
+ on input line 3223.
 (pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
 [70pdfTeX warning (ext4): destination with the same identifier (name{figure.27}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3272 \begin{Shaded}
+l.3266 \begin{Shaded}
                       <./supplemental_files/figure-latex/timingmod1-1.pdf>] [71
 pdfTeX warning (ext4): destination with the same identifier (name{figure.28}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3272 \begin{Shaded}
+l.3266 \begin{Shaded}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{table.22}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3272 \begin{Shaded}
+l.3266 \begin{Shaded}
                       <./supplemental_files/figure-latex/timingdist-1.pdf>] [72
 pdfTeX warning (ext4): destination with the same identifier (name{table.23}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3338 \begin{Shaded}
+l.3332 \begin{Shaded}
                      ]
-Overfull \hbox (30.35541pt too wide) in paragraph at lines 3376--3404
+Overfull \hbox (30.35541pt too wide) in paragraph at lines 3370--3398
  [][] 
  []
 
-<supplemental_files/figure-latex/helpfulplot-1.pdf, id=934, 468.75125pt x 313.1
+<supplemental_files/figure-latex/helpfulplot-1.pdf, id=921, 468.75125pt x 313.1
 7pt>
 File: supplemental_files/figure-latex/helpfulplot-1.pdf Graphic file (type pdf)
 
 <use supplemental_files/figure-latex/helpfulplot-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/helpfulplot-1.pdf  use
-d on input line 3408.
+d on input line 3402.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
 
-Overfull \hbox (30.35541pt too wide) in paragraph at lines 3429--3457
+Overfull \hbox (30.35541pt too wide) in paragraph at lines 3423--3451
  [][] 
  []
 
-<supplemental_files/figure-latex/caringplot-1.pdf, id=937, 468.75125pt x 313.17
+<supplemental_files/figure-latex/caringplot-1.pdf, id=924, 468.75125pt x 313.17
 pt>
 File: supplemental_files/figure-latex/caringplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/caringplot-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/caringplot-1.pdf  used
- on input line 3461.
+ on input line 3455.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
 [73pdfTeX warning (ext4): destination with the same identifier (name{table.24})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3470 \begin{Shaded}
+l.3464 \begin{Shaded}
                      ] [74pdfTeX warning (ext4): destination with the same iden
 tifier (name{figure.29}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3470 \begin{Shaded}
+l.3464 \begin{Shaded}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{table.25}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3470 \begin{Shaded}
+l.3464 \begin{Shaded}
                       <./supplemental_files/figure-latex/helpfulplot-1.pdf>] [7
 5pdfTeX warning (ext4): destination with the same identifier (name{figure.30}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3470 \begin{Shaded}
+l.3464 \begin{Shaded}
                       <./supplemental_files/figure-latex/caringplot-1.pdf>]
-Overfull \hbox (41.46672pt too wide) in paragraph at lines 3482--3510
+Overfull \hbox (41.46672pt too wide) in paragraph at lines 3476--3504
  [][] 
  []
 
-<supplemental_files/figure-latex/softplot-1.pdf, id=977, 468.75125pt x 313.17pt
+<supplemental_files/figure-latex/softplot-1.pdf, id=965, 468.75125pt x 313.17pt
 >
 File: supplemental_files/figure-latex/softplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/softplot-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/softplot-1.pdf  used o
-n input line 3514.
+n input line 3508.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
 [76pdfTeX warning (ext4): destination with the same identifier (name{table.26})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3523 \begin{Shaded}
+l.3517 \begin{Shaded}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{figure.31}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3523 \begin{Shaded}
+l.3517 \begin{Shaded}
                       <./supplemental_files/figure-latex/softplot-1.pdf>]
-Overfull \hbox (41.46672pt too wide) in paragraph at lines 3535--3563
+Overfull \hbox (41.46672pt too wide) in paragraph at lines 3529--3557
  [][] 
  []
 
-<supplemental_files/figure-latex/calmplot-1.pdf, id=995, 468.75125pt x 313.17pt
+<supplemental_files/figure-latex/calmplot-1.pdf, id=983, 468.75125pt x 313.17pt
 >
 File: supplemental_files/figure-latex/calmplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/calmplot-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/calmplot-1.pdf  used o
-n input line 3567.
+n input line 3561.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
 [77pdfTeX warning (ext4): destination with the same identifier (name{table.27})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3576 \begin{Shaded}
+l.3570 \begin{Shaded}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{figure.32}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3576 \begin{Shaded}
+l.3570 \begin{Shaded}
                       <./supplemental_files/figure-latex/calmplot-1.pdf>]
-Overfull \hbox (30.35541pt too wide) in paragraph at lines 3588--3616
+Overfull \hbox (30.35541pt too wide) in paragraph at lines 3582--3610
  [][] 
  []
 
-<supplemental_files/figure-latex/sympplot-1.pdf, id=1013, 468.75125pt x 313.17p
+<supplemental_files/figure-latex/sympplot-1.pdf, id=1001, 468.75125pt x 313.17p
 t>
 File: supplemental_files/figure-latex/sympplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/sympplot-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/sympplot-1.pdf  used o
-n input line 3620.
+n input line 3614.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
 [78pdfTeX warning (ext4): destination with the same identifier (name{table.28})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3629 \begin{Shaded}
+l.3623 \begin{Shaded}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{figure.33}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3629 \begin{Shaded}
+l.3623 \begin{Shaded}
                       <./supplemental_files/figure-latex/sympplot-1.pdf>]
-Overfull \hbox (41.46672pt too wide) in paragraph at lines 3641--3669
+Overfull \hbox (41.46672pt too wide) in paragraph at lines 3635--3663
  [][] 
  []
 
-<supplemental_files/figure-latex/adventureplot-1.pdf, id=1031, 468.75125pt x 31
+<supplemental_files/figure-latex/adventureplot-1.pdf, id=1019, 468.75125pt x 31
 3.17pt>
 File: supplemental_files/figure-latex/adventureplot-1.pdf Graphic file (type pd
 f)
 <use supplemental_files/figure-latex/adventureplot-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/adventureplot-1.pdf  u
-sed on input line 3673.
+sed on input line 3667.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
 [79pdfTeX warning (ext4): destination with the same identifier (name{table.29})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3681 
+l.3675 
        pdfTeX warning (ext4): destination with the same identifier (name{figure
 .34}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3681 
+l.3675 
         <./supplemental_files/figure-latex/adventureplot-1.pdf>]
-<supplemental_files/figure-latex/mod2fig-1.pdf, id=1051, 468.75125pt x 316.1812
+<supplemental_files/figure-latex/mod2fig-1.pdf, id=1039, 468.75125pt x 316.1812
 4pt>
 File: supplemental_files/figure-latex/mod2fig-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/mod2fig-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/mod2fig-1.pdf  used on
- input line 3706.
+ input line 3700.
 (pdftex.def)             Requested size: 468.75009pt x 316.18047pt.
-<supplemental_files/figure-latex/fulldist2-1.pdf, id=1052, 463.7325pt x 314.173
+<supplemental_files/figure-latex/fulldist2-1.pdf, id=1040, 463.7325pt x 314.173
 75pt>
 File: supplemental_files/figure-latex/fulldist2-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/fulldist2-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/fulldist2-1.pdf  used 
-on input line 3712.
+on input line 3706.
 (pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
 
-Overfull \hbox (18.27289pt too wide) in paragraph at lines 3720--3748
+Overfull \hbox (18.27289pt too wide) in paragraph at lines 3714--3742
  [][] 
  []
 
@@ -1364,274 +1364,274 @@ Overfull \hbox (18.27289pt too wide) in paragraph at lines 3720--3748
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3755 \begin{Shaded}
+l.3749 \begin{Shaded}
                       <./supplemental_files/figure-latex/mod2fig-1.pdf>] [81pdf
 TeX warning (ext4): destination with the same identifier (name{figure.36}) has 
 been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3755 \begin{Shaded}
+l.3749 \begin{Shaded}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{table.30}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3755 \begin{Shaded}
+l.3749 \begin{Shaded}
                       <./supplemental_files/figure-latex/fulldist2-1.pdf>] [82p
 dfTeX warning (ext4): destination with the same identifier (name{table.31}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3829 \end{Shaded}
+l.3823 \end{Shaded}
                    ]
-Overfull \hbox (43.13316pt too wide) in paragraph at lines 3859--3887
+Overfull \hbox (43.13316pt too wide) in paragraph at lines 3853--3881
  [][] 
  []
 
-<supplemental_files/figure-latex/helpful2plot-1.pdf, id=1092, 468.75125pt x 313
+<supplemental_files/figure-latex/helpful2plot-1.pdf, id=1080, 468.75125pt x 313
 .17pt>
 File: supplemental_files/figure-latex/helpful2plot-1.pdf Graphic file (type pdf
 )
 <use supplemental_files/figure-latex/helpful2plot-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/helpful2plot-1.pdf  us
-ed on input line 3891.
+ed on input line 3885.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
 
-Overfull \hbox (43.13316pt too wide) in paragraph at lines 3913--3941
+Overfull \hbox (43.13316pt too wide) in paragraph at lines 3907--3935
  [][] 
  []
 
-<supplemental_files/figure-latex/caring2plot-1.pdf, id=1095, 468.75125pt x 313.
+<supplemental_files/figure-latex/caring2plot-1.pdf, id=1083, 468.75125pt x 313.
 17pt>
 File: supplemental_files/figure-latex/caring2plot-1.pdf Graphic file (type pdf)
 
 <use supplemental_files/figure-latex/caring2plot-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/caring2plot-1.pdf  use
-d on input line 3945.
+d on input line 3939.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
 
 LaTeX Warning: Reference `tab:adventurous2' on page 83 undefined on input line 
-3952.
+3946.
 
 
 LaTeX Warning: Reference `fig:adventurous2plot' on page 83 undefined on input l
-ine 3952.
+ine 3946.
 
 [83pdfTeX warning (ext4): destination with the same identifier (name{table.32})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3954 \begin{Shaded}
+l.3948 \begin{Shaded}
                      ] [84pdfTeX warning (ext4): destination with the same iden
 tifier (name{figure.37}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3954 \begin{Shaded}
+l.3948 \begin{Shaded}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{table.33}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3954 \begin{Shaded}
+l.3948 \begin{Shaded}
                       <./supplemental_files/figure-latex/helpful2plot-1.pdf>] [
 85pdfTeX warning (ext4): destination with the same identifier (name{figure.38})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.3954 \begin{Shaded}
+l.3948 \begin{Shaded}
                       <./supplemental_files/figure-latex/caring2plot-1.pdf>]
-Overfull \hbox (43.13316pt too wide) in paragraph at lines 3967--3995
+Overfull \hbox (43.13316pt too wide) in paragraph at lines 3961--3989
  [][] 
  []
 
-<supplemental_files/figure-latex/adventure2plot-1.pdf, id=1133, 468.75125pt x 3
+<supplemental_files/figure-latex/adventure2plot-1.pdf, id=1121, 468.75125pt x 3
 13.17pt>
 File: supplemental_files/figure-latex/adventure2plot-1.pdf Graphic file (type p
 df)
 <use supplemental_files/figure-latex/adventure2plot-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/adventure2plot-1.pdf  
-used on input line 3999.
+used on input line 3993.
 (pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
 [86pdfTeX warning (ext4): destination with the same identifier (name{table.34})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4008 \begin{Shaded}
+l.4002 \begin{Shaded}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{figure.39}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4008 \begin{Shaded}
+l.4002 \begin{Shaded}
                       <./supplemental_files/figure-latex/adventure2plot-1.pdf>]
 [87]
-<supplemental_files/figure-latex/memorytiming-1.pdf, id=1154, 468.75125pt x 316
+<supplemental_files/figure-latex/memorytiming-1.pdf, id=1142, 468.75125pt x 316
 .18124pt>
 File: supplemental_files/figure-latex/memorytiming-1.pdf Graphic file (type pdf
 )
 <use supplemental_files/figure-latex/memorytiming-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/memorytiming-1.pdf  us
-ed on input line 4103.
+ed on input line 4097.
 (pdftex.def)             Requested size: 468.75009pt x 316.18047pt.
 
 LaTeX Warning: Reference `tab:memoryitem' on page 88 undefined on input line 41
-10.
+04.
 
 [88] [89pdfTeX warning (ext4): destination with the same identifier (name{figur
 e.40}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4195 \begin{Shaded}
+l.4189 \begin{Shaded}
                       <./supplemental_files/figure-latex/memorytiming-1.pdf>] [
 90]
-<supplemental_files/figure-latex/outgoingmem-1.pdf, id=1181, 457.71pt x 313.17p
+<supplemental_files/figure-latex/outgoingmem-1.pdf, id=1169, 457.71pt x 313.17p
 t>
 File: supplemental_files/figure-latex/outgoingmem-1.pdf Graphic file (type pdf)
 
 <use supplemental_files/figure-latex/outgoingmem-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/outgoingmem-1.pdf  use
-d on input line 4206.
+d on input line 4200.
 (pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
-<supplemental_files/figure-latex/warmmem-1.pdf, id=1183, 457.71pt x 313.17pt>
+<supplemental_files/figure-latex/warmmem-1.pdf, id=1171, 457.71pt x 313.17pt>
 File: supplemental_files/figure-latex/warmmem-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/warmmem-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/warmmem-1.pdf  used on
- input line 4226.
+ input line 4220.
 (pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
 [91pdfTeX warning (ext4): destination with the same identifier (name{figure.41}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4235 \begin{Shaded}
+l.4229 \begin{Shaded}
                       <./supplemental_files/figure-latex/outgoingmem-1.pdf>] [9
 2pdfTeX warning (ext4): destination with the same identifier (name{figure.42}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4235 \begin{Shaded}
+l.4229 \begin{Shaded}
                       <./supplemental_files/figure-latex/warmmem-1.pdf>]
-<supplemental_files/figure-latex/responsiblemem-1.pdf, id=1217, 457.71pt x 313.
+<supplemental_files/figure-latex/responsiblemem-1.pdf, id=1205, 457.71pt x 313.
 17pt>
 File: supplemental_files/figure-latex/responsiblemem-1.pdf Graphic file (type p
 df)
 <use supplemental_files/figure-latex/responsiblemem-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/responsiblemem-1.pdf  
-used on input line 4246.
+used on input line 4240.
 (pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
-<supplemental_files/figure-latex/imaginemem-1.pdf, id=1219, 457.71pt x 313.17pt
+<supplemental_files/figure-latex/imaginemem-1.pdf, id=1207, 457.71pt x 313.17pt
 >
 File: supplemental_files/figure-latex/imaginemem-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/imaginemem-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/imaginemem-1.pdf  used
- on input line 4266.
+ on input line 4260.
 (pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
-<supplemental_files/figure-latex/talkativemem-1.pdf, id=1221, 457.71pt x 313.17
+<supplemental_files/figure-latex/talkativemem-1.pdf, id=1209, 457.71pt x 313.17
 pt>
 File: supplemental_files/figure-latex/talkativemem-1.pdf Graphic file (type pdf
 )
 <use supplemental_files/figure-latex/talkativemem-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/talkativemem-1.pdf  us
-ed on input line 4286.
+ed on input line 4280.
 (pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
 [93pdfTeX warning (ext4): destination with the same identifier (name{figure.43}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4295 \begin{Shaded}
+l.4289 \begin{Shaded}
                       <./supplemental_files/figure-latex/responsiblemem-1.pdf>]
 [94pdfTeX warning (ext4): destination with the same identifier (name{figure.44}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4295 \begin{Shaded}
+l.4289 \begin{Shaded}
                       <./supplemental_files/figure-latex/imaginemem-1.pdf>] [95
 pdfTeX warning (ext4): destination with the same identifier (name{figure.45}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4295 \begin{Shaded}
+l.4289 \begin{Shaded}
                       <./supplemental_files/figure-latex/talkativemem-1.pdf>]
-<supplemental_files/figure-latex/Sophisticatedmem-1.pdf, id=1263, 457.71pt x 31
+<supplemental_files/figure-latex/Sophisticatedmem-1.pdf, id=1251, 457.71pt x 31
 3.17pt>
 File: supplemental_files/figure-latex/Sophisticatedmem-1.pdf Graphic file (type
  pdf)
 <use supplemental_files/figure-latex/Sophisticatedmem-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/Sophisticatedmem-1.pdf
-  used on input line 4306.
+  used on input line 4300.
 (pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
 [96pdfTeX warning (ext4): destination with the same identifier (name{figure.46}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4337 \end{verbatim}
+l.4331 \end{verbatim}
                       <./supplemental_files/figure-latex/Sophisticatedmem-1.pdf
 >]
-<supplemental_files/figure-latex/secondsi-1.pdf, id=1280, 468.75125pt x 315.177
+<supplemental_files/figure-latex/secondsi-1.pdf, id=1268, 468.75125pt x 315.177
 5pt>
 File: supplemental_files/figure-latex/secondsi-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/secondsi-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/secondsi-1.pdf  used o
-n input line 4357.
+n input line 4351.
 (pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
 [97pdfTeX warning (ext4): destination with the same identifier (name{figure.47}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4375 \end{Shaded}
+l.4369 \end{Shaded}
                     <./supplemental_files/figure-latex/secondsi-1.pdf>] [98] [9
 9pdfTeX warning (ext4): destination with the same identifier (name{table.35}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4501 \newpage
+l.4495 \newpage
                ] [100pdfTeX warning (ext4): destination with the same identifie
 r (name{table.36}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.4501 \newpage
+l.4495 \newpage
                ] [101]
 
 LaTeX Warning: Reference `fig:plotpower1' on page 102 undefined on input line 4
-575.
+569.
 
-<supplemental_files/figure-latex/plotpower1-1.pdf, id=1318, 460.72125pt x 305.1
+<supplemental_files/figure-latex/plotpower1-1.pdf, id=1305, 460.72125pt x 305.1
 4pt>
 File: supplemental_files/figure-latex/plotpower1-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/plotpower1-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/plotpower1-1.pdf  used
- on input line 4588.
+ on input line 4582.
 (pdftex.def)             Requested size: 460.72012pt x 305.13924pt.
 [102 <./supplemental_files/figure-latex/plotpower1-1.pdf>] [103]
 
 LaTeX Warning: Reference `fig:plotpower2' on page 104 undefined on input line 4
-683.
+677.
 
-<supplemental_files/figure-latex/plotpower2-1.pdf, id=1336, 461.725pt x 305.14p
+<supplemental_files/figure-latex/plotpower2-1.pdf, id=1324, 461.725pt x 305.14p
 t>
 File: supplemental_files/figure-latex/plotpower2-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/plotpower2-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/plotpower2-1.pdf  used
- on input line 4696.
+ on input line 4690.
 (pdftex.def)             Requested size: 461.72388pt x 305.13924pt.
 [104 <./supplemental_files/figure-latex/plotpower2-1.pdf>] [105]
-Overfull \hbox (28.17767pt too wide) in alignment at lines 4718--4722
+Overfull \hbox (28.17767pt too wide) in alignment at lines 4712--4716
  [] [] [] 
  []
 
 
-Overfull \hbox (28.17767pt too wide) in alignment at lines 4722--4727
+Overfull \hbox (28.17767pt too wide) in alignment at lines 4716--4721
  [] [] [] 
  []
 
 
-Overfull \hbox (28.17767pt too wide) in alignment at lines 4727--4729
+Overfull \hbox (28.17767pt too wide) in alignment at lines 4721--4723
  [] [] [] 
  []
 
 
-Overfull \hbox (28.17767pt too wide) in alignment at lines 4729--4731
+Overfull \hbox (28.17767pt too wide) in alignment at lines 4723--4725
  [] [] [] 
  []
 
 
-Overfull \hbox (28.17767pt too wide) in alignment at lines 4731--4973
+Overfull \hbox (28.17767pt too wide) in alignment at lines 4725--4967
  [] [] [] 
  []
 
@@ -1640,13 +1640,13 @@ Overfull \hbox (28.17767pt too wide) in alignment at lines 4731--4973
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `supplemental.out' has not changed.
-(rerunfilecheck)             Checksum: 9E1C6F8DCA4A68909A9616709EF04C71;6762.
+(rerunfilecheck)             Checksum: 8F0C88C3E2BE34A0D45F1FA371C79E9B;7199.
  ) 
 Here is how much of TeX's memory you used:
- 13471 strings out of 480502
- 211076 string characters out of 5898668
- 551075 words of memory out of 5000000
- 30454 multiletter control sequences out of 15000+600000
+ 13463 strings out of 480502
+ 211194 string characters out of 5898668
+ 551108 words of memory out of 5000000
+ 30450 multiletter control sequences out of 15000+600000
  454040 words of font info for 70 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,9n,66p,866b,483s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1663,10 +1663,10 @@ nyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/sweston2/Library/Tiny
 TeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/sweston2/Library/TinyTe
 X/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/sweston2/Library/TinyTeX/
 texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on supplemental.pdf (108 pages, 755735 bytes).
+Output written on supplemental.pdf (108 pages, 755137 bytes).
 PDF statistics:
- 1501 PDF objects out of 1728 (max. 8388607)
- 1210 compressed objects within 13 object streams
- 392 named destinations out of 1000 (max. 500000)
- 502 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1487 PDF objects out of 1728 (max. 8388607)
+ 1197 compressed objects within 12 object streams
+ 388 named destinations out of 1000 (max. 500000)
+ 486 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -35,8 +35,6 @@ options(knitr.kable.NA = '')
 load(here("data/items_df.Rds"))
 ```
 
-## Prep data
-
 We start by creating a wide-format of the dataset using only the Block 1 data.
 
 ```{r internal-4}

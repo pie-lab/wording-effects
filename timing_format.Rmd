@@ -33,7 +33,7 @@ load(here("data/reverse_vector.Rds"))
 ```
 
 
-## Block 1 data only
+## Effect of format on timing (Block 1 data)
 
 We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data. Results are depicted in Figure \@ref(fig:timingmod1). The full distribution of timing (in log-seconds) is shown in Figure \@ref(fig:timingdist). Tests of pairwise comparisons are shown in Table \@ref(tab:pairwiseTab).
 
@@ -320,7 +320,7 @@ plot_model(adventurous_model_b1, type = "pred", terms = c("format"))
 ```
 
 
-## Block 1 and Block 2
+## Effect of format on timing (Block 1 and 2)
 
 We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2. The results are depicted in Figure \@ref(fig:mod2fig). The full distributions for each condition are shown in Figure \@ref(fig:fulldist2). Pairwise comparisons are shown in Table \@ref(tab:pair2).
 
@@ -530,7 +530,7 @@ pairs(adventurous_em_b2, adjust = "holm") %>%
 plot_model(adventurous_model_b2, type = "pred", terms = c("format"))
 ```
 
-## Account for memory effects
+## Account for memory effects (Blocks 1 and 2)
 
 Next we test whether differences in timing are mitigated by memory. The results of this test are depicted in Figure \@ref(fig:memorytiming).
 

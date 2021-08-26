@@ -38,7 +38,7 @@ load(here("data/items_df.Rds"))
 load(here("data/reverse_vector.Rds"))
 ```
 
-## Effect of format (Block 1 data)
+## Effect of format on response (Block 1 data)
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data; in other words, effects are largely between person, although each person contributes 31 unique data points to the analysis (one for each trait). We use the `anova` function to estimate the amount of variability in response due to format. 
 
@@ -184,7 +184,7 @@ pairs(talkative_em_b1, adjust = "holm") %>%
 plot_model(talkative_model_b1, type = "pred", terms = c("format"))
 ```
 
-## Effect of format (Block 1 and 2)
+## Effect of format on response (Block 1 and 2)
 
 We again test whether format is a significant predictor of response. However, here we use data from both Blocks 1 and 2. As a reminder, all participants were presented with all four formats during Block 2. We expect this model to have greater power than the previous model, due to both increased sample size (twice as many data points) and because participants now provide data to all four formats, instead of only one (i.e., a within-person analysis). 
 
