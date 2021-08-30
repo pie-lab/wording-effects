@@ -54,9 +54,9 @@ library(here)
 
 \newpage
 
-# Does item format affect response?
+# Does item format affect response style?
 
-```{r, child = here("analysis_format.Rmd")}
+```{r, child = here("response_style.Rmd")}
 ```
 
 \newpage
