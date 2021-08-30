@@ -25,8 +25,7 @@ knitr::opts_chunk$set(warning = F, message = F)
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
-library(lme4) # for mulitlevel modeling
-library(lmerTest) # for p-values
+library(glmmTMB) # for binomial models
 library(emmeans) # for comparisons
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
@@ -47,24 +46,21 @@ We used a multilevel model, nesting response within participant to account for d
 ```{r responsestyle4 }
 item_block1 = filter(items_df, block == "1")
 
-mod.expected = lmer(response~format + (1|proid), 
+mod.expected = glmmTMB(response~format + (1|proid), 
                   data = item_block1)
 
-anova(mod.expected)
+tidy(aov(mod.expected))
 ```
 
 ```{r responsestyle5, echo = F}
-fb1_aov = anova(mod.expected)
-fb1_sig = fb1_aov$`Pr(>F)`[[1]] < .05
+fb1_aov = tidy(aov(mod.expected))
+fb1_sig = fb1_aov$p.value[[1]] < .05
 fb1_aov = fb1_aov %>% 
-  as_tibble() %>% 
-  rename(Fval = `F value`,
-         Pval = `Pr(>F)`) %>% 
-  mutate(across(starts_with("P"), printp),
-         across(where(is.numeric), printnum))
+  mutate(across(starts_with("P"), papaja::printp),
+         across(where(is.numeric), papaja::printnum))
 ```
 
-Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$NumDF[[1]]`, `r fb1_aov$DenDF[[1]]`) = `r fb1_aov$Fval[[1]]`, p = `r fb1_aov$Pval[[1]]`)$. See Figure \@ref(fig:responsestyle7) for a visualization of this effect. In addition, Figure \@ref(fig:responsestyle8) shows the full distribution of responses across format.
+Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$df[[1]]`, `r fb1_aov$df[[3]]`) = `r fb1_aov$statistic[[1]]`, p = `r fb1_aov$p.value[[1]]`)$. See Figure \@ref(fig:responsestyle7) for a visualization of this effect. In addition, Figure \@ref(fig:responsestyle8) shows the full distribution of responses across format.
 
 
 ```{r responsestyle6, echo = F}
@@ -76,10 +72,13 @@ save(mod.expected, file = here("objects/mod_format_b1.Rdata"))
 ```{r responsestyle7, fig.cap = "Predicted response on personality items by condition.", echo = F}
 plot_b1 = plot_model(mod.expected, type = "pred")
 
-plot_b1$format +
+plot_expected = plot_b1$format +
   labs(x = NULL,
-       y = "Average response") +
+       title = "Expected response",
+       y = NULL) +
   theme_pubclean()
+
+plot_expected
 ```
 
 ```{r responsestyle8, fig.cap = "Distribution of responses by category.", echo = F}
@@ -200,34 +199,31 @@ item_block1 = item_block1 %>%
 ```
 
 ```{r responsestyle15}
-mod.extreme = glmer(extreme~format + (1|proid), 
+mod.extreme = glmmTMB(extreme~format + (1|proid), 
                   data = item_block1, family = "binomial")
-anova(mod.extreme)
+tidy(aov(mod.extreme))
 ```
 
 ```{r responsestyle16, echo = F}
-fb2_aov = anova(mod.extreme)
-df2 = (nrow(item_block1)-1)-(length(unique(item_block1$proid))-1)
-critical_F = qf(p = .95, df1 = 3, df2 = df2, lower.tail = T)
-fb2_sig = fb2_aov$`Pr(>F)`[[1]] > critical_F
+fb2_aov = tidy(aov(mod.extreme))
+fb2_sig = fb2_aov$p.value[[1]] < .05
 fb2_aov = fb2_aov %>% 
-  as_tibble() %>% 
-  rename(Fval = `F value`) %>% 
-  mutate(Pval = map_dbl(Fval, pf, df1 = 3, df2 = df2, lower.tail = F)) %>% 
   mutate(across(starts_with("P"), papaja::printp),
          across(where(is.numeric), papaja::printnum))
 ```
 
-Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$NumDF[[1]]`, `r fb1_aov$DenDF[[1]]`) = `r fb1_aov$Fval[[1]]`, p = `r fb1_aov$Pval[[1]]`)$. See Figure \@ref(fig:responsestyle17) for a visualization of this effect. 
+Item format was `r ifelse(fb2_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb2_aov$df[[1]]`, `r fb2_aov$df[[3]]`) = `r fb2_aov$statistic[[1]]`, p = `r fb2_aov$p.value[[1]]`)$. See Figure \@ref(fig:responsestyle17) for a visualization of this effect. 
 
 ```{r responsestyle17, fig.cap = "Predicted response on personality items by condition.", echo = F}
 plot_b2 = plot_model(mod.extreme, type = "pred")
 
-plot_b2$format +
-  labs(y = "Likelihood of extreme responding",
+plot_extreme = plot_b2$format +
+  labs(title = "Likelihood of extreme responding",
        x = NULL, 
-       title = NULL) +
+       y = NULL) +
   theme_pubclean()
+
+plot_extreme
 ```
 
 ### One model for each adjective
@@ -337,7 +333,7 @@ pairs(thrifty_em_b2, adjust = "holm") %>%
 
 ```{r responsestyle24, fig.cap = "Extreme responding to \"thrifty\" by format", echo = F}
 plot_model(thrifty_model_b2, type = "pred", terms = c("format")) +
-  labs(x = NULL, y = "Likelihood of extreme responding", title = NULL) +
+  labs(x = NULL, y = "Likelihood of\nextreme responding", title = NULL) +
   theme_pubclean()
 ```
 
@@ -356,34 +352,32 @@ item_block1 = item_block1 %>%
 ```
 
 ```{r responsestyle26}
-mod.yaysaying = glmer(yaysaying~format + (1|proid), 
+mod.yaysaying = glmmTMB(yaysaying~format + (1|proid), 
                   data = item_block1, family = "binomial")
-anova(mod.yaysaying)
+tidy(aov(mod.yaysaying))
 ```
 
 ```{r responsestyle27, echo = F}
-fb3_aov = anova(mod.yaysaying)
-df2 = (nrow(item_block1)-1)-(length(unique(item_block1$proid))-1)
-critical_F = qf(p = .95, df1 = 3, df2 = df2, lower.tail = T)
-fb3_sig = fb3_aov$`Pr(>F)`[[1]] > critical_F
+fb3_aov = tidy(aov(mod.yaysaying))
+fb3_sig = fb3_aov$p.value[[1]] < .05
 fb3_aov = fb3_aov %>% 
-  as_tibble() %>% 
-  rename(Fval = `F value`) %>% 
-  mutate(Pval = map_dbl(Fval, pf, df1 = 3, df2 = df2, lower.tail = F)) %>% 
   mutate(across(starts_with("P"), papaja::printp),
          across(where(is.numeric), papaja::printnum))
 ```
 
-Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$NumDF[[1]]`, `r fb1_aov$DenDF[[1]]`) = `r fb1_aov$Fval[[1]]`, p = `r fb1_aov$Pval[[1]]`)$. See Figure \@ref(fig:responsestyle28) for a visualization of this effect. 
+Item format was `r ifelse(fb3_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb3_aov$df[[1]]`, `r fb3_aov$df[[3]]`) = `r fb3_aov$statistic[[1]]`, p = `r fb3_aov$p.value[[1]]`)$. See Figure \@ref(fig:responsestyle28) for a visualization of this effect. 
 
 ```{r responsestyle28, fig.cap = "Predicted response on personality items by condition.", echo = F}
 plot_b3 = plot_model(mod.yaysaying, type = "pred")
 
-plot_b3$format +
-  labs(y = "Likelihood of yay-saying",
+plot_yay = plot_b3$format +
+  labs(title = "Likelihood of yay-saying",
        x = NULL, 
-       title = NULL) +
-  theme_pubclean()
+       y = NULL) +
+  theme_pubclean() +
+  theme(plot.margin=unit(c(1,1,1,1.2), "cm"))
+
+plot_yay
 ```
 
 ### One model for each adjective
@@ -431,7 +425,7 @@ summary_by_item_b3 %>%
 
 ### Pairwise t-tests for significant ANOVAs
 
-When format was a significant predictor of exteme responding for an item (using the un-adjusted _p_-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.
+When format was a significant predictor of extreme responding for an item (using the un-adjusted _p_-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.
 
 ```{r responsestyle31 }
 sig_item_b3 = summary_by_item_b3 %>%
@@ -440,3 +434,14 @@ sig_item_b3 = summary_by_item_b3 %>%
 sig_item_b3 = sig_item_b3$item
 sig_item_b3
 ```
+
+```{r, echo = F, results = 'hide'}
+ggarrange(
+  plot_expected, 
+  plot_extreme,
+  plot_yay, labels = c("A", "B", "C"),
+  align = "hv",
+  ncol = 1)
+ggsave("response_style.png", height = 12, width = 6)
+```
+

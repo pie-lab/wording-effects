@@ -396,14 +396,17 @@ div.tocify {
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data; in other words, effects are largely between person, although each person contributes 31 unique data points to the analysis (one for each trait). We use the <code>anova</code> function to estimate the amount of variability in response due to format.</p>
 <pre class="r"><code>item_block1 = filter(items_df, block == &quot;1&quot;)
 
-mod.expected = lmer(response~format + (1|proid), 
+mod.expected = glmmTMB(response~format + (1|proid), 
                   data = item_block1)
 
-anova(mod.expected)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##        Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
-## format 1.3559 0.45198     3    31  0.3033 0.8228</code></pre>
-<p>Item format was unassociated with participants’ expected responses to personality items <span class="math inline">\((F(3, 31.00) = 0.30, p = .823)\)</span>. See Figure <a href="#fig:responsestyle7">1</a> for a visualization of this effect. In addition, Figure <a href="#fig:responsestyle8">2</a> shows the full distribution of responses across format.</p>
+tidy(aov(mod.expected))</code></pre>
+<pre><code>## # A tibble: 3 × 6
+##   term         df   sumsq meansq statistic   p.value
+##   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 format        3    7.32   2.44      1.64  1.79e- 1
+## 2 proid        31  249.     8.04      5.39  7.81e-19
+## 3 Residuals  1050 1565.     1.49     NA    NA</code></pre>
+<p>Item format was unassociated with participants’ expected responses to personality items <span class="math inline">\((F(3.00, 1,050.00) = 1.64, p = .179)\)</span>. See Figure <a href="#fig:responsestyle7">1</a> for a visualization of this effect. In addition, Figure <a href="#fig:responsestyle8">2</a> shows the full distribution of responses across format.</p>
 <div class="figure"><span style="display:block;" id="fig:responsestyle7"></span>
 <img src="response_style_files/figure-html/responsestyle7-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
@@ -1464,13 +1467,16 @@ Figure 3: Average response to “talkative” by format (block 1 data only)
     response == 6 ~ 1,
     TRUE ~ 0
   ))</code></pre>
-<pre class="r"><code>mod.extreme = glmer(extreme~format + (1|proid), 
+<pre class="r"><code>mod.extreme = glmmTMB(extreme~format + (1|proid), 
                   data = item_block1, family = &quot;binomial&quot;)
-anova(mod.extreme)</code></pre>
-<pre><code>## Analysis of Variance Table
-##        npar  Sum Sq Mean Sq F value
-## format    3 0.59828 0.19943  0.1994</code></pre>
-<p>Item format was unassociated with participants’ expected responses to personality items <span class="math inline">\((F(3, 31.00) = 0.30, p = .823)\)</span>. See Figure <a href="#fig:responsestyle17">4</a> for a visualization of this effect.</p>
+tidy(aov(mod.extreme))</code></pre>
+<pre><code>## # A tibble: 3 × 6
+##   term         df  sumsq meansq statistic   p.value
+##   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 format        3   1.20  0.401      2.33  7.32e- 2
+## 2 proid        31  55.2   1.78      10.3   1.88e-42
+## 3 Residuals  1050 181.    0.172     NA    NA</code></pre>
+<p>Item format was unassociated with participants’ expected responses to personality items <span class="math inline">\((F(3.00, 1,050.00) = 2.33, p = .073)\)</span>. See Figure <a href="#fig:responsestyle17">4</a> for a visualization of this effect.</p>
 <div class="figure"><span style="display:block;" id="fig:responsestyle17"></span>
 <img src="response_style_files/figure-html/responsestyle17-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
@@ -2657,13 +2663,16 @@ Figure 6: Extreme responding to “thrifty” by format
     !(item %in% reverse) &amp; response %in% c(4:6) ~ 1,
     TRUE ~ 0
   ))</code></pre>
-<pre class="r"><code>mod.yaysaying = glmer(yaysaying~format + (1|proid), 
+<pre class="r"><code>mod.yaysaying = glmmTMB(yaysaying~format + (1|proid), 
                   data = item_block1, family = &quot;binomial&quot;)
-anova(mod.yaysaying)</code></pre>
-<pre><code>## Analysis of Variance Table
-##        npar Sum Sq Mean Sq F value
-## format    3  2.719 0.90632  0.9063</code></pre>
-<p>Item format was unassociated with participants’ expected responses to personality items <span class="math inline">\((F(3, 31.00) = 0.30, p = .823)\)</span>. See Figure <a href="#fig:responsestyle28">7</a> for a visualization of this effect.</p>
+tidy(aov(mod.yaysaying))</code></pre>
+<pre><code>## # A tibble: 3 × 6
+##   term         df   sumsq meansq statistic    p.value
+##   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+## 1 format        3   0.898  0.299      1.88  0.132    
+## 2 proid        31  12.4    0.400      2.51  0.0000113
+## 3 Residuals  1050 167.     0.159     NA    NA</code></pre>
+<p>Item format was unassociated with participants’ expected responses to personality items <span class="math inline">\((F(3.00, 1,050.00) = 1.88, p = .132)\)</span>. See Figure <a href="#fig:responsestyle28">7</a> for a visualization of this effect.</p>
 <div class="figure"><span style="display:block;" id="fig:responsestyle28"></span>
 <img src="response_style_files/figure-html/responsestyle28-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
@@ -3524,13 +3533,14 @@ Y
 </div>
 <div id="pairwise-t-tests-for-significant-anovas-2" class="section level3" number="0.3.2">
 <h3><span class="header-section-number">0.3.2</span> Pairwise t-tests for significant ANOVAs</h3>
-<p>When format was a significant predictor of exteme responding for an item (using the un-adjusted <em>p</em>-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.</p>
+<p>When format was a significant predictor of extreme responding for an item (using the un-adjusted <em>p</em>-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.</p>
 <pre class="r"><code>sig_item_b3 = summary_by_item_b3 %&gt;%
   filter(p.value &lt; .05)
 
 sig_item_b3 = sig_item_b3$item
 sig_item_b3</code></pre>
 <pre><code>## character(0)</code></pre>
+<p><img src="response_style_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
 </div>
 
