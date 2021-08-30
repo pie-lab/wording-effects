@@ -335,7 +335,10 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="analysis_format.html">Does item formatting affect response?</a>
+      <a href="analysis_format.html">Does item formatting affect expected response?</a>
+    </li>
+    <li>
+      <a href="response_style.html">Does item formatting affect response style?</a>
     </li>
     <li>
       <a href="internal.html">Does item formatting affect internal consistency?</a>
@@ -375,14 +378,12 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does the internal consistency of Big Five traits vary by item wording?</h1>
-<h4 class="date">Last updated 2021-08-25</h4>
+<h4 class="date">Last updated 2021-08-30</h4>
 
 </div>
 
 
 <p>We calculate and report Cronbach’s alpha for all formats using data from Block 1 only. This will include both the average split-half reliability, as well as the 95% confidence interval. Differences in internal consistency will be considered statistically significant if the confidence intervals of two formats do not overlap. We will also show the distribution of all possible split halves for each of the four formats.</p>
-<div id="prep-data" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Prep data</h2>
 <p>We start by creating a wide-format of the dataset using only the Block 1 data.</p>
 <pre class="r"><code>items_wide = items_df %&gt;%
   # only block 1 responses
@@ -399,9 +400,8 @@ Consc = c(&quot;reckless&quot;, &quot;organized&quot;, &quot;responsible&quot;, 
 Neuro = c(&quot;moody&quot;, &quot;worrying&quot;, &quot;nervous&quot;, &quot;calm&quot;)
 Openn = c(&quot;creative&quot;, &quot;imaginative&quot;, &quot;intelligent&quot;, &quot;curious&quot;, &quot;broadminded&quot;, 
           &quot;sophisticated&quot;, &quot;adventurous&quot;)</code></pre>
-</div>
-<div id="calculate-cronbachs-alpha-for-each-format" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Calculate Cronbach’s alpha for each format</h2>
+<div id="calculate-cronbachs-alpha-for-each-format" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Calculate Cronbach’s alpha for each format</h2>
 <p>We start by grouping data by condition and then nesting, to create separate data frames for each of the four fomats.</p>
 <pre class="r"><code>format_data = items_wide %&gt;% 
   group_by(condition) %&gt;% 
@@ -423,7 +423,9 @@ Openn = c(&quot;creative&quot;, &quot;imaginative&quot;, &quot;intelligent&quot;
   mutate(variable = str_remove(variable, &quot;data_&quot;))</code></pre>
 <p>Next we apply the alpha function to the datasets. We do not need to use the <code>check.keys</code> function, as items were reverse-scored during the cleaning process.</p>
 <pre class="r"><code>format_data = format_data %&gt;% 
-  mutate(alpha = map(data, psych::alpha))</code></pre>
+  mutate(
+    nvar = map_dbl(data, ncol),
+    alpha = map(data, psych::alpha))</code></pre>
 <p>We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table <a href="#tab:internal10b">1</a> and Figure <a href="#fig:internal11">1</a>.</p>
 <pre class="r"><code>format_data = format_data %&gt;% 
   mutate(alpha_list = map(alpha, &quot;total&quot;),
@@ -438,7 +440,7 @@ Openn = c(&quot;creative&quot;, &quot;imaginative&quot;, &quot;intelligent&quot;
 <thead>
 <tr>
 <th style="text-align:left;">
-variable
+label
 </th>
 <th style="text-align:left;">
 A
@@ -457,41 +459,7 @@ D
 <tbody>
 <tr>
 <td style="text-align:left;">
-Agree
-</td>
-<td style="text-align:left;">
-0.30 [-0.27, 0.88]
-</td>
-<td style="text-align:left;">
-0.58 [0.13, 1.03]
-</td>
-<td style="text-align:left;">
-0.90 [0.80, 1.01]
-</td>
-<td style="text-align:left;">
-0.10 [-1.02, 1.22]
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Consc
-</td>
-<td style="text-align:left;">
-0.44 [-0.01, 0.89]
-</td>
-<td style="text-align:left;">
-0.55 [0.13, 0.97]
-</td>
-<td style="text-align:left;">
-0.86 [0.73, 1.00]
-</td>
-<td style="text-align:left;">
-0.45 [-0.15, 1.06]
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Extra
+Extraversion (5 descriptors)
 </td>
 <td style="text-align:left;">
 0.22 [-0.54, 0.98]
@@ -508,7 +476,41 @@ Extra
 </tr>
 <tr>
 <td style="text-align:left;">
-Neuro
+Agreeableness (5 descriptors)
+</td>
+<td style="text-align:left;">
+0.30 [-0.27, 0.88]
+</td>
+<td style="text-align:left;">
+0.58 [0.13, 1.03]
+</td>
+<td style="text-align:left;">
+0.90 [0.80, 1.01]
+</td>
+<td style="text-align:left;">
+0.10 [-1.02, 1.22]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Conscientiousness (10 descriptors)
+</td>
+<td style="text-align:left;">
+0.44 [-0.01, 0.89]
+</td>
+<td style="text-align:left;">
+0.55 [0.13, 0.97]
+</td>
+<td style="text-align:left;">
+0.86 [0.73, 1.00]
+</td>
+<td style="text-align:left;">
+0.45 [-0.15, 1.06]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Neuroticism (4 descriptors)
 </td>
 <td style="text-align:left;">
 0.77 [0.62, 0.93]
@@ -525,7 +527,7 @@ Neuro
 </tr>
 <tr>
 <td style="text-align:left;">
-Openn
+Openness (7 descriptors)
 </td>
 <td style="text-align:left;">
 0.59 [0.23, 0.95]

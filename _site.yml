@@ -9,8 +9,10 @@ navbar:
       href: descriptives.html
     - text: Analysis
       menu:
-        - text: "Does item formatting affect response?"
+        - text: "Does item formatting affect expected response?"
           href: analysis_format.html
+        - text: "Does item formatting affect response style?"
+          href: response_style.html
         - text: "Does item formatting affect internal consistency?"
           href: internal.html
         - text: "Does item formatting affect test-retest reliability?"

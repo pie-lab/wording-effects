@@ -333,7 +333,10 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="analysis_format.html">Does item formatting affect response?</a>
+      <a href="analysis_format.html">Does item formatting affect expected response?</a>
+    </li>
+    <li>
+      <a href="response_style.html">Does item formatting affect response style?</a>
     </li>
     <li>
       <a href="internal.html">Does item formatting affect internal consistency?</a>
@@ -373,7 +376,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Power analysis</h1>
-<h4 class="date">Last updated 2021-08-25</h4>
+<h4 class="date">Last updated 2021-08-30</h4>
 
 </div>
 
@@ -383,8 +386,8 @@ div.tocify {
 <pre class="r"><code>sample_sizes = seq(50, 500, 25)
 
 n_sims = 1000</code></pre>
-<div id="model-1" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Model 1</h2>
+<div id="using-block-1-data" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Using Block 1 data</h2>
 <p>To simplify our code, we write a function that simulates responses to model 1 based on a given sample size, N, and number of repetitions.</p>
 <pre class="r"><code># function to simulate mod.format_b1
 
@@ -427,14 +430,19 @@ power_df = data.frame(
   N = sample_sizes,
   power = 0
 )</code></pre>
-<p>Here we (inefficiently) loop through all sample sizes and calculate power. Final results are presented in Figure <a href="#fig:plotpower1"><strong>??</strong></a>.</p>
+<p>Here we (inefficiently) loop through all sample sizes and calculate power. Final results are presented in Figure <a href="#fig:plotpower1">1</a>.</p>
 <pre class="r"><code>set.seed(20210729)
 for(i in sample_sizes){
   pvalues = sim_format_b1(i, n_sims)
   sig = ifelse(pvalues &lt; .05, 1, 0)
   power_df$power[power_df$N == i] &lt;- sum(sig)/n_sims
 }</code></pre>
-<p><img src="power_files/figure-html/plotpower1-1.png" width="672" /></p>
+<div class="figure"><span style="display:block;" id="fig:plotpower1"></span>
+<img src="power_files/figure-html/plotpower1-1.png" alt="Simulated power by sample size per condition for Block 1 in Time 1" width="672" />
+<p class="caption">
+Figure 1: Simulated power by sample size per condition for Block 1 in Time 1
+</p>
+</div>
 <pre class="r"><code>#identify minimum sample size
 
 power_df_min = power_df %&gt;% 
@@ -443,8 +451,8 @@ power_df_min = power_df %&gt;%
 N_min = min(power_df_min$N)</code></pre>
 <p>The simulation suggests that power would be over the threshold of .95 with a sample size of 150 participants per condition.</p>
 </div>
-<div id="model-2" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Model 2</h2>
+<div id="using-block-1-and-2-data" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Using Block 1 and 2 data</h2>
 <p>Here we repeat the process for our second model, which uses both blocks of data from Time 1 (i.e., Blocks 1 and 2).</p>
 <pre class="r"><code># function to simulate mod.format_b2
 
@@ -510,14 +518,19 @@ sim_format_b2 = function(n, sims){
   N = sample_sizes,
   power = 0
 )</code></pre>
-<p>Here we (inefficiently) loop through all sample sizes and calculate power. Final results are depicted in Figure <a href="#fig:plotpower2"><strong>??</strong></a>.</p>
+<p>Here we (inefficiently) loop through all sample sizes and calculate power. Final results are depicted in Figure <a href="#fig:plotpower2">2</a>.</p>
 <pre class="r"><code>set.seed(20210729)
 for(i in sample_sizes){
   pvalues = sim_format_b2(i, n_sims)
   sig = ifelse(pvalues &lt; .05, 1, 0)
   power_df_2$power[power_df_2$N == i] &lt;- sum(sig)/n_sims
 }</code></pre>
-<p><img src="power_files/figure-html/plotpower2-1.png" width="672" /></p>
+<div class="figure"><span style="display:block;" id="fig:plotpower2"></span>
+<img src="power_files/figure-html/plotpower2-1.png" alt="Simulated power by sample size per condition for Blocks 1 and 2 in Time 1" width="672" />
+<p class="caption">
+Figure 2: Simulated power by sample size per condition for Blocks 1 and 2 in Time 1
+</p>
+</div>
 <pre class="r"><code>#identify minimum sample size
 
 power_df2_min = power_df_2 %&gt;% 

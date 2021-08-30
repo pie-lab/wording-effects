@@ -335,7 +335,10 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="analysis_format.html">Does item formatting affect response?</a>
+      <a href="analysis_format.html">Does item formatting affect expected response?</a>
+    </li>
+    <li>
+      <a href="response_style.html">Does item formatting affect response style?</a>
     </li>
     <li>
       <a href="internal.html">Does item formatting affect internal consistency?</a>
@@ -375,13 +378,13 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact timing?</h1>
-<h4 class="date">Last updated 2021-08-25</h4>
+<h4 class="date">Last updated 2021-08-30</h4>
 
 </div>
 
 
-<div id="block-1-data-only" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Block 1 data only</h2>
+<div id="effect-of-format-on-timing-block-1-data" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Effect of format on timing (Block 1 data)</h2>
 <p>We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data. Results are depicted in Figure <a href="#fig:timingmod1">1</a>. The full distribution of timing (in log-seconds) is shown in Figure <a href="#fig:timingdist">2</a>. Tests of pairwise comparisons are shown in Table <a href="#tab:pairwiseTab">1</a>.</p>
 <pre class="r"><code>item_block1 = filter(items_df, block == &quot;1&quot;)
 
@@ -2499,8 +2502,8 @@ Figure 8: Average log-seconds to “adventurous” by format (block 1 data only)
 </div>
 </div>
 </div>
-<div id="block-1-and-block-2" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Block 1 and Block 2</h2>
+<div id="effect-of-format-on-timing-block-1-and-2" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Effect of format on timing (Block 1 and 2)</h2>
 <p>We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2. The results are depicted in Figure <a href="#fig:mod2fig">9</a>. The full distributions for each condition are shown in Figure <a href="#fig:fulldist2">10</a>. Pairwise comparisons are shown in Table <a href="#tab:pair2">9</a>.</p>
 <pre class="r"><code>items_12 = items_df %&gt;% filter(block %in% c(&quot;1&quot;,&quot;2&quot;))</code></pre>
 <pre class="r"><code>mod.format_b2 = lmer(seconds_log~format + (1|proid), 
@@ -4007,7 +4010,7 @@ Figure 12: Average log-seconds to “caring” by format (Block 1 and Block 2)
 </div>
 <div id="adventurous-1" class="section level3" number="0.2.5">
 <h3><span class="header-section-number">0.2.5</span> Adventurous</h3>
-<p>The results for this item are summarized in Table <a href="#tab:adventurous2"><strong>??</strong></a> and depicted in Figure <a href="#fig:adventurous2plot"><strong>??</strong></a>.</p>
+<p>The results for this item are summarized in Table <a href="#tab:adventure2">13</a> and depicted in Figure <a href="#fig:adventure2plot">13</a>.</p>
 <pre class="r"><code>adventurous_model_b2 = items_12 %&gt;%
   filter(item == &quot;adventurous&quot;) %&gt;%
   lmer(seconds_log~format + (1|proid), 
@@ -4184,8 +4187,8 @@ Figure 13: Average log-seconds to “adventurous” by format (Block 1 and Block
 </div>
 </div>
 </div>
-<div id="account-for-memory-effects" class="section level2" number="0.3">
-<h2><span class="header-section-number">0.3</span> Account for memory effects</h2>
+<div id="account-for-memory-effects-blocks-1-and-2" class="section level2" number="0.3">
+<h2><span class="header-section-number">0.3</span> Account for memory effects (Blocks 1 and 2)</h2>
 <p>Next we test whether differences in timing are mitigated by memory. The results of this test are depicted in Figure <a href="#fig:memorytiming">14</a>.</p>
 <pre class="r"><code>mod.format_mem = lmer(seconds_log~format*delayed_memory + (1|proid), 
                   data = items_12)
@@ -4272,7 +4275,7 @@ Figure 14: Predicted timing fn personality items by condition after controlling 
 </div>
 <div id="one-model-for-each-adjective-2" class="section level3" number="0.3.1">
 <h3><span class="header-section-number">0.3.1</span> One model for each adjective</h3>
-<p>We test this interaction for each item separately. Results are summarized in Table <a href="#tab:memoryitem"><strong>??</strong></a>.</p>
+<p>We test this interaction for each item separately. Results are summarized in Table <a href="#tab:memoryitem">14</a>.</p>
 <pre class="r"><code>mod_by_item_mem = items_12 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
@@ -4280,6 +4283,9 @@ Figure 14: Predicted timing fn personality items by condition after controlling 
   mutate(aov = map(mod, anova)) %&gt;% 
   ungroup()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:memoryitem">Table 14: </span>Effect of condition on timing after controlling for memory
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -5340,7 +5346,7 @@ Figure 21: Predicted log-seconds on personality items by condition and I, using 
 </div>
 <div id="one-model-for-each-adjective-3" class="section level3" number="0.4.1">
 <h3><span class="header-section-number">0.4.1</span> One model for each adjective</h3>
-<p>Additive effects of I (controlling for format) are summarized in Table <a href="#tab:itemi">14</a>. Tests of the interaction of I with format (for each item) are summarized in Table <a href="#tab:iinteraction">15</a>.</p>
+<p>Additive effects of I (controlling for format) are summarized in Table <a href="#tab:itemi">15</a>. Tests of the interaction of I with format (for each item) are summarized in Table <a href="#tab:iinteraction">16</a>.</p>
 <pre class="r"><code>mod_by_item_i1 = items_13 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
@@ -5359,7 +5365,7 @@ Figure 21: Predicted log-seconds on personality items by condition and I, using 
   mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;))</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:itemi">Table 14: </span>Additive effect of I on timing for each item
+<span id="tab:itemi">Table 15: </span>Additive effect of I on timing for each item
 </caption>
 <thead>
 <tr>
@@ -6302,7 +6308,7 @@ Y
   ungroup()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:iinteraction">Table 15: </span>Interaction of I with format on timing for each item
+<span id="tab:iinteraction">Table 16: </span>Interaction of I with format on timing for each item
 </caption>
 <thead>
 <tr>

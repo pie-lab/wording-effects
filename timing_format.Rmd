@@ -28,8 +28,8 @@ library(papaja) # for formatting numbers
 ```
 
 ```{r, echo = F}
-load(here("data/items_df.Rds"))
-load(here("data/reverse_vector.Rds"))
+load(here("objects/items_df.Rds"))
+load(here("objects/reverse_vector.Rds"))
 ```
 
 
@@ -50,8 +50,8 @@ plot_b1 = plot_model(mod.format_b1, type = "pred")
 
 logplot = plot_b1$format +
   labs(x = NULL,
-       y = "Average time (log seconds)",
-       title = "Average time by item formatting (Block 1 Data)") +
+       y = "Average time\n(log seconds)",
+       title = NULL) +
   theme_pubclean()
 
 rawplot = plot_b1$format$data %>% 
@@ -62,11 +62,11 @@ rawplot = plot_b1$format$data %>%
                     labels = c("Adjective\nOnly", 
                                "Am\nAdjective", 
                                "Tend to be\nAdjective", 
-                               "I am someone\nwho tends to be\nAdjective"))) %>% 
+                               "Am someone\nwho tends to be\nAdjective"))) %>% 
   ggplot(aes(x = x, y = predicted)) +
   geom_point() +
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) + 
-  labs(x = NULL, y = "seconds", title = "Average time by item formatting (Block 1 Data)") +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .2) + 
+  labs(x = NULL, y = "Average time\n(seconds)", title = NULL) +
   theme_pubclean()
 
 ggarrange(logplot, rawplot, ncol = 1, labels = c("A", "B"))
@@ -504,7 +504,7 @@ plot_model(caring_model_b2, type = "pred", terms = c("format"))
 
 ### Adventurous
 
-The results for this item are summarized in Table \@ref(tab:adventurous2) and depicted in Figure \@ref(fig:adventurous2plot).
+The results for this item are summarized in Table \@ref(tab:adventure2) and depicted in Figure \@ref(fig:adventure2plot).
 
 
 ```{r, results = 'asis'}
@@ -602,7 +602,7 @@ summary_by_item_mem %>%
   arrange(reverse, item) %>% 
   mutate(across( starts_with("p"), printp )) %>% # format p-values
   select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
-  kable(digits = 2, booktabs = T) %>%
+  kable(digits = 2, booktabs = T, caption = "Effect of condition on timing after controlling for memory") %>%
   kable_styling()
 ```
 

@@ -259,7 +259,10 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="analysis_format.html">Does item formatting affect response?</a>
+      <a href="analysis_format.html">Does item formatting affect expected response?</a>
+    </li>
+    <li>
+      <a href="response_style.html">Does item formatting affect response style?</a>
     </li>
     <li>
       <a href="internal.html">Does item formatting affect internal consistency?</a>
@@ -299,7 +302,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2021-08-25</h4>
+<h4 class="date">Last updated 2021-08-30</h4>
 
 </div>
 
@@ -960,7 +963,7 @@ data %&gt;%
 ##   &lt;chr&gt;                                          &lt;dbl&gt;
 ## 1 book, child, gold, hotel, river, tree, market      7
 ## 2 book, king, market, gold                           4
-## 3 book, hotel, market, chain, paper, gold            5</code></pre>
+## 3 book                                               1</code></pre>
 <pre class="r"><code>#from memory condition 2
 data %&gt;% 
   filter(mem_condition == 2) %&gt;% 
@@ -971,8 +974,8 @@ data %&gt;%
 ##   recall2                                                memory
 ##   &lt;chr&gt;                                                   &lt;dbl&gt;
 ## 1 machine, wife, health                                       2
-## 2 sky, ocean, wife, butter                                    4
-## 3 butter, , earth, , flag, , machine, home, wife, , sky.      7</code></pre>
+## 2 butter, , earth, , flag, , machine, home, wife, , sky.      7
+## 3 butter, college, earth, wife, ocean, machine                6</code></pre>
 <pre class="r"><code>#from memory condition 3
 data %&gt;% 
   filter(mem_condition == 3) %&gt;% 
@@ -982,8 +985,8 @@ data %&gt;%
 <pre><code>## # A tibble: 3 × 2
 ##   recall3                                                               memory
 ##   &lt;chr&gt;                                                                  &lt;dbl&gt;
-## 1 girl, woman, valley, shoes, rock, house, engine                            7
-## 2 blood, corner, woman, rock, shoes, girl, valley                            7
+## 1 woman                                                                      1
+## 2 block, corner, engine, girl, house, letter, woman, shoes                   7
 ## 3 blood, corner, engine, girl, home, letter, rock, shoes, valley, woman      9</code></pre>
 <pre class="r"><code>#from memory condition 4
 data %&gt;% 
@@ -994,9 +997,9 @@ data %&gt;%
 <pre><code>## # A tibble: 3 × 2
 ##   recall4                                                                memory
 ##   &lt;chr&gt;                                                                   &lt;dbl&gt;
-## 1 water, baby                                                                 2
-## 2 church, table, baby, fire, doctor                                           5
-## 3 sea, table, water, doctor, village, baby, fire, church, garden, palace     10</code></pre>
+## 1 table, sea, village, church, baby, palace                                   6
+## 2 sea, table, water, doctor, village, baby, fire, church, garden, palace     10
+## 3 baby, church, water, fire, garden                                           5</code></pre>
 <p>Participants remember on average 5.80 words correctly <span class="math inline">\((SD = 2.73)\)</span>.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>

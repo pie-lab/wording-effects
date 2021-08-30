@@ -30,12 +30,11 @@ library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
 library(broom.mixed) # for tidying mulitievel models
 library(papaja) # pretty numbers
-library(stargazer) # formatted tables
 ```
 
 ```{r analysisFormat3, echo = F}
-load(here("data/items_df.Rds"))
-load(here("data/reverse_vector.Rds"))
+load(here("objects/items_df.Rds"))
+load(here("objects/reverse_vector.Rds"))
 ```
 
 ## Effect of format on response (Block 1 data)
@@ -75,8 +74,7 @@ plot_b1 = plot_model(mod.format_b1, type = "pred")
 
 plot_b1$format +
   labs(x = NULL,
-       y = "Average response",
-       title = "Average responses by item formatting (Block 1 Data)") +
+       y = "Average response") +
   theme_pubclean()
 ```
 
@@ -225,7 +223,7 @@ plot_b2 = plot_model(mod.format_b2, type = "pred")
 plot_b2$format +
   labs(x = NULL,
        y = "Average response",
-       title = "Average responses by item formatting (Block 1 and Block 2)") +
+       title = NULL) +
   theme_pubclean()
 ```
 

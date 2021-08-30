@@ -33,8 +33,8 @@ options(knitr.kable.NA = '')
 ```
 
 ```{r test-retest-3, echo = F}
-load(here("data/items_df.Rds"))
-load(here("data/reverse_vector.Rds"))
+load(here("objects/items_df.Rds"))
+load(here("objects/reverse_vector.Rds"))
 ```
 
 The data structure needed for these analyses is in wide-format. That is, we require one column for each time point. In addition, we hope to examine reliability _within_ format, which requires selecting only the response options which match the original, Block 1, assessment. 

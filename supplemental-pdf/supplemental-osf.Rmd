@@ -13,6 +13,7 @@ output:
 
 ## Description of file
 
+
 Analyses -- including data cleaning, descriptive statistics, and power estimates -- for this project were documented using a series of RMarkdown (.Rmd) files. This document aggregates all files, in the order in which they are meant to be run, into a single RMarkdown file and compiles the output into a single PDF. Those interested in reproducing this document should do the following:
 
 * Check that [LaTex](https://www.latex-project.org/get/) has been installed on their machine.
@@ -27,69 +28,63 @@ if (!requireNamespace("renv"))
   remotes::install_github("rstudio/renv")
 renv::restore()
 
-# Install devtools package if necessary
-if(!"devtools" %in% rownames(installed.packages())) install.packages("devtools")
-
-# Install the stable development versions from GitHub
-if (!requireNamespace("papaja")) devtools::install_github("crsh/papaja")
-
-
 library(here)
 ```
+
 
 
 \newpage
 
 # Cleaning
 
-```{r, child = here("1-cleaning.Rmd")}
+```{r, child = here("scripts/1-cleaning.Rmd")}
 ```
 
 \newpage
 
 # Descriptives
 
-```{r, child = here("descriptives.Rmd")}
+```{r, child = here("scripts/descriptives.Rmd")}
 ```
 
 \newpage
 
 # Does item format affect response?
 
-```{r, child = here("analysis_format.Rmd")}
+```{r, child = here("scripts/analysis_format.Rmd")}
 ```
 
 \newpage
 
 # Does the internal consistency of Big Five traits vary by item wording?
 
-```{r, child = here("internal.Rmd")}
+```{r, child = here("scripts/internal.Rmd")}
 ```
 
 \newpage
 
 # Does the test-retest reliability of personality items change as a function of item wording?
 
-```{r, child = here("test_retest.Rmd")}
+```{r, child = here("scripts/test_retest.Rmd")}
 ```
 
 \newpage
 
 # How does format affect timining of responses?
 
-```{r, child = here("timing_format.Rmd")}
+```{r, child = here("scripts/timing_format.Rmd")}
 ```
 
 \newpage
 
 # Power analysis
 
-```{r, child = here("power.Rmd")}
+```{r, child = here("scripts/power.Rmd")}
 ```
 
 \newpage
 
 # R version and packages
 
-```{r, child = here("workspace.Rmd")}
+```{r, child = here("scripts/workspace.Rmd")}
 ```

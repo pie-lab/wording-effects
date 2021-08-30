@@ -107,7 +107,7 @@ save(power_df, file = here("objects/power_format_b1.Rdata"))
 load(here("objects/power_format_b1.Rdata"))
 ```
 
-```{r plotpower1, echo = F}
+```{r plotpower1, echo = F, fig.cap = "Simulated power by sample size per condition for Block 1 in Time 1"}
 power_df %>% 
   ggplot(aes(x = N, y = power)) +
   geom_line() +
@@ -230,7 +230,7 @@ load(here("objects/power_format_b2.Rdata"))
 ```
 
 
-```{r plotpower2, echo =F}
+```{r plotpower2, echo =F, fig.cap = "Simulated power by sample size per condition for Blocks 1 and 2 in Time 1"}
 power_df_2 %>% 
   ggplot(aes(x = N, y = power)) +
   geom_line() +

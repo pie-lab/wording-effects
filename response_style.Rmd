@@ -1,0 +1,442 @@
+---
+title: "Does item format impact response syle?"
+date: "Last updated `r Sys.Date()`"
+output: 
+  bookdown::html_document2:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+The primary aims of this study are to evaluate the effects of item wording in online, self-report personality assessment. Specifically, we intend to consider the extent to which incremental wording changes may influence differences in participant response style. These wording changes will include a progression from using (1) trait-descriptive adjectives by themselves, (2) with the linking verb “to be” (Am…), (3) with the additional verb “to tend” (Tend to be...), and (4) with the pronoun “someone” (Am someone who tends to be…). 
+
+In this section, we test the impact of item format on three components of response style:
+
+  1. Expected (average) response
+  2. Likelihood of extreme responding
+  3. Nay-saying
+  
+For these analyses, we use only Block 1 data.
+
+```{r responsestyle1, include = FALSE}
+knitr::opts_chunk$set(warning = F, message = F)
+```
+
+```{r responsestyle2, echo = F}
+library(here) # for working with files
+library(tidyverse) # for cleaning
+library(janitor) # for variable names
+library(lme4) # for mulitlevel modeling
+library(lmerTest) # for p-values
+library(emmeans) # for comparisons
+library(sjPlot) # for figures
+library(ggpubr) # for prettier plots
+library(kableExtra) # for nicer tables
+library(broom.mixed) # for tidying mulitievel models
+library(papaja) # pretty numbers
+```
+
+```{r responsestyle3, echo = F}
+load(here("objects/items_df.Rds"))
+load(here("objects/reverse_vector.Rds"))
+```
+
+## Expected response
+
+We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data; in other words, effects are largely between person, although each person contributes 31 unique data points to the analysis (one for each trait). We use the `anova` function to estimate the amount of variability in response due to format. 
+
+```{r responsestyle4 }
+item_block1 = filter(items_df, block == "1")
+
+mod.expected = lmer(response~format + (1|proid), 
+                  data = item_block1)
+
+anova(mod.expected)
+```
+
+```{r responsestyle5, echo = F}
+fb1_aov = anova(mod.expected)
+fb1_sig = fb1_aov$`Pr(>F)`[[1]] < .05
+fb1_aov = fb1_aov %>% 
+  as_tibble() %>% 
+  rename(Fval = `F value`,
+         Pval = `Pr(>F)`) %>% 
+  mutate(across(starts_with("P"), printp),
+         across(where(is.numeric), printnum))
+```
+
+Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$NumDF[[1]]`, `r fb1_aov$DenDF[[1]]`) = `r fb1_aov$Fval[[1]]`, p = `r fb1_aov$Pval[[1]]`)$. See Figure \@ref(fig:responsestyle7) for a visualization of this effect. In addition, Figure \@ref(fig:responsestyle8) shows the full distribution of responses across format.
+
+
+```{r responsestyle6, echo = F}
+# save for power analysis
+save(mod.expected, file = here("objects/mod_format_b1.Rdata"))
+```
+
+
+```{r responsestyle7, fig.cap = "Predicted response on personality items by condition.", echo = F}
+plot_b1 = plot_model(mod.expected, type = "pred")
+
+plot_b1$format +
+  labs(x = NULL,
+       y = "Average response") +
+  theme_pubclean()
+```
+
+```{r responsestyle8, fig.cap = "Distribution of responses by category.", echo = F}
+means_by_group = item_block1 %>%
+  group_by(format) %>%
+  summarise(m = mean(response),
+            s = sd(response))
+
+item_block1 %>%
+  ggplot(aes(x = response, fill = format)) +
+  geom_histogram(bins = 6, color = "white") +
+  geom_vline(aes(xintercept = m), data = means_by_group) +
+  geom_text(aes(x = 1,
+                y = 125,
+                label = paste("M =", round(m,2),
+                              "\nSD =", round(s,2))),
+            data = means_by_group,
+            hjust =0,
+            vjust = 1) +
+  facet_wrap(~format) +
+  guides(fill = "none") +
+  scale_x_continuous(breaks = 1:6) +
+  labs(y = "Number of particpants",
+       title = "Distribution of responses by format (Block 1 data)") +
+  theme_pubr()
+```
+
+### One model for each adjective
+
+We repeat this analysis separately for each trait. Because there is only one response per participant (when using only Block 1 data), we can drop the use of multilevel models and instead rely on a simple general linear model to test our hypothesis. Sepecfically, we test whether the proportion of variance attributable to item format is statistically significant.
+
+```{r responsestyle9, results = 'asis'}
+mod_by_item_b1 = item_block1 %>%
+  group_by(item) %>%
+  nest() %>%
+  mutate(mod = map(data, ~lm(response~format, data = .))) %>%
+  mutate(aov = map(mod, anova))
+```
+
+We apply a Holm correction to the _p_-values extracted from these analyses, to adjust for the number of tests conducted. We present results in Table \@ref(tab:responsestyle10), which is organized by whether items were reverse-coded prior to analysis.
+
+```{r responsestyle10, echo = F, results = 'asis'}
+summary_by_item_b1 = mod_by_item_b1 %>%
+  ungroup() %>%
+  mutate(tidy = map(aov, broom::tidy)) %>%
+  select(item, tidy) %>%
+  unnest(cols = c(tidy)) %>%
+  filter(term == "format") %>%
+  mutate(reverse = case_when(
+    item %in% reverse ~ "Y",
+    TRUE ~ "N"
+  )) %>%
+  mutate(p.adj = p.adjust(p.value, method = "holm"))
+
+summary_by_item_b1 %>%
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  arrange(reverse, item) %>%
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>%
+  kable(digits = 2,
+        booktabs = T,
+        escape = F,
+        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "F", "raw", "adj"),
+        caption = "Format effects on expected response by item.") %>%
+  kable_styling()
+```
+
+### Pairwise t-tests for significant ANOVAs
+
+When format was a significant predictor of expected response for an item (using the un-adjusted _p_-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.
+
+```{r responsestyle11 }
+sig_item_b1 = summary_by_item_b1 %>%
+  filter(p.value < .05)
+
+sig_item_b1 = sig_item_b1$item
+sig_item_b1
+```
+
+Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean.
+
+**This code will have to be changed after final data collection. It is not self-adapting!**
+
+### Talkative
+
+The pairwise comparisons of responses to different forms of "talkative" are displayed in Table \@ref(tab:responsestyle12) and Figure \@ref(fig:responsestyle13).
+
+```{r responsestyle12, results = 'asis', echo = F}
+talkative_model_b1 = item_block1 %>%
+  filter(item == "talkative") %>%
+  lm(response~format, data = .)
+
+talkative_em_b1 = emmeans(talkative_model_b1, "format")
+pairs(talkative_em_b1, adjust = "holm") %>%
+  as_tibble() %>%
+  mutate(across( starts_with("p"), papaja::printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in response to Talkative by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r responsestyle13, fig.cap = "Average response to \"talkative\" by format (block 1 data only)", echo = F}
+plot_model(talkative_model_b1, type = "pred", terms = c("format"))
+```
+
+## Extreme responding
+
+We define _extreme responding_ as answering either a 1 (Very inaccurate) or a 6 (Very accurate). To model likelihood of extreme responding by format, we use logistic regression.
+
+```{r responsestyle14}
+item_block1 = item_block1 %>% 
+  mutate(extreme = case_when(
+    response == 1 ~ 1,
+    response == 6 ~ 1,
+    TRUE ~ 0
+  ))
+```
+
+```{r responsestyle15}
+mod.extreme = glmer(extreme~format + (1|proid), 
+                  data = item_block1, family = "binomial")
+anova(mod.extreme)
+```
+
+```{r responsestyle16, echo = F}
+fb2_aov = anova(mod.extreme)
+df2 = (nrow(item_block1)-1)-(length(unique(item_block1$proid))-1)
+critical_F = qf(p = .95, df1 = 3, df2 = df2, lower.tail = T)
+fb2_sig = fb2_aov$`Pr(>F)`[[1]] > critical_F
+fb2_aov = fb2_aov %>% 
+  as_tibble() %>% 
+  rename(Fval = `F value`) %>% 
+  mutate(Pval = map_dbl(Fval, pf, df1 = 3, df2 = df2, lower.tail = F)) %>% 
+  mutate(across(starts_with("P"), papaja::printp),
+         across(where(is.numeric), papaja::printnum))
+```
+
+Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$NumDF[[1]]`, `r fb1_aov$DenDF[[1]]`) = `r fb1_aov$Fval[[1]]`, p = `r fb1_aov$Pval[[1]]`)$. See Figure \@ref(fig:responsestyle17) for a visualization of this effect. 
+
+```{r responsestyle17, fig.cap = "Predicted response on personality items by condition.", echo = F}
+plot_b2 = plot_model(mod.extreme, type = "pred")
+
+plot_b2$format +
+  labs(y = "Likelihood of extreme responding",
+       x = NULL, 
+       title = NULL) +
+  theme_pubclean()
+```
+
+### One model for each adjective
+
+We repeat this analysis separately for each trait. Because there is only one response per participant (when using only Block 1 data), we can drop the use of multilevel models and instead rely on a simple generalized linear model to test our hypothesis. 
+
+```{r responsestyle18, results = 'asis'}
+mod_by_item_b2 = item_block1 %>%
+  group_by(item) %>%
+  nest() %>%
+  mutate(mod = map(data, ~glm(extreme~format, data = .))) %>%
+  mutate(aov = map(mod, aov))
+```
+
+We apply a Holm correction to the _p_-values extracted from these analyses, to adjust for the number of tests conducted. We present results in Table \@ref(tab:responsestyle19), which is organized by whether items were reverse-coded prior to analysis.
+
+```{r responsestyle19, echo = F, results = 'asis'}
+summary_by_item_b2 = mod_by_item_b2 %>%
+  ungroup() %>%
+  mutate(sum = map(aov, summary),
+         sum = map(sum, 1),
+         sum = map(sum, as_tibble)) %>%
+  select(item, sum) %>%
+  unnest(cols = c(sum)) %>%
+  rename(Fval = `F value`,
+         p.value = `Pr(>F)`) %>%
+  filter(!is.na(Fval)) %>%
+  mutate(reverse = case_when(
+    item %in% reverse ~ "Y",
+    TRUE ~ "N"
+  )) %>%
+  mutate(p.adj = p.adjust(p.value, method = "holm"))
+
+summary_by_item_b2 %>%
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  arrange(reverse, item) %>%
+  select(item, reverse, `Sum Sq`, `Mean Sq`, Df, Fval, p.value, p.adj) %>%
+  kable(digits = 2,
+        booktabs = T,
+        escape = F,
+        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "F", "raw", "adj"),
+        caption = "Format effects on expected response by item.") %>%
+  kable_styling()
+```
+
+### Pairwise t-tests for significant ANOVAs
+
+When format was a significant predictor of exteme responding for an item (using the un-adjusted _p_-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.
+
+```{r responsestyle20 }
+sig_item_b2 = summary_by_item_b2 %>%
+  filter(p.value < .05)
+
+sig_item_b2 = sig_item_b2$item
+sig_item_b2
+```
+
+Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean.
+
+### Self-Disciplined
+
+The pairwise comparisons of extreme to different forms of "self-Disciplined" are displayed in Table \@ref(tab:responsestyle21) and Figure \@ref(fig:responsestyle22).
+
+```{r responsestyle21, results = 'asis', echo = F}
+selfdisciplined_model_b2 = item_block1 %>%
+  filter(item == "selfdisciplined") %>%
+  glm(extreme~format, data = ., family = binomial())
+
+selfdisciplined_em_b2 = emmeans(selfdisciplined_model_b2, "format", type = "response")
+pairs(selfdisciplined_em_b2, adjust = "holm") %>%
+  as_tibble() %>%
+  mutate(across( starts_with("p"), papaja::printp )) %>% # format p-values
+   select(-df, -null) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in odds of extreme responding to self-disciplined by format",
+        col.names = c("Contrast", "Difference in means", "SE", "Z", "p")) %>%
+  kable_styling()
+```
+
+```{r responsestyle22, fig.cap = "Extreme responding to \"self-disciplined\" by format", echo = F}
+plot_model(selfdisciplined_model_b2, type = "pred", terms = c("format")) +
+  labs(x = NULL, y = "Likelihood of extreme responding", title = NULL) +
+  theme_pubclean()
+```
+
+### Thrifty
+
+The pairwise comparisons of extreme to different forms of "thrifty" are displayed in Table \@ref(tab:responsestyle23) and Figure \@ref(fig:responsestyle24).
+
+```{r responsestyle23, results = 'asis', echo = F}
+thrifty_model_b2 = item_block1 %>%
+  filter(item == "thrifty") %>%
+  glm(extreme~format, data = ., family = binomial)
+
+thrifty_em_b2 = emmeans(thrifty_model_b2, "format", type = "response")
+pairs(thrifty_em_b2, adjust = "holm") %>%
+  as_tibble() %>%
+  mutate(across( starts_with("p"), papaja::printp )) %>% # format p-values
+  select(-df, -null) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in odds of extreme responding to thrifty by format",
+        col.names = c("Contrast", "Odds Ratio", "SE", "Z", "p")) %>%
+  kable_styling()
+```
+
+```{r responsestyle24, fig.cap = "Extreme responding to \"thrifty\" by format", echo = F}
+plot_model(thrifty_model_b2, type = "pred", terms = c("format")) +
+  labs(x = NULL, y = "Likelihood of extreme responding", title = NULL) +
+  theme_pubclean()
+```
+
+## Yay-saying
+
+We define _yay-saying_ as answering "somewhat accurate" (4), "accurate" (5), or "very accurate" (6) to an item. To model likelihood of extreme responding by format, we use logistic regression. As a reminder, we reverse-scored socially desirable items during the cleaning stage. For those items, responses coded as 1, 2, or 3 represent agreement (accurate). Therefore, we code values 1, 2, and 3 as yay-saying for reverse-scored items, and values 4, 5, and 6 as yay-saying for all other items.
+
+```{r responsestyle25}
+item_block1 = item_block1 %>% 
+  mutate(
+    yaysaying = case_when(
+    item %in% reverse & response %in% c(1:3) ~ 1,
+    !(item %in% reverse) & response %in% c(4:6) ~ 1,
+    TRUE ~ 0
+  ))
+```
+
+```{r responsestyle26}
+mod.yaysaying = glmer(yaysaying~format + (1|proid), 
+                  data = item_block1, family = "binomial")
+anova(mod.yaysaying)
+```
+
+```{r responsestyle27, echo = F}
+fb3_aov = anova(mod.yaysaying)
+df2 = (nrow(item_block1)-1)-(length(unique(item_block1$proid))-1)
+critical_F = qf(p = .95, df1 = 3, df2 = df2, lower.tail = T)
+fb3_sig = fb3_aov$`Pr(>F)`[[1]] > critical_F
+fb3_aov = fb3_aov %>% 
+  as_tibble() %>% 
+  rename(Fval = `F value`) %>% 
+  mutate(Pval = map_dbl(Fval, pf, df1 = 3, df2 = df2, lower.tail = F)) %>% 
+  mutate(across(starts_with("P"), papaja::printp),
+         across(where(is.numeric), papaja::printnum))
+```
+
+Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$NumDF[[1]]`, `r fb1_aov$DenDF[[1]]`) = `r fb1_aov$Fval[[1]]`, p = `r fb1_aov$Pval[[1]]`)$. See Figure \@ref(fig:responsestyle28) for a visualization of this effect. 
+
+```{r responsestyle28, fig.cap = "Predicted response on personality items by condition.", echo = F}
+plot_b3 = plot_model(mod.yaysaying, type = "pred")
+
+plot_b3$format +
+  labs(y = "Likelihood of yay-saying",
+       x = NULL, 
+       title = NULL) +
+  theme_pubclean()
+```
+
+### One model for each adjective
+
+We repeat this analysis separately for each trait. Because there is only one response per participant (when using only Block 1 data), we can drop the use of multilevel models and instead rely on a simple generalized linear model to test our hypothesis. 
+
+```{r responsestyle29, results = 'asis'}
+mod_by_item_b3 = item_block1 %>%
+  group_by(item) %>%
+  nest() %>%
+  mutate(mod = map(data, ~glm(yaysaying~format, data = .))) %>%
+  mutate(aov = map(mod, aov))
+```
+
+We apply a Holm correction to the _p_-values extracted from these analyses, to adjust for the number of tests conducted. We present results in Table \@ref(tab:responsestyle30), which is organized by whether items were reverse-coded prior to analysis.
+
+```{r responsestyle30, echo = F, results = 'asis'}
+summary_by_item_b3 = mod_by_item_b3 %>%
+  ungroup() %>%
+  mutate(sum = map(aov, summary),
+         sum = map(sum, 1),
+         sum = map(sum, as_tibble)) %>%
+  select(item, sum) %>%
+  unnest(cols = c(sum)) %>%
+  rename(Fval = `F value`,
+         p.value = `Pr(>F)`) %>%
+  filter(!is.na(Fval)) %>%
+  mutate(reverse = case_when(
+    item %in% reverse ~ "Y",
+    TRUE ~ "N"
+  )) %>%
+  mutate(p.adj = p.adjust(p.value, method = "holm"))
+
+summary_by_item_b3 %>%
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  arrange(reverse, item) %>%
+  select(item, reverse, `Sum Sq`, `Mean Sq`, Df, Fval, p.value, p.adj) %>%
+  kable(digits = 2,
+        booktabs = T,
+        escape = F,
+        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "F", "raw", "adj"),
+        caption = "Format effects on expected response by item.") %>%
+  kable_styling()
+```
+
+### Pairwise t-tests for significant ANOVAs
+
+When format was a significant predictor of exteme responding for an item (using the un-adjusted _p_-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.
+
+```{r responsestyle31 }
+sig_item_b3 = summary_by_item_b3 %>%
+  filter(p.value < .05)
+
+sig_item_b3 = sig_item_b3$item
+sig_item_b3
+```

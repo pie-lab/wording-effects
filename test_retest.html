@@ -259,7 +259,10 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="analysis_format.html">Does item formatting affect response?</a>
+      <a href="analysis_format.html">Does item formatting affect expected response?</a>
+    </li>
+    <li>
+      <a href="response_style.html">Does item formatting affect response style?</a>
     </li>
     <li>
       <a href="internal.html">Does item formatting affect internal consistency?</a>
@@ -299,14 +302,12 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Test-retest reliability</h1>
-<h4 class="date">Last updated 2021-08-25</h4>
+<h4 class="date">Last updated 2021-08-30</h4>
 
 </div>
 
 
 <p>We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific – formats #3 and #4 above vs the use of adjectives alone. In other words, we expect equal or lower retest reliability for the adjectives than for longer phrases. We will also consider the effect of performance on the word recall task on retest reliability.</p>
-<div id="prep-dataset" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Prep dataset</h2>
 <p>The data structure needed for these analyses is in wide-format. That is, we require one column for each time point. In addition, we hope to examine reliability <em>within</em> format, which requires selecting only the response options which match the original, Block 1, assessment.</p>
 <pre class="r"><code>items_df = items_df %&gt;% 
   mutate(condition = tolower(condition)) %&gt;% 
@@ -332,9 +333,8 @@ items_matchb1 = items_df %&gt;%
   mutate(across(
     ends_with(&quot;memory&quot;), ~(.-mean(., na.rm=T))/sd(., na.rm = T)
   ))</code></pre>
-</div>
-<div id="test-retest-reliability-all-items-pooled" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Test-retest reliability (all items pooled)</h2>
+<div id="test-retest-reliability-all-items-pooled" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Test-retest reliability (all items pooled)</h2>
 <p>To estimate the reliability coefficients, we use a multilevel model, predicting the latter block from the earlier one. These models nest responses within participant, allowing us to estimate standard errors which account for the dependency of scores. Results are shown in Table <a href="#tab:testretest7b">1</a>.</p>
 <pre class="r"><code>tr_mod1_b1b2 = lmer(block_2 ~ block_1 + (1 |proid), data = items_matchb1)
 tr_mod1_b1b3 = lmer(block_3 ~ block_1 + (1 |proid), data = items_matchb1)</code></pre>
@@ -372,8 +372,8 @@ Block 1 - Block 3
 </tbody>
 </table>
 </div>
-<div id="test-retest-reliability-all-items-pooled-moderated-by-memory" class="section level2" number="0.3">
-<h2><span class="header-section-number">0.3</span> Test-retest reliability (all items pooled, moderated by memory)</h2>
+<div id="test-retest-reliability-all-items-pooled-moderated-by-memory" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Test-retest reliability (all items pooled, moderated by memory)</h2>
 <p>Here we fit models moderated by memory – that it, perhaps the test-retest coefficient is affected by the memory of the participant. Results are shown in Table <a href="#tab:testretest8b">2</a></p>
 <pre class="r"><code>tr_mod2_b1b2 = lmer(block_2 ~ block_1*delayed_memory +
                       (1 |proid),
@@ -447,8 +447,8 @@ Effect of memory on response
 </tbody>
 </table>
 <p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
-<div id="block-1block-2" class="section level3" number="0.3.1">
-<h3><span class="header-section-number">0.3.1</span> Block 1/Block 2</h3>
+<div id="block-1block-2" class="section level3" number="0.2.1">
+<h3><span class="header-section-number">0.2.1</span> Block 1/Block 2</h3>
 <pre class="r"><code>mem_list = list(delayed_memory = c(-1,0,1))
 
 emtrends(tr_mod2_b1b2,
@@ -473,8 +473,8 @@ emtrends(tr_mod2_b1b2,
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
-<div id="block-1block-3" class="section level3" number="0.3.2">
-<h3><span class="header-section-number">0.3.2</span> Block 1/Block 3</h3>
+<div id="block-1block-3" class="section level3" number="0.2.2">
+<h3><span class="header-section-number">0.2.2</span> Block 1/Block 3</h3>
 <p><strong>This chunk is turned off due to low coverage. Be sure to turn on with real data.</strong></p>
 <pre class="r"><code>mem_list = list(very_delayed_memory = c(-1,0,1))
 
@@ -501,8 +501,8 @@ emtrends(tr_mod2_b1b3,
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
 </div>
-<div id="test-retest-reliability-all-items-pooled-by-format" class="section level2" number="0.4">
-<h2><span class="header-section-number">0.4</span> Test-retest reliability (all items pooled, by format)</h2>
+<div id="test-retest-reliability-all-items-pooled-by-format" class="section level2" number="0.3">
+<h2><span class="header-section-number">0.3</span> Test-retest reliability (all items pooled, by format)</h2>
 <p>We fit these same models, except now we moderate by format, to determine whether the test-retest reliability differs as a function of item wording.</p>
 <pre class="r"><code>tr_mod3_b1b2 = lmer(block_2 ~ block_1*condition + (1 |proid),
                     data = items_matchb1)
@@ -526,8 +526,8 @@ anova(tr_mod3_b1b2)</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
-<div id="block-1block-2-1" class="section level3" number="0.4.1">
-<h3><span class="header-section-number">0.4.1</span> Block 1/Block 2</h3>
+<div id="block-1block-2-1" class="section level3" number="0.3.1">
+<h3><span class="header-section-number">0.3.1</span> Block 1/Block 2</h3>
 <pre class="r"><code>emtrends(tr_mod3_b1b2, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
 <pre><code>## $emtrends
 ##   condition                             block_1.trend     SE  df lower.CL
@@ -563,8 +563,8 @@ anova(tr_mod3_b1b2)</code></pre>
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 </div>
-<div id="block-1block-3-1" class="section level3" number="0.4.2">
-<h3><span class="header-section-number">0.4.2</span> Block 1/Block 3</h3>
+<div id="block-1block-3-1" class="section level3" number="0.3.2">
+<h3><span class="header-section-number">0.3.2</span> Block 1/Block 3</h3>
 <pre class="r"><code>emtrends(tr_mod3_b1b3, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
 <pre><code>## $emtrends
 ##   condition                             block_1.trend     SE  df lower.CL
@@ -601,8 +601,8 @@ anova(tr_mod3_b1b2)</code></pre>
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 </div>
 </div>
-<div id="test-retest-reliability-items-separated-by-format" class="section level2" number="0.5">
-<h2><span class="header-section-number">0.5</span> Test-retest reliability (items separated, by format)</h2>
+<div id="test-retest-reliability-items-separated-by-format" class="section level2" number="0.4">
+<h2><span class="header-section-number">0.4</span> Test-retest reliability (items separated, by format)</h2>
 <p>To assess test-retest reliability for each item, we can rely on more simple correlation analyses, as each participant only contributed one response to each item in each block. We first not the sample size coverage for these comparisons:</p>
 <pre class="r"><code>items_matchb1 %&gt;%
   group_by(item, condition) %&gt;%

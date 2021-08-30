@@ -22,8 +22,8 @@ library(papaja) # for pretty numbers
 ```
 
 ```{r descriptives-3, echo = F}
-load(here("data/items_df.Rds"))
-load(here("data/cleaned_data.Rds"))
+load(here("objects/items_df.Rds"))
+load(here("objects/cleaned_data.Rds"))
 ```
 
 

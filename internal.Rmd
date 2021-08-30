@@ -32,7 +32,7 @@ options(knitr.kable.NA = '')
 ```
 
 ```{r internal-3, echo = F}
-load(here("data/items_df.Rds"))
+load(here("objects/items_df.Rds"))
 ```
 
 We start by creating a wide-format of the dataset using only the Block 1 data.
@@ -96,7 +96,9 @@ Next we apply the alpha function to the datasets. We do not need to use the `che
 
 ```{r internal-9, results = 'hide'}
 format_data = format_data %>% 
-  mutate(alpha = map(data, psych::alpha))
+  mutate(
+    nvar = map_dbl(data, ncol),
+    alpha = map(data, psych::alpha))
 ```
 
 We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table \@ref(tab:internal10b) and Figure \@ref(fig:internal11).
@@ -111,12 +113,18 @@ format_data = format_data %>%
 ```
 ```{r internal10b, results = 'asis', echo = F }
 format_data %>% 
-  select(condition, variable, alpha_est, lower_est, upper_est) %>% 
+  select(condition, nvar, variable, alpha_est, lower_est, upper_est) %>% 
   mutate(
     across(ends_with("est"), printnum),
     value = paste0(alpha_est, " [", lower_est, ", ", upper_est, "]")) %>% 
   select(-contains("est")) %>% 
-  spread(condition, value) %>% 
+  spread(condition, value) %>%
+  mutate(variable = factor(variable,
+                           levels = c("Extra", "Agree", "Consc", "Neuro", "Openn"),
+                           labels = c("Extraversion", "Agreeableness", "Conscientiousness", "Neuroticism", "Openness"))) %>% 
+  arrange(variable) %>% 
+  mutate(label = paste0(variable, " (", nvar, " descriptors)")) %>% 
+  select(label, A:D) %>% 
   kable(booktabs = T,
         caption = "Cronbach's alpha across format and trait.") %>% 
   kable_styling()
@@ -149,6 +157,8 @@ format_data %>%
   ggplot(aes(x = sh_est, y = condition, fill = condition)) +
   geom_density_ridges() +
   facet_wrap(~variable) +
+  labs(x = "Internal consistency",
+       y = NULL) +
   guides(fill = "none") +
   theme_pubclean()
 ```

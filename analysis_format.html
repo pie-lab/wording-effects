@@ -335,7 +335,10 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="analysis_format.html">Does item formatting affect response?</a>
+      <a href="analysis_format.html">Does item formatting affect expected response?</a>
+    </li>
+    <li>
+      <a href="response_style.html">Does item formatting affect response style?</a>
     </li>
     <li>
       <a href="internal.html">Does item formatting affect internal consistency?</a>
@@ -375,7 +378,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact response?</h1>
-<h4 class="date">Last updated 2021-08-25</h4>
+<h4 class="date">Last updated 2021-08-30</h4>
 
 </div>
 
@@ -383,8 +386,8 @@ div.tocify {
 <p>The primary aims of this study are to evaluate the effects of item wording in online, self-report personality assessment. Specifically, we intend to consider the extent to which incremental wording changes may influence differences in the distributions of responses, response times, and psychometric properties of the items. These wording changes will include a progression from using (1) trait-descriptive adjectives by themselves, (2) with the linking verb “to be” (Am…), (3) with the additional verb “to tend” (Tend to be…), and (4) with the pronoun “someone” (Am someone who tends to be…).</p>
 <p>Using a protocol that administers each adjective twice to the same participant (in different combinations of item format administered randomly across participants), we will use between-person analyses to compare responses using group-level data for the different formats.</p>
 <p>These analyses will attempt to account for delayed_memory effects by collecting data on immediate and delayed recall (5 minutes and approximately two weeks) using a delayed_memory paradigm that was developed based on a similar recall task used in the HRS (Runge et al., 2015).</p>
-<div id="effect-of-format-block-1-data" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Effect of format (Block 1 data)</h2>
+<div id="effect-of-format-on-response-block-1-data" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Effect of format on response (Block 1 data)</h2>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data; in other words, effects are largely between person, although each person contributes 31 unique data points to the analysis (one for each trait). We use the <code>anova</code> function to estimate the amount of variability in response due to format.</p>
 <pre class="r"><code>item_block1 = filter(items_df, block == &quot;1&quot;)
 
@@ -1446,8 +1449,8 @@ Figure 3: Average response to “talkative” by format (block 1 data only)
 </div>
 </div>
 </div>
-<div id="effect-of-format-block-1-and-2" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Effect of format (Block 1 and 2)</h2>
+<div id="effect-of-format-on-response-block-1-and-2" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Effect of format on response (Block 1 and 2)</h2>
 <p>We again test whether format is a significant predictor of response. However, here we use data from both Blocks 1 and 2. As a reminder, all participants were presented with all four formats during Block 2. We expect this model to have greater power than the previous model, due to both increased sample size (twice as many data points) and because participants now provide data to all four formats, instead of only one (i.e., a within-person analysis).</p>
 <pre class="r"><code>items_12 = items_df %&gt;% filter(block %in% c(&quot;1&quot;,&quot;2&quot;))</code></pre>
 <pre class="r"><code>mod.format_b2 = lmer(response~format + (1|proid),
