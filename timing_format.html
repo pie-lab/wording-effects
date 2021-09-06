@@ -355,9 +355,6 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="power.html">Power analysis</a>
-</li>
-<li>
   <a href="workspace.html">R version and packages</a>
 </li>
       </ul>
@@ -378,7 +375,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact timing?</h1>
-<h4 class="date">Last updated 2021-08-30</h4>
+<h4 class="date">Last updated 2021-09-06</h4>
 
 </div>
 
@@ -388,14 +385,15 @@ div.tocify {
 <p>We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data. Results are depicted in Figure <a href="#fig:timingmod1">1</a>. The full distribution of timing (in log-seconds) is shown in Figure <a href="#fig:timingdist">2</a>. Tests of pairwise comparisons are shown in Table <a href="#tab:pairwiseTab">1</a>.</p>
 <pre class="r"><code>item_block1 = filter(items_df, block == &quot;1&quot;)
 
-mod.format_b1 = lmer(seconds_log~format + (1|proid), 
+mod.format_b1 = glmmTMB(seconds_log~format + (1|proid), 
                   data = item_block1)
-anova(mod.format_b1)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##        Sum Sq Mean Sq NumDF DenDF F value  Pr(&gt;F)  
-## format 7.1362  2.3788     3    31  4.0608 0.01522 *
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+tidy(aov(mod.format_b1))</code></pre>
+<pre><code>## # A tibble: 3 × 6
+##   term         df sumsq meansq statistic   p.value
+##   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 format        3  62.1 20.7       35.3   9.26e-22
+## 2 proid        31 158.   5.10       8.70  8.38e-35
+## 3 Residuals  1050 615.   0.586     NA    NA</code></pre>
 <div class="figure"><span style="display:block;" id="fig:timingmod1"></span>
 <img src="timing_format_files/figure-html/timingmod1-1.png" alt="Predictions by condition, using only Block 1 data. Figure A shows log seconds, Figure B shows raw seconds." width="672" />
 <p class="caption">
@@ -445,16 +443,16 @@ Adjective
 -0.39
 </td>
 <td style="text-align:right;">
-0.18
+0.17
 </td>
 <td style="text-align:right;">
-31
+1079
 </td>
 <td style="text-align:right;">
--2.13
+-2.27
 </td>
 <td style="text-align:right;">
-0.164
+0.094
 </td>
 </tr>
 <tr>
@@ -467,16 +465,16 @@ Adjective
 -0.60
 </td>
 <td style="text-align:right;">
-0.19
+0.18
 </td>
 <td style="text-align:right;">
-31
+1079
 </td>
 <td style="text-align:right;">
--3.16
+-3.36
 </td>
 <td style="text-align:right;">
-0.021
+0.005
 </td>
 </tr>
 <tr>
@@ -490,16 +488,16 @@ Adjective
 -0.09
 </td>
 <td style="text-align:right;">
-0.20
+0.18
 </td>
 <td style="text-align:right;">
-31
+1079
 </td>
 <td style="text-align:right;">
--0.45
+-0.48
 </td>
 <td style="text-align:right;">
-0.657
+0.634
 </td>
 </tr>
 <tr>
@@ -512,16 +510,16 @@ Adjective
 -0.21
 </td>
 <td style="text-align:right;">
-0.20
+0.19
 </td>
 <td style="text-align:right;">
-31
+1079
 </td>
 <td style="text-align:right;">
--1.05
+-1.12
 </td>
 <td style="text-align:right;">
-0.602
+0.528
 </td>
 </tr>
 <tr>
@@ -535,16 +533,16 @@ Adjective
 0.30
 </td>
 <td style="text-align:right;">
-0.20
+0.19
 </td>
 <td style="text-align:right;">
-31
+1079
 </td>
 <td style="text-align:right;">
-1.47
+1.57
 </td>
 <td style="text-align:right;">
-0.452
+0.353
 </td>
 </tr>
 <tr>
@@ -558,16 +556,16 @@ Adjective
 0.51
 </td>
 <td style="text-align:right;">
-0.21
+0.20
 </td>
 <td style="text-align:right;">
-31
+1079
 </td>
 <td style="text-align:right;">
-2.42
+2.57
 </td>
 <td style="text-align:right;">
-0.107
+0.051
 </td>
 </tr>
 </tbody>
@@ -2502,2856 +2500,50 @@ Figure 8: Average log-seconds to “adventurous” by format (block 1 data only)
 </div>
 </div>
 </div>
-<div id="effect-of-format-on-timing-block-1-and-2" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Effect of format on timing (Block 1 and 2)</h2>
-<p>We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2. The results are depicted in Figure <a href="#fig:mod2fig">9</a>. The full distributions for each condition are shown in Figure <a href="#fig:fulldist2">10</a>. Pairwise comparisons are shown in Table <a href="#tab:pair2">9</a>.</p>
-<pre class="r"><code>items_12 = items_df %&gt;% filter(block %in% c(&quot;1&quot;,&quot;2&quot;))</code></pre>
-<pre class="r"><code>mod.format_b2 = lmer(seconds_log~format + (1|proid), 
-                  data = items_12)
-anova(mod.format_b2)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##        Sum Sq Mean Sq NumDF  DenDF F value    Pr(&gt;F)    
-## format 25.706  8.5685     3 2159.4  12.973 2.128e-08 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="figure"><span style="display:block;" id="fig:mod2fig"></span>
-<img src="timing_format_files/figure-html/mod2fig-1.png" alt="Predicted timing per  personality items by condition, using Block 1 and Block 2 data. A. results in log-seconds. B results in raw seconds." width="672" />
-<p class="caption">
-Figure 9: Predicted timing per personality items by condition, using Block 1 and Block 2 data. A. results in log-seconds. B results in raw seconds.
-</p>
-</div>
-<div class="figure"><span style="display:block;" id="fig:fulldist2"></span>
-<img src="timing_format_files/figure-html/fulldist2-1.png" alt="Distribution of log-seconds by category, block 1 and block 2" width="672" />
-<p class="caption">
-Figure 10: Distribution of log-seconds by category, block 1 and block 2
-</p>
-</div>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:pair2">Table 9: </span>Pairwise comparisons of conditions, using blocks 1 and 2
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-contrast
-</th>
-<th style="text-align:right;">
-estimate
-</th>
-<th style="text-align:right;">
-SE
-</th>
-<th style="text-align:right;">
-df
-</th>
-<th style="text-align:right;">
-t.ratio
-</th>
-<th style="text-align:right;">
-p.value
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Adjective
-Only - Am
-Adjective
-</td>
-<td style="text-align:right;">
--0.27
-</td>
-<td style="text-align:right;">
-0.05
-</td>
-<td style="text-align:right;">
-2159.5
-</td>
-<td style="text-align:right;">
--4.91
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Adjective
-Only - Tend to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.24
-</td>
-<td style="text-align:right;">
-0.06
-</td>
-<td style="text-align:right;">
-2152.3
-</td>
-<td style="text-align:right;">
--4.20
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Adjective
-Only - Am someone
-who tends to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.31
-</td>
-<td style="text-align:right;">
-0.06
-</td>
-<td style="text-align:right;">
-2160.7
-</td>
-<td style="text-align:right;">
--5.55
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am
-Adjective - Tend to be
-Adjective
-</td>
-<td style="text-align:right;">
-0.03
-</td>
-<td style="text-align:right;">
-0.06
-</td>
-<td style="text-align:right;">
-2156.8
-</td>
-<td style="text-align:right;">
-0.53
-</td>
-<td style="text-align:right;">
-0.854
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am
-Adjective - Am someone
-who tends to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.05
-</td>
-<td style="text-align:right;">
-0.06
-</td>
-<td style="text-align:right;">
-2160.1
-</td>
-<td style="text-align:right;">
--0.79
-</td>
-<td style="text-align:right;">
-0.854
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Tend to be
-Adjective - Am someone
-who tends to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.08
-</td>
-<td style="text-align:right;">
-0.06
-</td>
-<td style="text-align:right;">
-2164.2
-</td>
-<td style="text-align:right;">
--1.32
-</td>
-<td style="text-align:right;">
-0.565
-</td>
-</tr>
-</tbody>
-</table>
-<div id="one-model-for-each-adjective-1" class="section level3" number="0.2.1">
-<h3><span class="header-section-number">0.2.1</span> One model for each adjective</h3>
-<p>We can also repeat this analysis separately for each trait. These results are summarized in Table <a href="#tab:item2">10</a>.</p>
-<pre class="r"><code>mod_by_item_b2 = items_12 %&gt;%
-  group_by(item) %&gt;%
-  nest() %&gt;%
-  mutate(mod = map(data, ~lmer(seconds_log~format + (1|proid), data = .))) %&gt;%
-  mutate(aov = map(mod, anova)) %&gt;% 
-  ungroup()</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:item2">Table 10: </span>Format effects on log-seconds by item (block 1 and 2 data)
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-Item
-</th>
-<th style="text-align:left;">
-Reverse
-Scored?
-</th>
-<th style="text-align:right;">
-SS
-</th>
-<th style="text-align:right;">
-MS
-</th>
-<th style="text-align:right;">
-df1
-</th>
-<th style="text-align:right;">
-df2
-</th>
-<th style="text-align:right;">
-F
-</th>
-<th style="text-align:left;">
-raw
-</th>
-<th style="text-align:left;">
-adj
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-active
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.82
-</td>
-<td style="text-align:right;">
-0.61
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-0.81
-</td>
-<td style="text-align:left;">
-.493
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-adventurous
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-4.20
-</td>
-<td style="text-align:right;">
-1.40
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-59.34
-</td>
-<td style="text-align:right;">
-2.99
-</td>
-<td style="text-align:left;">
-.038
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-broadminded
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.31
-</td>
-<td style="text-align:right;">
-0.44
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-58.18
-</td>
-<td style="text-align:right;">
-1.04
-</td>
-<td style="text-align:left;">
-.381
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-calm
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-5.06
-</td>
-<td style="text-align:right;">
-1.69
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-2.02
-</td>
-<td style="text-align:left;">
-.119
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-caring
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-5.00
-</td>
-<td style="text-align:right;">
-1.67
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-3.01
-</td>
-<td style="text-align:left;">
-.036
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-cautious
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.13
-</td>
-<td style="text-align:right;">
-0.71
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-51.97
-</td>
-<td style="text-align:right;">
-1.14
-</td>
-<td style="text-align:left;">
-.342
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-creative
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.97
-</td>
-<td style="text-align:right;">
-0.66
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-0.70
-</td>
-<td style="text-align:left;">
-.555
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-curious
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.31
-</td>
-<td style="text-align:right;">
-0.77
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.52
-</td>
-<td style="text-align:right;">
-1.40
-</td>
-<td style="text-align:left;">
-.252
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-friendly
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-0.41
-</td>
-<td style="text-align:right;">
-0.14
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-65.49
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:left;">
-.909
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-hardworking
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-5.53
-</td>
-<td style="text-align:right;">
-1.84
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-2.74
-</td>
-<td style="text-align:left;">
-.050
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-helpful
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.04
-</td>
-<td style="text-align:right;">
-0.68
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-65.91
-</td>
-<td style="text-align:right;">
-2.92
-</td>
-<td style="text-align:left;">
-.040
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-imaginative
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-4.68
-</td>
-<td style="text-align:right;">
-1.56
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-1.98
-</td>
-<td style="text-align:left;">
-.126
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-intelligent
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-3.20
-</td>
-<td style="text-align:right;">
-1.07
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-1.02
-</td>
-<td style="text-align:left;">
-.389
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-lively
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.25
-</td>
-<td style="text-align:right;">
-0.75
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-0.70
-</td>
-<td style="text-align:left;">
-.558
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-organized
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.16
-</td>
-<td style="text-align:right;">
-0.72
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-1.02
-</td>
-<td style="text-align:left;">
-.392
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-outgoing
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.85
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-60.19
-</td>
-<td style="text-align:right;">
-1.46
-</td>
-<td style="text-align:left;">
-.233
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-responsible
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.67
-</td>
-<td style="text-align:right;">
-0.89
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-1.57
-</td>
-<td style="text-align:left;">
-.205
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-selfdisciplined
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.32
-</td>
-<td style="text-align:right;">
-0.44
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-0.66
-</td>
-<td style="text-align:left;">
-.580
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-softhearted
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.34
-</td>
-<td style="text-align:right;">
-0.78
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-1.08
-</td>
-<td style="text-align:left;">
-.364
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sophisticated
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.95
-</td>
-<td style="text-align:right;">
-0.65
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-0.67
-</td>
-<td style="text-align:left;">
-.572
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sympathetic
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-4.19
-</td>
-<td style="text-align:right;">
-1.40
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-1.75
-</td>
-<td style="text-align:left;">
-.166
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-talkative
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-0.22
-</td>
-<td style="text-align:right;">
-0.07
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-45.63
-</td>
-<td style="text-align:right;">
-0.34
-</td>
-<td style="text-align:left;">
-.794
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-thorough
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.54
-</td>
-<td style="text-align:right;">
-0.51
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-60.65
-</td>
-<td style="text-align:right;">
-0.66
-</td>
-<td style="text-align:left;">
-.580
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-thrifty
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.16
-</td>
-<td style="text-align:right;">
-0.72
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-55.08
-</td>
-<td style="text-align:right;">
-1.48
-</td>
-<td style="text-align:left;">
-.230
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-warm
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-0.81
-</td>
-<td style="text-align:right;">
-0.27
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-0.42
-</td>
-<td style="text-align:left;">
-.738
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-careless
-</td>
-<td style="text-align:left;">
-Y
-</td>
-<td style="text-align:right;">
-2.03
-</td>
-<td style="text-align:right;">
-0.68
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-1.10
-</td>
-<td style="text-align:left;">
-.356
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-impulsive
-</td>
-<td style="text-align:left;">
-Y
-</td>
-<td style="text-align:right;">
-2.81
-</td>
-<td style="text-align:right;">
-0.94
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.76
-</td>
-<td style="text-align:right;">
-0.96
-</td>
-<td style="text-align:left;">
-.418
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-moody
-</td>
-<td style="text-align:left;">
-Y
-</td>
-<td style="text-align:right;">
-1.40
-</td>
-<td style="text-align:right;">
-0.47
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-65.34
-</td>
-<td style="text-align:right;">
-0.96
-</td>
-<td style="text-align:left;">
-.416
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-nervous
-</td>
-<td style="text-align:left;">
-Y
-</td>
-<td style="text-align:right;">
-6.47
-</td>
-<td style="text-align:right;">
-2.16
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-2.42
-</td>
-<td style="text-align:left;">
-.074
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-reckless
-</td>
-<td style="text-align:left;">
-Y
-</td>
-<td style="text-align:right;">
-1.60
-</td>
-<td style="text-align:right;">
-0.53
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-63.75
-</td>
-<td style="text-align:right;">
-0.53
-</td>
-<td style="text-align:left;">
-.662
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-worrying
-</td>
-<td style="text-align:left;">
-Y
-</td>
-<td style="text-align:right;">
-0.76
-</td>
-<td style="text-align:right;">
-0.25
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-66.00
-</td>
-<td style="text-align:right;">
-0.45
-</td>
-<td style="text-align:left;">
-.717
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="pairwise-t-tests-for-significant-anovas-1" class="section level3" number="0.2.2">
-<h3><span class="header-section-number">0.2.2</span> Pairwise t-tests for significant ANOVAs</h3>
-<p>Here we identify the specific items with significant differences.</p>
-<pre class="r"><code>sig_item_b2 = summary_by_item_b2 %&gt;%
-  filter(p.value &lt; .05) 
-
-sig_item_b2 = sig_item_b2$item
-sig_item_b2</code></pre>
-<pre><code>## [1] &quot;adventurous&quot; &quot;caring&quot;      &quot;helpful&quot;</code></pre>
-<p>Then we create models for each adjective. We use the <code>emmeans</code> package to perform pairwise comparisons, again with a Holm correction on the <em>p</em>-values. We also plot the means and 95% confidence intervals of each mean.</p>
-<p><strong>This code will have to be changed after final data collection. It is not self-adapting!</strong></p>
-</div>
-<div id="helfpul" class="section level3" number="0.2.3">
-<h3><span class="header-section-number">0.2.3</span> Helfpul</h3>
-<p>The results for this item are summarized in Table <a href="#tab:helpful2">11</a> and depicted in Figure <a href="#fig:helpful2plot">11</a>.</p>
-<pre class="r"><code>helpful_model_b2 = items_12 %&gt;%
-  filter(item == &quot;helpful&quot;) %&gt;%
-  lmer(seconds_log~format + (1|proid), 
-                               data = .)
-
-helpful_em_b2 = emmeans(helpful_model_b2, &quot;format&quot;)</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:helpful2">Table 11: </span>Differences in log-seconds to Helpful by format (Block 1 and Block 2)
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-Contrast
-</th>
-<th style="text-align:right;">
-Difference in means
-</th>
-<th style="text-align:right;">
-SE
-</th>
-<th style="text-align:right;">
-df
-</th>
-<th style="text-align:right;">
-t
-</th>
-<th style="text-align:left;">
-p
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Adjective
-Only - Am
-Adjective
-</td>
-<td style="text-align:right;">
--0.28
-</td>
-<td style="text-align:right;">
-0.17
-</td>
-<td style="text-align:right;">
-65.88
-</td>
-<td style="text-align:right;">
--1.67
-</td>
-<td style="text-align:left;">
-.414
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Adjective
-Only - Tend to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.32
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:right;">
-65.98
-</td>
-<td style="text-align:right;">
--1.76
-</td>
-<td style="text-align:left;">
-.414
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Adjective
-Only - Am someone
-who tends to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.50
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:right;">
-65.98
-</td>
-<td style="text-align:right;">
--2.80
-</td>
-<td style="text-align:left;">
-.040
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am
-Adjective - Tend to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.04
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:right;">
-65.77
-</td>
-<td style="text-align:right;">
--0.19
-</td>
-<td style="text-align:left;">
-.848
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am
-Adjective - Am someone
-who tends to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.21
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:right;">
-65.08
-</td>
-<td style="text-align:right;">
--1.20
-</td>
-<td style="text-align:left;">
-.702
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Tend to be
-Adjective - Am someone
-who tends to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.18
-</td>
-<td style="text-align:right;">
-0.19
-</td>
-<td style="text-align:right;">
-65.85
-</td>
-<td style="text-align:right;">
--0.94
-</td>
-<td style="text-align:left;">
-.702
-</td>
-</tr>
-</tbody>
-</table>
-<div class="figure"><span style="display:block;" id="fig:helpful2plot"></span>
-<img src="timing_format_files/figure-html/helpful2plot-1.png" alt="Average log-seconds to &quot;helpful&quot; by format (Block 1 and Block 2)" width="672" />
-<p class="caption">
-Figure 11: Average log-seconds to “helpful” by format (Block 1 and Block 2)
-</p>
-</div>
-</div>
-<div id="caring-1" class="section level3" number="0.2.4">
-<h3><span class="header-section-number">0.2.4</span> Caring</h3>
-<p>The results for this item are summarized in Table <a href="#tab:caring2">12</a> and depicted in Figure <a href="#fig:caring2plot">12</a>.</p>
-<pre class="r"><code>caring_model_b2 = items_12 %&gt;%
-  filter(item == &quot;caring&quot;) %&gt;%
-  lmer(seconds_log~format + (1|proid), 
-                               data = .)</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:caring2">Table 12: </span>Differences in log-seconds to Caring by format (Block 1 and Block 2)
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-Contrast
-</th>
-<th style="text-align:right;">
-Difference in means
-</th>
-<th style="text-align:right;">
-SE
-</th>
-<th style="text-align:right;">
-df
-</th>
-<th style="text-align:right;">
-t
-</th>
-<th style="text-align:left;">
-p
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Adjective
-Only - Am
-Adjective
-</td>
-<td style="text-align:right;">
--0.65
-</td>
-<td style="text-align:right;">
-0.25
-</td>
-<td style="text-align:right;">
-65.21
-</td>
-<td style="text-align:right;">
--2.56
-</td>
-<td style="text-align:left;">
-.076
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Adjective
-Only - Tend to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.60
-</td>
-<td style="text-align:right;">
-0.26
-</td>
-<td style="text-align:right;">
-63.58
-</td>
-<td style="text-align:right;">
--2.34
-</td>
-<td style="text-align:left;">
-.113
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Adjective
-Only - Am someone
-who tends to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.29
-</td>
-<td style="text-align:right;">
-0.25
-</td>
-<td style="text-align:right;">
-65.99
-</td>
-<td style="text-align:right;">
--1.15
-</td>
-<td style="text-align:left;">
-.757
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am
-Adjective - Tend to be
-Adjective
-</td>
-<td style="text-align:right;">
-0.05
-</td>
-<td style="text-align:right;">
-0.27
-</td>
-<td style="text-align:right;">
-65.96
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:left;">
-.860
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am
-Adjective - Am someone
-who tends to be
-Adjective
-</td>
-<td style="text-align:right;">
-0.36
-</td>
-<td style="text-align:right;">
-0.26
-</td>
-<td style="text-align:right;">
-65.29
-</td>
-<td style="text-align:right;">
-1.35
-</td>
-<td style="text-align:left;">
-.723
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Tend to be
-Adjective - Am someone
-who tends to be
-Adjective
-</td>
-<td style="text-align:right;">
-0.31
-</td>
-<td style="text-align:right;">
-0.27
-</td>
-<td style="text-align:right;">
-64.65
-</td>
-<td style="text-align:right;">
-1.16
-</td>
-<td style="text-align:left;">
-.757
-</td>
-</tr>
-</tbody>
-</table>
-<div class="figure"><span style="display:block;" id="fig:caring2plot"></span>
-<img src="timing_format_files/figure-html/caring2plot-1.png" alt="Average log-seconds to &quot;caring&quot; by format (Block 1 and Block 2)" width="672" />
-<p class="caption">
-Figure 12: Average log-seconds to “caring” by format (Block 1 and Block 2)
-</p>
-</div>
-</div>
-<div id="adventurous-1" class="section level3" number="0.2.5">
-<h3><span class="header-section-number">0.2.5</span> Adventurous</h3>
-<p>The results for this item are summarized in Table <a href="#tab:adventure2">13</a> and depicted in Figure <a href="#fig:adventure2plot">13</a>.</p>
-<pre class="r"><code>adventurous_model_b2 = items_12 %&gt;%
-  filter(item == &quot;adventurous&quot;) %&gt;%
-  lmer(seconds_log~format + (1|proid), 
-                               data = .)</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:adventure2">Table 13: </span>Differences in log-seconds to Adventurous by format (Block 1 and Block 2)
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-Contrast
-</th>
-<th style="text-align:right;">
-Difference in means
-</th>
-<th style="text-align:right;">
-SE
-</th>
-<th style="text-align:right;">
-df
-</th>
-<th style="text-align:right;">
-t
-</th>
-<th style="text-align:left;">
-p
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Adjective
-Only - Am
-Adjective
-</td>
-<td style="text-align:right;">
--0.31
-</td>
-<td style="text-align:right;">
-0.26
-</td>
-<td style="text-align:right;">
-59.39
-</td>
-<td style="text-align:right;">
--1.20
-</td>
-<td style="text-align:left;">
-.724
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Adjective
-Only - Tend to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.68
-</td>
-<td style="text-align:right;">
-0.25
-</td>
-<td style="text-align:right;">
-55.91
-</td>
-<td style="text-align:right;">
--2.69
-</td>
-<td style="text-align:left;">
-.057
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Adjective
-Only - Am someone
-who tends to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.57
-</td>
-<td style="text-align:right;">
-0.27
-</td>
-<td style="text-align:right;">
-65.51
-</td>
-<td style="text-align:right;">
--2.13
-</td>
-<td style="text-align:left;">
-.185
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am
-Adjective - Tend to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.36
-</td>
-<td style="text-align:right;">
-0.27
-</td>
-<td style="text-align:right;">
-55.75
-</td>
-<td style="text-align:right;">
--1.35
-</td>
-<td style="text-align:left;">
-.724
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Am
-Adjective - Am someone
-who tends to be
-Adjective
-</td>
-<td style="text-align:right;">
--0.26
-</td>
-<td style="text-align:right;">
-0.28
-</td>
-<td style="text-align:right;">
-62.04
-</td>
-<td style="text-align:right;">
--0.93
-</td>
-<td style="text-align:left;">
-.724
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Tend to be
-Adjective - Am someone
-who tends to be
-Adjective
-</td>
-<td style="text-align:right;">
-0.10
-</td>
-<td style="text-align:right;">
-0.28
-</td>
-<td style="text-align:right;">
-63.89
-</td>
-<td style="text-align:right;">
-0.37
-</td>
-<td style="text-align:left;">
-.724
-</td>
-</tr>
-</tbody>
-</table>
-<div class="figure"><span style="display:block;" id="fig:adventure2plot"></span>
-<img src="timing_format_files/figure-html/adventure2plot-1.png" alt="Average log-seconds to &quot;adventurous&quot; by format (Block 1 and Block 2)" width="672" />
-<p class="caption">
-Figure 13: Average log-seconds to “adventurous” by format (Block 1 and Block 2)
-</p>
-</div>
-</div>
-</div>
-<div id="account-for-memory-effects-blocks-1-and-2" class="section level2" number="0.3">
-<h2><span class="header-section-number">0.3</span> Account for memory effects (Blocks 1 and 2)</h2>
-<p>Next we test whether differences in timing are mitigated by memory. The results of this test are depicted in Figure <a href="#fig:memorytiming">14</a>.</p>
-<pre class="r"><code>mod.format_mem = lmer(seconds_log~format*delayed_memory + (1|proid), 
-                  data = items_12)
-anova(mod.format_mem)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##                        Sum Sq Mean Sq NumDF   DenDF F value    Pr(&gt;F)    
-## format                12.2415  4.0805     3 2158.60  6.2430 0.0003226 ***
-## delayed_memory         0.0753  0.0753     1   33.06  0.1151 0.7365052    
-## format:delayed_memory 16.5149  5.5050     3 2159.06  8.4223 1.453e-05 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>summary(mod.format_mem)</code></pre>
-<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
-## lmerModLmerTest]
-## Formula: seconds_log ~ format * delayed_memory + (1 | proid)
-##    Data: items_12
-## 
-## REML criterion at convergence: 5362.1
-## 
-## Scaled residuals: 
-##     Min      1Q  Median      3Q     Max 
-## -3.9500 -0.5434 -0.1473  0.3649  6.9573 
-## 
-## Random effects:
-##  Groups   Name        Variance Std.Dev.
-##  proid    (Intercept) 0.1438   0.3792  
-##  Residual             0.6536   0.8085  
-## Number of obs: 2170, groups:  proid, 35
-## 
-## Fixed effects:
-##                                                               Estimate
-## (Intercept)                                                  7.227e-01
-## formatAm\nAdjective                                         -1.157e-01
-## formatTend to be\nAdjective                                  1.567e-01
-## formatAm someone\nwho tends to be\nAdjective                 3.587e-01
-## delayed_memory                                              -1.258e-02
-## formatAm\nAdjective:delayed_memory                           7.284e-02
-## formatTend to be\nAdjective:delayed_memory                   1.629e-02
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory -7.931e-03
-##                                                             Std. Error
-## (Intercept)                                                  1.484e-01
-## formatAm\nAdjective                                          1.051e-01
-## formatTend to be\nAdjective                                  1.110e-01
-## formatAm someone\nwho tends to be\nAdjective                 1.143e-01
-## delayed_memory                                               2.530e-02
-## formatAm\nAdjective:delayed_memory                           1.754e-02
-## formatTend to be\nAdjective:delayed_memory                   1.958e-02
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory  1.959e-02
-##                                                                     df t value
-## (Intercept)                                                  4.932e+01   4.870
-## formatAm\nAdjective                                          2.161e+03  -1.101
-## formatTend to be\nAdjective                                  2.155e+03   1.412
-## formatAm someone\nwho tends to be\nAdjective                 2.162e+03   3.137
-## delayed_memory                                               5.010e+01  -0.497
-## formatAm\nAdjective:delayed_memory                           2.160e+03   4.153
-## formatTend to be\nAdjective:delayed_memory                   2.151e+03   0.832
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory  2.162e+03  -0.405
-##                                                             Pr(&gt;|t|)    
-## (Intercept)                                                 1.19e-05 ***
-## formatAm\nAdjective                                          0.27123    
-## formatTend to be\nAdjective                                  0.15806    
-## formatAm someone\nwho tends to be\nAdjective                 0.00173 ** 
-## delayed_memory                                               0.62103    
-## formatAm\nAdjective:delayed_memory                          3.40e-05 ***
-## formatTend to be\nAdjective:delayed_memory                   0.40538    
-## formatAm someone\nwho tends to be\nAdjective:delayed_memory  0.68568    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Correlation of Fixed Effects:
-##             (Intr) frmtAA frTtbA frAswttbA dlyd_m frAA:_ fTtbA:
-## frmtAmAdjct -0.357                                             
-## frmtTndtbAd -0.353  0.477                                      
-## frmtAswttbA -0.331  0.454  0.472                               
-## delayd_mmry -0.868  0.315  0.311  0.289                        
-## frmtAAdjc:_  0.323 -0.859 -0.432 -0.413    -0.379              
-## frmtTtbAd:_  0.301 -0.408 -0.864 -0.399    -0.352  0.494       
-## frAswttbA:_  0.288 -0.399 -0.411 -0.873    -0.334  0.484  0.462</code></pre>
-<div class="figure"><span style="display:block;" id="fig:memorytiming"></span>
-<img src="timing_format_files/figure-html/memorytiming-1.png" alt="Predicted timing fn personality items by condition after controlling for delayed_memory. A. log-seconds B. raw seconds" width="672" />
-<p class="caption">
-Figure 14: Predicted timing fn personality items by condition after controlling for delayed_memory. A. log-seconds B. raw seconds
-</p>
-</div>
-<div id="one-model-for-each-adjective-2" class="section level3" number="0.3.1">
-<h3><span class="header-section-number">0.3.1</span> One model for each adjective</h3>
-<p>We test this interaction for each item separately. Results are summarized in Table <a href="#tab:memoryitem">14</a>.</p>
-<pre class="r"><code>mod_by_item_mem = items_12 %&gt;%
-  group_by(item) %&gt;%
-  nest() %&gt;%
-  mutate(mod = map(data, ~lmer(seconds_log~format*delayed_memory + (1|proid), data = .))) %&gt;%
-  mutate(aov = map(mod, anova)) %&gt;% 
-  ungroup()</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:memoryitem">Table 14: </span>Effect of condition on timing after controlling for memory
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-item
-</th>
-<th style="text-align:left;">
-reverse
-</th>
-<th style="text-align:right;">
-sumsq
-</th>
-<th style="text-align:right;">
-meansq
-</th>
-<th style="text-align:right;">
-NumDF
-</th>
-<th style="text-align:right;">
-DenDF
-</th>
-<th style="text-align:right;">
-statistic
-</th>
-<th style="text-align:left;">
-p.value
-</th>
-<th style="text-align:left;">
-p.adj
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-active
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-0.80
-</td>
-<td style="text-align:right;">
-0.27
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-0.35
-</td>
-<td style="text-align:left;">
-.789
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-adventurous
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.47
-</td>
-<td style="text-align:right;">
-0.49
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-54.52
-</td>
-<td style="text-align:right;">
-1.06
-</td>
-<td style="text-align:left;">
-.376
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-broadminded
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-0.65
-</td>
-<td style="text-align:right;">
-0.22
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-51.30
-</td>
-<td style="text-align:right;">
-0.51
-</td>
-<td style="text-align:left;">
-.677
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-calm
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.43
-</td>
-<td style="text-align:right;">
-0.81
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-0.96
-</td>
-<td style="text-align:left;">
-.417
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-caring
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.25
-</td>
-<td style="text-align:right;">
-0.42
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-0.73
-</td>
-<td style="text-align:left;">
-.535
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-cautious
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.31
-</td>
-<td style="text-align:right;">
-0.44
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-47.18
-</td>
-<td style="text-align:right;">
-0.70
-</td>
-<td style="text-align:left;">
-.559
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-creative
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-6.90
-</td>
-<td style="text-align:right;">
-2.30
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-2.61
-</td>
-<td style="text-align:left;">
-.059
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-curious
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.25
-</td>
-<td style="text-align:right;">
-0.75
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-53.87
-</td>
-<td style="text-align:right;">
-1.48
-</td>
-<td style="text-align:left;">
-.231
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-friendly
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.29
-</td>
-<td style="text-align:right;">
-0.76
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-56.38
-</td>
-<td style="text-align:right;">
-1.09
-</td>
-<td style="text-align:left;">
-.361
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-hardworking
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.54
-</td>
-<td style="text-align:right;">
-0.51
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-0.74
-</td>
-<td style="text-align:left;">
-.531
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-helpful
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.05
-</td>
-<td style="text-align:right;">
-0.35
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-56.98
-</td>
-<td style="text-align:right;">
-1.43
-</td>
-<td style="text-align:left;">
-.243
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-imaginative
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-6.19
-</td>
-<td style="text-align:right;">
-2.06
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-2.79
-</td>
-<td style="text-align:left;">
-.048
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-intelligent
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-3.11
-</td>
-<td style="text-align:right;">
-1.04
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-0.97
-</td>
-<td style="text-align:left;">
-.410
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-lively
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.36
-</td>
-<td style="text-align:right;">
-0.45
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-0.40
-</td>
-<td style="text-align:left;">
-.750
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-organized
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.62
-</td>
-<td style="text-align:right;">
-0.54
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-0.75
-</td>
-<td style="text-align:left;">
-.524
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-outgoing
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-6.13
-</td>
-<td style="text-align:right;">
-2.04
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-58.90
-</td>
-<td style="text-align:right;">
-3.48
-</td>
-<td style="text-align:left;">
-.021
-</td>
-<td style="text-align:left;">
-.621
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-responsible
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-7.33
-</td>
-<td style="text-align:right;">
-2.44
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-5.05
-</td>
-<td style="text-align:left;">
-.003
-</td>
-<td style="text-align:left;">
-.106
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-selfdisciplined
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-4.25
-</td>
-<td style="text-align:right;">
-1.42
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-2.21
-</td>
-<td style="text-align:left;">
-.096
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-softhearted
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-3.03
-</td>
-<td style="text-align:right;">
-1.01
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-1.43
-</td>
-<td style="text-align:left;">
-.242
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sophisticated
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-8.05
-</td>
-<td style="text-align:right;">
-2.68
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-3.09
-</td>
-<td style="text-align:left;">
-.034
-</td>
-<td style="text-align:left;">
-.907
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sympathetic
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.31
-</td>
-<td style="text-align:right;">
-0.44
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-0.53
-</td>
-<td style="text-align:left;">
-.664
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-talkative
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-2.19
-</td>
-<td style="text-align:right;">
-0.73
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-39.67
-</td>
-<td style="text-align:right;">
-4.15
-</td>
-<td style="text-align:left;">
-.012
-</td>
-<td style="text-align:left;">
-.359
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-thorough
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-3.48
-</td>
-<td style="text-align:right;">
-1.16
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-55.00
-</td>
-<td style="text-align:right;">
-1.48
-</td>
-<td style="text-align:left;">
-.231
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-thrifty
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-1.23
-</td>
-<td style="text-align:right;">
-0.41
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-49.59
-</td>
-<td style="text-align:right;">
-0.84
-</td>
-<td style="text-align:left;">
-.479
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-warm
-</td>
-<td style="text-align:left;">
-N
-</td>
-<td style="text-align:right;">
-5.23
-</td>
-<td style="text-align:right;">
-1.74
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-56.82
-</td>
-<td style="text-align:right;">
-3.30
-</td>
-<td style="text-align:left;">
-.027
-</td>
-<td style="text-align:left;">
-.750
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-careless
-</td>
-<td style="text-align:left;">
-Y
-</td>
-<td style="text-align:right;">
-2.81
-</td>
-<td style="text-align:right;">
-0.94
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-61.60
-</td>
-<td style="text-align:right;">
-1.68
-</td>
-<td style="text-align:left;">
-.180
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-impulsive
-</td>
-<td style="text-align:left;">
-Y
-</td>
-<td style="text-align:right;">
-7.30
-</td>
-<td style="text-align:right;">
-2.43
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-61.99
-</td>
-<td style="text-align:right;">
-2.74
-</td>
-<td style="text-align:left;">
-.051
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-moody
-</td>
-<td style="text-align:left;">
-Y
-</td>
-<td style="text-align:right;">
-0.43
-</td>
-<td style="text-align:right;">
-0.14
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-54.42
-</td>
-<td style="text-align:right;">
-0.29
-</td>
-<td style="text-align:left;">
-.835
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-nervous
-</td>
-<td style="text-align:left;">
-Y
-</td>
-<td style="text-align:right;">
-2.86
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-1.06
-</td>
-<td style="text-align:left;">
-.374
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-reckless
-</td>
-<td style="text-align:left;">
-Y
-</td>
-<td style="text-align:right;">
-6.95
-</td>
-<td style="text-align:right;">
-2.32
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-60.74
-</td>
-<td style="text-align:right;">
-2.61
-</td>
-<td style="text-align:left;">
-.059
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-worrying
-</td>
-<td style="text-align:left;">
-Y
-</td>
-<td style="text-align:right;">
-1.49
-</td>
-<td style="text-align:right;">
-0.50
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-62.00
-</td>
-<td style="text-align:right;">
-0.87
-</td>
-<td style="text-align:left;">
-.460
-</td>
-<td style="text-align:left;">
-&gt; .999
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="pairwise-t-tests-for-significant-anovas-2" class="section level3" number="0.3.2">
-<h3><span class="header-section-number">0.3.2</span> Pairwise t-tests for significant ANOVAs</h3>
-<p>Here we identify the specific items with significant differences.</p>
-<pre class="r"><code>sig_item_mem = summary_by_item_mem %&gt;%
-  filter(p.value &lt; .05) 
-
-sig_item_mem = sig_item_mem$item
-sig_item_mem</code></pre>
-<pre><code>## [1] &quot;imaginative&quot;   &quot;outgoing&quot;      &quot;responsible&quot;   &quot;sophisticated&quot;
-## [5] &quot;talkative&quot;     &quot;warm&quot;</code></pre>
-</div>
-<div id="outgoing" class="section level3" number="0.3.3">
-<h3><span class="header-section-number">0.3.3</span> Outgoing</h3>
-<p>See the results for outgoing depicted in Figure <a href="#fig:outgoingmem">15</a>.</p>
-<pre class="r"><code>outgoing_model_mem = items_12 %&gt;%
-  filter(item == &quot;outgoing&quot;) %&gt;%
-  lmer(seconds_log~format*delayed_memory + (1|proid), 
-                               data = .)</code></pre>
-<div class="figure"><span style="display:block;" id="fig:outgoingmem"></span>
-<img src="timing_format_files/figure-html/outgoingmem-1.png" alt="Average log-seconds to &quot;outgoing&quot; by format (Block 1 and Block 2)" width="672" />
-<p class="caption">
-Figure 15: Average log-seconds to “outgoing” by format (Block 1 and Block 2)
-</p>
-</div>
-</div>
-<div id="warm" class="section level3" number="0.3.4">
-<h3><span class="header-section-number">0.3.4</span> Warm</h3>
-<p>See the results for outgoing depicted in Figure <a href="#fig:warmmem">16</a>.</p>
-<pre class="r"><code>warm_model_mem = items_12 %&gt;%
-  filter(item == &quot;warm&quot;) %&gt;%
-  lmer(seconds_log~format*delayed_memory + (1|proid), 
-                               data = .)</code></pre>
-<div class="figure"><span style="display:block;" id="fig:warmmem"></span>
-<img src="timing_format_files/figure-html/warmmem-1.png" alt="Average log-seconds to &quot;warm&quot; by format (Block 1 and Block 2)" width="672" />
-<p class="caption">
-Figure 16: Average log-seconds to “warm” by format (Block 1 and Block 2)
-</p>
-</div>
-</div>
-<div id="responsible" class="section level3" number="0.3.5">
-<h3><span class="header-section-number">0.3.5</span> Responsible</h3>
-<p>See the results for outgoing depicted in Figure <a href="#fig:responsiblemem">17</a>.</p>
-<pre class="r"><code>responsible_model_mem = items_12 %&gt;%
-  filter(item == &quot;responsible&quot;) %&gt;%
-  lmer(seconds_log~format*delayed_memory + (1|proid), 
-                               data = .)</code></pre>
-<div class="figure"><span style="display:block;" id="fig:responsiblemem"></span>
-<img src="timing_format_files/figure-html/responsiblemem-1.png" alt="Average log-seconds to &quot;responsible&quot; by format (Block 1 and Block 2)" width="672" />
-<p class="caption">
-Figure 17: Average log-seconds to “responsible” by format (Block 1 and Block 2)
-</p>
-</div>
-</div>
-<div id="imaginative" class="section level3" number="0.3.6">
-<h3><span class="header-section-number">0.3.6</span> Imaginative</h3>
-<p>See the results for outgoing depicted in Figure <a href="#fig:imaginemem">18</a>.</p>
-<pre class="r"><code>imaginative_model_mem = items_12 %&gt;%
-  filter(item == &quot;imaginative&quot;) %&gt;%
-  lmer(seconds_log~format*delayed_memory + (1|proid), 
-                               data = .)</code></pre>
-<div class="figure"><span style="display:block;" id="fig:imaginemem"></span>
-<img src="timing_format_files/figure-html/imaginemem-1.png" alt="Average log-seconds to &quot;imaginative&quot; by format (Block 1 and Block 2)" width="672" />
-<p class="caption">
-Figure 18: Average log-seconds to “imaginative” by format (Block 1 and Block 2)
-</p>
-</div>
-</div>
-<div id="talkative" class="section level3" number="0.3.7">
-<h3><span class="header-section-number">0.3.7</span> Talkative</h3>
-<p>See the results for outgoing depicted in Figure <a href="#fig:talkativemem">19</a>.</p>
-<pre class="r"><code>talkative_model_mem = items_12 %&gt;%
-  filter(item == &quot;talkative&quot;) %&gt;%
-  lmer(seconds_log~format*delayed_memory + (1|proid), 
-                               data = .)</code></pre>
-<div class="figure"><span style="display:block;" id="fig:talkativemem"></span>
-<img src="timing_format_files/figure-html/talkativemem-1.png" alt="Average log-seconds to &quot;talkative&quot; by format (Block 1 and Block 2)" width="672" />
-<p class="caption">
-Figure 19: Average log-seconds to “talkative” by format (Block 1 and Block 2)
-</p>
-</div>
-</div>
-<div id="sophisticated" class="section level3" number="0.3.8">
-<h3><span class="header-section-number">0.3.8</span> Sophisticated</h3>
-<p>See the results for outgoing depicted in Figure <a href="#fig:Sophisticatedmem">20</a>.</p>
-<pre class="r"><code>sophisticated_model_mem = items_12 %&gt;%
-  filter(item == &quot;sophisticated&quot;) %&gt;%
-  lmer(seconds_log~format*delayed_memory + (1|proid), 
-                               data = .)</code></pre>
-<div class="figure"><span style="display:block;" id="fig:Sophisticatedmem"></span>
-<img src="timing_format_files/figure-html/Sophisticatedmem-1.png" alt="Average log-seconds to &quot;sophisticated&quot; by format (Block 1 and Block 2)" width="672" />
-<p class="caption">
-Figure 20: Average log-seconds to “sophisticated” by format (Block 1 and Block 2)
-</p>
-</div>
-</div>
-</div>
-<div id="inclusion-of-i-block-1-and-block-3" class="section level2" number="0.4">
-<h2><span class="header-section-number">0.4</span> Inclusion of “I” (Block 1 and Block 3)</h2>
-<p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word “I”. Here, we use data from blocks 1 and 3. Results are depicted in Figure <a href="#fig:secondsi">21</a>.</p>
+<div id="inclusion-of-i-block-1-and-block-3" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Inclusion of “I” (Block 1 and Block 3)</h2>
+<p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word “I”. Here, we use data from blocks 1 and 3. Results are depicted in Figure <a href="#fig:secondsi">9</a>.</p>
 <pre class="r"><code>items_13 = items_df %&gt;% 
   filter(block %in% c(&quot;1&quot;,&quot;3&quot;)) %&gt;% 
   filter(condition != &quot;A&quot;) %&gt;% 
   filter(time2 == &quot;yes&quot;)</code></pre>
-<pre class="r"><code>mod.format_b3_1 = lmer(seconds_log~format + i + (1|proid), 
+<pre class="r"><code>mod.format_b3_1 = glmmTMB(seconds_log~format + i + (1|proid), 
                   data = items_13)
-anova(mod.format_b3_1)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##         Sum Sq Mean Sq NumDF  DenDF F value Pr(&gt;F)
-## format 1.81935 0.90968     2  13.00  1.6587 0.2282
-## i      0.04319 0.04319     1 976.92  0.0788 0.7790</code></pre>
-<pre class="r"><code>mod.format_b3_2 = lmer(seconds_log~format*i + (1|proid), 
+tidy(aov(mod.format_b3_1)) %&gt;% 
+  mutate(p.value = papaja::printp(p.value))</code></pre>
+<pre><code>## # A tibble: 4 × 6
+##   term         df   sumsq meansq statistic p.value 
+##   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;   
+## 1 format        2  22.1   11.1      20.2   &quot;&lt; .001&quot;
+## 2 i             1   0.255  0.255     0.464 &quot;.496&quot;  
+## 3 proid        13  86.7    6.67     12.2   &quot;&lt; .001&quot;
+## 4 Residuals   975 535.     0.548    NA     &quot;&quot;</code></pre>
+<pre class="r"><code>mod.format_b3_2 = glmmTMB(seconds_log~format*i + (1|proid), 
                   data = items_13)
-anova(mod.format_b3_2)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##           Sum Sq Mean Sq NumDF  DenDF F value Pr(&gt;F)
-## format   2.05702 1.02851     2  13.74  1.8753 0.1905
-## i        0.00785 0.00785     1 974.55  0.0143 0.9048
-## format:i 1.10566 0.55283     2 974.69  1.0080 0.3653</code></pre>
+tidy(aov(mod.format_b3_2)) %&gt;% 
+  mutate(p.value = papaja::printp(p.value))</code></pre>
+<pre><code>## # A tibble: 5 × 6
+##   term         df   sumsq meansq statistic p.value 
+##   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;   
+## 1 format        2  22.1   11.1      20.2   &quot;&lt; .001&quot;
+## 2 i             1   0.255  0.255     0.464 &quot;.496&quot;  
+## 3 proid        13  86.7    6.67     12.2   &quot;&lt; .001&quot;
+## 4 format:i      2   1.05   0.526     0.959 &quot;.384&quot;  
+## 5 Residuals   973 534.     0.548    NA     &quot;&quot;</code></pre>
 <div class="figure"><span style="display:block;" id="fig:secondsi"></span>
 <img src="timing_format_files/figure-html/secondsi-1.png" alt="Predicted log-seconds on personality items by condition and I, using Block 1 and Block 3 data." width="672" />
 <p class="caption">
-Figure 21: Predicted log-seconds on personality items by condition and I, using Block 1 and Block 3 data.
+Figure 9: Predicted log-seconds on personality items by condition and I, using Block 1 and Block 3 data.
 </p>
 </div>
-<div id="one-model-for-each-adjective-3" class="section level3" number="0.4.1">
-<h3><span class="header-section-number">0.4.1</span> One model for each adjective</h3>
-<p>Additive effects of I (controlling for format) are summarized in Table <a href="#tab:itemi">15</a>. Tests of the interaction of I with format (for each item) are summarized in Table <a href="#tab:iinteraction">16</a>.</p>
+<div id="one-model-for-each-adjective-1" class="section level3" number="0.2.1">
+<h3><span class="header-section-number">0.2.1</span> One model for each adjective</h3>
+<p>Additive effects of I (controlling for format) are summarized in Table <a href="#tab:itemi">9</a>. Tests of the interaction of I with format (for each item) are summarized in Table <a href="#tab:iinteraction">10</a>.</p>
 <pre class="r"><code>mod_by_item_i1 = items_13 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
-  mutate(mod = map(data, ~lmer(seconds_log~format+i + (1|proid), data = .))) %&gt;%
-  mutate(aov = map(mod, anova)) %&gt;% 
+  mutate(mod = map(data, ~glmmTMB(seconds_log~format+i + (1|proid), data = .))) %&gt;%
+  mutate(aov = map(mod, aov)) %&gt;% 
   ungroup()</code></pre>
 <pre class="r"><code>summary_by_item_i1 = mod_by_item_i1 %&gt;% 
   mutate(tidy = map(aov, broom::tidy)) %&gt;%
@@ -5365,7 +2557,7 @@ Figure 21: Predicted log-seconds on personality items by condition and I, using 
   mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;))</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:itemi">Table 15: </span>Additive effect of I on timing for each item
+<span id="tab:itemi">Table 9: </span>Additive effect of I on timing for each item
 </caption>
 <thead>
 <tr>
@@ -5382,10 +2574,7 @@ sumsq
 meansq
 </th>
 <th style="text-align:right;">
-NumDF
-</th>
-<th style="text-align:right;">
-DenDF
+df
 </th>
 <th style="text-align:right;">
 statistic
@@ -5407,22 +2596,19 @@ active
 N
 </td>
 <td style="text-align:right;">
-0.01
+0.04
 </td>
 <td style="text-align:right;">
-0.01
+0.04
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-24.16
-</td>
-<td style="text-align:right;">
-0.06
+0.21
 </td>
 <td style="text-align:left;">
-.801
+.656
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5436,22 +2622,19 @@ adventurous
 N
 </td>
 <td style="text-align:right;">
-0.06
+0.01
 </td>
 <td style="text-align:right;">
-0.06
+0.01
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-18.43
-</td>
-<td style="text-align:right;">
-0.48
+0.06
 </td>
 <td style="text-align:left;">
-.498
+.807
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5465,22 +2648,19 @@ broadminded
 N
 </td>
 <td style="text-align:right;">
-0.16
+0.20
 </td>
 <td style="text-align:right;">
-0.16
+0.20
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-25.32
-</td>
-<td style="text-align:right;">
-0.36
+0.44
 </td>
 <td style="text-align:left;">
-.556
+.516
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5503,13 +2683,10 @@ N
 1
 </td>
 <td style="text-align:right;">
-25.15
-</td>
-<td style="text-align:right;">
-0.10
+0.09
 </td>
 <td style="text-align:left;">
-.759
+.768
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5523,22 +2700,19 @@ caring
 N
 </td>
 <td style="text-align:right;">
-0.99
+1.37
 </td>
 <td style="text-align:right;">
-0.99
+1.37
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-21.87
-</td>
-<td style="text-align:right;">
-1.85
+2.54
 </td>
 <td style="text-align:left;">
-.188
+.132
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5552,25 +2726,22 @@ cautious
 N
 </td>
 <td style="text-align:right;">
-1.44
+2.81
 </td>
 <td style="text-align:right;">
-1.44
+2.81
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-21.88
-</td>
-<td style="text-align:right;">
-3.29
+6.85
 </td>
 <td style="text-align:left;">
-.083
+.019
 </td>
 <td style="text-align:left;">
-&gt; .999
+.582
 </td>
 </tr>
 <tr>
@@ -5581,22 +2752,19 @@ creative
 N
 </td>
 <td style="text-align:right;">
-0.64
+0.20
 </td>
 <td style="text-align:right;">
-0.64
+0.20
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-22.13
-</td>
-<td style="text-align:right;">
-0.79
+0.25
 </td>
 <td style="text-align:left;">
-.384
+.622
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5619,13 +2787,10 @@ N
 1
 </td>
 <td style="text-align:right;">
-28.00
-</td>
-<td style="text-align:right;">
-1.11
+0.94
 </td>
 <td style="text-align:left;">
-.302
+.347
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5639,22 +2804,19 @@ friendly
 N
 </td>
 <td style="text-align:right;">
-0.02
+0.03
 </td>
 <td style="text-align:right;">
-0.02
+0.03
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-19.44
-</td>
-<td style="text-align:right;">
-0.11
+0.19
 </td>
 <td style="text-align:left;">
-.740
+.666
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5668,22 +2830,19 @@ hardworking
 N
 </td>
 <td style="text-align:right;">
-0.35
+0.51
 </td>
 <td style="text-align:right;">
-0.35
+0.51
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-23.10
-</td>
-<td style="text-align:right;">
-0.31
+0.45
 </td>
 <td style="text-align:left;">
-.582
+.512
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5697,22 +2856,19 @@ helpful
 N
 </td>
 <td style="text-align:right;">
-0.02
+0.19
 </td>
 <td style="text-align:right;">
-0.02
+0.19
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-19.54
-</td>
-<td style="text-align:right;">
-0.19
+1.78
 </td>
 <td style="text-align:left;">
-.666
+.202
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5735,13 +2891,10 @@ N
 1
 </td>
 <td style="text-align:right;">
-27.24
-</td>
-<td style="text-align:right;">
-0.02
+0.01
 </td>
 <td style="text-align:left;">
-.897
+.916
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5764,13 +2917,10 @@ N
 1
 </td>
 <td style="text-align:right;">
-27.01
-</td>
-<td style="text-align:right;">
 0.16
 </td>
 <td style="text-align:left;">
-.693
+.699
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5784,22 +2934,19 @@ lively
 N
 </td>
 <td style="text-align:right;">
-0.85
+0.97
 </td>
 <td style="text-align:right;">
-0.85
+0.97
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-24.06
-</td>
-<td style="text-align:right;">
-2.27
+2.54
 </td>
 <td style="text-align:left;">
-.145
+.132
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5813,22 +2960,19 @@ organized
 N
 </td>
 <td style="text-align:right;">
-0.18
+0.00
 </td>
 <td style="text-align:right;">
-0.18
+0.00
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-17.14
-</td>
-<td style="text-align:right;">
-1.94
+0.01
 </td>
 <td style="text-align:left;">
-.181
+.918
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5851,13 +2995,10 @@ N
 1
 </td>
 <td style="text-align:right;">
-28.00
-</td>
-<td style="text-align:right;">
-0.21
+0.15
 </td>
 <td style="text-align:left;">
-.648
+.702
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5880,13 +3021,10 @@ N
 1
 </td>
 <td style="text-align:right;">
-28.00
-</td>
-<td style="text-align:right;">
-0.84
+0.72
 </td>
 <td style="text-align:left;">
-.367
+.410
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5900,22 +3038,19 @@ selfdisciplined
 N
 </td>
 <td style="text-align:right;">
-0.05
+0.36
 </td>
 <td style="text-align:right;">
-0.05
+0.36
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-19.48
-</td>
-<td style="text-align:right;">
-0.16
+1.18
 </td>
 <td style="text-align:left;">
-.695
+.295
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5929,22 +3064,19 @@ softhearted
 N
 </td>
 <td style="text-align:right;">
-0.04
+0.01
 </td>
 <td style="text-align:right;">
-0.04
+0.01
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-18.60
-</td>
-<td style="text-align:right;">
-0.12
+0.04
 </td>
 <td style="text-align:left;">
-.735
+.840
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5967,13 +3099,10 @@ N
 1
 </td>
 <td style="text-align:right;">
-28.00
-</td>
-<td style="text-align:right;">
-0.17
+0.16
 </td>
 <td style="text-align:left;">
-.683
+.696
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -5987,22 +3116,19 @@ sympathetic
 N
 </td>
 <td style="text-align:right;">
-0.04
+0.13
 </td>
 <td style="text-align:right;">
-0.04
+0.13
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-22.50
-</td>
-<td style="text-align:right;">
-0.07
+0.25
 </td>
 <td style="text-align:left;">
-.795
+.626
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6016,22 +3142,19 @@ talkative
 N
 </td>
 <td style="text-align:right;">
-0.10
+0.24
 </td>
 <td style="text-align:right;">
-0.10
+0.24
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-21.74
-</td>
-<td style="text-align:right;">
-0.43
+1.06
 </td>
 <td style="text-align:left;">
-.518
+.320
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6045,22 +3168,19 @@ thorough
 N
 </td>
 <td style="text-align:right;">
-0.10
+0.11
 </td>
 <td style="text-align:right;">
-0.10
+0.11
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-25.88
-</td>
-<td style="text-align:right;">
-0.13
+0.16
 </td>
 <td style="text-align:left;">
-.717
+.693
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6083,13 +3203,10 @@ N
 1
 </td>
 <td style="text-align:right;">
-28.00
-</td>
-<td style="text-align:right;">
-1.78
+1.71
 </td>
 <td style="text-align:left;">
-.193
+.210
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6103,25 +3220,22 @@ warm
 N
 </td>
 <td style="text-align:right;">
-0.33
+1.29
 </td>
 <td style="text-align:right;">
-0.33
+1.29
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-18.12
-</td>
-<td style="text-align:right;">
-2.14
+8.36
 </td>
 <td style="text-align:left;">
-.161
+.011
 </td>
 <td style="text-align:left;">
-&gt; .999
+.347
 </td>
 </tr>
 <tr>
@@ -6141,13 +3255,10 @@ Y
 1
 </td>
 <td style="text-align:right;">
-28.00
-</td>
-<td style="text-align:right;">
 0.01
 </td>
 <td style="text-align:left;">
-.904
+.911
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6161,22 +3272,19 @@ impulsive
 Y
 </td>
 <td style="text-align:right;">
-0.84
+0.78
 </td>
 <td style="text-align:right;">
-0.84
+0.78
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-19.81
-</td>
-<td style="text-align:right;">
-0.84
+0.77
 </td>
 <td style="text-align:left;">
-.369
+.393
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6190,22 +3298,19 @@ moody
 Y
 </td>
 <td style="text-align:right;">
-0.04
+0.02
 </td>
 <td style="text-align:right;">
-0.04
+0.02
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-21.65
-</td>
-<td style="text-align:right;">
-0.22
+0.10
 </td>
 <td style="text-align:left;">
-.647
+.757
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6219,22 +3324,19 @@ nervous
 Y
 </td>
 <td style="text-align:right;">
-0.30
+0.24
 </td>
 <td style="text-align:right;">
-0.30
+0.24
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-21.17
-</td>
-<td style="text-align:right;">
-0.95
+0.76
 </td>
 <td style="text-align:left;">
-.340
+.397
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6248,22 +3350,19 @@ reckless
 Y
 </td>
 <td style="text-align:right;">
-0.05
+0.09
 </td>
 <td style="text-align:right;">
-0.05
+0.09
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-21.13
-</td>
-<td style="text-align:right;">
-0.16
+0.32
 </td>
 <td style="text-align:left;">
-.689
+.579
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6277,22 +3376,19 @@ worrying
 Y
 </td>
 <td style="text-align:right;">
-0.15
+0.47
 </td>
 <td style="text-align:right;">
-0.15
+0.47
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-22.98
-</td>
-<td style="text-align:right;">
-0.30
+0.96
 </td>
 <td style="text-align:left;">
-.588
+.344
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6303,12 +3399,12 @@ Y
 <pre class="r"><code>mod_by_item_i2 = items_13 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
-  mutate(mod = map(data, ~lmer(seconds_log~format*i + (1|proid), data = .))) %&gt;%
-  mutate(aov = map(mod, anova)) %&gt;% 
+  mutate(mod = map(data, ~glmmTMB(seconds_log~format*i + (1|proid), data = .))) %&gt;%
+  mutate(aov = map(mod, aov)) %&gt;% 
   ungroup()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:iinteraction">Table 16: </span>Interaction of I with format on timing for each item
+<span id="tab:iinteraction">Table 10: </span>Interaction of I with format on timing for each item
 </caption>
 <thead>
 <tr>
@@ -6325,10 +3421,7 @@ sumsq
 meansq
 </th>
 <th style="text-align:right;">
-NumDF
-</th>
-<th style="text-align:right;">
-DenDF
+df
 </th>
 <th style="text-align:right;">
 statistic
@@ -6350,22 +3443,19 @@ active
 N
 </td>
 <td style="text-align:right;">
-0.21
+0.31
 </td>
 <td style="text-align:right;">
-0.10
+0.15
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-21.20
-</td>
-<td style="text-align:right;">
-0.51
+0.73
 </td>
 <td style="text-align:left;">
-.607
+.500
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6379,22 +3469,19 @@ adventurous
 N
 </td>
 <td style="text-align:right;">
-0.06
+0.01
 </td>
 <td style="text-align:right;">
-0.03
+0.00
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-16.40
-</td>
-<td style="text-align:right;">
-0.20
+0.02
 </td>
 <td style="text-align:left;">
-.823
+.979
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6408,22 +3495,19 @@ broadminded
 N
 </td>
 <td style="text-align:right;">
-0.03
+0.09
 </td>
 <td style="text-align:right;">
-0.01
+0.05
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-24.26
-</td>
-<td style="text-align:right;">
-0.03
+0.09
 </td>
 <td style="text-align:left;">
-.970
+.914
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6437,22 +3521,19 @@ calm
 N
 </td>
 <td style="text-align:right;">
-0.15
+0.22
 </td>
 <td style="text-align:right;">
-0.07
+0.11
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-26.00
-</td>
-<td style="text-align:right;">
-0.09
+0.14
 </td>
 <td style="text-align:left;">
-.910
+.873
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6466,22 +3547,19 @@ caring
 N
 </td>
 <td style="text-align:right;">
-2.15
+2.77
 </td>
 <td style="text-align:right;">
-1.07
+1.38
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-17.27
-</td>
-<td style="text-align:right;">
-2.64
+3.38
 </td>
 <td style="text-align:left;">
-.100
+.066
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6495,22 +3573,19 @@ cautious
 N
 </td>
 <td style="text-align:right;">
-0.38
+0.56
 </td>
 <td style="text-align:right;">
-0.19
+0.28
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-18.83
-</td>
-<td style="text-align:right;">
-0.39
+0.65
 </td>
 <td style="text-align:left;">
-.681
+.538
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6524,22 +3599,19 @@ creative
 N
 </td>
 <td style="text-align:right;">
-1.24
+0.51
 </td>
 <td style="text-align:right;">
-0.62
+0.26
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-21.57
-</td>
-<td style="text-align:right;">
-0.70
+0.29
 </td>
 <td style="text-align:left;">
-.506
+.752
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6553,22 +3625,19 @@ curious
 N
 </td>
 <td style="text-align:right;">
-0.97
+0.64
 </td>
 <td style="text-align:right;">
-0.48
+0.32
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-26.00
-</td>
-<td style="text-align:right;">
-0.68
+0.36
 </td>
 <td style="text-align:left;">
-.516
+.705
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6582,22 +3651,19 @@ friendly
 N
 </td>
 <td style="text-align:right;">
-0.21
+0.15
 </td>
 <td style="text-align:right;">
-0.11
+0.07
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-17.58
-</td>
-<td style="text-align:right;">
-0.60
+0.40
 </td>
 <td style="text-align:left;">
-.562
+.677
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6611,22 +3677,19 @@ hardworking
 N
 </td>
 <td style="text-align:right;">
-1.20
+1.18
 </td>
 <td style="text-align:right;">
-0.60
+0.59
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-20.93
-</td>
-<td style="text-align:right;">
-0.51
+0.49
 </td>
 <td style="text-align:left;">
-.605
+.626
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6640,22 +3703,19 @@ helpful
 N
 </td>
 <td style="text-align:right;">
-0.37
+0.19
 </td>
 <td style="text-align:right;">
-0.18
+0.09
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-17.48
-</td>
-<td style="text-align:right;">
-1.64
+0.85
 </td>
 <td style="text-align:left;">
-.222
+.451
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6669,22 +3729,19 @@ imaginative
 N
 </td>
 <td style="text-align:right;">
-0.04
+0.23
 </td>
 <td style="text-align:right;">
-0.02
+0.12
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-26.00
-</td>
-<td style="text-align:right;">
-0.03
+0.21
 </td>
 <td style="text-align:left;">
-.969
+.815
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6698,22 +3755,19 @@ intelligent
 N
 </td>
 <td style="text-align:right;">
-0.39
+1.05
 </td>
 <td style="text-align:right;">
-0.20
+0.52
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-25.13
-</td>
-<td style="text-align:right;">
-0.20
+0.51
 </td>
 <td style="text-align:left;">
-.822
+.612
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6727,22 +3781,19 @@ lively
 N
 </td>
 <td style="text-align:right;">
-0.54
+0.28
 </td>
 <td style="text-align:right;">
-0.27
+0.14
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-22.83
-</td>
-<td style="text-align:right;">
-0.68
+0.33
 </td>
 <td style="text-align:left;">
-.518
+.725
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6756,22 +3807,19 @@ organized
 N
 </td>
 <td style="text-align:right;">
-0.14
+0.11
 </td>
 <td style="text-align:right;">
-0.07
+0.05
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-15.55
-</td>
-<td style="text-align:right;">
-0.71
+0.55
 </td>
 <td style="text-align:left;">
-.509
+.591
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6785,22 +3833,19 @@ outgoing
 N
 </td>
 <td style="text-align:right;">
-0.09
+0.04
 </td>
 <td style="text-align:right;">
-0.09
+0.04
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-27.00
-</td>
-<td style="text-align:right;">
-0.14
+0.04
 </td>
 <td style="text-align:left;">
-.713
+.841
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6814,22 +3859,19 @@ responsible
 N
 </td>
 <td style="text-align:right;">
-0.29
+1.12
 </td>
 <td style="text-align:right;">
-0.15
+0.56
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-26.00
-</td>
-<td style="text-align:right;">
-0.34
+1.18
 </td>
 <td style="text-align:left;">
-.718
+.339
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6843,22 +3885,19 @@ selfdisciplined
 N
 </td>
 <td style="text-align:right;">
-0.86
+0.98
 </td>
 <td style="text-align:right;">
-0.43
+0.49
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-16.51
-</td>
-<td style="text-align:right;">
-1.57
+1.77
 </td>
 <td style="text-align:left;">
-.237
+.209
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6881,13 +3920,10 @@ N
 2
 </td>
 <td style="text-align:right;">
-15.63
-</td>
-<td style="text-align:right;">
 2.18
 </td>
 <td style="text-align:left;">
-.146
+.152
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6901,22 +3937,19 @@ sophisticated
 N
 </td>
 <td style="text-align:right;">
-0.07
+0.91
 </td>
 <td style="text-align:right;">
-0.04
+0.46
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-26.00
-</td>
-<td style="text-align:right;">
-0.06
+0.76
 </td>
 <td style="text-align:left;">
-.938
+.487
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6930,22 +3963,19 @@ sympathetic
 N
 </td>
 <td style="text-align:right;">
-2.59
+1.08
 </td>
 <td style="text-align:right;">
-1.30
+0.54
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-21.37
-</td>
-<td style="text-align:right;">
-2.49
+1.02
 </td>
 <td style="text-align:left;">
-.106
+.386
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6968,13 +3998,10 @@ N
 2
 </td>
 <td style="text-align:right;">
-19.92
-</td>
-<td style="text-align:right;">
-0.05
+0.06
 </td>
 <td style="text-align:left;">
-.947
+.946
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -6988,22 +4015,19 @@ thorough
 N
 </td>
 <td style="text-align:right;">
-2.10
+0.07
 </td>
 <td style="text-align:right;">
-1.05
+0.04
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-26.00
-</td>
-<td style="text-align:right;">
-1.49
+0.05
 </td>
 <td style="text-align:left;">
-.244
+.955
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -7017,22 +4041,19 @@ thrifty
 N
 </td>
 <td style="text-align:right;">
-2.27
+0.85
 </td>
 <td style="text-align:right;">
-1.13
+0.42
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-26.00
-</td>
-<td style="text-align:right;">
-1.37
+0.44
 </td>
 <td style="text-align:left;">
-.273
+.653
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -7046,22 +4067,19 @@ warm
 N
 </td>
 <td style="text-align:right;">
-0.47
+0.64
 </td>
 <td style="text-align:right;">
-0.24
+0.32
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-15.12
-</td>
-<td style="text-align:right;">
-1.82
+2.47
 </td>
 <td style="text-align:left;">
-.196
+.123
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -7075,22 +4093,19 @@ careless
 Y
 </td>
 <td style="text-align:right;">
-0.81
+0.35
 </td>
 <td style="text-align:right;">
-0.41
+0.17
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-26.00
-</td>
-<td style="text-align:right;">
-0.69
+0.24
 </td>
 <td style="text-align:left;">
-.508
+.791
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -7104,22 +4119,19 @@ impulsive
 Y
 </td>
 <td style="text-align:right;">
-1.22
+1.31
 </td>
 <td style="text-align:right;">
-0.61
+0.66
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-17.47
-</td>
-<td style="text-align:right;">
-0.58
+0.62
 </td>
 <td style="text-align:left;">
-.571
+.554
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -7133,22 +4145,19 @@ moody
 Y
 </td>
 <td style="text-align:right;">
-0.00
+0.02
 </td>
 <td style="text-align:right;">
-0.00
+0.01
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-20.19
-</td>
-<td style="text-align:right;">
-0.01
+0.06
 </td>
 <td style="text-align:left;">
-.994
+.943
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -7162,22 +4171,19 @@ nervous
 Y
 </td>
 <td style="text-align:right;">
-0.49
+0.62
 </td>
 <td style="text-align:right;">
-0.25
+0.31
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-19.41
-</td>
-<td style="text-align:right;">
-0.80
+0.96
 </td>
 <td style="text-align:left;">
-.466
+.408
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -7191,22 +4197,19 @@ reckless
 Y
 </td>
 <td style="text-align:right;">
-0.87
+1.23
 </td>
 <td style="text-align:right;">
-0.44
+0.61
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-17.67
-</td>
-<td style="text-align:right;">
-1.81
+2.55
 </td>
 <td style="text-align:left;">
-.192
+.116
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -7220,22 +4223,19 @@ worrying
 Y
 </td>
 <td style="text-align:right;">
-0.59
+0.48
 </td>
 <td style="text-align:right;">
-0.29
+0.24
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-20.70
-</td>
-<td style="text-align:right;">
-0.54
+0.44
 </td>
 <td style="text-align:left;">
-.590
+.651
 </td>
 <td style="text-align:left;">
 &gt; .999

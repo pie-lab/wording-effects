@@ -20,8 +20,8 @@ library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
 library(stringi) # for generating random strings
-library(lme4) # for multilevel modeling
-library(lmerTest) # for p-values
+library(glmmTMB) # for multilevel modeling
+library(broom) # for presenting results
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables

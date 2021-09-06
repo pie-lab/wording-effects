@@ -353,9 +353,6 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="power.html">Power analysis</a>
-</li>
-<li>
   <a href="workspace.html">R version and packages</a>
 </li>
       </ul>
@@ -376,14 +373,14 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Device effects</h1>
-<h4 class="date">Last updated 2021-08-30</h4>
+<h4 class="date">Last updated 2021-09-06</h4>
 
 </div>
 
 
 <p>In this section, we present exploratory analyses which test the effect of device type More specifically, we’re interested to know whether the time it takes to complete personality assessments differs by device type (computer, phone, tablet). We also test whether the typical response to personality items is associated with device type, although we have no theoretical reasons to suspect this is the case.</p>
-<p>For these analyses, we use only data collected in Blocks 1 and 2.</p>
-<pre class="r"><code>items_12 = items_df %&gt;% filter(block %in% c(&quot;1&quot;,&quot;2&quot;))</code></pre>
+<p>For these analyses, we use only data collected in Block 1.</p>
+<pre class="r"><code>items_block1 = items_df %&gt;% filter(block == &quot;1&quot;)</code></pre>
 <div id="demographics-by-device-type" class="section level2" number="0.1">
 <h2><span class="header-section-number">0.1</span> Demographics by device type</h2>
 <p>Device-type analyses in this project are purely exploratory, but may be hampered by potential confounds. We test whether different types of participants (based on demographic variables) used different devices to complete the survey.</p>
@@ -400,13 +397,16 @@ Figure 1: Distributions by device type
 <div id="timing-by-device" class="section level3" number="0.2.1">
 <h3><span class="header-section-number">0.2.1</span> Timing by device</h3>
 <p>We used a multilevel model, nesting timing within participant to account for dependence. Our primary predictor was device type. As a reminder, our outcome variable (seconds) has been log-transformed, as it was strongly skewed.</p>
-<pre class="r"><code>mod.timing = lmer(seconds_log~devicetype + (1|proid), 
-                  data = items_12)
-anova(mod.timing)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##            Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
-## devicetype 2.4781  1.2391     2    32  1.8444 0.1745</code></pre>
-<p>When examining both Block 1 and Block 2 data, device type was unassociated with the time it took to respond to personality items <span class="math inline">\((F(2, 32.00) = 1.84, p = .175)\)</span>.</p>
+<pre class="r"><code>mod.timing = glmmTMB(seconds_log~devicetype + (1|proid), 
+                  data = items_block1)
+tidy(aov(mod.timing))</code></pre>
+<pre><code>## # A tibble: 3 × 6
+##   term          df sumsq meansq statistic   p.value
+##   &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 devicetype     2  13.2  6.60       11.3  1.43e- 5
+## 2 proid         32 207.   6.47       11.0  5.21e-47
+## 3 Residuals   1050 615.   0.586      NA   NA</code></pre>
+<p>Device type was associated with the time it took to respond to personality items <span class="math inline">\((F(2.00, 1,050.00) = 11.27, p = &lt; .001)\)</span>.</p>
 <pre class="r"><code>plot1 = plot_model(mod.timing, type = &quot;pred&quot;) 
 
 plot1$devicetype +
@@ -421,12 +421,12 @@ plot1$devicetype +
 Figure 2: Predicted timing on personality items by condition.
 </p>
 </div>
-<pre class="r"><code>means_by_group = items_12 %&gt;%
+<pre class="r"><code>means_by_group = items_block1 %&gt;%
   group_by(devicetype) %&gt;% 
   summarise(m = mean(timing),
             s = sd(timing))
 
-items_12 %&gt;%
+items_block1 %&gt;%
   ggplot(aes(x = timing, fill = devicetype)) +
   geom_histogram(bins = 100) +
   geom_vline(aes(xintercept = m), data = means_by_group) +
@@ -447,17 +447,17 @@ Figure 3: Distribution of secondss by category
 <div id="device-by-format" class="section level3" number="0.2.2">
 <h3><span class="header-section-number">0.2.2</span> Device by format</h3>
 <p>We also check to see whether device type and format interact in the prediction of time to answer personality items.</p>
-<pre class="r"><code>mod.timing2 = lmer(seconds_log~devicetype*format + (1|proid), 
-                  data = items_12)
-anova(mod.timing2)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##                   Sum Sq Mean Sq NumDF   DenDF F value    Pr(&gt;F)    
-## devicetype         2.919  1.4595     2   32.31  2.2275 0.1240954    
-## format            11.022  3.6741     3 2146.65  5.6074 0.0007915 ***
-## devicetype:format 14.153  2.3589     6 2148.23  3.6001 0.0014831 ** 
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>The interaction between device type and format was associated with the time it took to respond to personality items <span class="math inline">\((F(6, 2,148.23) = 3.60, p = .001)\)</span>.</p>
+<pre class="r"><code>mod.timing2 = glmmTMB(seconds_log~devicetype*format + (1|proid), 
+                  data = items_block1)
+tidy(aov(mod.timing2))</code></pre>
+<pre><code>## # A tibble: 4 × 6
+##   term          df sumsq meansq statistic   p.value
+##   &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 devicetype     2  13.2  6.60      11.3   1.43e- 5
+## 2 format         3  74.1 24.7       42.1   1.02e-25
+## 3 proid         29 133.   4.58       7.82  5.91e-29
+## 4 Residuals   1050 615.   0.586     NA    NA</code></pre>
+<p><strong>Preregistration note: this model was unable to converge, likely due to the small sample size. We have code prepared to extract and print estimates of the interaction upon collecting sufficient data.</strong></p>
 <pre class="r"><code>plot1 = plot_model(mod.timing2, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;devicetype&quot;)) 
 
 plot1 +
@@ -482,13 +482,16 @@ Figure 4: Predicted timing on personality items by condition.
 <div id="response-by-device" class="section level3" number="0.3.1">
 <h3><span class="header-section-number">0.3.1</span> Response by device</h3>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device type.</p>
-<pre class="r"><code>mod.responseD = lmer(response~devicetype + (1|proid), 
-                  data = items_12)
-anova(mod.responseD)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##            Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
-## devicetype 2.9109  1.4554     2    32  0.9685 0.3905</code></pre>
-<p>When examining both Block 1 and Block 2 data, device type was unassociated with the time it took to respond to personality items <span class="math inline">\((F(2, 32.00) = 0.97, p = .391)\)</span>.</p>
+<pre class="r"><code>mod.responseD = glmmTMB(response~devicetype + (1|proid), 
+                  data = items_block1)
+tidy(aov(mod.responseD))</code></pre>
+<pre><code>## # A tibble: 3 × 6
+##   term          df  sumsq meansq statistic   p.value
+##   &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 devicetype     2   23.8  11.9       7.98  3.64e- 4
+## 2 proid         32  233.    7.27      4.88  8.70e-17
+## 3 Residuals   1050 1565.    1.49     NA    NA</code></pre>
+<p>When examining both Block 1 and Block 2 data, device type was associated with the time it took to respond to personality items <span class="math inline">\((F(2.00, 1,050.00) = 7.98, p = &lt; .001)\)</span>.</p>
 <pre class="r"><code>plot1 = plot_model(mod.responseD, type = &quot;pred&quot;) 
 
 plot1$devicetype +
@@ -503,12 +506,12 @@ plot1$devicetype +
 Figure 5: Predicted response on personality items by condition.
 </p>
 </div>
-<pre class="r"><code>means_by_group = items_12 %&gt;%
+<pre class="r"><code>means_by_group = items_block1 %&gt;%
   group_by(devicetype) %&gt;% 
   summarise(m = mean(response),
             s = sd(response))
 
-items_12 %&gt;%
+items_block1 %&gt;%
   ggplot(aes(x = response)) +
   geom_histogram(aes(fill = block),
                  position = &quot;dodge&quot;,
@@ -531,15 +534,17 @@ Figure 6: Distribution of responses by category
 <div id="device-by-format-1" class="section level3" number="0.3.2">
 <h3><span class="header-section-number">0.3.2</span> Device by format</h3>
 <p>We also check whether item format moderated the relationship between device type and response.</p>
-<pre class="r"><code>mod.responseD2 = lmer(response~devicetype*format + (1|proid), 
-                  data = items_12)
-anova(mod.responseD2)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##                    Sum Sq Mean Sq NumDF   DenDF F value Pr(&gt;F)
-## devicetype         1.8061 0.90304     2   32.83  0.6016 0.5539
-## format             5.1709 1.72363     3 2105.79  1.1483 0.3283
-## devicetype:format 13.6298 2.27163     6 2102.81  1.5133 0.1697</code></pre>
-<p>The interaction between device type and format was unassociated with the time it took to respond to personality items <span class="math inline">\((F(6, 2,102.81) = 1.51, p = .170)\)</span>.</p>
+<pre class="r"><code>mod.responseD2 = glmmTMB(response~devicetype*format + (1|proid), 
+                  data = items_block1)
+tidy(aov(mod.responseD2))</code></pre>
+<pre><code>## # A tibble: 4 × 6
+##   term          df   sumsq meansq statistic   p.value
+##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 devicetype     2   23.8   11.9       7.98  3.64e- 4
+## 2 format         3    4.99   1.66      1.12  3.41e- 1
+## 3 proid         29  228.     7.85      5.27  2.76e-17
+## 4 Residuals   1050 1565.     1.49     NA    NA</code></pre>
+<p><strong>Preregistration note: this model was unable to converge, likely due to the small sample size. We have code prepared to extract and print estimates of the interaction upon collecting sufficient data.</strong></p>
 <pre class="r"><code>plot2 = plot_model(mod.responseD2, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;devicetype&quot;)) 
 
 plot2 +

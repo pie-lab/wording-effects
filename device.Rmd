@@ -16,8 +16,8 @@ knitr::opts_chunk$set(warning = F, message = F)
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
-library(lme4) # for mulitlevel modeling
-library(lmerTest) # for df and p-values
+library(glmmTMB) # for mulitlevel modeling
+library(broom) # for tidying output
 library(emmeans) # for pairwise comparisons
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
@@ -26,16 +26,17 @@ library(papaja) # for formatting numbers
 ```
 
 ```{r device-3, echo = F}
+load(here("objects/cleaned_data.Rds"))
 load(here("objects/items_df.Rds"))
 ```
 
 In this section, we present exploratory analyses which test the effect of device type More specifically, we're interested to know whether the time it takes to complete personality assessments differs by device type (computer, phone, tablet). We also test whether the typical response to personality items is associated with device type, although we have no theoretical reasons to suspect this is the case.
 
-For these analyses, we use only data collected in Blocks 1 and 2.
+For these analyses, we use only data collected in Block 1.
 
 
 ```{r device-4}
-items_12 = items_df %>% filter(block %in% c("1","2"))
+items_block1 = items_df %>% filter(block == "1")
 ```
 
 ## Demographics by device type
@@ -54,14 +55,6 @@ age_test = ggpubr::ggboxplot(data, "devicetype", "age") +
 
 
 sex_test = papaja::apa_print(chisq.test(table(data$sex, data$devicetype)), n = nrow(data))
-
-# ethnic_test = papaja::apa_print(chisq.test(table(data$ethnic, data$devicetype)), n = nrow(data))
-# 
-# non_na_edu = filter(data, !is.na(edu))
-# edu_test = papaja::apa_print(chisq.test(table(non_na_edu$edu, non_na_edu$devicetype)), n = nrow(non_na_edu))
-# 
-# hhinc_test = papaja::apa_print(chisq.test(table(data$hhinc, data$devicetype)), n = nrow(data))
-
 ```
 
 Figure \@ref(fig:descriptives-17)A shows the distributions of age by device type; the ANOVA test of these differences is `r age_test_print$full_result$devicetype`. The chi-square test of biological sex by device type was `r sex_test$statistic`. 
@@ -113,25 +106,23 @@ ggarrange(age_test, edu_device, ethnic_device, hhinc_device, ncol = 1)
 We used a multilevel model, nesting timing within participant to account for dependence. Our primary predictor was device type. As a reminder, our outcome variable (seconds) has been log-transformed, as it was strongly skewed.
 
 ```{r device-5}
-mod.timing = lmer(seconds_log~devicetype + (1|proid), 
-                  data = items_12)
-anova(mod.timing)
+mod.timing = glmmTMB(seconds_log~devicetype + (1|proid), 
+                  data = items_block1)
+tidy(aov(mod.timing))
 ```
 
 
 
 ```{r device-6, echo = F}
-tD_aov = anova(mod.timing)
-tD_sig = tD_aov$`Pr(>F)`[[1]] < .05
+tD_aov = tidy(aov(mod.timing))
+tD_sig = tD_aov$p.value[[1]] < .05
 tD_aov = tD_aov %>% 
   as_tibble() %>% 
-  rename(Fval = `F value`,
-         Pval = `Pr(>F)`) %>% 
   mutate(across(starts_with("P"), printp),
          across(where(is.numeric), printnum))
 ```
 
-When examining both Block 1 and Block 2 data, device type was `r ifelse(tD_sig, "associated", "unassociated")` with the time it took to respond to personality items $(F(`r tD_aov$NumDF[[1]]`, `r tD_aov$DenDF[[1]]`) = `r tD_aov$Fval[[1]]`, p = `r tD_aov$Pval[[1]]`)$.
+Device type was `r ifelse(tD_sig, "associated", "unassociated")` with the time it took to respond to personality items $(F(`r tD_aov$df[[1]]`, `r tD_aov$df[[3]]`) = `r tD_aov$statistic[[1]]`, p = `r tD_aov$p.value[[1]]`)$.
 
 ```{r device-7, fig.cap = "Predicted timing on personality items by condition."}
 plot1 = plot_model(mod.timing, type = "pred") 
@@ -145,12 +136,12 @@ plot1$devicetype +
 ```
 
 ```{r device-8, fig.cap = "Distribution of secondss by category"}
-means_by_group = items_12 %>%
+means_by_group = items_block1 %>%
   group_by(devicetype) %>% 
   summarise(m = mean(timing),
             s = sd(timing))
 
-items_12 %>%
+items_block1 %>%
   ggplot(aes(x = timing, fill = devicetype)) +
   geom_histogram(bins = 100) +
   geom_vline(aes(xintercept = m), data = means_by_group) +
@@ -168,27 +159,26 @@ items_12 %>%
 We also check to see whether device type and format interact in the prediction of time to answer personality items.
 
 ```{r device-9}
-mod.timing2 = lmer(seconds_log~devicetype*format + (1|proid), 
-                  data = items_12)
-anova(mod.timing2)
+mod.timing2 = glmmTMB(seconds_log~devicetype*format + (1|proid), 
+                  data = items_block1)
+tidy(aov(mod.timing2))
 ```
 
+**Preregistration note: this model was unable to converge, likely due to the small sample size. We have code prepared to extract and print estimates of the interaction upon collecting sufficient data.**
 
 
-```{r device-10, echo = F}
-tD2_aov = anova(mod.timing2)
-tD2_sig = tD2_aov$`Pr(>F)`[[3]] < .05
+
+```{r device-10, eval = F, echo = F}
+tD2_aov = tidy(aov(mod.timing2))
+tD2_sig = tD2_aov$p.value[[4]] < .05
 tD2_aov = tD2_aov %>% 
   as_tibble() %>% 
-  rename(Fval = `F value`,
-         Pval = `Pr(>F)`) %>% 
   mutate(across(starts_with("P"), printp),
-         across(where(is.numeric), printnum)) %>% 
-  filter(row_number() == 3)
+         across(where(is.numeric), printnum))
+
+<!-- The interaction between device type and format was `r ifelse(tD2_sig, "associated", "unassociated")` with the time it took to respond to personality items $(F(`r tD2_aov$df[[4]]`, `r tD2_aov$df[[5]]`) = `r tD2_aov$statistic[[4]]`, p = `r tD2_aov$p.value[[4]]`)$. -->
+
 ```
-
-The interaction between device type and format was `r ifelse(tD2_sig, "associated", "unassociated")` with the time it took to respond to personality items $(F(`r tD2_aov$NumDF[[1]]`, `r tD2_aov$DenDF[[1]]`) = `r tD2_aov$Fval[[1]]`, p = `r tD2_aov$Pval[[1]]`)$.
-
 
 ```{r device-11, fig.cap = "Predicted timing on personality items by condition."}
 plot1 = plot_model(mod.timing2, type = "pred", terms = c("format", "devicetype")) 
@@ -212,25 +202,23 @@ Here we estimate the differences in response to personality items items by devic
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device type. 
 
 ```{r device-12}
-mod.responseD = lmer(response~devicetype + (1|proid), 
-                  data = items_12)
-anova(mod.responseD)
+mod.responseD = glmmTMB(response~devicetype + (1|proid), 
+                  data = items_block1)
+tidy(aov(mod.responseD))
 ```
 
 
 
 ```{r device-13, echo = F}
-fD_aov = anova(mod.responseD)
-fD_sig = fD_aov$`Pr(>F)`[[1]] < .05
-fD_aov = fD_aov %>% 
+rD_aov = tidy(aov(mod.responseD))
+rD_sig = rD_aov$p.value[[1]] < .05
+rD_aov = rD_aov %>% 
   as_tibble() %>% 
-  rename(Fval = `F value`,
-         Pval = `Pr(>F)`) %>% 
   mutate(across(starts_with("P"), printp),
          across(where(is.numeric), printnum))
 ```
 
-When examining both Block 1 and Block 2 data, device type was `r ifelse(fD_sig, "associated", "unassociated")` with the time it took to respond to personality items $(F(`r fD_aov$NumDF[[1]]`, `r fD_aov$DenDF[[1]]`) = `r fD_aov$Fval[[1]]`, p = `r fD_aov$Pval[[1]]`)$.
+When examining both Block 1 and Block 2 data, device type was `r ifelse(rD_sig, "associated", "unassociated")` with the time it took to respond to personality items $(F(`r rD_aov$df[[1]]`, `r rD_aov$df[[3]]`) = `r rD_aov$statistic[[1]]`, p = `r rD_aov$p.value[[1]]`)$.
 
 ```{r device-14, fig.cap = "Predicted response on personality items by condition."}
 plot1 = plot_model(mod.responseD, type = "pred") 
@@ -244,12 +232,12 @@ plot1$devicetype +
 ```
 
 ```{r device-15, fig.cap = "Distribution of responses by category"}
-means_by_group = items_12 %>%
+means_by_group = items_block1 %>%
   group_by(devicetype) %>% 
   summarise(m = mean(response),
             s = sd(response))
 
-items_12 %>%
+items_block1 %>%
   ggplot(aes(x = response)) +
   geom_histogram(aes(fill = block),
                  position = "dodge",
@@ -269,26 +257,25 @@ items_12 %>%
 We also check whether item format moderated the relationship between device type and response.
 
 ```{r device-16}
-mod.responseD2 = lmer(response~devicetype*format + (1|proid), 
-                  data = items_12)
-anova(mod.responseD2)
+mod.responseD2 = glmmTMB(response~devicetype*format + (1|proid), 
+                  data = items_block1)
+tidy(aov(mod.responseD2))
 ```
 
+**Preregistration note: this model was unable to converge, likely due to the small sample size. We have code prepared to extract and print estimates of the interaction upon collecting sufficient data.**
 
-
-```{r device-17, echo = F}
-fD2_aov = anova(mod.responseD2)
-fD2_sig = fD2_aov$`Pr(>F)`[[3]] < .05
-fD2_aov = fD2_aov %>% 
+```{r device-17, eval = F, echo = F}
+rD2_aov = tidy(aov(mod.responseD))
+rD2_sig = rD2_aov$p.value[[1]] < .05
+rD2_aov = rD2_aov %>% 
   as_tibble() %>% 
-  rename(Fval = `F value`,
-         Pval = `Pr(>F)`) %>% 
   mutate(across(starts_with("P"), printp),
-         across(where(is.numeric), printnum)) %>% 
-  filter(row_number() == 3)
+         across(where(is.numeric), printnum))
+
+<!-- The interaction between device type and format was `r ifelse(rD2_sig, "associated", "unassociated")` with the time it took to respond to personality items $(F(`r rD2_aov$NumDF[[1]]`, `r rD2_aov$DenDF[[1]]`) = `r rD2_aov$Fval[[1]]`, p = `r rD2_aov$Pval[[1]]`)$. -->
+
 ```
 
-The interaction between device type and format was `r ifelse(fD2_sig, "associated", "unassociated")` with the time it took to respond to personality items $(F(`r fD2_aov$NumDF[[1]]`, `r fD2_aov$DenDF[[1]]`) = `r fD2_aov$Fval[[1]]`, p = `r fD2_aov$Pval[[1]]`)$.
 
 ```{r device-18, fig.cap = "Predicted response on personality items by condition."}
 plot2 = plot_model(mod.responseD2, type = "pred", terms = c("format", "devicetype")) 

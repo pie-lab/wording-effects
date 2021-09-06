@@ -355,9 +355,6 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="power.html">Power analysis</a>
-</li>
-<li>
   <a href="workspace.html">R version and packages</a>
 </li>
       </ul>
@@ -378,7 +375,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact response syle?</h1>
-<h4 class="date">Last updated 2021-08-30</h4>
+<h4 class="date">Last updated 2021-09-06</h4>
 
 </div>
 
@@ -2653,19 +2650,20 @@ Figure 6: Extreme responding to “thrifty” by format
 </div>
 </div>
 </div>
-<div id="yay-saying" class="section level2" number="0.3">
-<h2><span class="header-section-number">0.3</span> Yay-saying</h2>
-<p>We define <em>yay-saying</em> as answering “somewhat accurate” (4), “accurate” (5), or “very accurate” (6) to an item. To model likelihood of extreme responding by format, we use logistic regression. As a reminder, we reverse-scored socially desirable items during the cleaning stage. For those items, responses coded as 1, 2, or 3 represent agreement (accurate). Therefore, we code values 1, 2, and 3 as yay-saying for reverse-scored items, and values 4, 5, and 6 as yay-saying for all other items.</p>
+<div id="yea-saying" class="section level2" number="0.3">
+<h2><span class="header-section-number">0.3</span> Yea-saying</h2>
+<p>We define <em>yea-saying</em> as answering “somewhat accurate” (4), “accurate” (5), or “very accurate” (6) to an item. To model likelihood of extreme responding by format, we use logistic regression. As a reminder, we reverse-scored socially desirable items during the cleaning stage. For those items, responses coded as 1, 2, or 3 represent agreement (accurate). Therefore, we code values 1, 2, and 3 as yea-saying for reverse-scored items, and values 4, 5, and 6 as yea-saying for all other items.</p>
 <pre class="r"><code>item_block1 = item_block1 %&gt;% 
   mutate(
-    yaysaying = case_when(
+    yeasaying = case_when(
     item %in% reverse &amp; response %in% c(1:3) ~ 1,
     !(item %in% reverse) &amp; response %in% c(4:6) ~ 1,
     TRUE ~ 0
   ))</code></pre>
-<pre class="r"><code>mod.yaysaying = glmmTMB(yaysaying~format + (1|proid), 
+<pre class="r"><code>save(item_block1, file = here(&quot;objects/block1_coded.Rds&quot;))</code></pre>
+<pre class="r"><code>mod.yeasaying = glmmTMB(yeasaying~format + (1|proid), 
                   data = item_block1, family = &quot;binomial&quot;)
-tidy(aov(mod.yaysaying))</code></pre>
+tidy(aov(mod.yeasaying))</code></pre>
 <pre><code>## # A tibble: 3 × 6
 ##   term         df   sumsq meansq statistic    p.value
 ##   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
@@ -2685,7 +2683,7 @@ Figure 7: Predicted response on personality items by condition.
 <pre class="r"><code>mod_by_item_b3 = item_block1 %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
-  mutate(mod = map(data, ~glm(yaysaying~format, data = .))) %&gt;%
+  mutate(mod = map(data, ~glm(yeasaying~format, data = .))) %&gt;%
   mutate(aov = map(mod, aov))</code></pre>
 <p>We apply a Holm correction to the <em>p</em>-values extracted from these analyses, to adjust for the number of tests conducted. We present results in Table <a href="#tab:responsestyle30">6</a>, which is organized by whether items were reverse-coded prior to analysis.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
@@ -3540,7 +3538,7 @@ Y
 sig_item_b3 = sig_item_b3$item
 sig_item_b3</code></pre>
 <pre><code>## character(0)</code></pre>
-<p><img src="response_style_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="response_style_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 </div>
 

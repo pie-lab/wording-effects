@@ -80,12 +80,6 @@ library(here)
 ```{r, child = here("timing_format.Rmd")}
 ```
 
-\newpage
-
-# Power analysis
-
-```{r, child = here("power.Rmd")}
-```
 
 \newpage
 

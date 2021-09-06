@@ -19,8 +19,8 @@ is_html = !is_pdf
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
-library(lme4) # for mulitlevel modeling
-library(lmerTest) # for p-values
+library(glmmTMB) # for mulitlevel modeling
+library(broom) # for presenting results
 library(broom.mixed) # for tables
 library(emmeans) # for comparisons
 library(sjPlot) # for figures
@@ -79,8 +79,8 @@ items_matchb1 = items_matchb1 %>%
 To estimate the reliability coefficients, we use a multilevel model, predicting the latter block from the earlier one. These models nest responses within participant, allowing us to estimate standard errors which account for the dependency of scores. Results are shown in Table \@ref(tab:testretest7b).
 
 ```{r test-retest-7, results = ifelse(is_html, "asis", "hide")}
-tr_mod1_b1b2 = lmer(block_2 ~ block_1 + (1 |proid), data = items_matchb1)
-tr_mod1_b1b3 = lmer(block_3 ~ block_1 + (1 |proid), data = items_matchb1)
+tr_mod1_b1b2 = glmmTMB(block_2 ~ block_1 + (1 |proid), data = items_matchb1)
+tr_mod1_b1b3 = glmmTMB(block_3 ~ block_1 + (1 |proid), data = items_matchb1)
 
 ```
 
@@ -106,10 +106,10 @@ tibble(models = c("Block 1 - Block 2", "Block 1 - Block 3"),
 Here we fit models moderated by memory -- that it, perhaps the test-retest coefficient is affected by the memory of the participant. Results are shown in Table \@ref(tab:testretest8b)
 
 ```{r test-retest-8, results = 'asis'}
-tr_mod2_b1b2 = lmer(block_2 ~ block_1*delayed_memory +
+tr_mod2_b1b2 = glmmTMB(block_2 ~ block_1*delayed_memory +
                       (1 |proid),
                     data = items_matchb1)
-tr_mod2_b1b3 = lmer(block_3 ~ block_1*very_delayed_memory +
+tr_mod2_b1b3 = glmmTMB(block_3 ~ block_1*very_delayed_memory +
                       (1 |proid),
                     data = items_matchb1)
 ```
@@ -170,13 +170,13 @@ emtrends(tr_mod2_b1b3,
 We fit these same models, except now we moderate by format, to determine whether the test-retest reliability differs as a function of item wording.
 
 ```{r test-retest-11}
-tr_mod3_b1b2 = lmer(block_2 ~ block_1*condition + (1 |proid),
+tr_mod3_b1b2 = glmmTMB(block_2 ~ block_1*condition + (1 |proid),
                     data = items_matchb1)
-tr_mod3_b1b3 = lmer(block_3 ~ block_1*condition + (1 |proid),
+tr_mod3_b1b3 = glmmTMB(block_3 ~ block_1*condition + (1 |proid),
                     data = items_matchb1)
 
-anova(tr_mod3_b1b2)
-anova(tr_mod3_b1b3)
+aov(tr_mod3_b1b2)
+aov(tr_mod3_b1b3)
 ```
 
 We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.

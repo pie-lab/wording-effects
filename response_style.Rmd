@@ -65,7 +65,7 @@ Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participa
 
 ```{r responsestyle6, echo = F}
 # save for power analysis
-save(mod.expected, file = here("objects/mod_format_b1.Rdata"))
+save(mod.expected, item_block1, file = here("objects/mod_expected.Rdata"))
 ```
 
 
@@ -214,6 +214,13 @@ fb2_aov = fb2_aov %>%
 
 Item format was `r ifelse(fb2_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb2_aov$df[[1]]`, `r fb2_aov$df[[3]]`) = `r fb2_aov$statistic[[1]]`, p = `r fb2_aov$p.value[[1]]`)$. See Figure \@ref(fig:responsestyle17) for a visualization of this effect. 
 
+```{r , echo = F}
+# save for power analysis
+save(mod.extreme, item_block1, file = here("objects/mod_extreme.Rdata"))
+```
+
+
+
 ```{r responsestyle17, fig.cap = "Predicted response on personality items by condition.", echo = F}
 plot_b2 = plot_model(mod.extreme, type = "pred")
 
@@ -225,6 +232,7 @@ plot_extreme = plot_b2$format +
 
 plot_extreme
 ```
+
 
 ### One model for each adjective
 
@@ -337,28 +345,33 @@ plot_model(thrifty_model_b2, type = "pred", terms = c("format")) +
   theme_pubclean()
 ```
 
-## Yay-saying
+## Yea-saying
 
-We define _yay-saying_ as answering "somewhat accurate" (4), "accurate" (5), or "very accurate" (6) to an item. To model likelihood of extreme responding by format, we use logistic regression. As a reminder, we reverse-scored socially desirable items during the cleaning stage. For those items, responses coded as 1, 2, or 3 represent agreement (accurate). Therefore, we code values 1, 2, and 3 as yay-saying for reverse-scored items, and values 4, 5, and 6 as yay-saying for all other items.
+We define _yea-saying_ as answering "somewhat accurate" (4), "accurate" (5), or "very accurate" (6) to an item. To model likelihood of extreme responding by format, we use logistic regression. As a reminder, we reverse-scored socially desirable items during the cleaning stage. For those items, responses coded as 1, 2, or 3 represent agreement (accurate). Therefore, we code values 1, 2, and 3 as yea-saying for reverse-scored items, and values 4, 5, and 6 as yea-saying for all other items.
 
 ```{r responsestyle25}
 item_block1 = item_block1 %>% 
   mutate(
-    yaysaying = case_when(
+    yeasaying = case_when(
     item %in% reverse & response %in% c(1:3) ~ 1,
     !(item %in% reverse) & response %in% c(4:6) ~ 1,
     TRUE ~ 0
   ))
 ```
 
+```{r}
+save(item_block1, file = here("objects/block1_coded.Rds"))
+```
+
+
 ```{r responsestyle26}
-mod.yaysaying = glmmTMB(yaysaying~format + (1|proid), 
+mod.yeasaying = glmmTMB(yeasaying~format + (1|proid), 
                   data = item_block1, family = "binomial")
-tidy(aov(mod.yaysaying))
+tidy(aov(mod.yeasaying))
 ```
 
 ```{r responsestyle27, echo = F}
-fb3_aov = tidy(aov(mod.yaysaying))
+fb3_aov = tidy(aov(mod.yeasaying))
 fb3_sig = fb3_aov$p.value[[1]] < .05
 fb3_aov = fb3_aov %>% 
   mutate(across(starts_with("P"), papaja::printp),
@@ -367,18 +380,26 @@ fb3_aov = fb3_aov %>%
 
 Item format was `r ifelse(fb3_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb3_aov$df[[1]]`, `r fb3_aov$df[[3]]`) = `r fb3_aov$statistic[[1]]`, p = `r fb3_aov$p.value[[1]]`)$. See Figure \@ref(fig:responsestyle28) for a visualization of this effect. 
 
-```{r responsestyle28, fig.cap = "Predicted response on personality items by condition.", echo = F}
-plot_b3 = plot_model(mod.yaysaying, type = "pred")
+```{r , echo = F}
+# save for power analysis
+save(mod.yeasaying, item_block1, file = here("objects/mod_yeasaying.Rdata"))
+```
 
-plot_yay = plot_b3$format +
-  labs(title = "Likelihood of yay-saying",
+
+```{r responsestyle28, fig.cap = "Predicted response on personality items by condition.", echo = F}
+plot_b3 = plot_model(mod.yeasaying, type = "pred")
+
+plot_yea = plot_b3$format +
+  labs(title = "Likelihood of yea-saying",
        x = NULL, 
        y = NULL) +
   theme_pubclean() +
   theme(plot.margin=unit(c(1,1,1,1.2), "cm"))
 
-plot_yay
+plot_yea
 ```
+
+
 
 ### One model for each adjective
 
@@ -388,7 +409,7 @@ We repeat this analysis separately for each trait. Because there is only one res
 mod_by_item_b3 = item_block1 %>%
   group_by(item) %>%
   nest() %>%
-  mutate(mod = map(data, ~glm(yaysaying~format, data = .))) %>%
+  mutate(mod = map(data, ~glm(yeasaying~format, data = .))) %>%
   mutate(aov = map(mod, aov))
 ```
 
@@ -439,7 +460,7 @@ sig_item_b3
 ggarrange(
   plot_expected, 
   plot_extreme,
-  plot_yay, labels = c("A", "B", "C"),
+  plot_yea, labels = c("A", "B", "C"),
   align = "hv",
   ncol = 1)
 ggsave("response_style.png", height = 12, width = 6)

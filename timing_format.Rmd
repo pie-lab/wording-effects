@@ -18,8 +18,8 @@ knitr::opts_chunk$set(warning = F, message = F)
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
-library(lme4) # for mulitlevel modeling
-library(lmerTest) # for p-values
+library(glmmTMB) # for mulitlevel modeling
+library(broom) # for tidying
 library(emmeans) # for comparisons
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
@@ -40,9 +40,9 @@ We used a multilevel model, nesting log-seconds within participant to account fo
 ```{r}
 item_block1 = filter(items_df, block == "1")
 
-mod.format_b1 = lmer(seconds_log~format + (1|proid), 
+mod.format_b1 = glmmTMB(seconds_log~format + (1|proid), 
                   data = item_block1)
-anova(mod.format_b1)
+tidy(aov(mod.format_b1))
 ```
 
 ```{r timingmod1, echo = F, fig.cap = "Predictions by condition, using only Block 1 data. Figure A shows log seconds, Figure B shows raw seconds."}
@@ -320,394 +320,6 @@ plot_model(adventurous_model_b1, type = "pred", terms = c("format"))
 ```
 
 
-## Effect of format on timing (Block 1 and 2)
-
-We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use data from blocks 1 and 2. The results are depicted in Figure \@ref(fig:mod2fig). The full distributions for each condition are shown in Figure \@ref(fig:fulldist2). Pairwise comparisons are shown in Table \@ref(tab:pair2).
-
-```{r}
-items_12 = items_df %>% filter(block %in% c("1","2"))
-```
-
-
-```{r}
-mod.format_b2 = lmer(seconds_log~format + (1|proid), 
-                  data = items_12)
-anova(mod.format_b2)
-```
-
-```{r mod2fig, fig.cap = "Predicted timing per  personality items by condition, using Block 1 and Block 2 data. A. results in log-seconds. B results in raw seconds.", echo = F}
-plot_b2 = plot_model(mod.format_b2, type = "pred") 
-
-mod2_log = plot_b2$format +
-  labs(x = NULL,
-       y = "Average log-seconds",
-       title = "Average responses by item formatting (Block 1 and Block 2)") +
-  theme_pubclean()
-
-mod2_raw = plot_b2$format$data %>% 
-  mutate(predicted = exp(predicted),
-         conf.low = exp(conf.low),
-         conf.high = exp(conf.high)) %>% 
-  mutate(x = factor(x, 
-                    labels = c("Adjective\nOnly", 
-                               "Am\nAdjective", 
-                               "Tend to be\nAdjective", 
-                               "I am someone\nwho tends to be\nAdjective"))) %>% 
-  ggplot(aes(x = x, y = predicted)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) + 
-  labs(x = NULL, y = "seconds", title = "Average time by item formatting (Block 1 and Block 2)") +
-  theme_pubclean()
-
-ggarrange(mod2_log, mod2_raw, ncol = 1, labels = c("A", "B"))
-```
-
-```{r fulldist2, fig.cap = "Distribution of log-seconds by category, block 1 and block 2", echo = F}
-means_by_group = items_12 %>%
-  group_by(format) %>% 
-  summarise(m = mean(seconds_log),
-            s = sd(seconds_log))
-
-items_12 %>%
-  ggplot(aes(x = seconds_log, fill = format)) +
-  geom_histogram(bins = 100, color = "white") +
-  geom_vline(aes(xintercept = m), data = means_by_group) +
-  geom_text(aes(x = 1, 
-                y = 50, 
-                label = paste("M =", round(m,2), 
-                              "\nSD =", round(s,2))), 
-            data = means_by_group, 
-            hjust =0, 
-            vjust = 1) +
-  facet_wrap(~format) +
-  guides(fill = "none") +
-  labs(y = "Number of particpants",
-       title = "Distribution of responses by format (Block 1 and Block 2)") +
-  theme_pubr()
-```
-
-
-
-```{r pair2, results = 'asis', echo = F}
-pairs(emmeans(mod.format_b2, "format"), adjust = "holm") %>% 
-  kable(booktabs = T, digits = c(0, 2,2,1,2,3), 
-        caption = "Pairwise comparisons of conditions, using blocks 1 and 2") %>% 
-  kable_styling()
-```
-
-### One model for each adjective
-
-We can also repeat this analysis separately for each trait. These results are summarized in Table \@ref(tab:item2).
-
-```{r, results = 'asis'}
-mod_by_item_b2 = items_12 %>%
-  group_by(item) %>%
-  nest() %>%
-  mutate(mod = map(data, ~lmer(seconds_log~format + (1|proid), data = .))) %>%
-  mutate(aov = map(mod, anova)) %>% 
-  ungroup()
-```
-```{r item2, results = 'asis', echo = F}
-summary_by_item_b2 = mod_by_item_b2 %>%
-  mutate(tidy = map(aov, broom::tidy)) %>%
-  select(item, tidy) %>% 
-  unnest(cols = c(tidy)) %>%
-  filter(term == "format") %>%
-  mutate(reverse = case_when(
-    item %in% reverse ~ "Y",
-    TRUE ~ "N"
-  )) %>% 
-  mutate(p.adj = p.adjust(p.value, method = "holm")) 
-
-summary_by_item_b2 %>%
-  mutate(across( starts_with("p"), printp )) %>% # format p-values
-  arrange(reverse, item) %>% 
-  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
-  kable(digits = 2, 
-        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df1", "df2", "F", "raw", "adj"),
-        booktabs = T, 
-        caption = "Format effects on log-seconds by item (block 1 and 2 data)") %>%
-  kable_styling()
-```
-
-### Pairwise t-tests for significant ANOVAs
-
-Here we identify the specific items with significant differences.
-
-```{r}
-sig_item_b2 = summary_by_item_b2 %>%
-  filter(p.value < .05) 
-
-sig_item_b2 = sig_item_b2$item
-sig_item_b2
-```
-
-Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean. 
-
-**This code will have to be changed after final data collection. It is not self-adapting!**
-
-### Helfpul
-
-The results for this item are summarized in Table \@ref(tab:helpful2) and depicted in Figure \@ref(fig:helpful2plot).
-
-```{r, results = 'asis'}
-helpful_model_b2 = items_12 %>%
-  filter(item == "helpful") %>%
-  lmer(seconds_log~format + (1|proid), 
-                               data = .)
-
-helpful_em_b2 = emmeans(helpful_model_b2, "format")
-```
-```{r helpful2, echo = F, results='asis'}
-pairs(helpful_em_b2, adjust = "holm") %>%
-  as_tibble() %>% 
-  mutate(across( starts_with("p"), printp )) %>% # format p-values
-  kable(booktabs = T,
-        digits = 2,
-        caption = "Differences in log-seconds to Helpful by format (Block 1 and Block 2)",
-        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
-  kable_styling()
-```
-
-```{r helpful2plot, echo = F, fig.cap = "Average log-seconds to \"helpful\" by format (Block 1 and Block 2)" }
-plot_model(helpful_model_b2, type = "pred", terms = c("format"))
-```
-
-### Caring
-
-The results for this item are summarized in Table \@ref(tab:caring2) and depicted in Figure \@ref(fig:caring2plot).
-
-
-```{r, results = 'asis'}
-caring_model_b2 = items_12 %>%
-  filter(item == "caring") %>%
-  lmer(seconds_log~format + (1|proid), 
-                               data = .)
-```
-```{r caring2, echo = F, results='asis'}
-
-caring_em_b2 = emmeans(caring_model_b2, "format")
-pairs(caring_em_b2, adjust = "holm") %>%
-  as_tibble() %>% 
-  mutate(across( starts_with("p"), printp )) %>% # format p-values
-  kable(booktabs = T,
-        digits = 2,
-        caption = "Differences in log-seconds to Caring by format (Block 1 and Block 2)",
-        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
-  kable_styling()
-```
-
-```{r caring2plot, echo = F, fig.cap = "Average log-seconds to \"caring\" by format (Block 1 and Block 2)" }
-plot_model(caring_model_b2, type = "pred", terms = c("format"))
-```
-
-
-### Adventurous
-
-The results for this item are summarized in Table \@ref(tab:adventure2) and depicted in Figure \@ref(fig:adventure2plot).
-
-
-```{r, results = 'asis'}
-adventurous_model_b2 = items_12 %>%
-  filter(item == "adventurous") %>%
-  lmer(seconds_log~format + (1|proid), 
-                               data = .)
-```
-```{r adventure2, echo = F, results='asis'}
-
-adventurous_em_b2 = emmeans(adventurous_model_b2, "format")
-pairs(adventurous_em_b2, adjust = "holm") %>%
-  as_tibble() %>% 
-  mutate(across( starts_with("p"), printp )) %>% # format p-values
-  kable(booktabs = T,
-        digits = 2,
-        caption = "Differences in log-seconds to Adventurous by format (Block 1 and Block 2)",
-        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
-  kable_styling()
-```
-
-```{r adventure2plot, echo = F, fig.cap = "Average log-seconds to \"adventurous\" by format (Block 1 and Block 2)" }
-plot_model(adventurous_model_b2, type = "pred", terms = c("format"))
-```
-
-## Account for memory effects (Blocks 1 and 2)
-
-Next we test whether differences in timing are mitigated by memory. The results of this test are depicted in Figure \@ref(fig:memorytiming).
-
-```{r}
-mod.format_mem = lmer(seconds_log~format*delayed_memory + (1|proid), 
-                  data = items_12)
-anova(mod.format_mem)
-summary(mod.format_mem)
-```
-
-```{r memorytiming, fig.cap = "Predicted timing fn personality items by condition after controlling for delayed_memory. A. log-seconds B. raw seconds", echo = F}
-plot_mem = plot_model(mod.format_mem, 
-           type = "pred", 
-           term = c("format", "delayed_memory[meansd]")) +
-  geom_line() +
-  labs(x = NULL, 
-       y = "Average log-seconds") +
-  scale_color_discrete("Memory", labels = c("-1SD", "Mean", "+1SD"))+
-  theme_pubclean()
-
-plot_log = plot_mem
-
-plot_raw = plot_mem$data %>% as_tibble %>% 
-  mutate(predicted = exp(predicted),
-         conf.low = exp(conf.low),
-         conf.high = exp(conf.high),
-         group_col = factor(group_col, labels = c("Memory\n-1SD", "Memory\nMean", "Memory\n+1SD"))) %>% 
-  mutate(x = factor(x, 
-                    labels = c("Adjective\nOnly", 
-                               "Am\nAdjective", 
-                               "Tend to be\nAdjective", 
-                               "I am someone\nwho tends to be\nAdjective"))) %>% 
-  ggplot(aes(x = x, y = predicted, color = group_col)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) + 
-  labs(x = NULL, y = "seconds", title = "Average time by item formatting (Block 1 and Block 2)") +
-  facet_wrap(~group_col) + 
-  guides(color = "none") +
-  theme_pubclean()
-
-ggarrange(plot_log, plot_raw, ncol = 1, labels = c("A","B"))
-```
-
-### One model for each adjective
-
-We test this interaction for each item separately. Results are summarized in Table \@ref(tab:memoryitem).
-
-```{r, results = 'asis'}
-mod_by_item_mem = items_12 %>%
-  group_by(item) %>%
-  nest() %>%
-  mutate(mod = map(data, ~lmer(seconds_log~format*delayed_memory + (1|proid), data = .))) %>%
-  mutate(aov = map(mod, anova)) %>% 
-  ungroup()
-```
-```{r memoryitem, echo = F, results = 'asis'}
-summary_by_item_mem = mod_by_item_mem %>% 
-  mutate(tidy = map(aov, broom::tidy)) %>%
-  select(item, tidy) %>% 
-  unnest(cols = c(tidy)) %>%
-  filter(term == "format:delayed_memory") %>%
-  mutate(reverse = case_when(
-    item %in% reverse ~ "Y",
-    TRUE ~ "N"
-  )) %>% 
-  mutate(p.adj = p.adjust(p.value, method = "holm"))
-
-summary_by_item_mem %>%
-  arrange(reverse, item) %>% 
-  mutate(across( starts_with("p"), printp )) %>% # format p-values
-  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
-  kable(digits = 2, booktabs = T, caption = "Effect of condition on timing after controlling for memory") %>%
-  kable_styling()
-```
-
-### Pairwise t-tests for significant ANOVAs
-
-Here we identify the specific items with significant differences.
-
-```{r}
-sig_item_mem = summary_by_item_mem %>%
-  filter(p.value < .05) 
-
-sig_item_mem = sig_item_mem$item
-sig_item_mem
-```
-
-### Outgoing
-
-See the results for outgoing depicted in Figure \@ref(fig:outgoingmem).
-
-```{r, results = 'asis'}
-outgoing_model_mem = items_12 %>%
-  filter(item == "outgoing") %>%
-  lmer(seconds_log~format*delayed_memory + (1|proid), 
-                               data = .)
-```
-
-```{r outgoingmem, echo = F, fig.cap = "Average log-seconds to \"outgoing\" by format (Block 1 and Block 2)" }
-plot_model(outgoing_model_mem, type = "pred", terms = c("format", "delayed_memory[meansd]"))
-```
-
-### Warm
-
-See the results for outgoing depicted in Figure \@ref(fig:warmmem).
-
-```{r, results = 'asis'}
-warm_model_mem = items_12 %>%
-  filter(item == "warm") %>%
-  lmer(seconds_log~format*delayed_memory + (1|proid), 
-                               data = .)
-```
-
-```{r warmmem, echo = F, fig.cap = "Average log-seconds to \"warm\" by format (Block 1 and Block 2)" }
-plot_model(warm_model_mem, type = "pred", terms = c("format", "delayed_memory[meansd]"))
-```
-
-### Responsible
-
-See the results for outgoing depicted in Figure \@ref(fig:responsiblemem).
-
-```{r, results = 'asis'}
-responsible_model_mem = items_12 %>%
-  filter(item == "responsible") %>%
-  lmer(seconds_log~format*delayed_memory + (1|proid), 
-                               data = .)
-```
-
-```{r responsiblemem, echo = F, fig.cap = "Average log-seconds to \"responsible\" by format (Block 1 and Block 2)" }
-plot_model(responsible_model_mem, type = "pred", terms = c("format", "delayed_memory[meansd]"))
-```
-
-### Imaginative
-
-See the results for outgoing depicted in Figure \@ref(fig:imaginemem).
-
-```{r, results = 'asis'}
-imaginative_model_mem = items_12 %>%
-  filter(item == "imaginative") %>%
-  lmer(seconds_log~format*delayed_memory + (1|proid), 
-                               data = .)
-```
-
-```{r imaginemem, echo = F, fig.cap = "Average log-seconds to \"imaginative\" by format (Block 1 and Block 2)" }
-plot_model(imaginative_model_mem, type = "pred", terms = c("format", "delayed_memory[meansd]"))
-```
-
-### Talkative
-
-See the results for outgoing depicted in Figure \@ref(fig:talkativemem).
-
-```{r, results = 'asis'}
-talkative_model_mem = items_12 %>%
-  filter(item == "talkative") %>%
-  lmer(seconds_log~format*delayed_memory + (1|proid), 
-                               data = .)
-```
-
-```{r talkativemem, echo = F, fig.cap = "Average log-seconds to \"talkative\" by format (Block 1 and Block 2)" }
-plot_model(talkative_model_mem, type = "pred", terms = c("format", "delayed_memory[meansd]"))
-```
-
-### Sophisticated
-
-See the results for outgoing depicted in Figure \@ref(fig:Sophisticatedmem).
-
-```{r, results = 'asis'}
-sophisticated_model_mem = items_12 %>%
-  filter(item == "sophisticated") %>%
-  lmer(seconds_log~format*delayed_memory + (1|proid), 
-                               data = .)
-```
-
-```{r Sophisticatedmem, echo = F, fig.cap = "Average log-seconds to \"sophisticated\" by format (Block 1 and Block 2)" }
-plot_model(sophisticated_model_mem, type = "pred", terms = c("format", "delayed_memory[meansd]"))
-```
-
 ## Inclusion of "I" (Block 1 and Block 3)
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word "I". Here, we use data from blocks 1 and 3. Results are depicted in Figure \@ref(fig:secondsi).
@@ -720,13 +332,15 @@ items_13 = items_df %>%
 ```
 
 ```{r}
-mod.format_b3_1 = lmer(seconds_log~format + i + (1|proid), 
+mod.format_b3_1 = glmmTMB(seconds_log~format + i + (1|proid), 
                   data = items_13)
-anova(mod.format_b3_1)
+tidy(aov(mod.format_b3_1)) %>% 
+  mutate(p.value = papaja::printp(p.value))
 
-mod.format_b3_2 = lmer(seconds_log~format*i + (1|proid), 
+mod.format_b3_2 = glmmTMB(seconds_log~format*i + (1|proid), 
                   data = items_13)
-anova(mod.format_b3_2)
+tidy(aov(mod.format_b3_2)) %>% 
+  mutate(p.value = papaja::printp(p.value))
 ```
 
 ```{r secondsi, echo = F, fig.cap = "Predicted log-seconds on personality items by condition and I, using Block 1 and Block 3 data."}
@@ -748,8 +362,8 @@ Additive effects of I (controlling for format) are summarized in Table \@ref(tab
 mod_by_item_i1 = items_13 %>%
   group_by(item) %>%
   nest() %>%
-  mutate(mod = map(data, ~lmer(seconds_log~format+i + (1|proid), data = .))) %>%
-  mutate(aov = map(mod, anova)) %>% 
+  mutate(mod = map(data, ~glmmTMB(seconds_log~format+i + (1|proid), data = .))) %>%
+  mutate(aov = map(mod, aov)) %>% 
   ungroup()
 ```
 
@@ -769,7 +383,7 @@ summary_by_item_i1 = mod_by_item_i1 %>%
 summary_by_item_i1 %>%
   arrange(reverse, item) %>% 
   mutate(across( starts_with("p"), printp )) %>% # format p-values
-  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>% 
   kable(digits = 2, booktabs = T,
         caption = "Additive effect of I on timing for each item") %>%
   kable_styling()
@@ -780,8 +394,8 @@ summary_by_item_i1 %>%
 mod_by_item_i2 = items_13 %>%
   group_by(item) %>%
   nest() %>%
-  mutate(mod = map(data, ~lmer(seconds_log~format*i + (1|proid), data = .))) %>%
-  mutate(aov = map(mod, anova)) %>% 
+  mutate(mod = map(data, ~glmmTMB(seconds_log~format*i + (1|proid), data = .))) %>%
+  mutate(aov = map(mod, aov)) %>% 
   ungroup()
 ```
 ```{r iinteraction, echo = F, results = 'asis'}
@@ -799,7 +413,7 @@ summary_by_item_i2 = mod_by_item_i2 %>%
 summary_by_item_i2 %>%
   arrange(reverse, item) %>% 
   mutate(across( starts_with("p"), printp )) %>% # format p-values
-  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>% 
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>% 
   kable(digits = 2, booktabs = T,
         caption = "Interaction of I with format on timing for each item") %>%
   kable_styling()
