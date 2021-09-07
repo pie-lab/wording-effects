@@ -82,7 +82,9 @@ plot_b1$format +
 means_by_group = item_block1 %>%
   group_by(format) %>%
   summarise(m = mean(response),
-            s = sd(response))
+            s = sd(response),
+            v = var(response),
+            n = n())
 
 item_block1 %>%
   ggplot(aes(x = response, fill = format)) +

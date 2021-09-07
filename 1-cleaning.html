@@ -279,6 +279,9 @@ $(document).ready(function () {
   </ul>
 </li>
 <li>
+  <a href="power.html">Power analysis</a>
+</li>
+<li>
   <a href="workspace.html">R version and packages</a>
 </li>
       </ul>
@@ -956,11 +959,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall1 = map_chr(recall1, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall1                                 memory
-##   &lt;chr&gt;                                    &lt;dbl&gt;
-## 1 book, child, gold, tree, paper, ring         6
-## 2 king, market, paper, hotel, river, skin      6
-## 3 book                                         1</code></pre>
+##   recall1                                                          memory
+##   &lt;chr&gt;                                                             &lt;dbl&gt;
+## 1 tree, skin, river, paper, market, king, hotel, gold, child, book     10
+## 2 book, hotel, market, chain, paper, gold                               5
+## 3 book, child, gold, hotel, river, tree, market                         7</code></pre>
 <pre class="r"><code>#from memory condition 2
 data %&gt;% 
   filter(mem_condition == 2) %&gt;% 
@@ -968,11 +971,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall2 = map_chr(recall2, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall2                                  memory
-##   &lt;chr&gt;                                     &lt;dbl&gt;
-## 1 butter, college, earth, ocean, sky, wife      6
-## 2 college                                       1
-## 3 sky, ocean, wife, butter                      4</code></pre>
+##   recall2                                                               memory
+##   &lt;chr&gt;                                                                  &lt;dbl&gt;
+## 1 college                                                                    1
+## 2 butter, college, dollar, earth, flag, home, machine, ocean, sky, wife     10
+## 3 machine, wife, health                                                      2</code></pre>
 <pre class="r"><code>#from memory condition 3
 data %&gt;% 
   filter(mem_condition == 3) %&gt;% 
@@ -982,9 +985,9 @@ data %&gt;%
 <pre><code>## # A tibble: 3 × 2
 ##   recall3                                                                 memory
 ##   &lt;chr&gt;                                                                    &lt;dbl&gt;
-## 1 blood, corner, letter, rock, shoes, valley, woman                            7
-## 2 blood, corner, engine, girl, house, letter, rock, shoes, valley, woman.     10
-## 3 blood, corner, engine, girl, home, letter, rock, shoes, valley, woman        9</code></pre>
+## 1 blood, corner.girl.woman, house, shoes                                       3
+## 2 blood, corner, engine, fire, house, letter, shoes, valley, woman, scent      8
+## 3 blood, corner, woman, rock, shoes, girl, valley                              7</code></pre>
 <pre class="r"><code>#from memory condition 4
 data %&gt;% 
   filter(mem_condition == 4) %&gt;% 
@@ -994,8 +997,8 @@ data %&gt;%
 <pre><code>## # A tibble: 3 × 2
 ##   recall4                                                                memory
 ##   &lt;chr&gt;                                                                   &lt;dbl&gt;
-## 1 baby, church, water, fire, garden                                           5
-## 2 sea, table, water, doctor, village, baby, fire, church, garden, palace     10
+## 1 sea, table, water, doctor, village, baby, fire, church, garden, palace     10
+## 2 baby, fire, garden, place, sea, table, village, water                       8
 ## 3 table, sea, village, church, baby, palace                                   6</code></pre>
 <p>Participants remember on average 5.80 words correctly <span class="math inline">\((SD = 2.73)\)</span>.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">

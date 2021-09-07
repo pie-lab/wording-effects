@@ -21,6 +21,8 @@ navbar:
           href: timing_format.html
         - text: "Does device type affect response and timing?"
           href: device.html
+    - text: Power analysis
+      href: power.html
     - text: R version and packages
       href: workspace.html
   right:

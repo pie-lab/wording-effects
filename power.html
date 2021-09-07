@@ -376,169 +376,50 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Power analysis</h1>
-<h4 class="date">Last updated 2021-08-30</h4>
+<h4 class="date">Last updated 2021-09-06</h4>
 
 </div>
 
 
-<p>We conduct power analyses for the main research question – does formatting affect response to personality items – using a simulation method. That is, we generate datasets of varying sample sizes (from as few as 50 participants per condition to as many as 100), then simulate responses based on the models fit to the pilot data.</p>
-<p>Here we set the sample sizes we’ll test, as well as the number of simulations we’ll run for each sample size.</p>
-<pre class="r"><code>sample_sizes = seq(50, 500, 25)
+<p>We conduct power analyses for the research question, “Does item format influence expected response to personality items?” by powering a balanced one-way analysis of variance. This model assumes no indidividual differences in response, thereby providing a more conservative estimate of the sample size needed.</p>
+<pre class="r"><code># calculate each individual&#39;s average response
+means = item_block1 %&gt;% 
+  group_by(proid, condition) %&gt;% 
+  summarise(response = mean(response)) %&gt;% 
+  ungroup() 
 
-n_sims = 1000</code></pre>
-<div id="using-block-1-data" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Using Block 1 data</h2>
-<p>To simplify our code, we write a function that simulates responses to model 1 based on a given sample size, N, and number of repetitions.</p>
-<pre class="r"><code># function to simulate mod.format_b1
+# calculate mean and variance for each condition
+means = means %&gt;% 
+  group_by(condition) %&gt;%
+  summarise(m = mean(response),
+            v = var(response),
+            n = n()) 
 
-sim_format_b1 = function(n, sims){
-  p_vals = numeric(length = sims)
-  
-  sim_a = expand_grid(
-    proid = as.character(1:n),
-    item = c(1:33),
-    format = &quot;Adjective\nOnly&quot;
-  )
+# calculate ewighted variance
+weighted_var = means %&gt;% 
+  mutate(newv = v*(n-1)) %&gt;% 
+  select(newv, n) %&gt;% 
+  colSums() 
+weighted_var = weighted_var[[1]]/(weighted_var[[2]]-4)
 
-  sim_b = expand_grid(
-    proid = as.character((n+1):(2*n)),
-    item = c(1:33),
-    format = &quot;Am\nAdjective&quot;
-  )
-  
-  sim_c = expand_grid(
-    proid = as.character(((2*n)+1):(3*n)),
-    item = c(1:33),
-    format = &quot;Tend to be\nAdjective&quot;
-  )
-  sim_d = expand_grid(
-    proid = as.character(((3*n)+1):(4*n)),
-    item = c(1:33),
-    format = &quot;Am someone\nwho tends to be\nAdjective&quot;
-  )
-  
-  sim_data = rbind(sim_a, sim_b) %&gt;% rbind(sim_c) %&gt;% rbind(sim_d)
-  for (i in 1:sims){
-    sim_data$response = simulate(mod.format_b1, newdata = sim_data, allow.new.levels = T)[,1]
-    sim_mod = lmer(response~format + (1|proid), data = sim_data)
-    p_vals[i] = anova(sim_mod)[&quot;format&quot;, 6]}
-  return(p_vals)
-}</code></pre>
-<p>Next we identify the sample sizes for simulation (from 50 to 500 by 25) and create a data frame to hold the results. Power represents the proportion of simulations for which <em>p</em> is less than .05.</p>
-<pre class="r"><code># simulate at various sample sizes
-power_df = data.frame(
-  N = sample_sizes,
-  power = 0
-)</code></pre>
-<p>Here we (inefficiently) loop through all sample sizes and calculate power. Final results are presented in Figure <a href="#fig:plotpower1">1</a>.</p>
-<pre class="r"><code>set.seed(20210729)
-for(i in sample_sizes){
-  pvalues = sim_format_b1(i, n_sims)
-  sig = ifelse(pvalues &lt; .05, 1, 0)
-  power_df$power[power_df$N == i] &lt;- sum(sig)/n_sims
-}</code></pre>
-<div class="figure"><span style="display:block;" id="fig:plotpower1"></span>
-<img src="power_files/figure-html/plotpower1-1.png" alt="Simulated power by sample size per condition for Block 1 in Time 1" width="672" />
-<p class="caption">
-Figure 1: Simulated power by sample size per condition for Block 1 in Time 1
-</p>
-</div>
-<pre class="r"><code>#identify minimum sample size
-
-power_df_min = power_df %&gt;% 
-  filter(power &gt; .95)
-
-N_min = min(power_df_min$N)</code></pre>
-<p>The simulation suggests that power would be over the threshold of .95 with a sample size of 150 participants per condition.</p>
-</div>
-<div id="using-block-1-and-2-data" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Using Block 1 and 2 data</h2>
-<p>Here we repeat the process for our second model, which uses both blocks of data from Time 1 (i.e., Blocks 1 and 2).</p>
-<pre class="r"><code># function to simulate mod.format_b2
-
-sim_format_b2 = function(n, sims){
-  p_vals = numeric(length = sims)
-  
-  sim_a_b2 = expand_grid(
-    proid = as.character(1:n),
-    item = c(1:33),
-    format = &quot;Adjective\nOnly&quot;,
-    block = &quot;1&quot;
-  )
-
-  sim_b_b2 = expand_grid(
-    proid = as.character((n+1):(2*n)),
-    item = c(1:33),
-    format = &quot;Am\nAdjective&quot;,
-    block = &quot;1&quot;
-  )
-  
-  sim_c_b2 = expand_grid(
-    proid = as.character(((2*n)+1):(3*n)),
-    item = c(1:33),
-    format = &quot;Tend to be\nAdjective&quot;,
-    block = &quot;1&quot;
-  )
-  sim_d_b2 = expand_grid(
-    proid = as.character(((3*n)+1):(4*n)),
-    item = c(1:33),
-    format = &quot;Am someone\nwho tends to be\nAdjective&quot;,
-    block = &quot;1&quot;
-  )
-  sim_b2 = expand_grid(
-    proid = as.character(1:(4*n)),
-    item = c(1:33),
-    block = &quot;2&quot;
-  )
-  sim_b2$format = sample(
-    x = c(&quot;Adjective\nOnly&quot;,
-          &quot;Am\nAdjective&quot;,
-          &quot;Tend to be\nAdjective&quot;,
-          &quot;Am someone\nwho tends to be\nAdjective&quot;), 
-    size = 33*n*4,
-    replace = TRUE
-  )
-  
-  sim_data = full_join(sim_a_b2, sim_b_b2) %&gt;% 
-    full_join(sim_c_b2) %&gt;% 
-    full_join(sim_d_b2) %&gt;% 
-    full_join(sim_b2)
-  
-  for (i in 1:sims){
-    sim_data$response = simulate(mod.format_b2, 
-                                 newdata = sim_data, 
-                                 allow.new.levels = T)[,1]
-    sim_mod = lmer(response~format + (1|proid), 
-                   data = sim_data)
-    p_vals[i] = anova(sim_mod)[&quot;format&quot;, 6]}
-  return(p_vals)
-}</code></pre>
-<p>We use the same sample sizes and simulation length for these analyses, so we start by creating a new data frame.</p>
-<pre class="r"><code>power_df_2 = data.frame(
-  N = sample_sizes,
-  power = 0
-)</code></pre>
-<p>Here we (inefficiently) loop through all sample sizes and calculate power. Final results are depicted in Figure <a href="#fig:plotpower2">2</a>.</p>
-<pre class="r"><code>set.seed(20210729)
-for(i in sample_sizes){
-  pvalues = sim_format_b2(i, n_sims)
-  sig = ifelse(pvalues &lt; .05, 1, 0)
-  power_df_2$power[power_df_2$N == i] &lt;- sum(sig)/n_sims
-}</code></pre>
-<div class="figure"><span style="display:block;" id="fig:plotpower2"></span>
-<img src="power_files/figure-html/plotpower2-1.png" alt="Simulated power by sample size per condition for Blocks 1 and 2 in Time 1" width="672" />
-<p class="caption">
-Figure 2: Simulated power by sample size per condition for Blocks 1 and 2 in Time 1
-</p>
-</div>
-<pre class="r"><code>#identify minimum sample size
-
-power_df2_min = power_df_2 %&gt;% 
-  filter(power &gt; .95)
-
-N_min2 = min(power_df2_min$N)</code></pre>
-<p>The simulation suggests that power would be over the threshold of .95 with a sample size of 75 participants per condition.</p>
-</div>
+# enter information into power function
+power.anova.test(groups = 4, 
+                 between.var = var(means$m), 
+                 within.var = weighted_var,
+                 power = .9, 
+                 sig.level = .05)</code></pre>
+<pre><code>## 
+##      Balanced one-way analysis of variance power calculation 
+## 
+##          groups = 4
+##               n = 135.3274
+##     between.var = 0.009118785
+##      within.var = 0.2593392
+##       sig.level = 0.05
+##           power = 0.9
+## 
+## NOTE: n is number in each group</code></pre>
+<p>This analysis suggests that 136 participants are needed in each condition to acheive 90% power for the differences in means found in the pilot data. To be safe, we plan to recruit 250 participants per condition.</p>
 
 
 
