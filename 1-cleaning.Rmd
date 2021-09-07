@@ -79,7 +79,7 @@ load_data = function(path){
 
 data_t1 <- load_data("data/Wording_July 13, 2021_20.00.text.csv")
 data_2A <- load_data("data/Wording 2A_August 13, 2021_14.49.text.csv")
-data_2B <- load_data("data/Wording 2B_August 4, 2021_18.49.text.csv")
+data_2B <- load_data("data/Wording 2B_August 19, 2021_18.30.csv")
 data_2C <- load_data("data/Wording 2C_August 3, 2021_18.02.csv")
 data_2D <- load_data("data/Wording 2D_July 29, 2021_14.55.text.csv")
 ```

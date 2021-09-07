@@ -394,7 +394,7 @@ load_data = function(path){
 
 data_t1 &lt;- load_data(&quot;data/Wording_July 13, 2021_20.00.text.csv&quot;)
 data_2A &lt;- load_data(&quot;data/Wording 2A_August 13, 2021_14.49.text.csv&quot;)
-data_2B &lt;- load_data(&quot;data/Wording 2B_August 4, 2021_18.49.text.csv&quot;)
+data_2B &lt;- load_data(&quot;data/Wording 2B_August 19, 2021_18.30.csv&quot;)
 data_2C &lt;- load_data(&quot;data/Wording 2C_August 3, 2021_18.02.csv&quot;)
 data_2D &lt;- load_data(&quot;data/Wording 2D_July 29, 2021_14.55.text.csv&quot;)</code></pre>
 <p>Next, we identify all unique participant IDs. For each, we generate a new string, Then we replace the original ID values with the new strings.</p>
@@ -959,11 +959,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall1 = map_chr(recall1, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall1                                                          memory
-##   &lt;chr&gt;                                                             &lt;dbl&gt;
-## 1 tree, skin, river, paper, market, king, hotel, gold, child, book     10
-## 2 book, hotel, market, chain, paper, gold                               5
-## 3 book, child, gold, hotel, river, tree, market                         7</code></pre>
+##   recall1                                       memory
+##   &lt;chr&gt;                                          &lt;dbl&gt;
+## 1 book, king, market, gold                           4
+## 2 book, hotel, market, chain, paper, gold            5
+## 3 book, child, gold, hotel, river, tree, market      7</code></pre>
 <pre class="r"><code>#from memory condition 2
 data %&gt;% 
   filter(mem_condition == 2) %&gt;% 
@@ -973,9 +973,9 @@ data %&gt;%
 <pre><code>## # A tibble: 3 × 2
 ##   recall2                                                               memory
 ##   &lt;chr&gt;                                                                  &lt;dbl&gt;
-## 1 college                                                                    1
+## 1 butter, college, earth, wife, ocean, machine                               6
 ## 2 butter, college, dollar, earth, flag, home, machine, ocean, sky, wife     10
-## 3 machine, wife, health                                                      2</code></pre>
+## 3 butter, college, earth, ocean, sky, wife                                   6</code></pre>
 <pre class="r"><code>#from memory condition 3
 data %&gt;% 
   filter(mem_condition == 3) %&gt;% 
@@ -983,11 +983,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall3 = map_chr(recall3, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall3                                                                 memory
-##   &lt;chr&gt;                                                                    &lt;dbl&gt;
-## 1 blood, corner.girl.woman, house, shoes                                       3
-## 2 blood, corner, engine, fire, house, letter, shoes, valley, woman, scent      8
-## 3 blood, corner, woman, rock, shoes, girl, valley                              7</code></pre>
+##   recall3                                                               memory
+##   &lt;chr&gt;                                                                  &lt;dbl&gt;
+## 1 blood, corner, engine, girl, home, letter, rock, shoes, valley, woman      9
+## 2 girl, woman, valley, shoes, rock, house, engine                            7
+## 3 girl, corner, engine, house, woman                                         5</code></pre>
 <pre class="r"><code>#from memory condition 4
 data %&gt;% 
   filter(mem_condition == 4) %&gt;% 
@@ -995,11 +995,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall4 = map_chr(recall4, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall4                                                                memory
-##   &lt;chr&gt;                                                                   &lt;dbl&gt;
-## 1 sea, table, water, doctor, village, baby, fire, church, garden, palace     10
-## 2 baby, fire, garden, place, sea, table, village, water                       8
-## 3 table, sea, village, church, baby, palace                                   6</code></pre>
+##   recall4                                               memory
+##   &lt;chr&gt;                                                  &lt;dbl&gt;
+## 1 baby, church, fire, garden, palace, sea, table, water      8
+## 2 baby, church, water, fire, garden                          5
+## 3 baby, fire, garden, place, sea, table, village, water      8</code></pre>
 <p>Participants remember on average 5.80 words correctly <span class="math inline">\((SD = 2.73)\)</span>.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
