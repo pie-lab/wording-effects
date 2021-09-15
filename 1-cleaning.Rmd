@@ -9,6 +9,7 @@ output:
 
 ```{r 1-cleaning-1, include = FALSE}
 knitr::opts_chunk$set(warning = F, message = F)
+use_raw = TRUE
 ```
 
 The current section documents the data cleaning process. 
@@ -37,7 +38,7 @@ Before we begin, we create new versions of each data_t1 file that can be shared 
 
 (We note that the code chunks in this subsection are turned off in the RMarkdown file -- `eval = F` -- as readers will not be able to run these chunks.)
 
-```{r 1-cleaning-3, eval = F}
+```{r 1-cleaning-3, eval = use_raw}
 # function to load raw file, clean the names, and remove meta-data_t1
 # creating a function ensures the same procedure is applied to all
 # orginal datasets
@@ -68,9 +69,6 @@ load_data = function(path){
            -starts_with("meta_info"),
            -prolific_pid)
   
-  #this fixes a column naming error in dataset 2B
-  if(!("proid" %in% names(data_obj))) names(data_obj) = str_replace(names(data_obj), "q763", "proid")
-  
   data_obj = data_obj %>% 
     mutate(proid = str_extract(proid, "\\d([[:alnum:]]{23})"))
   
@@ -86,7 +84,7 @@ data_2D <- load_data("data/Wording 2D_July 29, 2021_14.55.text.csv")
 
 Next, we identify all unique participant IDs. For each, we generate a new string, Then we replace the original ID values with the new strings. 
 
-```{r 1-cleaning-4, eval = F}
+```{r 1-cleaning-4, eval = use_raw}
 original_id <- unique(c(data_t1$proid,
                        data_2A$proid,
                        data_2B$proid,
@@ -112,7 +110,7 @@ for(i in 1:length(original_id)){
 
 We end by saving each data_t1 frame as new .csv files, to be uploaded to OSF and shared for reproduction.
 
-```{r 1-cleaning-5, eval = F}
+```{r 1-cleaning-5, eval = use_raw}
 write_csv(data_t1, file = here("deidentified data/data_time1.csv"))
 write_csv(data_2A, file = here("deidentified data/data_time2_A.csv"))
 write_csv(data_2B, file = here("deidentified data/data_time2_B.csv"))
