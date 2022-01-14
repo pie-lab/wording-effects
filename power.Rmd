@@ -20,7 +20,7 @@ load(here("objects/block1_coded.Rds"))
 ```
 
 
-We conduct power analyses for the research question, "Does item format influence expected response to personality items?" by powering a balanced one-way analysis of variance. This model assumes no indidividual differences in response, thereby providing a more conservative estimate of the sample size needed.
+We conduct power analyses for the research question, "Does item format influence expected response to personality items?" by powering a balanced one-way analysis of variance. This model assumes no individual differences in response, thereby providing a more conservative estimate of the sample size needed.
 
 ```{r}
 # calculate each individual's average response
@@ -51,6 +51,6 @@ power.anova.test(groups = 4,
                  sig.level = .05)
 ```
 
-This analysis suggests that 136 participants are needed in each condition to acheive 90% power for the differences in means found in the pilot data. To be safe, we plan to recruit 250 participants per condition.
+This analysis suggests that 136 participants are needed in each condition to achieve 90% power for the differences in means found in the pilot data. To be safe, we plan to recruit 250 participants per condition.
 
 
