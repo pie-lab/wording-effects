@@ -61,7 +61,7 @@ Openn = c("creative", "imaginative", "intelligent", "curious", "broadminded",
 
 ## Calculate Cronbach's alpha for each format
 
-We start by grouping data by condition and then nesting, to create separate data frames for each of the four fomats.
+We start by grouping data by condition and then nesting, to create separate data frames for each of the four formats.
 
 ```{r internal-6}
 format_data = items_wide %>% 
@@ -92,19 +92,22 @@ format_data = format_data %>%
   mutate(variable = str_remove(variable, "data_"))
 ```
 
-Next we apply the alpha function to the datasets. We do not need to use the `check.keys` function, as items were reverse-scored during the cleaning process.
+Next we apply the `alpha` and `omega` functions to the datasets. We do not need to use the `check.keys` function, as items were reverse-scored during the cleaning process.
 
 ```{r internal-9, results = 'hide'}
 format_data = format_data %>% 
   mutate(
     nvar = map_dbl(data, ncol),
-    alpha = map(data, psych::alpha))
+    alpha = map(data, psych::alpha),
+    omega = map(data, psych::omega, plot = F))
 ```
+
+## Alpha 
 
 We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table \@ref(tab:internal10b) and Figure \@ref(fig:internal11).
 
 ```{r internal-10, results = 'asis'}
-format_data = format_data %>% 
+format_alpha = format_data %>% 
   mutate(alpha_list = map(alpha, "total"),
          alpha_est = map_dbl(alpha_list, "raw_alpha"),
          se_est = map_dbl(alpha_list, "ase"),
@@ -112,7 +115,7 @@ format_data = format_data %>%
          upper_est = alpha_est + (1.96*se_est)) 
 ```
 ```{r internal10b, results = 'asis', echo = F }
-format_data %>% 
+format_alpha %>% 
   select(condition, nvar, variable, alpha_est, lower_est, upper_est) %>% 
   mutate(
     across(ends_with("est"), printnum),
@@ -131,26 +134,36 @@ format_data %>%
 ```
 
 ```{r internal11, echo = F, fig.cap = "Estimates of Cronbach's alpha across format and trait."}
-format_data %>% 
-  ggplot(aes(x = condition, y = alpha_est)) +
+format_alpha %>% 
+  mutate(cond_num = case_when(
+    condition == "A" ~ 1,
+    condition == "B" ~ 2,
+    condition == "C" ~ 3,
+    condition == "D" ~ 4
+  )) %>% 
+  ggplot(aes(x = cond_num, y = alpha_est)) +
   geom_errorbar(aes(ymin = lower_est, ymax = upper_est)) +
   geom_point() +
+  geom_line(alpha = .3) +
+  scale_x_continuous(breaks = c(1:4),
+                     labels = c("A","B","C","D"))+
   labs(x = NULL, y = "Alpha") +
   facet_wrap(~variable) +
   theme_pubclean()
 ```
 
+## Split-half reliability
 Alpha is the average split-half reliability; given space, it can be useful to report the distribution of all split-half reliability estimates. We use the `splitHalf` function to calculate those. We use smoothed correlation matrices here because when developing code on the pilot data, we had non-positive definite correlation matrices. See Figure \@ref(fig:internal12b) for these distributions. 
 
 ```{r internal-12}
-format_data = format_data %>% 
+format_split = format_data %>% 
   mutate(cor_mat = map(data, cor),
          cor_mat = map(cor_mat, cor.smooth)) %>% 
   mutate(splithalf = map(cor_mat, splitHalf, raw = T))
 ```
 
 ```{r internal12b, echo = F, fig.cap = "Distribution of split-half reliabilities"}
-format_data %>% 
+format_split %>% 
   mutate(sh_est = map(splithalf, "raw")) %>% 
   select(variable, condition, sh_est) %>% 
   unnest(cols = c(sh_est)) %>% 
@@ -164,4 +177,43 @@ format_data %>%
 ```
 
 
+## Omega
 
+We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table \@ref(tab:internal10b) and Figure \@ref(fig:internal11).
+
+```{r internal-13, results = 'asis'}
+format_omega = format_data %>% 
+  mutate(omega_h = map_dbl(omega, "omega_h")) 
+```
+
+```{r internal13b, results = 'asis', echo = F }
+format_omega %>% 
+  select(condition, nvar, variable, omega_h) %>% 
+  mutate(omega_h = printnum(omega_h)) %>% 
+  spread(condition, omega_h) %>%
+  mutate(variable = factor(variable,
+                           levels = c("Extra", "Agree", "Consc", "Neuro", "Openn"),
+                           labels = c("Extraversion", "Agreeableness", "Conscientiousness", "Neuroticism", "Openness"))) %>% 
+  arrange(variable) %>% 
+  mutate(label = paste0(variable, " (", nvar, " descriptors)")) %>% 
+  select(label, A:D) %>% 
+  kable(booktabs = T,
+        caption = "Omega hierarchical across format and trait.") %>% 
+  kable_styling()
+```
+
+```{r internal13c, echo = F, fig.cap = "Estimates of omega_hierarchical across format and trait."}
+format_omega %>% 
+  mutate(cond_num = case_when(
+    condition == "A" ~ 1,
+    condition == "B" ~ 2,
+    condition == "C" ~ 3,
+    condition == "D" ~ 4
+  )) %>% 
+  ggplot(aes(x = cond_num, y = omega_h, color = variable)) +
+  geom_point() +
+  geom_line(alpha = .5) +
+  labs(x = NULL, y = "Omega H") +
+  scale_x_continuous(breaks = c(1:4), labels = c("A","B","C","D")) +
+  theme_pubclean()
+```

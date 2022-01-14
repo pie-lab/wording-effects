@@ -43,6 +43,19 @@ load(here("objects/reverse_vector.Rds"))
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data; in other words, effects are largely between person, although each person contributes 31 unique data points to the analysis (one for each trait). We use the `anova` function to estimate the amount of variability in response due to format. 
 
+```{r, echo = F, eval = F}
+# a different idea
+item_block1 = filter(items_df, block %in% c("1", "2")) %>% 
+  with_groups(item,
+              ~mutate(., avg_response = mean(response))) %>% 
+  with_groups(c(proid, item),
+              ~mutate(., response = response - mean(response) + avg_response))
+
+# add + (1|item) to analyses
+
+```
+
+
 ```{r responsestyle4 }
 item_block1 = filter(items_df, block == "1")
 
