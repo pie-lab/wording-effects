@@ -202,7 +202,7 @@ format_omega %>%
   kable_styling()
 ```
 
-```{r internal13c, echo = F, fig.cap = "Estimates of omega_hierarchical across format and trait."}
+```{r internal13c, echo = F, fig.cap = "Estimates of omega hierarchical across format and trait."}
 format_omega %>% 
   mutate(cond_num = case_when(
     condition == "A" ~ 1,

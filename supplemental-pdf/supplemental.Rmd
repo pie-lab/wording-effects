@@ -61,7 +61,7 @@ library(here)
 
 \newpage
 
-# Does the internal consistency of Big Five traits vary by item wording?
+# Does the internal consistency and reliability of Big Five traits vary by item wording?
 
 ```{r, child = here("internal.Rmd")}
 ```
