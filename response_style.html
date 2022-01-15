@@ -1748,7 +1748,9 @@ Predicted response on personality items by condition.
 <pre class="r"><code>mod_by_item_ex = items_df %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
-  mutate(mod = map(data, ~glmmTMB(extreme~format + (1|proid) + (1|block), data = .))) %&gt;%
+  mutate(mod = map(data, ~glmmTMB(extreme~format + (1|proid) + (1|block), 
+                                  data = .,
+                                  family = &quot;binomial&quot;))) %&gt;%
   mutate(aov = map(mod, aov))</code></pre>
 <p>We apply a Holm correction to the <em>p</em>-values extracted from these analyses, to adjust for the number of tests conducted. We present results in Table @ref(tab:responsestyle19), which is organized by whether items were reverse-coded prior to analysis.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
@@ -2767,22 +2769,22 @@ C-D
 active
 </td>
 <td style="text-align:left;">
-0.16
+1.10
 </td>
 <td style="text-align:left;">
-0.30*
+2.08*
 </td>
 <td style="text-align:left;">
-0.22
+1.46
 </td>
 <td style="text-align:left;">
-0.14
+0.98
 </td>
 <td style="text-align:left;">
-0.06
+0.36
 </td>
 <td style="text-align:left;">
--0.08
+-0.62
 </td>
 </tr>
 <tr>
@@ -2790,22 +2792,22 @@ active
 hardworking
 </td>
 <td style="text-align:left;">
-0.06
+0.49
 </td>
 <td style="text-align:left;">
--0.22
+-2.04
 </td>
 <td style="text-align:left;">
-0.11
+1.15
 </td>
 <td style="text-align:left;">
--0.28*
+-2.53
 </td>
 <td style="text-align:left;">
-0.06
+0.65
 </td>
 <td style="text-align:left;">
-0.34*
+3.19
 </td>
 </tr>
 <tr>
@@ -2813,22 +2815,22 @@ hardworking
 helpful
 </td>
 <td style="text-align:left;">
--0.17
+-1.37
 </td>
 <td style="text-align:left;">
--0.01
+-0.02
 </td>
 <td style="text-align:left;">
--0.30*
+-2.44
 </td>
 <td style="text-align:left;">
-0.16
+1.35
 </td>
 <td style="text-align:left;">
--0.13
+-1.07
 </td>
 <td style="text-align:left;">
--0.28
+-2.41
 </td>
 </tr>
 <tr>
@@ -2836,22 +2838,22 @@ helpful
 lively
 </td>
 <td style="text-align:left;">
-0.05
+0.29
 </td>
 <td style="text-align:left;">
--0.14
+-1.16
 </td>
 <td style="text-align:left;">
--0.30*
+-2.15
 </td>
 <td style="text-align:left;">
--0.19
+-1.45
 </td>
 <td style="text-align:left;">
--0.35*
+-2.44*
 </td>
 <td style="text-align:left;">
--0.16
+-0.99
 </td>
 </tr>
 <tr>
@@ -2859,22 +2861,22 @@ lively
 selfdisciplined
 </td>
 <td style="text-align:left;">
-0.14
+1.43
 </td>
 <td style="text-align:left;">
-0.26*
+2.50*
 </td>
 <td style="text-align:left;">
-0.05
+0.32
 </td>
 <td style="text-align:left;">
-0.13
+1.07
 </td>
 <td style="text-align:left;">
--0.08
+-1.11
 </td>
 <td style="text-align:left;">
--0.21
+-2.18
 </td>
 </tr>
 <tr>
@@ -2882,22 +2884,22 @@ selfdisciplined
 talkative
 </td>
 <td style="text-align:left;">
--0.21
+-2.58
 </td>
 <td style="text-align:left;">
--0.24*
+-2.87
 </td>
 <td style="text-align:left;">
--0.19
+-2.41
 </td>
 <td style="text-align:left;">
--0.03
+-0.30
 </td>
 <td style="text-align:left;">
-0.02
+0.17
 </td>
 <td style="text-align:left;">
-0.05
+0.47
 </td>
 </tr>
 <tr>
@@ -2905,27 +2907,33 @@ talkative
 worrying
 </td>
 <td style="text-align:left;">
--0.19
+-2.94
 </td>
 <td style="text-align:left;">
--0.08
+-1.66
 </td>
 <td style="text-align:left;">
--0.27*
+-3.52
 </td>
 <td style="text-align:left;">
-0.12
+1.28
 </td>
 <td style="text-align:left;">
--0.07
+-0.58
 </td>
 <td style="text-align:left;">
--0.19
+-1.86
 </td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>pairwise_response_ex %&gt;% 
+<pre class="r"><code>logit2prob &lt;- function(logit){
+  odds &lt;- exp(logit)
+  prob &lt;- odds / (1 + odds)
+  return(prob)
+}
+
+pairwise_response_ex %&gt;% 
   select(item, means) %&gt;% 
   unnest(cols = c(means)) %&gt;% 
   mutate(format = case_when(
@@ -2933,12 +2941,13 @@ worrying
     format == &quot;Am\nAdjective&quot; ~ 2,
     format == &quot;Tend to be\nAdjective&quot; ~ 3,
     format == &quot;Am someone\nwho tends to be\nAdjective&quot; ~ 4)) %&gt;% 
+  mutate(across(c(emmean, lower.CL, upper.CL), logit2prob)) %&gt;% 
   ggplot(aes(x = format, y = emmean)) +
   geom_point(stat = &quot;identity&quot;) + 
   geom_line(alpha = .3) +
   geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = .3) +
   scale_x_continuous(breaks = c(1:4), labels= c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;)) +
-  labs(x = NULL, y = &quot;Expected response&quot;) +
+  labs(x = NULL, y = &quot;Probability of extreme response&quot;) +
   facet_wrap(~item) +
   theme_pubr() </code></pre>
 <div class="figure">
@@ -2960,7 +2969,8 @@ Extreme responding by format and item. These items were significantly affected b
     TRUE ~ 0
   ))</code></pre>
 <pre class="r"><code>mod.yeasaying = glmmTMB(yeasaying~format + (1|proid) + (1|item) + (1|block), 
-                  data = items_df, family = &quot;binomial&quot;)
+                  data = items_df, 
+                  family = &quot;binomial&quot;)
 tidy(aov(mod.yeasaying))</code></pre>
 <pre><code>## # A tibble: 5 × 6
 ##   term         df    sumsq  meansq statistic    p.value
@@ -2983,7 +2993,9 @@ Predicted response on personality items by condition.
 <pre class="r"><code>mod_by_item_ya = items_df %&gt;%
   group_by(item) %&gt;%
   nest() %&gt;%
-  mutate(mod = map(data, ~glmmTMB(yeasaying~format + (1|proid) + (1|block), data = .))) %&gt;%
+  mutate(mod = map(data, ~glmmTMB(yeasaying~format + (1|proid) + (1|block), 
+                                  data = .,
+                                  family = &quot;binomial&quot;))) %&gt;%
   mutate(aov = map(mod, aov))</code></pre>
 <p>We apply a Holm correction to the <em>p</em>-values extracted from these analyses, to adjust for the number of tests conducted. We present results in Table @ref(tab:responsestyle30), which is organized by whether items were reverse-coded prior to analysis.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
@@ -4002,22 +4014,22 @@ C-D
 active
 </td>
 <td style="text-align:left;">
-0.10
+11.96
 </td>
 <td style="text-align:left;">
-0.03
+8.87
 </td>
 <td style="text-align:left;">
-0.04
+6.73
 </td>
 <td style="text-align:left;">
--0.06
+-3.09
 </td>
 <td style="text-align:left;">
--0.06
+-5.24
 </td>
 <td style="text-align:left;">
-0.00
+-2.14
 </td>
 </tr>
 <tr>
@@ -4028,19 +4040,19 @@ intelligent
 0.00
 </td>
 <td style="text-align:left;">
--0.14**
+-322.34
 </td>
 <td style="text-align:left;">
--0.08
+-84.30
 </td>
 <td style="text-align:left;">
--0.14**
+-322.34
 </td>
 <td style="text-align:left;">
--0.09
+-84.30
 </td>
 <td style="text-align:left;">
-0.06
+238.04
 </td>
 </tr>
 <tr>
@@ -4048,22 +4060,22 @@ intelligent
 moody
 </td>
 <td style="text-align:left;">
--0.17
+-2.34
 </td>
 <td style="text-align:left;">
--0.07
+-1.50
 </td>
 <td style="text-align:left;">
--0.02
+-0.56
 </td>
 <td style="text-align:left;">
-0.10
+0.85
 </td>
 <td style="text-align:left;">
-0.15
+1.79
 </td>
 <td style="text-align:left;">
-0.05
+0.94
 </td>
 </tr>
 <tr>
@@ -4071,22 +4083,22 @@ moody
 nervous
 </td>
 <td style="text-align:left;">
-0.24*
+1.81
 </td>
 <td style="text-align:left;">
--0.07
+-0.57
 </td>
 <td style="text-align:left;">
-0.26
+2.00
 </td>
 <td style="text-align:left;">
--0.32*
+-2.38
 </td>
 <td style="text-align:left;">
-0.01
+0.19
 </td>
 <td style="text-align:left;">
-0.33*
+2.57*
 </td>
 </tr>
 <tr>
@@ -4094,22 +4106,22 @@ nervous
 organized
 </td>
 <td style="text-align:left;">
-0.11
+51.13
 </td>
 <td style="text-align:left;">
-0.06
+50.64
 </td>
 <td style="text-align:left;">
-0.05
+36.15
 </td>
 <td style="text-align:left;">
--0.05
+-0.49
 </td>
 <td style="text-align:left;">
--0.06
+-14.99
 </td>
 <td style="text-align:left;">
--0.01
+-14.49
 </td>
 </tr>
 <tr>
@@ -4117,22 +4129,22 @@ organized
 outgoing
 </td>
 <td style="text-align:left;">
--0.01
+-2.94
 </td>
 <td style="text-align:left;">
-0.07
+0.40
 </td>
 <td style="text-align:left;">
-0.04
+1.34
 </td>
 <td style="text-align:left;">
-0.08
+3.34
 </td>
 <td style="text-align:left;">
-0.06
+4.28
 </td>
 <td style="text-align:left;">
--0.03
+0.94
 </td>
 </tr>
 <tr>
@@ -4140,22 +4152,22 @@ outgoing
 reckless
 </td>
 <td style="text-align:left;">
-0.12
+9.30
 </td>
 <td style="text-align:left;">
-0.08
+16.77
 </td>
 <td style="text-align:left;">
-0.20
+19.72*
 </td>
 <td style="text-align:left;">
--0.04
+7.47
 </td>
 <td style="text-align:left;">
-0.07
+10.42
 </td>
 <td style="text-align:left;">
-0.12
+2.95
 </td>
 </tr>
 </tbody>
@@ -4168,12 +4180,13 @@ reckless
     format == &quot;Am\nAdjective&quot; ~ 2,
     format == &quot;Tend to be\nAdjective&quot; ~ 3,
     format == &quot;Am someone\nwho tends to be\nAdjective&quot; ~ 4)) %&gt;% 
+  mutate(across(c(emmean, lower.CL, upper.CL), logit2prob)) %&gt;% 
   ggplot(aes(x = format, y = emmean)) +
   geom_point(stat = &quot;identity&quot;) + 
   geom_line(alpha = .3) +
   geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = .3) +
   scale_x_continuous(breaks = c(1:4), labels= c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;)) +
-  labs(x = NULL, y = &quot;Expected response&quot;) +
+  labs(x = NULL, y = &quot;Probability of yeasaying&quot;) +
   facet_wrap(~item) +
   theme_pubr() </code></pre>
 <div class="figure">

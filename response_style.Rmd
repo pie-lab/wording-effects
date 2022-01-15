@@ -288,7 +288,9 @@ We repeat this analysis separately for each trait.
 mod_by_item_ex = items_df %>%
   group_by(item) %>%
   nest() %>%
-  mutate(mod = map(data, ~glmmTMB(extreme~format + (1|proid) + (1|block), data = .))) %>%
+  mutate(mod = map(data, ~glmmTMB(extreme~format + (1|proid) + (1|block), 
+                                  data = .,
+                                  family = "binomial"))) %>%
   mutate(aov = map(mod, aov))
 ```
 
@@ -374,6 +376,13 @@ pairwise_response_ex %>%
 ```
 
 ```{r responsestyle24, fig.cap = "Extreme responding by format and item. These items were significantly affected by response. A = Adjective only. B = Am Adjective. C = Tend to be Adjective. D = Am someone who tends to be Adjective." }
+
+logit2prob <- function(logit){
+  odds <- exp(logit)
+  prob <- odds / (1 + odds)
+  return(prob)
+}
+
 pairwise_response_ex %>% 
   select(item, means) %>% 
   unnest(cols = c(means)) %>% 
@@ -382,12 +391,13 @@ pairwise_response_ex %>%
     format == "Am\nAdjective" ~ 2,
     format == "Tend to be\nAdjective" ~ 3,
     format == "Am someone\nwho tends to be\nAdjective" ~ 4)) %>% 
+  mutate(across(c(emmean, lower.CL, upper.CL), logit2prob)) %>% 
   ggplot(aes(x = format, y = emmean)) +
   geom_point(stat = "identity") + 
   geom_line(alpha = .3) +
   geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = .3) +
   scale_x_continuous(breaks = c(1:4), labels= c("A","B","C","D")) +
-  labs(x = NULL, y = "Expected response") +
+  labs(x = NULL, y = "Probability of extreme response") +
   facet_wrap(~item) +
   theme_pubr() 
 ```
@@ -409,7 +419,8 @@ items_df = items_df %>%
 
 ```{r responsestyle26}
 mod.yeasaying = glmmTMB(yeasaying~format + (1|proid) + (1|item) + (1|block), 
-                  data = items_df, family = "binomial")
+                  data = items_df, 
+                  family = "binomial")
 tidy(aov(mod.yeasaying))
 ```
 
@@ -454,7 +465,9 @@ We repeat this analysis separately for each trait.
 mod_by_item_ya = items_df %>%
   group_by(item) %>%
   nest() %>%
-  mutate(mod = map(data, ~glmmTMB(yeasaying~format + (1|proid) + (1|block), data = .))) %>%
+  mutate(mod = map(data, ~glmmTMB(yeasaying~format + (1|proid) + (1|block), 
+                                  data = .,
+                                  family = "binomial"))) %>%
   mutate(aov = map(mod, aov))
 ```
 
@@ -548,12 +561,13 @@ pairwise_response_ya %>%
     format == "Am\nAdjective" ~ 2,
     format == "Tend to be\nAdjective" ~ 3,
     format == "Am someone\nwho tends to be\nAdjective" ~ 4)) %>% 
+  mutate(across(c(emmean, lower.CL, upper.CL), logit2prob)) %>% 
   ggplot(aes(x = format, y = emmean)) +
   geom_point(stat = "identity") + 
   geom_line(alpha = .3) +
   geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = .3) +
   scale_x_continuous(breaks = c(1:4), labels= c("A","B","C","D")) +
-  labs(x = NULL, y = "Expected response") +
+  labs(x = NULL, y = "Probability of yeasaying") +
   facet_wrap(~item) +
   theme_pubr() 
 ```

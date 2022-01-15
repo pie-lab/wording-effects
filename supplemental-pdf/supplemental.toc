@@ -40,10 +40,10 @@
 \contentsline {subsubsection}{\numberline {3.1.2}Pairwise t-tests for significant ANOVAs}{38}{subsubsection.3.1.2}%
 \contentsline {subsection}{\numberline {3.2}Extreme responding}{40}{subsection.3.2}%
 \contentsline {subsubsection}{\numberline {3.2.1}One model for each adjective}{42}{subsubsection.3.2.1}%
-\contentsline {subsubsection}{\numberline {3.2.2}Pairwise t-tests for significant ANOVAs}{44}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.2}Pairwise t-tests for significant ANOVAs}{43}{subsubsection.3.2.2}%
 \contentsline {subsection}{\numberline {3.3}Yea-saying}{45}{subsection.3.3}%
 \contentsline {subsubsection}{\numberline {3.3.1}One model for each adjective}{47}{subsubsection.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.2}Pairwise t-tests for significant ANOVAs}{49}{subsubsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.2}Pairwise t-tests for significant ANOVAs}{47}{subsubsection.3.3.2}%
 \contentsline {subsection}{\numberline {3.4}All tests}{53}{subsection.3.4}%
 \contentsline {section}{\numberline {4}Does the internal consistency and reliability of Big Five traits vary by item wording?}{54}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Calculate Cronbach's alpha for each format}{54}{subsection.4.1}%
