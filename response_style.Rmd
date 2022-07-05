@@ -15,7 +15,7 @@ In this section, we test the impact of item format on three components of respon
   2. Likelihood of extreme responding
   3. Nay-saying
   
-For these analyses, we use only Block 1 data.
+For these analyses, we use data from Blocks 1 and 2.
 
 ```{r responsestyle1, include = FALSE}
 knitr::opts_chunk$set(warning = F, message = F)
@@ -28,10 +28,11 @@ library(tidyverse) # for cleaning
 library(janitor) # for variable names
 library(glmmTMB) # for binomial models
 library(emmeans) # for comparisons
+library(car) # for correct sums of squares
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
-library(broom.mixed) # for tidying mulitievel models
+library(broom.mixed) # for tidying multilevel models
 library(papaja) # pretty numbers
 ```
 
@@ -47,9 +48,10 @@ We used a multilevel model. Our primary predictor was format. We use data from a
 We use the `aov` function to calculate the amount of variability in response due to format. 
 
 ```{r responsestyle4 }
-
-mod.expected = glmmTMB(response~format + (1|proid) + (1|item) + (1|block), 
-                  data = items_df)
+mod.expected = items_df %>% 
+  filter(block %in% c(1,2)) %>% 
+  glmmTMB(response~format + (1|item) + (1|proid) + (1|block), 
+                  data = .)
 
 tidy(aov(mod.expected))
 ```
@@ -74,9 +76,9 @@ save(mod.expected, file = here("objects/mod_expected.Rdata"))
 
 
 ```{r responsestyle7, fig.cap = "Predicted response on personality items by condition.", echo = F}
-plot_b1 = plot_model(mod.expected, type = "pred")
+plot_expected = plot_model(mod.expected, type = "pred")
 
-plot_expected = plot_b1$format +
+plot_expected = plot_expected$format +
   labs(x = NULL,
        title = "Expected response",
        y = NULL) +
@@ -120,6 +122,7 @@ We repeat this analysis separately for each trait.
 
 ```{r responsestyle9, results = 'asis'}
 mod_by_item = items_df %>%
+  filter(block %in% c(1,2)) %>% 
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~glmmTMB(response~format + (1|proid) + (1|block), 
@@ -243,8 +246,11 @@ items_df = items_df %>%
 ```
 
 ```{r responsestyle15}
-mod.extreme = glmmTMB(extreme~format + (1|proid) + (1|item) + (1|block), 
-                  data = items_df, family = "binomial")
+mod.extreme = items_df %>% 
+  filter(block %in% c(1,2)) %>% 
+  glmmTMB(extreme~format + (1|proid) + (1|item) + (1|block), 
+          data = ., 
+          family = "binomial")
 tidy(aov(mod.extreme))
 ```
 
@@ -286,6 +292,7 @@ We repeat this analysis separately for each trait.
 
 ```{r responsestyle18, results = 'asis'}
 mod_by_item_ex = items_df %>%
+  filter(block %in% c(1,2)) %>% 
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~glmmTMB(extreme~format + (1|proid) + (1|block), 
@@ -418,8 +425,10 @@ items_df = items_df %>%
 ```
 
 ```{r responsestyle26}
-mod.yeasaying = glmmTMB(yeasaying~format + (1|proid) + (1|item) + (1|block), 
-                  data = items_df, 
+mod.yeasaying = items_df %>% 
+  filter(block %in% c(1,2)) %>% 
+  glmmTMB(yeasaying~format + (1|proid) + (1|item) + (1|block), 
+                  data = ., 
                   family = "binomial")
 tidy(aov(mod.yeasaying))
 ```

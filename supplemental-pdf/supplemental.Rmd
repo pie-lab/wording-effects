@@ -75,7 +75,7 @@ library(here)
 
 \newpage
 
-# How does format affect timining of responses?
+# How does format affect timing of responses?
 
 ```{r, child = here("timing_format.Rmd")}
 ```

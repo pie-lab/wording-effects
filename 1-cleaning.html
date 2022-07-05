@@ -302,7 +302,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2021-09-06</h4>
+<h4 class="date">Last updated 2022-07-05</h4>
 
 </div>
 
@@ -617,7 +617,7 @@ Figure 2: Average response to inattention check items
 </div>
 <div id="based-on-average-time-to-respond-to-personality-items" class="section level4" number="0.3.2.5">
 <h4><span class="header-section-number">0.3.2.5</span> Based on average time to respond to personality items</h4>
-<p>First, select just the timing of the personality items. We do this by searching for specific strings: "t_[someword]<em>[a or b or c or d]</em>(maybe 2_)_page_submit."</p>
+<p>First, select just the timing of the personality items. We do this by searching for specific strings: “t_[someword]<em>[a or b or c or d]</em>(maybe 2_)_page_submit.”</p>
 <pre class="r"><code>timing_data = data_t1 %&gt;%
   select(proid, matches(&quot;t_[[:alpha:]]*_[abcd](_2)?_page_submit&quot;))</code></pre>
 <p>Next we gather into long form and remove missing timing values</p>

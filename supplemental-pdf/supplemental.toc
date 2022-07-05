@@ -40,10 +40,10 @@
 \contentsline {subsubsection}{\numberline {3.1.2}Pairwise t-tests for significant ANOVAs}{38}{subsubsection.3.1.2}%
 \contentsline {subsection}{\numberline {3.2}Extreme responding}{40}{subsection.3.2}%
 \contentsline {subsubsection}{\numberline {3.2.1}One model for each adjective}{42}{subsubsection.3.2.1}%
-\contentsline {subsubsection}{\numberline {3.2.2}Pairwise t-tests for significant ANOVAs}{43}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.2}Pairwise t-tests for significant ANOVAs}{44}{subsubsection.3.2.2}%
 \contentsline {subsection}{\numberline {3.3}Yea-saying}{45}{subsection.3.3}%
 \contentsline {subsubsection}{\numberline {3.3.1}One model for each adjective}{47}{subsubsection.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.2}Pairwise t-tests for significant ANOVAs}{47}{subsubsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.2}Pairwise t-tests for significant ANOVAs}{48}{subsubsection.3.3.2}%
 \contentsline {subsection}{\numberline {3.4}All tests}{53}{subsection.3.4}%
 \contentsline {section}{\numberline {4}Does the internal consistency and reliability of Big Five traits vary by item wording?}{54}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Calculate Cronbach's alpha for each format}{54}{subsection.4.1}%
@@ -59,17 +59,17 @@
 \contentsline {subsubsection}{\numberline {5.3.1}Block 1/Block 2}{62}{subsubsection.5.3.1}%
 \contentsline {subsubsection}{\numberline {5.3.2}Block 1/Block 3}{63}{subsubsection.5.3.2}%
 \contentsline {subsection}{\numberline {5.4}Test-retest reliability (items separated, by format)}{63}{subsection.5.4}%
-\contentsline {section}{\numberline {6}How does format affect timining of responses?}{67}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Effect of format on timing (Block 1 data)}{67}{subsection.6.1}%
-\contentsline {subsubsection}{\numberline {6.1.1}One model for each adjective}{69}{subsubsection.6.1.1}%
-\contentsline {subsubsection}{\numberline {6.1.2}Pairwise t-tests for significant ANOVAs}{70}{subsubsection.6.1.2}%
-\contentsline {subsubsection}{\numberline {6.1.3}Helpful}{70}{subsubsection.6.1.3}%
-\contentsline {subsubsection}{\numberline {6.1.4}Caring}{70}{subsubsection.6.1.4}%
-\contentsline {subsubsection}{\numberline {6.1.5}Soft-hearted}{73}{subsubsection.6.1.5}%
+\contentsline {section}{\numberline {6}How does format affect timing of responses?}{67}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Effect of format on timing (Blocks 1 and 2 data)}{67}{subsection.6.1}%
+\contentsline {subsubsection}{\numberline {6.1.1}One model for each adjective}{67}{subsubsection.6.1.1}%
+\contentsline {subsubsection}{\numberline {6.1.2}Pairwise t-tests for significant ANOVAs}{67}{subsubsection.6.1.2}%
+\contentsline {subsubsection}{\numberline {6.1.3}Helpful}{71}{subsubsection.6.1.3}%
+\contentsline {subsubsection}{\numberline {6.1.4}Caring}{71}{subsubsection.6.1.4}%
+\contentsline {subsubsection}{\numberline {6.1.5}Soft-hearted}{71}{subsubsection.6.1.5}%
 \contentsline {subsubsection}{\numberline {6.1.6}Calm}{74}{subsubsection.6.1.6}%
 \contentsline {subsubsection}{\numberline {6.1.7}Sympathetic}{75}{subsubsection.6.1.7}%
 \contentsline {subsubsection}{\numberline {6.1.8}Adventurous}{76}{subsubsection.6.1.8}%
-\contentsline {subsection}{\numberline {6.2}Inclusion of ``I'' (Block 1 and Block 3)}{77}{subsection.6.2}%
-\contentsline {subsubsection}{\numberline {6.2.1}One model for each adjective}{77}{subsubsection.6.2.1}%
-\contentsline {section}{\numberline {7}Power analysis}{81}{section.7}%
-\contentsline {section}{\numberline {8}R version and packages}{82}{section.8}%
+\contentsline {subsection}{\numberline {6.2}Inclusion of ``I'' (Blocks 1 and 3)}{77}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}One model for each adjective}{78}{subsubsection.6.2.1}%
+\contentsline {section}{\numberline {7}Power analysis}{82}{section.7}%
+\contentsline {section}{\numberline {8}R version and packages}{83}{section.8}%

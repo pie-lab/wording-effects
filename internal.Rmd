@@ -7,7 +7,7 @@ output:
     toc_float: TRUE
 ---
 
-We calculate and report Cronbach’s alpha for all formats using data from Block 1 only. This will include both the average split-half reliability, as well as the 95% confidence interval. Differences in internal consistency will be considered statistically significant if the confidence intervals of two formats do not overlap. We will also show the distribution of all possible split halves for each of the four formats.
+We calculate and report Cronbach’s alpha for all formats using data from Blocks 1 and 2. This will include both the average split-half reliability, as well as the 95% confidence interval. Differences in internal consistency will be considered statistically significant if the confidence intervals of two formats do not overlap. We will also show the distribution of all possible split halves for each of the four formats.
 
 
 ```{r internal-1, include = FALSE}
@@ -39,10 +39,10 @@ We start by creating a wide-format of the dataset using only the Block 1 data.
 
 ```{r internal-4}
 items_wide = items_df %>%
-  # only block 1 responses
-  filter(block == 1) %>% 
+  # only blocks 1 and 2
+  filter(block %in% c(1,2)) %>% 
   #only need these variables
-  select(proid, condition, item, response) %>% 
+  select(proid, block, condition, item, response) %>% 
   # to wide form
   spread(item, response)
 ```

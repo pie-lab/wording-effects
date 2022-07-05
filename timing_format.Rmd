@@ -33,15 +33,15 @@ load(here("objects/reverse_vector.Rds"))
 ```
 
 
-## Effect of format on timing (Block 1 data)
+## Effect of format on timing (Blocks 1 and 2 data)
 
 We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data. Results are depicted in Figure \@ref(fig:timingmod1). The full distribution of timing (in log-seconds) is shown in Figure \@ref(fig:timingdist). Tests of pairwise comparisons are shown in Table \@ref(tab:pairwiseTab).
 
 ```{r}
-item_block1 = filter(items_df, block == "1")
+item_block12 = filter(items_df, block %in% c("1", "2"))
 
-mod.format_b1 = glmmTMB(seconds_log~format + (1|proid), 
-                  data = item_block1)
+mod.format_b1 = glmmTMB(seconds_log~format + (1|block) + (1|proid), 
+                  data = item_block12)
 tidy(aov(mod.format_b1))
 ```
 
@@ -74,17 +74,17 @@ ggarrange(logplot, rawplot, ncol = 1, labels = c("A", "B"))
 
 
 ```{r timingdist, echo = F, fig.cap = "Distribution of time by category, block 1 data only"}
-means_by_group = item_block1 %>%
+means_by_group = item_block12 %>%
   group_by(format) %>% 
   summarise(m = mean(seconds_log),
             s = sd(seconds_log))
 
-item_block1 %>%
+item_block12 %>%
   ggplot(aes(x = seconds_log, fill = format)) +
   geom_histogram(bins = 50, color = "white") +
   geom_vline(aes(xintercept = m), data = means_by_group) +
-  geom_text(aes(x = 1, 
-                y = 40, 
+  geom_text(aes(x = 1.5, 
+                y = 75, 
                 label = paste("M =", round(m,2), 
                               "\nSD =", round(s,2))), 
             data = means_by_group, 
@@ -112,7 +112,7 @@ pairs(emmeans(mod.format_b1, "format"), adjust = "holm") %>%
 We can also repeat this analysis separately for each trait. Results are shown in Table \@ref(tab:itemtable).
 
 ```{r, results = 'asis'}
-mod_by_item_b1 = item_block1 %>%
+mod_by_item_b1 = item_block12 %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~lm(seconds_log~format, data = .))) %>%
@@ -165,7 +165,7 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:hel
 
 
 ```{r, results = 'asis'}
-helpful_model_b1 = item_block1 %>%
+helpful_model_b1 = item_block12 %>%
   filter(item == "helpful") %>%
   lm(seconds_log~format, data = .)
 
@@ -192,7 +192,7 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:car
 
 
 ```{r, results = 'asis'}
-caring_model_b1 = item_block1 %>%
+caring_model_b1 = item_block12 %>%
   filter(item == "caring") %>%
   lm(seconds_log~format, data = .)
 ```
@@ -219,7 +219,7 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:sof
 
 
 ```{r, results = 'asis'}
-softhearted_model_b1 = item_block1 %>%
+softhearted_model_b1 = item_block12 %>%
   filter(item == "softhearted") %>%
   lm(seconds_log~format, data = .)
 ```
@@ -246,7 +246,7 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:cal
 
 
 ```{r, results = 'asis'}
-calm_model_b1 = item_block1 %>%
+calm_model_b1 = item_block12 %>%
   filter(item == "calm") %>%
   lm(seconds_log~format, data = .)
 ```
@@ -273,7 +273,7 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:sym
 
 
 ```{r, results = 'asis'}
-sympathetic_model_b1 = item_block1 %>%
+sympathetic_model_b1 = item_block12 %>%
   filter(item == "sympathetic") %>%
   lm(seconds_log~format, data = .)
 ```
@@ -299,7 +299,7 @@ plot_model(sympathetic_model_b1, type = "pred", terms = c("format"))
 Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:adventurepairs) and means are shown in Figure \@ref(fig:adventureplot).
 
 ```{r, results = 'asis'}
-adventurous_model_b1 = item_block1 %>%
+adventurous_model_b1 = item_block12 %>%
   filter(item == "adventurous") %>%
   lm(seconds_log~format, data = .)
 ```
@@ -320,7 +320,7 @@ plot_model(adventurous_model_b1, type = "pred", terms = c("format"))
 ```
 
 
-## Inclusion of "I" (Block 1 and Block 3)
+## Inclusion of "I" (Blocks 1 and 3)
 
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word "I". Here, we use data from blocks 1 and 3. Results are depicted in Figure \@ref(fig:secondsi).
 
