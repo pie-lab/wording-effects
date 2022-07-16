@@ -37,156 +37,9 @@ load(here("objects/items_df.Rds"))
 load(here("objects/reverse_vector.Rds"))
 ```
 
-## Effect of format on response (Block 1 data)
-
-We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data; in other words, effects are largely between person, although each person contributes 31 unique data points to the analysis (one for each trait). We use the `anova` function to estimate the amount of variability in response due to format. 
-
-```{r analysisFormat4}
-item_block1 = filter(items_df, block == "1")
-
-mod.format_b1 = lmer(response~format + (1|proid), 
-                  data = item_block1)
-anova(mod.format_b1)
-```
-
-```{r analysisFormat5, echo = F}
-fb1_aov = anova(mod.format_b1)
-fb1_sig = fb1_aov$`Pr(>F)`[[1]] < .05
-fb1_aov = fb1_aov %>% 
-  as_tibble() %>% 
-  rename(Fval = `F value`,
-         Pval = `Pr(>F)`) %>% 
-  mutate(across(starts_with("P"), printp),
-         across(where(is.numeric), printnum))
-```
-
-When examining only Block 1 data, item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ responses to personality items $(F(`r fb1_aov$NumDF[[1]]`, `r fb1_aov$DenDF[[1]]`) = `r fb1_aov$Fval[[1]]`, p = `r fb1_aov$Pval[[1]]`)$. See Figure \@ref(fig:analysisFormat7) for a visualization of this effect. In addition, Figure \@ref(fig:analysisFormat8) shows the full distribution of responses across format.
-
-
-```{r analysisFormat6, echo = F}
-# save for power analysis
-save(mod.format_b1, file = here("objects/mod_format_b1.Rdata"))
-```
-
-
-```{r analysisFormat7, fig.cap = "Predicted response on personality items by condition, using only Block 1 data.", echo = F}
-plot_b1 = plot_model(mod.format_b1, type = "pred")
-
-plot_b1$format +
-  labs(x = NULL,
-       y = "Average response") +
-  theme_pubclean()
-```
-
-```{r analysisFormat8, fig.cap = "Distribution of responses by category, block 1 data only", echo = F}
-means_by_group = item_block1 %>%
-  group_by(format) %>%
-  summarise(m = mean(response),
-            s = sd(response),
-            v = var(response),
-            n = n())
-
-item_block1 %>%
-  ggplot(aes(x = response, fill = format)) +
-  geom_histogram(bins = 6, color = "white") +
-  geom_vline(aes(xintercept = m), data = means_by_group) +
-  geom_text(aes(x = 1,
-                y = 125,
-                label = paste("M =", round(m,2),
-                              "\nSD =", round(s,2))),
-            data = means_by_group,
-            hjust =0,
-            vjust = 1) +
-  facet_wrap(~format) +
-  guides(fill = "none") +
-  scale_x_continuous(breaks = 1:6) +
-  labs(y = "Number of particpants",
-       title = "Distribution of responses by format (Block 1 data)") +
-  theme_pubr()
-```
-
-### One model for each adjective
-
-We repeat this analysis separately for each trait. Because there is only one response per participant (when using only Block 1 data), we can drop the use of multilevel models and instead rely on a simple general linear model to test our hypothesis. Sepecfically, we test whether the proportion of variance attributable to item format is statistically significant.
-
-```{r analysisFormat9, results = 'asis'}
-mod_by_item_b1 = item_block1 %>%
-  group_by(item) %>%
-  nest() %>%
-  mutate(mod = map(data, ~lm(response~format, data = .))) %>%
-  mutate(aov = map(mod, anova))
-```
-
-We apply a Holm correction to the _p_-values extracted from these analyses, to adjust for the number of tests conducted. We present results in Table \@ref(tab:mod1item), which is organized by whether items were reverse-coded prior to analysis.
-
-```{r mod1item, echo = F, results = 'asis'}
-summary_by_item_b1 = mod_by_item_b1 %>%
-  ungroup() %>%
-  mutate(tidy = map(aov, broom::tidy)) %>%
-  select(item, tidy) %>%
-  unnest(cols = c(tidy)) %>%
-  filter(term == "format") %>%
-  mutate(reverse = case_when(
-    item %in% reverse ~ "Y",
-    TRUE ~ "N"
-  )) %>%
-  mutate(p.adj = p.adjust(p.value, method = "holm"))
-
-summary_by_item_b1 %>%
-  mutate(across( starts_with("p"), printp )) %>% # format p-values
-  arrange(reverse, item) %>%
-  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>%
-  kable(digits = 2,
-        booktabs = T,
-        escape = F,
-        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "F", "raw", "adj"),
-        caption = "Format effects on response by item (Block 1 data only)") %>%
-  kable_styling()
-```
-
-### Pairwise t-tests for significant ANOVAs
-
-When format was a significant predictor of response for an item (using the un-adjusted _p_-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.
-
-```{r analysisFormat10}
-sig_item_b1 = summary_by_item_b1 %>%
-  filter(p.value < .05)
-
-sig_item_b1 = sig_item_b1$item
-sig_item_b1
-```
-
-Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean.
-
-**This code will have to be changed after final data collection. It is not self-adapting!**
-
-### Talkative
-
-The pairwise comparisons of responses to different forms of "talkative" are displayed in Table \@ref(tab:analysisformat11) and Figure \@ref(fig:analysisFormat12).
-
-```{r analysisformat11, results = 'asis', echo = F}
-talkative_model_b1 = item_block1 %>%
-  filter(item == "talkative") %>%
-  lm(response~format, data = .)
-
-talkative_em_b1 = emmeans(talkative_model_b1, "format")
-pairs(talkative_em_b1, adjust = "holm") %>%
-  as_tibble() %>%
-  mutate(across( starts_with("p"), printp )) %>% # format p-values
-  kable(booktabs = T,
-        digits = 2,
-        caption = "Differences in response to Talkative by format (Block 1 data only)",
-        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
-  kable_styling()
-```
-
-```{r analysisFormat12, fig.cap = "Average response to \"talkative\" by format (block 1 data only)", echo = F}
-plot_model(talkative_model_b1, type = "pred", terms = c("format"))
-```
-
 ## Effect of format on response (Block 1 and 2)
 
-We again test whether format is a significant predictor of response. However, here we use data from both Blocks 1 and 2. As a reminder, all participants were presented with all four formats during Block 2. We expect this model to have greater power than the previous model, due to both increased sample size (twice as many data points) and because participants now provide data to all four formats, instead of only one (i.e., a within-person analysis). 
+We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was format. Here, we use data from Blocks 1 and 2. As a reminder, each participant was presented with only one of the four formats during Block 1 and all four formats during Block 2. Thus, each participant's response style to one of the formats is well characterized, although each participant contributes data to all four styles, and thus we have a within-person design. We use the `anova` function to estimate the amount of variability in response due to format.
 
 ```{r analysisFormat13}
 items_12 = items_df %>% filter(block %in% c("1","2"))
@@ -194,7 +47,7 @@ items_12 = items_df %>% filter(block %in% c("1","2"))
 
 
 ```{r analysisFormat14}
-mod.format_b2 = lmer(response~format + (1|proid),
+mod.format_b2 = lmer(response~format + (1|proid) + (1|block),
                   data = items_12)
 anova(mod.format_b2)
 ```
@@ -718,3 +571,4 @@ plot_model(sympathetic_model_i, type = "pred",
            terms = c("format", "i")) +
   geom_line()
 ```
+
