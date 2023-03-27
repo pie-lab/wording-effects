@@ -8,6 +8,7 @@ output:
 ---
 
 ```{r 1-cleaning-1, include = FALSE}
+#renv::restore()
 knitr::opts_chunk$set(warning = F, message = F)
 use_raw = TRUE
 ```
@@ -29,7 +30,7 @@ library(kableExtra) # for nicer tables
 library(stringdist) # for scoring memory task
 library(papaja) # for pretty numbers
 library(psych) # for correlation tests
-library(broom.mixed) # for tidying mulitilevel models
+library(broom.mixed) # for tidying multilevel models
 ```
 
 ## Change participant ID values
@@ -46,11 +47,8 @@ Before we begin, we create new versions of each data_t1 file that can be shared 
 load_data = function(path){
   
   full_path = here(path)
-  data_labels = read_csv(full_path)
-  data_obj = read_csv(full_path,
-                  skip = 3, 
-                  col_names = names(data_labels))
-
+  data_obj  = read_rds(path)
+  
   data_obj = clean_names(data_obj)
   
   data_obj = data_obj %>%
@@ -75,11 +73,11 @@ load_data = function(path){
   return(data_obj)
 }
 
-data_t1 <- load_data("data/Wording_July 13, 2021_20.00.text.csv")
-data_2A <- load_data("data/Wording 2A_August 13, 2021_14.49.text.csv")
-data_2B <- load_data("data/Wording 2B_August 19, 2021_18.30.csv")
-data_2C <- load_data("data/Wording 2C_August 3, 2021_18.02.csv")
-data_2D <- load_data("data/Wording 2D_July 29, 2021_14.55.text.csv")
+data_t1 <- load_data("data/data_t1.rds")
+data_2A <- load_data("data/data_2A.rds")
+data_2B <- load_data("data/data_2B.rds")
+data_2C <- load_data("data/data_2C.rds")
+data_2D <- load_data("data/data_2D.rds")
 ```
 
 Next, we identify all unique participant IDs. For each, we generate a new string, Then we replace the original ID values with the new strings. 
@@ -173,7 +171,7 @@ Finally, we apply this function to all personality items.
 
 ```{r 1-cleaning-11 }
 personality_items = personality_items %>%
-  # apply to all varibles except proid
+  # apply to all variables except proid
   mutate(across(!c(proid), recode_p))
 ```
 
@@ -508,16 +506,6 @@ data_2 = data_2 %>%
          duration_in_seconds2 = duration_in_seconds)
 ```
 
-```{r 1-cleaning-41, echo = F}
-# there was an error in the survey used to collect pilot data: participants were supposed to see
-# either "tend to be outgoing" or "I tend to be outgoing" but all participants saw both conditions. 
-# this creates errors in later code.
-# to fix this issue when coding, we chose to remove the responses to "I tend to be outgoing", which
-# means outgoing will not be presented in test-retest analyses
-data_2 = data_2 %>% 
-  select(-contains("outgoing_b_3i"))
-```
-
 We rename several columns, in order to facilitate the use of regular expressions later. Specifically, we remove the underscores (_) in the columns pertaining to broad-mindedness and self-disciplined.
 
 ```{r 1-cleaning-42}
@@ -528,7 +516,7 @@ names(data_2) = str_replace(names(data_2), "self_disciplind", "selfdisciplined")
 We can also remove the meta-data (timing, etc) around two attention check adjectives, "human" and "asleep".
 
 ```{r 1-cleaning-43}
-data_t1 = data_t1 %>% 
+data_2 = data_2 %>% 
   select(-starts_with("t_human"),
          -starts_with("t_asleep"))
 ```
@@ -625,7 +613,7 @@ block3 = block3 %>%
   filter(!is.na(response)) %>%
   mutate(item = str_remove(item, "_3(i)?$")) %>% 
   separate(item, into = c("item", "format")) %>% 
-  #select(-format) %>%
+  select(-format) %>%
   spread(item, response)
 
 block3_runs = numeric(length = nrow(block3))
@@ -798,12 +786,18 @@ The following items are (typically) negatively correlated with the others: reckl
 ```{r 1-cleaning-68 }
 data = data %>%
   mutate(
-    across(matches("^reckless"),  ~(.x*-1)+7),
-    across(matches("^moody"),     ~(.x*-1)+7),
-    across(matches("^worrying"),  ~(.x*-1)+7),
-    across(matches("^nervous"),   ~(.x*-1)+7),
-    across(matches("^careless"),  ~(.x*-1)+7),
-    across(matches("^impulsive"), ~(.x*-1)+7))
+    across(matches("^reckless"),       ~(.x*-1)+7),
+    across(matches("^moody"),          ~(.x*-1)+7),
+    across(matches("^worrying"),       ~(.x*-1)+7),
+    across(matches("^nervous"),        ~(.x*-1)+7),
+    across(matches("^careless"),       ~(.x*-1)+7),
+    across(matches("^impulsive"),      ~(.x*-1)+7),
+    across(matches("^quiet"),          ~(.x*-1)+7),
+    across(matches("^unsympathetic"),  ~(.x*-1)+7),
+    across(matches("^uncreative"),     ~(.x*-1)+7),
+    across(matches("^shy"),            ~(.x*-1)+7),
+    across(matches("^cold"),           ~(.x*-1)+7),
+    across(matches("^unintellectual"), ~(.x*-1)+7))
 ```
 
 We also create a vector noting the items that are reverse scored. We use this later in tables, to help identify patterns when looking at analyses within-adjective. We use this object elsewhere in the analyses.
@@ -837,15 +831,20 @@ data = data %>%
   mutate(
     across(matches("recall"),tolower), # convert to lower
     #replace carriage return with space
-    across(matches("recall"), str_replace_all, pattern = "\\n", replacement = ","),
+    across(matches("recall"), 
+           \(x) str_replace_all(x, pattern = "\\n", replacement = ",")),
     # remove spaces
-    across(matches("recall"), str_replace_all, pattern = " ", replacement = ","),
+    across(matches("recall"), 
+           \(x) str_replace_all(x, pattern = " ", replacement = ",")),
     # remove doubles
-    across(matches("recall"), str_replace_all, pattern = ",,", replacement = ","),
+    across(matches("recall"), 
+           \(x) str_replace_all(x, pattern = ",,", replacement = ",")),
     #remove last comma
-    across(matches("recall"), str_remove, pattern = ",$"),
+    across(matches("recall"), 
+           \(x) str_remove(x, pattern = ",$")),
     # split the strings based on the spaces
-    across(matches("recall"), str_split, pattern = ","))
+    across(matches("recall"), 
+           \(x) str_split(x, pattern = ",")))
 ```
 
 #### Immediate recall
@@ -1123,7 +1122,9 @@ item_responses = str_subset(
 Similarly, we'll need to know how long it took participants to respond to these items. These variable names have one of four formats listed above followed by the string `page_submit`. We search for these items using regular expressions.
 
 ```{r 1-cleaning-89 }
-item_timing = str_subset(names(data), "t_([[:alpha:]])+_[abcd](_2)?(_3)?(i)?_page_submit$")
+item_timing = str_subset(
+  names(data), 
+  "t_([[:alpha:]])+_[abcd](_2)?(_3)?(i)?_page_submit$")
 ```
 
 We extract just the participant IDs, delayed memory, and these variables. 
@@ -1184,6 +1185,15 @@ items_df$format = factor(items_df$format,
                                labels = c("Adjective\nOnly", "Am\nAdjective", "Tend to be\nAdjective", "Am someone\nwho tends to be\nAdjective"))
 ```
 
+#### Identify Big Five mini markers
+
+Big Five Mini Markers (BF-MM) are used only for the yea-saying analyses. We identify these adjectives here so that we can appropriately filter them in or out at each stage of analysis.
+
+```{r}
+bfmm = c("quiet", "unsympathetic", "relaxed", "uncreative", 
+         "shy", "cold", "unintellectual")
+```
+
 
 
 #### Transform seconds
@@ -1214,6 +1224,7 @@ if (!file.exists(here("objects/"))){
     dir.create(here("objects/"))
 }
 save(reverse, file = here("objects/reverse_vector.Rds"))
+save(bfmm, file = here("objects/bfmm.Rds"))
 save(data, file = here("objects/cleaned_data.Rds"))
 save(items_df, file = here("objects/items_df.Rds"))
 ```

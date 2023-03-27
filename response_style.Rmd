@@ -38,6 +38,7 @@ library(papaja) # pretty numbers
 
 ```{r responsestyle3, echo = F}
 load(here("objects/items_df.Rds"))
+load(here("objects/bfmm.Rds"))
 load(here("objects/reverse_vector.Rds"))
 ```
 
@@ -50,6 +51,7 @@ We use the `aov` function to calculate the amount of variability in response due
 ```{r responsestyle4 }
 mod.expected = items_df %>% 
   filter(block %in% c(1,2)) %>% 
+  filter(!(item %in% bfmm)) %>% 
   glmmTMB(response~format + (1|item) + (1|proid) + (1|block), 
                   data = .)
 
@@ -123,6 +125,7 @@ We repeat this analysis separately for each trait.
 ```{r responsestyle9, results = 'asis'}
 mod_by_item = items_df %>%
   filter(block %in% c(1,2)) %>% 
+  filter(!(item %in% bfmm)) %>% 
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~glmmTMB(response~format + (1|proid) + (1|block), 
@@ -248,6 +251,7 @@ items_df = items_df %>%
 ```{r responsestyle15}
 mod.extreme = items_df %>% 
   filter(block %in% c(1,2)) %>% 
+  filter(!(item %in% bfmm)) %>% 
   glmmTMB(extreme~format + (1|proid) + (1|item) + (1|block), 
           data = ., 
           family = "binomial")
@@ -292,7 +296,8 @@ We repeat this analysis separately for each trait.
 
 ```{r responsestyle18, results = 'asis'}
 mod_by_item_ex = items_df %>%
-  filter(block %in% c(1,2)) %>% 
+  filter(block %in% c(1,2)) %>%
+  filter(!(item %in% bfmm)) %>% 
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~glmmTMB(extreme~format + (1|proid) + (1|block), 
@@ -414,6 +419,8 @@ pairwise_response_ex %>%
 
 We define _yea-saying_ as answering "somewhat accurate" (4), "accurate" (5), or "very accurate" (6) to an item. To model likelihood of extreme responding by format, we use logistic regression. As a reminder, we reverse-scored socially desirable items during the cleaning stage. For those items, responses coded as 1, 2, or 3 represent agreement (accurate). Therefore, we code values 1, 2, and 3 as yea-saying for reverse-scored items, and values 4, 5, and 6 as yea-saying for all other items.
 
+For these analyses, we only used a set of matched pairs of adjectives to create balanced subsets of positively and negatively keyed items.
+
 ```{r responsestyle25}
 items_df = items_df %>% 
   mutate(
@@ -426,7 +433,13 @@ items_df = items_df %>%
 
 ```{r responsestyle26}
 mod.yeasaying = items_df %>% 
-  filter(block %in% c(1,2)) %>% 
+  filter(block %in% c(1,2)) %>%
+  filter(item %in% 
+           c("outgoing", "shy", "talkative", "quiet",
+             "sympathetic", "unsympathetic", "warm", "cold",
+             "cautious", "careless", "responsible", "reckless",
+             "worrying", "relaxed", "nervous", "calm",
+             "creative", "uncreative", "intelligent", "unintellectual")) %>% 
   glmmTMB(yeasaying~format + (1|proid) + (1|item) + (1|block), 
                   data = ., 
                   family = "binomial")
@@ -472,6 +485,12 @@ We repeat this analysis separately for each trait.
 
 ```{r responsestyle29, results = 'asis'}
 mod_by_item_ya = items_df %>%
+  filter(item %in% 
+           c("outgoing", "shy", "talkative", "quiet",
+             "sympathetic", "unsympathetic", "warm", "cold",
+             "cautious", "careless", "responsible", "reckless",
+             "worrying", "relaxed", "nervous", "calm",
+             "creative", "uncreative", "intelligent", "unintellectual")) %>% 
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~glmmTMB(yeasaying~format + (1|proid) + (1|block), 
@@ -503,7 +522,7 @@ summary_by_item_ya %>%
   select(item, reverse, sumsq, meansq, df, df2, statistic, p.value, p.adj) %>%
   kable(digits = 2,
         booktabs = T,
-        escape = F,
+        #escape = F,
         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "df2", "F", "raw", "adj"),
         caption = "Format effects on yea-saying by item.") %>%
   kable_styling()

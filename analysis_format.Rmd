@@ -34,6 +34,7 @@ library(papaja) # pretty numbers
 
 ```{r analysisFormat3, echo = F}
 load(here("objects/items_df.Rds"))
+load(here("objects/bfmm_df.Rds"))
 load(here("objects/reverse_vector.Rds"))
 ```
 
@@ -43,6 +44,12 @@ We used a multilevel model, nesting response within participant to account for d
 
 ```{r analysisFormat13}
 items_12 = items_df %>% filter(block %in% c("1","2"))
+```
+
+We also remove the Big Five Mini Markers.
+
+```{r}
+items_12 = items12 %>% select(-any_of(bfmm))
 ```
 
 
