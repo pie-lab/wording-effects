@@ -1231,7 +1231,7 @@ items_df %>%
 
 ## Save files
 
-```{r 1-cleaning-96, echo = F}
+```{r 1-cleaning-96}
 # check if folder exists. if not create it
 if (!file.exists(here("objects/"))){
     dir.create(here("objects/"))

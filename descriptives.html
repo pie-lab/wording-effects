@@ -13,8 +13,7 @@
 
 <title>Descriptive statistics</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -67,6 +66,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -87,6 +87,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -144,11 +147,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -177,8 +184,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -186,16 +193,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -312,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -328,7 +328,7 @@ div.tocify {
   <a href="descriptives.html">Descriptives</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Analysis
      
     <span class="caret"></span>
@@ -375,12 +375,12 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Descriptive statistics</h1>
-<h4 class="date">Last updated 2022-07-16</h4>
+<h4 class="date">Last updated 2023-04-19</h4>
 
 </div>
 
 
-<p>Participants (<em>N</em> = 35; 22.86% female) were, on average, 39.40 years old (<em>SD</em> = 6.02, minimum = 31, maximum = 51; see Figure <a href="#fig:descriptives-5">1</a>A for the full distribution). A majority (65.71%) of participants identified as White only (25.71% only); Figure <a href="#fig:descriptives-5">1</a>B shows the other response options and frequencies. See Figure <a href="#fig:descriptives-5">1</a>C for the distribution of education, and <a href="#fig:descriptives-5">1</a>D for the distribution of household income.</p>
+<p>Participants (<em>N</em> = 974; 48.97% female) were, on average, 37.15 years old (<em>SD</em> = 14.51, minimum = 18, maximum = 84; see Figure <a href="#fig:descriptives-5">1</a>A for the full distribution). A majority (66.74%) of participants identified as White only (10.37% only); Figure <a href="#fig:descriptives-5">1</a>B shows the other response options and frequencies. See Figure <a href="#fig:descriptives-5">1</a>C for the distribution of education, and <a href="#fig:descriptives-5">1</a>D for the distribution of household income.</p>
 <div class="figure"><span style="display:block;" id="fig:descriptives-5"></span>
 <img src="descriptives_files/figure-html/descriptives-5-1.png" alt="Distributions of key demographics across the entire sample" width="768" />
 <p class="caption">
@@ -394,15 +394,15 @@ Figure 1: Distributions of key demographics across the entire sample
   mutate(difference = as.numeric(start_date2-start_date))
 summary(data$difference)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
-##   11.96   12.00   12.49   13.26   14.17   17.48      13</code></pre>
+##   11.84   11.93   11.99   12.43   12.23   39.36      91</code></pre>
 <p>How long did it take participants to complete the Time 1 survey?</p>
 <pre class="r"><code>summary(data$duration_in_seconds/60)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    6.65   13.98   17.55   20.56   25.08   44.27</code></pre>
+##   4.833   8.633  10.683  12.491  14.079  54.383</code></pre>
 <p>How long did it take participants to complete the Time 2 survey?</p>
 <pre class="r"><code>summary(data$duration_in_seconds2/60)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
-##   2.000   3.329   4.925   8.910   7.875  40.833      13</code></pre>
+##   1.367   2.467   3.217   4.317   4.658  34.633      91</code></pre>
 </div>
 <div id="personality-by-block-and-format" class="section level2" number="0.2">
 <h2><span class="header-section-number">0.2</span> Personality by block and format</h2>
@@ -446,7 +446,7 @@ Adjective
 Only
 </td>
 <td style="text-align:right;">
-4.70
+4.40
 </td>
 <td style="text-align:right;">
 1
@@ -455,10 +455,10 @@ Only
 5
 </td>
 <td style="text-align:right;">
-341
+9196
 </td>
 <td style="text-align:right;">
-11
+242
 </td>
 </tr>
 <tr>
@@ -470,7 +470,7 @@ Am
 Adjective
 </td>
 <td style="text-align:right;">
-4.52
+4.41
 </td>
 <td style="text-align:right;">
 1
@@ -479,10 +479,10 @@ Adjective
 5
 </td>
 <td style="text-align:right;">
-279
+9044
 </td>
 <td style="text-align:right;">
-9
+238
 </td>
 </tr>
 <tr>
@@ -494,20 +494,20 @@ Tend to be
 Adjective
 </td>
 <td style="text-align:right;">
-4.63
+4.29
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
 5
+</td>
+<td style="text-align:right;">
+9424
 </td>
 <td style="text-align:right;">
 248
 </td>
-<td style="text-align:right;">
-8
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -519,7 +519,7 @@ who tends to be
 Adjective
 </td>
 <td style="text-align:right;">
-4.73
+4.34
 </td>
 <td style="text-align:right;">
 1
@@ -528,10 +528,10 @@ Adjective
 5
 </td>
 <td style="text-align:right;">
-217
+9348
 </td>
 <td style="text-align:right;">
-7
+246
 </td>
 </tr>
 <tr>
@@ -543,7 +543,7 @@ Adjective
 Only
 </td>
 <td style="text-align:right;">
-4.68
+4.37
 </td>
 <td style="text-align:right;">
 1
@@ -552,10 +552,10 @@ Only
 5
 </td>
 <td style="text-align:right;">
-273
+9266
 </td>
 <td style="text-align:right;">
-35
+974
 </td>
 </tr>
 <tr>
@@ -567,7 +567,7 @@ Am
 Adjective
 </td>
 <td style="text-align:right;">
-4.57
+4.39
 </td>
 <td style="text-align:right;">
 1
@@ -576,10 +576,10 @@ Adjective
 5
 </td>
 <td style="text-align:right;">
-279
+9257
 </td>
 <td style="text-align:right;">
-35
+974
 </td>
 </tr>
 <tr>
@@ -591,7 +591,7 @@ Tend to be
 Adjective
 </td>
 <td style="text-align:right;">
-4.67
+4.38
 </td>
 <td style="text-align:right;">
 1
@@ -600,10 +600,10 @@ Adjective
 5
 </td>
 <td style="text-align:right;">
-269
+9237
 </td>
 <td style="text-align:right;">
-35
+974
 </td>
 </tr>
 <tr>
@@ -616,7 +616,7 @@ who tends to be
 Adjective
 </td>
 <td style="text-align:right;">
-4.61
+4.35
 </td>
 <td style="text-align:right;">
 1
@@ -625,10 +625,10 @@ Adjective
 5
 </td>
 <td style="text-align:right;">
-264
+9252
 </td>
 <td style="text-align:right;">
-35
+974
 </td>
 </tr>
 <tr>
@@ -640,7 +640,7 @@ Adjective
 Only
 </td>
 <td style="text-align:right;">
-4.87
+4.42
 </td>
 <td style="text-align:right;">
 1
@@ -649,10 +649,10 @@ Only
 5
 </td>
 <td style="text-align:right;">
-186
+8360
 </td>
 <td style="text-align:right;">
-6
+220
 </td>
 </tr>
 <tr>
@@ -664,7 +664,7 @@ Am
 Adjective
 </td>
 <td style="text-align:right;">
-4.67
+4.44
 </td>
 <td style="text-align:right;">
 1
@@ -673,10 +673,10 @@ Adjective
 5
 </td>
 <td style="text-align:right;">
-217
+8246
 </td>
 <td style="text-align:right;">
-7
+217
 </td>
 </tr>
 <tr>
@@ -688,7 +688,7 @@ Tend to be
 Adjective
 </td>
 <td style="text-align:right;">
-4.46
+4.29
 </td>
 <td style="text-align:right;">
 1
@@ -697,10 +697,10 @@ Adjective
 5
 </td>
 <td style="text-align:right;">
-186
+8398
 </td>
 <td style="text-align:right;">
-6
+221
 </td>
 </tr>
 <tr>
@@ -713,19 +713,19 @@ who tends to be
 Adjective
 </td>
 <td style="text-align:right;">
-5.06
+4.33
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-6
+5
 </td>
 <td style="text-align:right;">
-93
+8550
 </td>
 <td style="text-align:right;">
-3
+225
 </td>
 </tr>
 </tbody>
@@ -765,16 +765,16 @@ Adjective
 active
 </td>
 <td style="text-align:left;">
-5.45 (1.21)
+4.21 (1.24)
 </td>
 <td style="text-align:left;">
-5.00 (0.87)
+4.20 (1.23)
 </td>
 <td style="text-align:left;">
-4.75 (1.04)
+4.00 (1.29)
 </td>
 <td style="text-align:left;">
-4.86 (1.77)
+4.04 (1.30)
 </td>
 </tr>
 <tr>
@@ -782,16 +782,16 @@ active
 adventurous
 </td>
 <td style="text-align:left;">
-4.82 (0.60)
+4.15 (1.40)
 </td>
 <td style="text-align:left;">
-5.00 (0.87)
+4.01 (1.30)
 </td>
 <td style="text-align:left;">
-4.50 (0.93)
+3.94 (1.33)
 </td>
 <td style="text-align:left;">
-4.57 (1.40)
+4.09 (1.29)
 </td>
 </tr>
 <tr>
@@ -799,16 +799,16 @@ adventurous
 broadminded
 </td>
 <td style="text-align:left;">
-4.55 (1.29)
+4.73 (1.05)
 </td>
 <td style="text-align:left;">
-5.11 (1.05)
+4.68 (1.09)
 </td>
 <td style="text-align:left;">
-5.00 (0.93)
+4.69 (1.02)
 </td>
 <td style="text-align:left;">
-4.57 (0.79)
+4.62 (1.11)
 </td>
 </tr>
 <tr>
@@ -816,16 +816,16 @@ broadminded
 calm
 </td>
 <td style="text-align:left;">
-5.45 (0.52)
+4.60 (1.18)
 </td>
 <td style="text-align:left;">
-4.67 (1.00)
+4.49 (1.23)
 </td>
 <td style="text-align:left;">
-4.75 (1.28)
+4.46 (1.13)
 </td>
 <td style="text-align:left;">
-5.00 (1.15)
+4.44 (1.23)
 </td>
 </tr>
 <tr>
@@ -833,16 +833,16 @@ calm
 careless
 </td>
 <td style="text-align:left;">
-4.82 (1.40)
+4.62 (1.29)
 </td>
 <td style="text-align:left;">
-3.33 (1.94)
+4.67 (1.26)
 </td>
 <td style="text-align:left;">
-4.12 (1.25)
+4.46 (1.33)
 </td>
 <td style="text-align:left;">
-5.29 (1.11)
+4.64 (1.22)
 </td>
 </tr>
 <tr>
@@ -850,16 +850,16 @@ careless
 caring
 </td>
 <td style="text-align:left;">
-5.36 (0.67)
+4.99 (0.96)
 </td>
 <td style="text-align:left;">
-4.78 (0.83)
+5.09 (0.91)
 </td>
 <td style="text-align:left;">
-5.00 (1.07)
+4.85 (1.01)
 </td>
 <td style="text-align:left;">
-5.43 (0.79)
+4.94 (1.05)
 </td>
 </tr>
 <tr>
@@ -867,16 +867,33 @@ caring
 cautious
 </td>
 <td style="text-align:left;">
-4.91 (1.14)
+4.64 (1.02)
 </td>
 <td style="text-align:left;">
-4.67 (1.50)
+4.62 (1.11)
 </td>
 <td style="text-align:left;">
-5.00 (0.53)
+4.68 (1.03)
 </td>
 <td style="text-align:left;">
-4.43 (1.72)
+4.67 (0.94)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cold
+</td>
+<td style="text-align:left;">
+4.60 (1.36)
+</td>
+<td style="text-align:left;">
+4.61 (1.28)
+</td>
+<td style="text-align:left;">
+4.28 (1.36)
+</td>
+<td style="text-align:left;">
+4.43 (1.33)
 </td>
 </tr>
 <tr>
@@ -884,16 +901,16 @@ cautious
 creative
 </td>
 <td style="text-align:left;">
-5.09 (0.94)
+4.57 (1.26)
 </td>
 <td style="text-align:left;">
-4.67 (1.22)
+4.68 (1.18)
 </td>
 <td style="text-align:left;">
-5.00 (0.93)
+4.56 (1.30)
 </td>
 <td style="text-align:left;">
-5.43 (0.79)
+4.65 (1.32)
 </td>
 </tr>
 <tr>
@@ -901,16 +918,16 @@ creative
 curious
 </td>
 <td style="text-align:left;">
-4.64 (1.12)
+5.00 (0.89)
 </td>
 <td style="text-align:left;">
-4.89 (0.78)
+5.11 (0.79)
 </td>
 <td style="text-align:left;">
-4.62 (1.30)
+4.98 (0.98)
 </td>
 <td style="text-align:left;">
-4.57 (0.98)
+4.97 (1.00)
 </td>
 </tr>
 <tr>
@@ -918,16 +935,16 @@ curious
 friendly
 </td>
 <td style="text-align:left;">
-5.55 (0.69)
+4.95 (1.01)
 </td>
 <td style="text-align:left;">
-5.33 (0.71)
+4.90 (1.03)
 </td>
 <td style="text-align:left;">
-5.25 (0.71)
+4.75 (1.05)
 </td>
 <td style="text-align:left;">
-5.29 (0.76)
+4.90 (1.03)
 </td>
 </tr>
 <tr>
@@ -935,16 +952,16 @@ friendly
 hardworking
 </td>
 <td style="text-align:left;">
-5.45 (0.69)
+4.86 (1.08)
 </td>
 <td style="text-align:left;">
-5.44 (0.73)
+4.95 (1.02)
 </td>
 <td style="text-align:left;">
-5.38 (1.06)
+4.76 (1.18)
 </td>
 <td style="text-align:left;">
-5.43 (0.53)
+4.76 (1.20)
 </td>
 </tr>
 <tr>
@@ -952,16 +969,16 @@ hardworking
 helpful
 </td>
 <td style="text-align:left;">
-5.09 (0.94)
+4.98 (0.94)
 </td>
 <td style="text-align:left;">
-5.22 (0.83)
+4.99 (0.98)
 </td>
 <td style="text-align:left;">
-5.12 (0.64)
+4.92 (0.94)
 </td>
 <td style="text-align:left;">
-5.29 (1.11)
+4.95 (1.02)
 </td>
 </tr>
 <tr>
@@ -969,16 +986,16 @@ helpful
 imaginative
 </td>
 <td style="text-align:left;">
-5.00 (1.00)
+4.71 (1.21)
 </td>
 <td style="text-align:left;">
-5.22 (0.97)
+4.96 (1.04)
 </td>
 <td style="text-align:left;">
-5.25 (0.89)
+4.77 (1.22)
 </td>
 <td style="text-align:left;">
-5.57 (0.53)
+4.85 (1.21)
 </td>
 </tr>
 <tr>
@@ -986,16 +1003,16 @@ imaginative
 impulsive
 </td>
 <td style="text-align:left;">
-3.00 (1.18)
+3.96 (1.36)
 </td>
 <td style="text-align:left;">
-3.11 (1.17)
+3.92 (1.43)
 </td>
 <td style="text-align:left;">
-3.00 (1.51)
+4.05 (1.34)
 </td>
 <td style="text-align:left;">
-3.71 (1.80)
+3.98 (1.38)
 </td>
 </tr>
 <tr>
@@ -1003,16 +1020,16 @@ impulsive
 intelligent
 </td>
 <td style="text-align:left;">
-5.09 (1.22)
+5.14 (0.88)
 </td>
 <td style="text-align:left;">
-4.78 (1.64)
+5.08 (0.84)
 </td>
 <td style="text-align:left;">
-5.25 (0.89)
+5.04 (0.87)
 </td>
 <td style="text-align:left;">
-5.43 (0.53)
+5.02 (0.94)
 </td>
 </tr>
 <tr>
@@ -1020,16 +1037,16 @@ intelligent
 lively
 </td>
 <td style="text-align:left;">
-4.91 (0.83)
+4.05 (1.26)
 </td>
 <td style="text-align:left;">
-4.56 (0.73)
+3.98 (1.27)
 </td>
 <td style="text-align:left;">
-5.00 (1.20)
+3.83 (1.33)
 </td>
 <td style="text-align:left;">
-5.00 (1.41)
+3.88 (1.26)
 </td>
 </tr>
 <tr>
@@ -1037,16 +1054,16 @@ lively
 moody
 </td>
 <td style="text-align:left;">
-3.91 (1.30)
+3.81 (1.50)
 </td>
 <td style="text-align:left;">
-2.89 (1.36)
+3.76 (1.43)
 </td>
 <td style="text-align:left;">
-3.38 (1.19)
+3.59 (1.42)
 </td>
 <td style="text-align:left;">
-3.86 (1.57)
+3.73 (1.48)
 </td>
 </tr>
 <tr>
@@ -1054,16 +1071,16 @@ moody
 nervous
 </td>
 <td style="text-align:left;">
-4.09 (1.70)
+3.53 (1.60)
 </td>
 <td style="text-align:left;">
-3.56 (1.59)
+3.42 (1.60)
 </td>
 <td style="text-align:left;">
-3.88 (0.99)
+3.19 (1.52)
 </td>
 <td style="text-align:left;">
-4.00 (1.91)
+3.15 (1.60)
 </td>
 </tr>
 <tr>
@@ -1071,16 +1088,16 @@ nervous
 organized
 </td>
 <td style="text-align:left;">
-5.27 (0.79)
+4.27 (1.35)
 </td>
 <td style="text-align:left;">
-4.67 (1.12)
+4.26 (1.41)
 </td>
 <td style="text-align:left;">
-4.75 (1.28)
+4.24 (1.40)
 </td>
 <td style="text-align:left;">
-4.86 (1.07)
+4.37 (1.30)
 </td>
 </tr>
 <tr>
@@ -1088,16 +1105,33 @@ organized
 outgoing
 </td>
 <td style="text-align:left;">
-4.91 (0.83)
+3.36 (1.60)
 </td>
 <td style="text-align:left;">
-4.89 (1.05)
+3.35 (1.59)
 </td>
 <td style="text-align:left;">
-4.38 (1.19)
+3.18 (1.52)
 </td>
 <td style="text-align:left;">
-4.71 (1.60)
+3.26 (1.52)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+quiet
+</td>
+<td style="text-align:left;">
+2.61 (1.37)
+</td>
+<td style="text-align:left;">
+2.68 (1.49)
+</td>
+<td style="text-align:left;">
+2.64 (1.39)
+</td>
+<td style="text-align:left;">
+2.60 (1.38)
 </td>
 </tr>
 <tr>
@@ -1105,16 +1139,33 @@ outgoing
 reckless
 </td>
 <td style="text-align:left;">
-4.18 (1.72)
+4.88 (1.13)
 </td>
 <td style="text-align:left;">
-4.11 (1.83)
+4.78 (1.29)
 </td>
 <td style="text-align:left;">
-4.38 (1.69)
+4.64 (1.25)
 </td>
 <td style="text-align:left;">
-5.14 (0.90)
+4.74 (1.25)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+relaxed
+</td>
+<td style="text-align:left;">
+4.32 (1.15)
+</td>
+<td style="text-align:left;">
+4.24 (1.24)
+</td>
+<td style="text-align:left;">
+4.29 (1.13)
+</td>
+<td style="text-align:left;">
+4.10 (1.25)
 </td>
 </tr>
 <tr>
@@ -1122,16 +1173,16 @@ reckless
 responsible
 </td>
 <td style="text-align:left;">
-5.64 (0.50)
+4.97 (1.02)
 </td>
 <td style="text-align:left;">
-5.22 (0.83)
+4.97 (0.95)
 </td>
 <td style="text-align:left;">
-5.50 (0.76)
+4.89 (1.09)
 </td>
 <td style="text-align:left;">
-5.43 (0.53)
+4.84 (1.10)
 </td>
 </tr>
 <tr>
@@ -1139,16 +1190,33 @@ responsible
 selfdisciplined
 </td>
 <td style="text-align:left;">
-4.91 (1.76)
+4.62 (1.22)
 </td>
 <td style="text-align:left;">
-5.11 (0.60)
+4.60 (1.21)
 </td>
 <td style="text-align:left;">
-4.75 (0.71)
+4.44 (1.28)
 </td>
 <td style="text-align:left;">
-5.57 (0.79)
+4.51 (1.22)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+shy
+</td>
+<td style="text-align:left;">
+3.24 (1.63)
+</td>
+<td style="text-align:left;">
+3.13 (1.59)
+</td>
+<td style="text-align:left;">
+3.10 (1.52)
+</td>
+<td style="text-align:left;">
+2.98 (1.50)
 </td>
 </tr>
 <tr>
@@ -1156,16 +1224,16 @@ selfdisciplined
 softhearted
 </td>
 <td style="text-align:left;">
-5.18 (0.98)
+4.64 (1.24)
 </td>
 <td style="text-align:left;">
-4.78 (0.97)
+4.76 (1.11)
 </td>
 <td style="text-align:left;">
-4.88 (0.99)
+4.62 (1.15)
 </td>
 <td style="text-align:left;">
-4.71 (1.80)
+4.70 (1.26)
 </td>
 </tr>
 <tr>
@@ -1173,16 +1241,16 @@ softhearted
 sophisticated
 </td>
 <td style="text-align:left;">
-3.73 (1.27)
+3.77 (1.34)
 </td>
 <td style="text-align:left;">
-4.11 (1.05)
+3.85 (1.28)
 </td>
 <td style="text-align:left;">
-4.12 (1.73)
+3.75 (1.25)
 </td>
 <td style="text-align:left;">
-3.86 (1.07)
+3.77 (1.29)
 </td>
 </tr>
 <tr>
@@ -1190,16 +1258,16 @@ sophisticated
 sympathetic
 </td>
 <td style="text-align:left;">
-5.27 (1.01)
+4.90 (1.05)
 </td>
 <td style="text-align:left;">
-4.56 (1.01)
+4.94 (1.06)
 </td>
 <td style="text-align:left;">
-5.00 (0.76)
+4.73 (1.05)
 </td>
 <td style="text-align:left;">
-4.57 (1.27)
+4.89 (1.03)
 </td>
 </tr>
 <tr>
@@ -1207,16 +1275,16 @@ sympathetic
 talkative
 </td>
 <td style="text-align:left;">
-2.73 (1.01)
+3.40 (1.54)
 </td>
 <td style="text-align:left;">
-4.22 (1.72)
+3.52 (1.50)
 </td>
 <td style="text-align:left;">
-4.12 (1.46)
+3.46 (1.53)
 </td>
 <td style="text-align:left;">
-2.71 (1.38)
+3.41 (1.58)
 </td>
 </tr>
 <tr>
@@ -1224,16 +1292,16 @@ talkative
 thorough
 </td>
 <td style="text-align:left;">
-4.36 (1.29)
+4.74 (1.03)
 </td>
 <td style="text-align:left;">
-4.56 (1.13)
+4.80 (0.96)
 </td>
 <td style="text-align:left;">
-4.38 (1.06)
+4.73 (0.93)
 </td>
 <td style="text-align:left;">
-4.57 (0.98)
+4.73 (1.07)
 </td>
 </tr>
 <tr>
@@ -1241,16 +1309,67 @@ thorough
 thrifty
 </td>
 <td style="text-align:left;">
-3.64 (1.12)
+4.43 (1.28)
 </td>
 <td style="text-align:left;">
-3.89 (1.27)
+4.24 (1.28)
 </td>
 <td style="text-align:left;">
-4.75 (1.28)
+4.41 (1.31)
 </td>
 <td style="text-align:left;">
-3.43 (0.79)
+4.52 (1.17)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+uncreative
+</td>
+<td style="text-align:left;">
+4.77 (1.35)
+</td>
+<td style="text-align:left;">
+4.92 (1.22)
+</td>
+<td style="text-align:left;">
+4.72 (1.37)
+</td>
+<td style="text-align:left;">
+4.89 (1.33)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+unintellectual
+</td>
+<td style="text-align:left;">
+5.29 (0.95)
+</td>
+<td style="text-align:left;">
+5.26 (0.98)
+</td>
+<td style="text-align:left;">
+5.06 (1.07)
+</td>
+<td style="text-align:left;">
+5.17 (1.05)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+unsympathetic
+</td>
+<td style="text-align:left;">
+4.92 (1.24)
+</td>
+<td style="text-align:left;">
+5.10 (1.08)
+</td>
+<td style="text-align:left;">
+4.77 (1.29)
+</td>
+<td style="text-align:left;">
+4.91 (1.23)
 </td>
 </tr>
 <tr>
@@ -1258,16 +1377,16 @@ thrifty
 warm
 </td>
 <td style="text-align:left;">
-5.00 (1.48)
+4.78 (1.06)
 </td>
 <td style="text-align:left;">
-4.78 (0.83)
+4.73 (1.12)
 </td>
 <td style="text-align:left;">
-5.12 (0.99)
+4.56 (1.10)
 </td>
 <td style="text-align:left;">
-5.14 (0.69)
+4.67 (1.14)
 </td>
 </tr>
 <tr>
@@ -1275,16 +1394,16 @@ warm
 worrying
 </td>
 <td style="text-align:left;">
-3.64 (1.43)
+3.29 (1.57)
 </td>
 <td style="text-align:left;">
-2.89 (1.69)
+3.18 (1.64)
 </td>
 <td style="text-align:left;">
-3.12 (1.25)
+3.05 (1.51)
 </td>
 <td style="text-align:left;">
-4.29 (1.80)
+3.02 (1.58)
 </td>
 </tr>
 </tbody>
@@ -1324,16 +1443,16 @@ Adjective
 active
 </td>
 <td style="text-align:left;">
-4.56 (1.67)
+4.14 (1.20)
 </td>
 <td style="text-align:left;">
-5.22 (1.30)
+4.05 (1.41)
 </td>
 <td style="text-align:left;">
-4.89 (1.27)
+4.07 (1.25)
 </td>
 <td style="text-align:left;">
-5.12 (0.35)
+3.95 (1.43)
 </td>
 </tr>
 <tr>
@@ -1341,16 +1460,16 @@ active
 adventurous
 </td>
 <td style="text-align:left;">
-5.00 (1.05)
+4.04 (1.30)
 </td>
 <td style="text-align:left;">
-4.86 (0.90)
+4.03 (1.41)
 </td>
 <td style="text-align:left;">
-5.22 (0.67)
+4.01 (1.32)
 </td>
 <td style="text-align:left;">
-4.11 (1.36)
+4.00 (1.44)
 </td>
 </tr>
 <tr>
@@ -1358,16 +1477,16 @@ adventurous
 broadminded
 </td>
 <td style="text-align:left;">
-5.29 (0.49)
+4.53 (1.17)
 </td>
 <td style="text-align:left;">
-4.70 (0.95)
+4.81 (1.14)
 </td>
 <td style="text-align:left;">
-5.22 (0.67)
+4.82 (0.99)
 </td>
 <td style="text-align:left;">
-4.78 (0.67)
+4.59 (1.17)
 </td>
 </tr>
 <tr>
@@ -1375,16 +1494,16 @@ broadminded
 calm
 </td>
 <td style="text-align:left;">
-5.10 (0.57)
+4.58 (1.02)
 </td>
 <td style="text-align:left;">
-5.25 (0.71)
+4.49 (1.15)
 </td>
 <td style="text-align:left;">
-4.88 (0.83)
+4.50 (1.23)
 </td>
 <td style="text-align:left;">
-4.89 (1.05)
+4.35 (1.33)
 </td>
 </tr>
 <tr>
@@ -1392,16 +1511,16 @@ calm
 careless
 </td>
 <td style="text-align:left;">
-4.50 (1.43)
+4.56 (1.26)
 </td>
 <td style="text-align:left;">
-3.62 (2.13)
+4.68 (1.32)
 </td>
 <td style="text-align:left;">
-4.62 (1.51)
+4.62 (1.29)
 </td>
 <td style="text-align:left;">
-4.89 (1.05)
+4.59 (1.34)
 </td>
 </tr>
 <tr>
@@ -1409,16 +1528,16 @@ careless
 caring
 </td>
 <td style="text-align:left;">
-5.11 (0.60)
+4.87 (1.04)
 </td>
 <td style="text-align:left;">
-5.50 (0.76)
+4.99 (1.07)
 </td>
 <td style="text-align:left;">
-4.75 (0.46)
+4.91 (1.04)
 </td>
 <td style="text-align:left;">
-5.20 (0.79)
+4.91 (1.14)
 </td>
 </tr>
 <tr>
@@ -1426,16 +1545,33 @@ caring
 cautious
 </td>
 <td style="text-align:left;">
-4.67 (0.71)
+4.65 (0.96)
 </td>
 <td style="text-align:left;">
-4.80 (0.92)
+4.60 (0.98)
 </td>
 <td style="text-align:left;">
-5.00 (0.53)
+4.58 (1.06)
 </td>
 <td style="text-align:left;">
-4.62 (1.30)
+4.69 (1.02)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cold
+</td>
+<td style="text-align:left;">
+4.63 (1.33)
+</td>
+<td style="text-align:left;">
+4.35 (1.44)
+</td>
+<td style="text-align:left;">
+4.60 (1.36)
+</td>
+<td style="text-align:left;">
+4.62 (1.40)
 </td>
 </tr>
 <tr>
@@ -1443,16 +1579,16 @@ cautious
 creative
 </td>
 <td style="text-align:left;">
-5.00 (0.58)
+4.69 (1.25)
 </td>
 <td style="text-align:left;">
-5.50 (0.71)
+4.67 (1.26)
 </td>
 <td style="text-align:left;">
-5.10 (0.57)
+4.66 (1.23)
 </td>
 <td style="text-align:left;">
-4.88 (1.36)
+4.74 (1.27)
 </td>
 </tr>
 <tr>
@@ -1460,16 +1596,16 @@ creative
 curious
 </td>
 <td style="text-align:left;">
-4.25 (1.58)
+4.96 (0.87)
 </td>
 <td style="text-align:left;">
-4.30 (1.64)
+5.00 (0.90)
 </td>
 <td style="text-align:left;">
-4.67 (1.32)
+5.03 (0.96)
 </td>
 <td style="text-align:left;">
-5.38 (0.74)
+4.90 (1.02)
 </td>
 </tr>
 <tr>
@@ -1477,16 +1613,16 @@ curious
 friendly
 </td>
 <td style="text-align:left;">
-5.25 (0.71)
+4.74 (1.06)
 </td>
 <td style="text-align:left;">
-5.00 (1.31)
+4.89 (1.02)
 </td>
 <td style="text-align:left;">
-5.33 (0.71)
+4.90 (0.98)
 </td>
 <td style="text-align:left;">
-5.00 (0.67)
+4.94 (1.04)
 </td>
 </tr>
 <tr>
@@ -1494,16 +1630,16 @@ friendly
 hardworking
 </td>
 <td style="text-align:left;">
-5.44 (0.73)
+4.86 (1.14)
 </td>
 <td style="text-align:left;">
-4.60 (1.17)
+4.87 (1.16)
 </td>
 <td style="text-align:left;">
-6.00 (0.00)
+4.77 (1.18)
 </td>
 <td style="text-align:left;">
-5.12 (0.35)
+4.80 (1.16)
 </td>
 </tr>
 <tr>
@@ -1511,16 +1647,16 @@ hardworking
 helpful
 </td>
 <td style="text-align:left;">
-5.33 (0.50)
+4.97 (0.95)
 </td>
 <td style="text-align:left;">
-5.40 (0.70)
+5.08 (0.94)
 </td>
 <td style="text-align:left;">
-5.43 (0.53)
+4.98 (0.97)
 </td>
 <td style="text-align:left;">
-5.56 (0.73)
+4.95 (1.01)
 </td>
 </tr>
 <tr>
@@ -1528,16 +1664,16 @@ helpful
 imaginative
 </td>
 <td style="text-align:left;">
-4.70 (0.67)
+4.82 (1.23)
 </td>
 <td style="text-align:left;">
-5.22 (0.44)
+4.75 (1.14)
 </td>
 <td style="text-align:left;">
-5.12 (1.13)
+4.80 (1.25)
 </td>
 <td style="text-align:left;">
-5.25 (0.71)
+4.87 (1.17)
 </td>
 </tr>
 <tr>
@@ -1545,16 +1681,16 @@ imaginative
 impulsive
 </td>
 <td style="text-align:left;">
-3.89 (1.62)
+3.95 (1.46)
 </td>
 <td style="text-align:left;">
-3.22 (1.79)
+4.15 (1.34)
 </td>
 <td style="text-align:left;">
-3.75 (1.67)
+4.13 (1.36)
 </td>
 <td style="text-align:left;">
-2.89 (0.93)
+4.25 (1.49)
 </td>
 </tr>
 <tr>
@@ -1562,16 +1698,16 @@ impulsive
 intelligent
 </td>
 <td style="text-align:left;">
-5.12 (0.64)
+5.02 (0.96)
 </td>
 <td style="text-align:left;">
-5.00 (1.32)
+4.99 (0.86)
 </td>
 <td style="text-align:left;">
-5.44 (0.53)
+5.06 (1.01)
 </td>
 <td style="text-align:left;">
-5.33 (0.71)
+5.17 (0.98)
 </td>
 </tr>
 <tr>
@@ -1579,16 +1715,16 @@ intelligent
 lively
 </td>
 <td style="text-align:left;">
-4.75 (1.04)
+3.87 (1.31)
 </td>
 <td style="text-align:left;">
-5.00 (1.00)
+3.98 (1.30)
 </td>
 <td style="text-align:left;">
-5.00 (1.00)
+3.78 (1.35)
 </td>
 <td style="text-align:left;">
-4.00 (1.94)
+3.85 (1.27)
 </td>
 </tr>
 <tr>
@@ -1596,16 +1732,16 @@ lively
 moody
 </td>
 <td style="text-align:left;">
-3.73 (0.79)
+3.70 (1.51)
 </td>
 <td style="text-align:left;">
-4.00 (1.94)
+3.71 (1.50)
 </td>
 <td style="text-align:left;">
-3.00 (1.91)
+3.76 (1.55)
 </td>
 <td style="text-align:left;">
-4.00 (1.69)
+3.80 (1.51)
 </td>
 </tr>
 <tr>
@@ -1613,16 +1749,16 @@ moody
 nervous
 </td>
 <td style="text-align:left;">
-4.12 (1.46)
+3.39 (1.61)
 </td>
 <td style="text-align:left;">
-4.10 (1.52)
+3.21 (1.60)
 </td>
 <td style="text-align:left;">
-3.11 (1.83)
+3.36 (1.61)
 </td>
 <td style="text-align:left;">
-3.75 (1.67)
+3.30 (1.55)
 </td>
 </tr>
 <tr>
@@ -1630,16 +1766,16 @@ nervous
 organized
 </td>
 <td style="text-align:left;">
-4.62 (1.51)
+4.36 (1.30)
 </td>
 <td style="text-align:left;">
-4.70 (1.42)
+4.40 (1.32)
 </td>
 <td style="text-align:left;">
-5.50 (0.76)
+4.45 (1.31)
 </td>
 <td style="text-align:left;">
-4.89 (0.60)
+4.34 (1.39)
 </td>
 </tr>
 <tr>
@@ -1647,16 +1783,33 @@ organized
 outgoing
 </td>
 <td style="text-align:left;">
-5.12 (0.99)
+3.47 (1.63)
 </td>
 <td style="text-align:left;">
-4.40 (1.35)
+3.54 (1.61)
 </td>
 <td style="text-align:left;">
-4.12 (1.55)
+3.31 (1.59)
 </td>
 <td style="text-align:left;">
-4.78 (0.97)
+3.36 (1.65)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+quiet
+</td>
+<td style="text-align:left;">
+2.65 (1.39)
+</td>
+<td style="text-align:left;">
+2.62 (1.43)
+</td>
+<td style="text-align:left;">
+2.73 (1.35)
+</td>
+<td style="text-align:left;">
+2.76 (1.46)
 </td>
 </tr>
 <tr>
@@ -1664,16 +1817,33 @@ outgoing
 reckless
 </td>
 <td style="text-align:left;">
-4.56 (1.33)
+4.79 (1.21)
 </td>
 <td style="text-align:left;">
-4.89 (1.54)
+4.75 (1.36)
 </td>
 <td style="text-align:left;">
-3.80 (1.87)
+4.57 (1.40)
 </td>
 <td style="text-align:left;">
-4.86 (1.46)
+4.90 (1.23)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+relaxed
+</td>
+<td style="text-align:left;">
+4.35 (1.17)
+</td>
+<td style="text-align:left;">
+4.35 (1.14)
+</td>
+<td style="text-align:left;">
+4.09 (1.29)
+</td>
+<td style="text-align:left;">
+4.17 (1.30)
 </td>
 </tr>
 <tr>
@@ -1681,16 +1851,16 @@ reckless
 responsible
 </td>
 <td style="text-align:left;">
-5.30 (0.48)
+4.94 (1.03)
 </td>
 <td style="text-align:left;">
-5.22 (0.83)
+4.89 (1.08)
 </td>
 <td style="text-align:left;">
-5.00 (0.58)
+4.95 (0.97)
 </td>
 <td style="text-align:left;">
-4.78 (1.72)
+4.73 (1.20)
 </td>
 </tr>
 <tr>
@@ -1698,16 +1868,33 @@ responsible
 selfdisciplined
 </td>
 <td style="text-align:left;">
-5.00 (0.93)
+4.67 (1.19)
 </td>
 <td style="text-align:left;">
-4.67 (1.41)
+4.63 (1.21)
 </td>
 <td style="text-align:left;">
-4.80 (1.23)
+4.58 (1.22)
 </td>
 <td style="text-align:left;">
-5.00 (0.76)
+4.49 (1.26)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+shy
+</td>
+<td style="text-align:left;">
+3.07 (1.59)
+</td>
+<td style="text-align:left;">
+3.16 (1.59)
+</td>
+<td style="text-align:left;">
+3.12 (1.59)
+</td>
+<td style="text-align:left;">
+3.05 (1.61)
 </td>
 </tr>
 <tr>
@@ -1715,16 +1902,16 @@ selfdisciplined
 softhearted
 </td>
 <td style="text-align:left;">
-4.90 (0.88)
+4.74 (1.16)
 </td>
 <td style="text-align:left;">
-4.78 (1.30)
+4.74 (1.14)
 </td>
 <td style="text-align:left;">
-5.62 (0.52)
+4.71 (1.22)
 </td>
 <td style="text-align:left;">
-5.00 (1.07)
+4.74 (1.16)
 </td>
 </tr>
 <tr>
@@ -1732,16 +1919,16 @@ softhearted
 sophisticated
 </td>
 <td style="text-align:left;">
-3.89 (1.17)
+3.81 (1.32)
 </td>
 <td style="text-align:left;">
-4.14 (1.68)
+3.88 (1.36)
 </td>
 <td style="text-align:left;">
-3.40 (1.35)
+3.88 (1.40)
 </td>
 <td style="text-align:left;">
-4.33 (0.87)
+3.76 (1.32)
 </td>
 </tr>
 <tr>
@@ -1749,16 +1936,16 @@ sophisticated
 sympathetic
 </td>
 <td style="text-align:left;">
-5.00 (0.87)
+4.82 (1.02)
 </td>
 <td style="text-align:left;">
-4.78 (0.83)
+4.84 (1.14)
 </td>
 <td style="text-align:left;">
-4.22 (0.97)
+4.84 (1.13)
 </td>
 <td style="text-align:left;">
-5.00 (0.76)
+4.91 (1.05)
 </td>
 </tr>
 <tr>
@@ -1766,16 +1953,16 @@ sympathetic
 talkative
 </td>
 <td style="text-align:left;">
-3.67 (1.00)
+3.37 (1.60)
 </td>
 <td style="text-align:left;">
-2.22 (1.20)
+3.56 (1.53)
 </td>
 <td style="text-align:left;">
-3.88 (1.81)
+3.40 (1.48)
 </td>
 <td style="text-align:left;">
-3.11 (1.83)
+3.39 (1.59)
 </td>
 </tr>
 <tr>
@@ -1783,16 +1970,16 @@ talkative
 thorough
 </td>
 <td style="text-align:left;">
-4.62 (1.19)
+4.85 (1.03)
 </td>
 <td style="text-align:left;">
-4.89 (1.05)
+4.73 (1.04)
 </td>
 <td style="text-align:left;">
-4.30 (1.25)
+4.73 (1.04)
 </td>
 <td style="text-align:left;">
-4.88 (0.83)
+4.73 (0.94)
 </td>
 </tr>
 <tr>
@@ -1800,16 +1987,67 @@ thorough
 thrifty
 </td>
 <td style="text-align:left;">
-4.00 (1.41)
+4.47 (1.28)
 </td>
 <td style="text-align:left;">
-3.78 (1.20)
+4.46 (1.32)
 </td>
 <td style="text-align:left;">
-4.33 (1.12)
+4.42 (1.26)
 </td>
 <td style="text-align:left;">
-3.56 (1.51)
+4.36 (1.31)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+uncreative
+</td>
+<td style="text-align:left;">
+4.84 (1.25)
+</td>
+<td style="text-align:left;">
+4.80 (1.34)
+</td>
+<td style="text-align:left;">
+4.78 (1.39)
+</td>
+<td style="text-align:left;">
+4.90 (1.37)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+unintellectual
+</td>
+<td style="text-align:left;">
+5.21 (1.05)
+</td>
+<td style="text-align:left;">
+5.20 (1.03)
+</td>
+<td style="text-align:left;">
+5.23 (1.07)
+</td>
+<td style="text-align:left;">
+5.09 (1.17)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+unsympathetic
+</td>
+<td style="text-align:left;">
+4.96 (1.21)
+</td>
+<td style="text-align:left;">
+4.92 (1.15)
+</td>
+<td style="text-align:left;">
+4.98 (1.18)
+</td>
+<td style="text-align:left;">
+4.86 (1.26)
 </td>
 </tr>
 <tr>
@@ -1817,16 +2055,16 @@ thrifty
 warm
 </td>
 <td style="text-align:left;">
-5.33 (0.50)
+4.71 (1.09)
 </td>
 <td style="text-align:left;">
-5.00 (0.94)
+4.71 (1.17)
 </td>
 <td style="text-align:left;">
-5.11 (0.60)
+4.69 (1.11)
 </td>
 <td style="text-align:left;">
-5.29 (0.76)
+4.64 (1.12)
 </td>
 </tr>
 <tr>
@@ -1834,16 +2072,16 @@ warm
 worrying
 </td>
 <td style="text-align:left;">
-3.56 (1.24)
+3.21 (1.49)
 </td>
 <td style="text-align:left;">
-2.43 (1.62)
+3.31 (1.60)
 </td>
 <td style="text-align:left;">
-4.45 (1.69)
+3.45 (1.71)
 </td>
 <td style="text-align:left;">
-2.88 (1.64)
+3.08 (1.62)
 </td>
 </tr>
 </tbody>
@@ -1883,16 +2121,16 @@ Adjective
 active
 </td>
 <td style="text-align:left;">
-4.56 (1.67)
+4.14 (1.20)
 </td>
 <td style="text-align:left;">
-5.22 (1.30)
+4.05 (1.41)
 </td>
 <td style="text-align:left;">
-4.89 (1.27)
+4.07 (1.25)
 </td>
 <td style="text-align:left;">
-5.12 (0.35)
+3.95 (1.43)
 </td>
 </tr>
 <tr>
@@ -1900,16 +2138,16 @@ active
 adventurous
 </td>
 <td style="text-align:left;">
-5.00 (1.05)
+4.04 (1.30)
 </td>
 <td style="text-align:left;">
-4.86 (0.90)
+4.03 (1.41)
 </td>
 <td style="text-align:left;">
-5.22 (0.67)
+4.01 (1.32)
 </td>
 <td style="text-align:left;">
-4.11 (1.36)
+4.00 (1.44)
 </td>
 </tr>
 <tr>
@@ -1917,16 +2155,16 @@ adventurous
 broadminded
 </td>
 <td style="text-align:left;">
-5.29 (0.49)
+4.53 (1.17)
 </td>
 <td style="text-align:left;">
-4.70 (0.95)
+4.81 (1.14)
 </td>
 <td style="text-align:left;">
-5.22 (0.67)
+4.82 (0.99)
 </td>
 <td style="text-align:left;">
-4.78 (0.67)
+4.59 (1.17)
 </td>
 </tr>
 <tr>
@@ -1934,16 +2172,16 @@ broadminded
 calm
 </td>
 <td style="text-align:left;">
-5.10 (0.57)
+4.58 (1.02)
 </td>
 <td style="text-align:left;">
-5.25 (0.71)
+4.49 (1.15)
 </td>
 <td style="text-align:left;">
-4.88 (0.83)
+4.50 (1.23)
 </td>
 <td style="text-align:left;">
-4.89 (1.05)
+4.35 (1.33)
 </td>
 </tr>
 <tr>
@@ -1951,16 +2189,16 @@ calm
 careless
 </td>
 <td style="text-align:left;">
-4.50 (1.43)
+4.56 (1.26)
 </td>
 <td style="text-align:left;">
-3.62 (2.13)
+4.68 (1.32)
 </td>
 <td style="text-align:left;">
-4.62 (1.51)
+4.62 (1.29)
 </td>
 <td style="text-align:left;">
-4.89 (1.05)
+4.59 (1.34)
 </td>
 </tr>
 <tr>
@@ -1968,16 +2206,16 @@ careless
 caring
 </td>
 <td style="text-align:left;">
-5.11 (0.60)
+4.87 (1.04)
 </td>
 <td style="text-align:left;">
-5.50 (0.76)
+4.99 (1.07)
 </td>
 <td style="text-align:left;">
-4.75 (0.46)
+4.91 (1.04)
 </td>
 <td style="text-align:left;">
-5.20 (0.79)
+4.91 (1.14)
 </td>
 </tr>
 <tr>
@@ -1985,16 +2223,33 @@ caring
 cautious
 </td>
 <td style="text-align:left;">
-4.67 (0.71)
+4.65 (0.96)
 </td>
 <td style="text-align:left;">
-4.80 (0.92)
+4.60 (0.98)
 </td>
 <td style="text-align:left;">
-5.00 (0.53)
+4.58 (1.06)
 </td>
 <td style="text-align:left;">
-4.62 (1.30)
+4.69 (1.02)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cold
+</td>
+<td style="text-align:left;">
+4.63 (1.33)
+</td>
+<td style="text-align:left;">
+4.35 (1.44)
+</td>
+<td style="text-align:left;">
+4.60 (1.36)
+</td>
+<td style="text-align:left;">
+4.62 (1.40)
 </td>
 </tr>
 <tr>
@@ -2002,16 +2257,16 @@ cautious
 creative
 </td>
 <td style="text-align:left;">
-5.00 (0.58)
+4.69 (1.25)
 </td>
 <td style="text-align:left;">
-5.50 (0.71)
+4.67 (1.26)
 </td>
 <td style="text-align:left;">
-5.10 (0.57)
+4.66 (1.23)
 </td>
 <td style="text-align:left;">
-4.88 (1.36)
+4.74 (1.27)
 </td>
 </tr>
 <tr>
@@ -2019,16 +2274,16 @@ creative
 curious
 </td>
 <td style="text-align:left;">
-4.25 (1.58)
+4.96 (0.87)
 </td>
 <td style="text-align:left;">
-4.30 (1.64)
+5.00 (0.90)
 </td>
 <td style="text-align:left;">
-4.67 (1.32)
+5.03 (0.96)
 </td>
 <td style="text-align:left;">
-5.38 (0.74)
+4.90 (1.02)
 </td>
 </tr>
 <tr>
@@ -2036,16 +2291,16 @@ curious
 friendly
 </td>
 <td style="text-align:left;">
-5.25 (0.71)
+4.74 (1.06)
 </td>
 <td style="text-align:left;">
-5.00 (1.31)
+4.89 (1.02)
 </td>
 <td style="text-align:left;">
-5.33 (0.71)
+4.90 (0.98)
 </td>
 <td style="text-align:left;">
-5.00 (0.67)
+4.94 (1.04)
 </td>
 </tr>
 <tr>
@@ -2053,16 +2308,16 @@ friendly
 hardworking
 </td>
 <td style="text-align:left;">
-5.44 (0.73)
+4.86 (1.14)
 </td>
 <td style="text-align:left;">
-4.60 (1.17)
+4.87 (1.16)
 </td>
 <td style="text-align:left;">
-6.00 (0.00)
+4.77 (1.18)
 </td>
 <td style="text-align:left;">
-5.12 (0.35)
+4.80 (1.16)
 </td>
 </tr>
 <tr>
@@ -2070,16 +2325,16 @@ hardworking
 helpful
 </td>
 <td style="text-align:left;">
-5.33 (0.50)
+4.97 (0.95)
 </td>
 <td style="text-align:left;">
-5.40 (0.70)
+5.08 (0.94)
 </td>
 <td style="text-align:left;">
-5.43 (0.53)
+4.98 (0.97)
 </td>
 <td style="text-align:left;">
-5.56 (0.73)
+4.95 (1.01)
 </td>
 </tr>
 <tr>
@@ -2087,16 +2342,16 @@ helpful
 imaginative
 </td>
 <td style="text-align:left;">
-4.70 (0.67)
+4.82 (1.23)
 </td>
 <td style="text-align:left;">
-5.22 (0.44)
+4.75 (1.14)
 </td>
 <td style="text-align:left;">
-5.12 (1.13)
+4.80 (1.25)
 </td>
 <td style="text-align:left;">
-5.25 (0.71)
+4.87 (1.17)
 </td>
 </tr>
 <tr>
@@ -2104,16 +2359,16 @@ imaginative
 impulsive
 </td>
 <td style="text-align:left;">
-3.89 (1.62)
+3.95 (1.46)
 </td>
 <td style="text-align:left;">
-3.22 (1.79)
+4.15 (1.34)
 </td>
 <td style="text-align:left;">
-3.75 (1.67)
+4.13 (1.36)
 </td>
 <td style="text-align:left;">
-2.89 (0.93)
+4.25 (1.49)
 </td>
 </tr>
 <tr>
@@ -2121,16 +2376,16 @@ impulsive
 intelligent
 </td>
 <td style="text-align:left;">
-5.12 (0.64)
+5.02 (0.96)
 </td>
 <td style="text-align:left;">
-5.00 (1.32)
+4.99 (0.86)
 </td>
 <td style="text-align:left;">
-5.44 (0.53)
+5.06 (1.01)
 </td>
 <td style="text-align:left;">
-5.33 (0.71)
+5.17 (0.98)
 </td>
 </tr>
 <tr>
@@ -2138,16 +2393,16 @@ intelligent
 lively
 </td>
 <td style="text-align:left;">
-4.75 (1.04)
+3.87 (1.31)
 </td>
 <td style="text-align:left;">
-5.00 (1.00)
+3.98 (1.30)
 </td>
 <td style="text-align:left;">
-5.00 (1.00)
+3.78 (1.35)
 </td>
 <td style="text-align:left;">
-4.00 (1.94)
+3.85 (1.27)
 </td>
 </tr>
 <tr>
@@ -2155,16 +2410,16 @@ lively
 moody
 </td>
 <td style="text-align:left;">
-3.73 (0.79)
+3.70 (1.51)
 </td>
 <td style="text-align:left;">
-4.00 (1.94)
+3.71 (1.50)
 </td>
 <td style="text-align:left;">
-3.00 (1.91)
+3.76 (1.55)
 </td>
 <td style="text-align:left;">
-4.00 (1.69)
+3.80 (1.51)
 </td>
 </tr>
 <tr>
@@ -2172,16 +2427,16 @@ moody
 nervous
 </td>
 <td style="text-align:left;">
-4.12 (1.46)
+3.39 (1.61)
 </td>
 <td style="text-align:left;">
-4.10 (1.52)
+3.21 (1.60)
 </td>
 <td style="text-align:left;">
-3.11 (1.83)
+3.36 (1.61)
 </td>
 <td style="text-align:left;">
-3.75 (1.67)
+3.30 (1.55)
 </td>
 </tr>
 <tr>
@@ -2189,16 +2444,16 @@ nervous
 organized
 </td>
 <td style="text-align:left;">
-4.62 (1.51)
+4.36 (1.30)
 </td>
 <td style="text-align:left;">
-4.70 (1.42)
+4.40 (1.32)
 </td>
 <td style="text-align:left;">
-5.50 (0.76)
+4.45 (1.31)
 </td>
 <td style="text-align:left;">
-4.89 (0.60)
+4.34 (1.39)
 </td>
 </tr>
 <tr>
@@ -2206,16 +2461,33 @@ organized
 outgoing
 </td>
 <td style="text-align:left;">
-5.12 (0.99)
+3.47 (1.63)
 </td>
 <td style="text-align:left;">
-4.40 (1.35)
+3.54 (1.61)
 </td>
 <td style="text-align:left;">
-4.12 (1.55)
+3.31 (1.59)
 </td>
 <td style="text-align:left;">
-4.78 (0.97)
+3.36 (1.65)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+quiet
+</td>
+<td style="text-align:left;">
+2.65 (1.39)
+</td>
+<td style="text-align:left;">
+2.62 (1.43)
+</td>
+<td style="text-align:left;">
+2.73 (1.35)
+</td>
+<td style="text-align:left;">
+2.76 (1.46)
 </td>
 </tr>
 <tr>
@@ -2223,16 +2495,33 @@ outgoing
 reckless
 </td>
 <td style="text-align:left;">
-4.56 (1.33)
+4.79 (1.21)
 </td>
 <td style="text-align:left;">
-4.89 (1.54)
+4.75 (1.36)
 </td>
 <td style="text-align:left;">
-3.80 (1.87)
+4.57 (1.40)
 </td>
 <td style="text-align:left;">
-4.86 (1.46)
+4.90 (1.23)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+relaxed
+</td>
+<td style="text-align:left;">
+4.35 (1.17)
+</td>
+<td style="text-align:left;">
+4.35 (1.14)
+</td>
+<td style="text-align:left;">
+4.09 (1.29)
+</td>
+<td style="text-align:left;">
+4.17 (1.30)
 </td>
 </tr>
 <tr>
@@ -2240,16 +2529,16 @@ reckless
 responsible
 </td>
 <td style="text-align:left;">
-5.30 (0.48)
+4.94 (1.03)
 </td>
 <td style="text-align:left;">
-5.22 (0.83)
+4.89 (1.08)
 </td>
 <td style="text-align:left;">
-5.00 (0.58)
+4.95 (0.97)
 </td>
 <td style="text-align:left;">
-4.78 (1.72)
+4.73 (1.20)
 </td>
 </tr>
 <tr>
@@ -2257,16 +2546,33 @@ responsible
 selfdisciplined
 </td>
 <td style="text-align:left;">
-5.00 (0.93)
+4.67 (1.19)
 </td>
 <td style="text-align:left;">
-4.67 (1.41)
+4.63 (1.21)
 </td>
 <td style="text-align:left;">
-4.80 (1.23)
+4.58 (1.22)
 </td>
 <td style="text-align:left;">
-5.00 (0.76)
+4.49 (1.26)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+shy
+</td>
+<td style="text-align:left;">
+3.07 (1.59)
+</td>
+<td style="text-align:left;">
+3.16 (1.59)
+</td>
+<td style="text-align:left;">
+3.12 (1.59)
+</td>
+<td style="text-align:left;">
+3.05 (1.61)
 </td>
 </tr>
 <tr>
@@ -2274,16 +2580,16 @@ selfdisciplined
 softhearted
 </td>
 <td style="text-align:left;">
-4.90 (0.88)
+4.74 (1.16)
 </td>
 <td style="text-align:left;">
-4.78 (1.30)
+4.74 (1.14)
 </td>
 <td style="text-align:left;">
-5.62 (0.52)
+4.71 (1.22)
 </td>
 <td style="text-align:left;">
-5.00 (1.07)
+4.74 (1.16)
 </td>
 </tr>
 <tr>
@@ -2291,16 +2597,16 @@ softhearted
 sophisticated
 </td>
 <td style="text-align:left;">
-3.89 (1.17)
+3.81 (1.32)
 </td>
 <td style="text-align:left;">
-4.14 (1.68)
+3.88 (1.36)
 </td>
 <td style="text-align:left;">
-3.40 (1.35)
+3.88 (1.40)
 </td>
 <td style="text-align:left;">
-4.33 (0.87)
+3.76 (1.32)
 </td>
 </tr>
 <tr>
@@ -2308,16 +2614,16 @@ sophisticated
 sympathetic
 </td>
 <td style="text-align:left;">
-5.00 (0.87)
+4.82 (1.02)
 </td>
 <td style="text-align:left;">
-4.78 (0.83)
+4.84 (1.14)
 </td>
 <td style="text-align:left;">
-4.22 (0.97)
+4.84 (1.13)
 </td>
 <td style="text-align:left;">
-5.00 (0.76)
+4.91 (1.05)
 </td>
 </tr>
 <tr>
@@ -2325,16 +2631,16 @@ sympathetic
 talkative
 </td>
 <td style="text-align:left;">
-3.67 (1.00)
+3.37 (1.60)
 </td>
 <td style="text-align:left;">
-2.22 (1.20)
+3.56 (1.53)
 </td>
 <td style="text-align:left;">
-3.88 (1.81)
+3.40 (1.48)
 </td>
 <td style="text-align:left;">
-3.11 (1.83)
+3.39 (1.59)
 </td>
 </tr>
 <tr>
@@ -2342,16 +2648,16 @@ talkative
 thorough
 </td>
 <td style="text-align:left;">
-4.62 (1.19)
+4.85 (1.03)
 </td>
 <td style="text-align:left;">
-4.89 (1.05)
+4.73 (1.04)
 </td>
 <td style="text-align:left;">
-4.30 (1.25)
+4.73 (1.04)
 </td>
 <td style="text-align:left;">
-4.88 (0.83)
+4.73 (0.94)
 </td>
 </tr>
 <tr>
@@ -2359,16 +2665,67 @@ thorough
 thrifty
 </td>
 <td style="text-align:left;">
-4.00 (1.41)
+4.47 (1.28)
 </td>
 <td style="text-align:left;">
-3.78 (1.20)
+4.46 (1.32)
 </td>
 <td style="text-align:left;">
-4.33 (1.12)
+4.42 (1.26)
 </td>
 <td style="text-align:left;">
-3.56 (1.51)
+4.36 (1.31)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+uncreative
+</td>
+<td style="text-align:left;">
+4.84 (1.25)
+</td>
+<td style="text-align:left;">
+4.80 (1.34)
+</td>
+<td style="text-align:left;">
+4.78 (1.39)
+</td>
+<td style="text-align:left;">
+4.90 (1.37)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+unintellectual
+</td>
+<td style="text-align:left;">
+5.21 (1.05)
+</td>
+<td style="text-align:left;">
+5.20 (1.03)
+</td>
+<td style="text-align:left;">
+5.23 (1.07)
+</td>
+<td style="text-align:left;">
+5.09 (1.17)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+unsympathetic
+</td>
+<td style="text-align:left;">
+4.96 (1.21)
+</td>
+<td style="text-align:left;">
+4.92 (1.15)
+</td>
+<td style="text-align:left;">
+4.98 (1.18)
+</td>
+<td style="text-align:left;">
+4.86 (1.26)
 </td>
 </tr>
 <tr>
@@ -2376,16 +2733,16 @@ thrifty
 warm
 </td>
 <td style="text-align:left;">
-5.33 (0.50)
+4.71 (1.09)
 </td>
 <td style="text-align:left;">
-5.00 (0.94)
+4.71 (1.17)
 </td>
 <td style="text-align:left;">
-5.11 (0.60)
+4.69 (1.11)
 </td>
 <td style="text-align:left;">
-5.29 (0.76)
+4.64 (1.12)
 </td>
 </tr>
 <tr>
@@ -2393,16 +2750,16 @@ warm
 worrying
 </td>
 <td style="text-align:left;">
-3.56 (1.24)
+3.21 (1.49)
 </td>
 <td style="text-align:left;">
-2.43 (1.62)
+3.31 (1.60)
 </td>
 <td style="text-align:left;">
-4.45 (1.69)
+3.45 (1.71)
 </td>
 <td style="text-align:left;">
-2.88 (1.64)
+3.08 (1.62)
 </td>
 </tr>
 </tbody>

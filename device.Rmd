@@ -44,8 +44,8 @@ items_block1 = items_df %>% filter(block == "1")
 Device-type analyses in this project are purely exploratory, but may be hampered by potential confounds. We test whether different types of participants (based on demographic variables) used different devices to complete the survey.
 
 ```{r descriptives-14, echo = F, fig.cap = ""}
-age_test_print = papaja::apa_print(
-  aov(age~devicetype, data = data))
+age_test_print = papaja::apa_print(aov(age~devicetype, data = data))
+
 age_test = ggpubr::ggboxplot(data, "devicetype", "age") +
   stat_compare_means(comparisons = list(c("Computer", "Mobile"),
                                         c("Mobile", "Tablet"),
@@ -53,11 +53,17 @@ age_test = ggpubr::ggboxplot(data, "devicetype", "age") +
   labs(x = NULL, y = "Age", caption = "Differences in age across device type used. We present (uncorrected) p-values showing the pairwise comparisons of average age by device type.")
 
 
+sex_test = data %>% 
+  filter(!is.na(sex))
+sex_test = stats::chisq.test(sex_test$sex, sex_test$devicetype)
+sex_test = papaja::apa_print(sex_test, n = nrow(data))
 
-sex_test = papaja::apa_print(chisq.test(table(data$sex, data$devicetype)), n = nrow(data))
+data %>% 
+  count(sex, devicetype) %>% 
+  pivot_wider(names_from = sex, values_from = n)
 ```
 
-Figure \@ref(fig:descriptives-17)A shows the distributions of age by device type; the ANOVA test of these differences is `r age_test_print$full_result$devicetype`. The chi-square test of biological sex by device type was `r sex_test$statistic`. 
+Figure \@ref(fig:descriptives-17)A shows the distributions of age by device type; the ANOVA test of these differences is `r age_test_print$full_result$devicetype`. The chi-square test of biological sex by device type was `r sex_test$statistic[[1]]`. 
 
 ```{r descriptives-17, echo = F, fig.cap ="Distributions by device type", fig.height = 12}
 
