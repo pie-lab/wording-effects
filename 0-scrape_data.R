@@ -32,6 +32,10 @@ data_t1 = data_t1 %>%
 data_t1 = data_t1 %>% 
   filter(str_length(proid) == 24)
 
+# filter finished
+data_t1 = data_t1 %>% 
+  filter(Finished)
+
 # save file
 write.csv(data_t1, file = "data/data_t1.csv", row.names = F)
 write_rds(data_t1, file = "data/data_t1.rds")
@@ -47,6 +51,10 @@ data_2A = data_2A %>%
 # filter out missing prolific ID
 data_2A = data_2A %>% 
   filter(str_length(proid) == 24)
+
+# filter finished
+data_2A = data_2A %>% 
+  filter(Finished)
 
 # save file
 write.csv(data_2A, file = "data/data_2A.csv", row.names = F)
@@ -65,6 +73,11 @@ data_2B = data_2B %>%
 data_2B = data_2B %>% 
   filter(str_length(proid) == 24)
 
+# filter finished
+data_2B = data_2B %>% 
+  filter(Finished)
+
+
 # save file
 write.csv(data_2B, file = "data/data_2B.csv", row.names = F)
 write_rds(data_2B, file = "data/data_2B.rds")
@@ -81,6 +94,10 @@ data_2C = data_2C %>%
 data_2C = data_2C %>% 
   filter(str_length(proid) == 24)
 
+# filter finished
+data_2C = data_2C %>% 
+  filter(Finished)
+
 # save file
 write.csv(data_2C, file = "data/data_2C.csv", row.names = F)
 write_rds(data_2C, file = "data/data_2C.rds")
@@ -96,6 +113,10 @@ data_2D = data_2D %>%
 # filter out missing prolific ID
 data_2D = data_2D %>% 
   filter(str_length(proid) == 24)
+
+# filter finished
+data_2D = data_2D %>% 
+  filter(Finished)
 
 # save file
 write.csv(data_2D, file = "data/data_2D.csv", row.names = F)
