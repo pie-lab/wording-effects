@@ -39,7 +39,7 @@ Before we begin, we create new versions of each data_t1 file that can be shared 
 
 (We note that the code chunks in this subsection are turned off in the RMarkdown file -- `eval = F` -- as readers will not be able to run these chunks.)
 
-```{r 1-cleaning-3, eval = use_raw}
+```{r 1-cleaning-3, eval = TRUE}
 # function to load raw file, clean the names, and remove meta-data_t1
 # creating a function ensures the same procedure is applied to all
 # orginal datasets
@@ -80,9 +80,24 @@ data_2C <- load_data("data/data_2C.rds")
 data_2D <- load_data("data/data_2D.rds")
 ```
 
-Next, we identify all unique participant IDs. For each, we generate a new string, Then we replace the original ID values with the new strings. 
+## Manually update entries
 
-```{r 1-cleaning-4, eval = use_raw}
+Several participants notified us of mistaken answers after completing the survey. We fix those entries here. 
+
+```{r}
+data_t1$sex[data_t1$proid == "63b7d7a4ab0b515649d4f4de"] = "Female"
+data_t1$devicetype[data_t1$proid == "60da4f9aa1ced7efeecca18a"] = "Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)"
+data_t1$inaccurate_responses[data_t1$proid == "60da4f9aa1ced7efeecca18a"] = "No"
+
+```
+
+
+
+## Deidentify data -- only run after data collection is complete
+
+We identify all unique participant IDs. For each, we generate a new string, Then we replace the original ID values with the new strings. 
+
+```{r 1-cleaning-4, eval = FALSE}
 original_id <- unique(c(data_t1$proid,
                        data_2A$proid,
                        data_2B$proid,
@@ -108,7 +123,7 @@ for(i in 1:length(original_id)){
 
 We end by saving each data_t1 frame as new .csv files, to be uploaded to OSF and shared for reproduction.
 
-```{r 1-cleaning-5, eval = use_raw}
+```{r 1-cleaning-5, eval = FALSE}
 write_csv(data_t1, file = here("deidentified data/data_time1.csv"))
 write_csv(data_2A, file = here("deidentified data/data_time2_A.csv"))
 write_csv(data_2B, file = here("deidentified data/data_time2_B.csv"))
@@ -116,13 +131,15 @@ write_csv(data_2C, file = here("deidentified data/data_time2_C.csv"))
 write_csv(data_2D, file = here("deidentified data/data_time2_D.csv"))
 ```
 
-## Time 1
-
-We load the deidentified Time 1 data here.
-
-```{r 1-cleaning-6 }
+```{r 1-cleaning-6, eval = FALSE}
 data_t1 <- read_csv(here("deidentified data/data_time1.csv"))
+data_2A <- read_csv(here("deidentified data/data_time2_A.csv"))
+data_2B <- read_csv(here("deidentified data/data_time2_B.csv"))
+data_2C <- read_csv(here("deidentified data/data_time2_C.csv"))
+data_2D <- read_csv(here("deidentified data/data_time2_D.csv"))
 ```
+
+## Time 1
 
 We rename several columns, in order to facilitate the use of regular expressions later. Specifically, we remove the underscores (_) in the columns pertaining to broad-mindedness and self-disciplined.
 
@@ -479,17 +496,10 @@ At this point, we'll extract the Prolific ID numbers. These participants will be
 ```{r 1-cleaning-37 }
 data_t1 %>% 
   select(proid, condition) %>% 
-  write_csv(file = here("data/elligible_proid"))
+  write_csv(file = here("data/elligible_proid.csv"))
 ```
 
 ## Time 2
-
-```{r 1-cleaning-38 }
-data_2A <- read_csv(here("deidentified data/data_time2_A.csv"))
-data_2B <- read_csv(here("deidentified data/data_time2_B.csv"))
-data_2C <- read_csv(here("deidentified data/data_time2_C.csv"))
-data_2D <- read_csv(here("deidentified data/data_time2_D.csv"))
-```
 
 ```{r 1-cleaning-39 }
 data_2 = data_2A %>% 
@@ -1217,6 +1227,9 @@ items_df %>%
   labs(x = NULL, y = "Number of participants") +
   theme_pubr()
 ```
+
+
+## Save files
 
 ```{r 1-cleaning-96, echo = F}
 # check if folder exists. if not create it
