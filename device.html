@@ -13,8 +13,8 @@
 
 <title>Device effects</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -29,9 +29,6 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -65,6 +62,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -85,6 +83,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -142,11 +143,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -175,8 +180,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -184,16 +189,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -223,69 +221,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -295,22 +230,12 @@ div.tocify {
 <div class="container-fluid main-container">
 
 
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -326,7 +251,7 @@ div.tocify {
   <a href="descriptives.html">Descriptives</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Analysis
      
     <span class="caret"></span>
@@ -373,52 +298,89 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Device effects</h1>
-<h4 class="date">Last updated 2022-07-16</h4>
+<h4 class="date">Last updated 2023-04-19</h4>
 
 </div>
 
 
-<p>In this section, we present exploratory analyses which test the effect of device type More specifically, we’re interested to know whether the time it takes to complete personality assessments differs by device type (computer, phone, tablet). We also test whether the typical response to personality items is associated with device type, although we have no theoretical reasons to suspect this is the case.</p>
+<p>In this section, we present exploratory analyses which test the
+effect of device type More specifically, we’re interested to know
+whether the time it takes to complete personality assessments differs by
+device type (computer, phone, tablet). We also test whether the typical
+response to personality items is associated with device type, although
+we have no theoretical reasons to suspect this is the case.</p>
 <p>For these analyses, we use only data collected in Block 1.</p>
+<div id="deviations-from-preregistration" class="section level2">
+<h2>Deviations from preregistration</h2>
+<p>We were unable to extract significance values for interactions using
+the <code>aov</code> function, which would have tested effects using an
+F-test. Instead, we use <code>car::Anova</code>, which uses a <span
+class="math inline">\(\chi^2\)</span> test.</p>
+</div>
+<div id="analyses" class="section level2">
+<h2>Analyses</h2>
 <pre class="r"><code>items_block1 = items_df %&gt;% filter(block == &quot;1&quot;)</code></pre>
-<div id="demographics-by-device-type" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Demographics by device type</h2>
-<p>Device-type analyses in this project are purely exploratory, but may be hampered by potential confounds. We test whether different types of participants (based on demographic variables) used different devices to complete the survey.</p>
-<p>Figure <a href="#fig:descriptives-17">1</a>A shows the distributions of age by device type; the ANOVA test of these differences is <span class="math inline">\(F(2, 32) = 0.05\)</span>, <span class="math inline">\(\mathit{MSE} = 38.33\)</span>, <span class="math inline">\(p = .953\)</span>, <span class="math inline">\(\hat{\eta}^2_G = .003\)</span>. The chi-square test of biological sex by device type was <span class="math inline">\(\chi^2(2, n = 35) = 2.83\)</span>, <span class="math inline">\(p = .243\)</span>.</p>
-<div class="figure"><span style="display:block;" id="fig:descriptives-17"></span>
+</div>
+<div id="demographics-by-device-type" class="section level2">
+<h2>Demographics by device type</h2>
+<p>Device-type analyses in this project are purely exploratory, but may
+be hampered by potential confounds. We test whether different types of
+participants (based on demographic variables) used different devices to
+complete the survey.</p>
+<pre><code>## # A tibble: 3 × 4
+##   devicetype  Male Female Other
+##   &lt;ord&gt;      &lt;int&gt;  &lt;int&gt; &lt;int&gt;
+## 1 Computer     391    343     1
+## 2 Mobile        89    110     2
+## 3 Tablet        14     24    NA</code></pre>
+<p>Figure @ref(fig:descriptives-17)A shows the distributions of age by
+device type; the ANOVA test of these differences is <span
+class="math inline">\(F(2, 971) = 6.71\)</span>, <span
+class="math inline">\(p = .001\)</span>, <span
+class="math inline">\(\hat{\eta}^2_G = .014\)</span>, 90% CI <span
+class="math inline">\([.003, .027]\)</span>. The chi-square test of
+biological sex by device type was <span class="math inline">\(\chi^2(4,
+n = 974) = 11.60\)</span>, <span class="math inline">\(p =
+.021\)</span>.</p>
+<div class="figure">
 <img src="device_files/figure-html/descriptives-17-1.png" alt="Distributions by device type" width="672" />
 <p class="caption">
-Figure 1: Distributions by device type
+Distributions by device type
 </p>
 </div>
 </div>
-<div id="timing" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Timing</h2>
-<div id="timing-by-device" class="section level3" number="0.2.1">
-<h3><span class="header-section-number">0.2.1</span> Timing by device</h3>
-<p>We used a multilevel model, nesting timing within participant to account for dependence. Our primary predictor was device type. As a reminder, our outcome variable (seconds) has been log-transformed, as it was strongly skewed.</p>
+<div id="timing" class="section level2">
+<h2>Timing</h2>
+<div id="timing-by-device" class="section level3">
+<h3>Timing by device</h3>
+<p>We used a multilevel model, nesting timing within participant to
+account for dependence. Our primary predictor was device type. As a
+reminder, our outcome variable (seconds) has been log-transformed, as it
+was strongly skewed.</p>
 <pre class="r"><code>mod.timing = glmmTMB(seconds_log~devicetype + (1|proid), 
                   data = items_block1)
-tidy(aov(mod.timing))</code></pre>
-<pre><code>## # A tibble: 3 × 6
-##   term          df sumsq meansq statistic   p.value
-##   &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 devicetype     2  13.2  6.60       11.3  1.43e- 5
-## 2 proid         32 207.   6.47       11.0  5.21e-47
-## 3 Residuals   1050 615.   0.586      NA   NA</code></pre>
-<p>Device type was associated with the time it took to respond to personality items <span class="math inline">\((F(2.00, 1,050.00) = 11.27, p = &lt; .001)\)</span>.</p>
-<pre class="r"><code>plot1 = plot_model(mod.timing, type = &quot;pred&quot;) 
-
-plot1$devicetype +
-  labs(x = NULL,
+tidy(car::Anova(mod.timing))</code></pre>
+<pre><code>## # A tibble: 1 × 4
+##   term       statistic    df p.value
+##   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 devicetype      9.43     2 0.00894</code></pre>
+<p>Device type was associated with the time it took to respond to
+personality items <span class="math inline">\((\chi^2(2.00) = 9.43, p =
+.009)\)</span>.</p>
+<pre class="r"><code>emmeans(mod.timing, ~&quot;devicetype&quot;) %&gt;% 
+  as.data.frame() %&gt;% 
+  ggplot(aes(x = devicetype, y = emmean)) +
+  geom_bar(stat = &quot;identity&quot;, fill = &quot;grey&quot;) + 
+  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = .5) +
+   labs(x = NULL,
        y = &quot;Log-seconds (per item)&quot;,
        title = &quot;Average time per personality item\nby device type&quot;,
        caption = &quot;Bars represent 95% confidence intervals&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure"><span style="display:block;" id="fig:device-7"></span>
+<div class="figure">
 <img src="device_files/figure-html/device-7-1.png" alt="Predicted timing on personality items by condition." width="672" />
 <p class="caption">
-Figure 2: Predicted timing on personality items by condition.
+Predicted timing on personality items by condition.
 </p>
 </div>
 <pre class="r"><code>means_by_group = items_block1 %&gt;%
@@ -437,73 +399,89 @@ items_block1 %&gt;%
        title = &quot;Distribution of timing by format&quot;,
        x = &quot;timing (logrithmic scale)&quot;) +
   theme_pubr()</code></pre>
-<div class="figure"><span style="display:block;" id="fig:device-8"></span>
-<img src="device_files/figure-html/device-8-1.png" alt="Distribution of secondss by category" width="672" />
+<div class="figure">
+<img src="device_files/figure-html/device-8-1.png" alt="Distribution of seconds by category" width="672" />
 <p class="caption">
-Figure 3: Distribution of secondss by category
+Distribution of seconds by category
 </p>
 </div>
 </div>
-<div id="device-by-format" class="section level3" number="0.2.2">
-<h3><span class="header-section-number">0.2.2</span> Device by format</h3>
-<p>We also check to see whether device type and format interact in the prediction of time to answer personality items.</p>
-<pre class="r"><code>mod.timing2 = glmmTMB(seconds_log~devicetype*format + (1|proid), 
+<div id="device-by-format" class="section level3">
+<h3>Device by format</h3>
+<p>We also check to see whether device type and format interact in the
+prediction of time to answer personality items.</p>
+<pre class="r"><code>mod.timing2 = glmmTMB(seconds_log~devicetype + format + devicetype:format+ (1|proid), 
                   data = items_block1)
-tidy(aov(mod.timing2))</code></pre>
-<pre><code>## # A tibble: 4 × 6
-##   term          df sumsq meansq statistic   p.value
-##   &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 devicetype     2  13.2  6.60      11.3   1.43e- 5
-## 2 format         3  74.1 24.7       42.1   1.02e-25
-## 3 proid         29 133.   4.58       7.82  5.91e-29
-## 4 Residuals   1050 615.   0.586     NA    NA</code></pre>
-<p><strong>Preregistration note: this model was unable to converge, likely due to the small sample size. We have code prepared to extract and print estimates of the interaction upon collecting sufficient data.</strong></p>
-<pre class="r"><code>plot1 = plot_model(mod.timing2, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;devicetype&quot;)) 
-
-plot1 +
-  geom_line() +
-  labs(x = NULL,
+tidy(car::Anova(mod.timing2))</code></pre>
+<pre><code>## # A tibble: 3 × 4
+##   term              statistic    df p.value
+##   &lt;chr&gt;                 &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 devicetype             9.81     2 0.00741
+## 2 format                10.2      3 0.0167 
+## 3 devicetype:format     13.8      6 0.0322</code></pre>
+<pre class="r"><code>tD2_aov = tidy(car::Anova(mod.timing2))
+tD2_sig = tD2_aov$p.value[[3]] &lt; .05
+tD2_aov = tD2_aov %&gt;% 
+  as_tibble() %&gt;% 
+  mutate(across(starts_with(&quot;P&quot;), printp),
+         across(where(is.numeric), printnum))</code></pre>
+<p>The interaction between device type and format was associated with
+the time it took to respond to personality items <span
+class="math inline">\((\chi^2(6.00) = 13.78, p = .032)\)</span>.</p>
+<pre class="r"><code>emmeans(mod.timing2, ~&quot;devicetype*format&quot;) %&gt;% 
+  as.data.frame() %&gt;% 
+  ggplot(aes(x = format, y = emmean, group = devicetype)) +
+  geom_bar(stat = &quot;identity&quot;, aes(fill = devicetype),
+           position = position_dodge(.9)) + 
+  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), 
+                width = .5,
+                position = position_dodge(.9)) +
+   labs(x = NULL,
        y = &quot;Log-seconds (per item)&quot;,
-       title = &quot;Average time per personality item\nby device type and item format&quot;,
-       color = &quot;Device&quot;,
+       title = &quot;Average time per personality item\nby device type&quot;,
        caption = &quot;Bars represent 95% confidence intervals&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure"><span style="display:block;" id="fig:device-11"></span>
+<div class="figure">
 <img src="device_files/figure-html/device-11-1.png" alt="Predicted timing on personality items by condition." width="672" />
 <p class="caption">
-Figure 4: Predicted timing on personality items by condition.
+Predicted timing on personality items by condition.
 </p>
 </div>
 </div>
 </div>
-<div id="responses" class="section level2" number="0.3">
-<h2><span class="header-section-number">0.3</span> Responses</h2>
-<p>Here we estimate the differences in response to personality items items by device. Again, we have no theoretical rationale for these models – these are purely exploratory.</p>
-<div id="response-by-device" class="section level3" number="0.3.1">
-<h3><span class="header-section-number">0.3.1</span> Response by device</h3>
-<p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device type.</p>
+<div id="responses" class="section level2">
+<h2>Responses</h2>
+<p>Here we estimate the differences in response to personality items
+items by device. Again, we have no theoretical rationale for these
+models – these are purely exploratory.</p>
+<div id="response-by-device" class="section level3">
+<h3>Response by device</h3>
+<p>We used a multilevel model, nesting response within participant to
+account for dependence. Our primary predictor was device type.</p>
 <pre class="r"><code>mod.responseD = glmmTMB(response~devicetype + (1|proid), 
                   data = items_block1)
-tidy(aov(mod.responseD))</code></pre>
-<pre><code>## # A tibble: 3 × 6
-##   term          df  sumsq meansq statistic   p.value
-##   &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 devicetype     2   23.8  11.9       7.98  3.64e- 4
-## 2 proid         32  233.    7.27      4.88  8.70e-17
-## 3 Residuals   1050 1565.    1.49     NA    NA</code></pre>
-<p>When examining both Block 1 and Block 2 data, device type was associated with the time it took to respond to personality items <span class="math inline">\((F(2.00, 1,050.00) = 7.98, p = &lt; .001)\)</span>.</p>
-<pre class="r"><code>plot1 = plot_model(mod.responseD, type = &quot;pred&quot;) 
-
-plot1$devicetype +
-  labs(x = NULL,
+tidy(car::Anova(mod.responseD))</code></pre>
+<pre><code>## # A tibble: 1 × 4
+##   term       statistic    df p.value
+##   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 devicetype     0.131     2   0.936</code></pre>
+<p>When examining both Block 1 and Block 2 data, device type was
+unassociated with the time it took to respond to personality items <span
+class="math inline">\((\chi^2(2.00) = 0.51, p = .601)\)</span>.</p>
+<pre class="r"><code>emmeans(mod.responseD, ~&quot;devicetype&quot;) %&gt;% 
+  as.data.frame() %&gt;% 
+  ggplot(aes(x = devicetype, y = emmean)) +
+  geom_bar(stat = &quot;identity&quot;, fill = &quot;grey&quot;) + 
+  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = .5) +
+   labs(x = NULL,
        y = &quot;Expected response&quot;,
        title = &quot;Expected responses by device&quot;,
        caption = &quot;Bars represent 95% confidence intervals&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure"><span style="display:block;" id="fig:device-14"></span>
+<div class="figure">
 <img src="device_files/figure-html/device-14-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
-Figure 5: Predicted response on personality items by condition.
+Predicted response on personality items by condition.
 </p>
 </div>
 <pre class="r"><code>means_by_group = items_block1 %&gt;%
@@ -524,40 +502,53 @@ items_block1 %&gt;%
   labs(y = &quot;Number of particpants&quot;,
        title = &quot;Distribution of responses by format&quot;) +
   theme_pubr()</code></pre>
-<div class="figure"><span style="display:block;" id="fig:device-15"></span>
+<div class="figure">
 <img src="device_files/figure-html/device-15-1.png" alt="Distribution of responses by category" width="672" />
 <p class="caption">
-Figure 6: Distribution of responses by category
+Distribution of responses by category
 </p>
 </div>
 </div>
-<div id="device-by-format-1" class="section level3" number="0.3.2">
-<h3><span class="header-section-number">0.3.2</span> Device by format</h3>
-<p>We also check whether item format moderated the relationship between device type and response.</p>
+<div id="device-by-format-1" class="section level3">
+<h3>Device by format</h3>
+<p>We also check whether item format moderated the relationship between
+device type and response.</p>
 <pre class="r"><code>mod.responseD2 = glmmTMB(response~devicetype*format + (1|proid), 
                   data = items_block1)
 tidy(aov(mod.responseD2))</code></pre>
 <pre><code>## # A tibble: 4 × 6
-##   term          df   sumsq meansq statistic   p.value
-##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 devicetype     2   23.8   11.9       7.98  3.64e- 4
-## 2 format         3    4.99   1.66      1.12  3.41e- 1
-## 3 proid         29  228.     7.85      5.27  2.76e-17
-## 4 Residuals   1050 1565.     1.49     NA    NA</code></pre>
-<p><strong>Preregistration note: this model was unable to converge, likely due to the small sample size. We have code prepared to extract and print estimates of the interaction upon collecting sufficient data.</strong></p>
-<pre class="r"><code>plot2 = plot_model(mod.responseD2, type = &quot;pred&quot;, terms = c(&quot;format&quot;, &quot;devicetype&quot;)) 
-
-plot2 +
-  geom_line() +
-  labs(x = NULL,
+##   term          df    sumsq meansq statistic   p.value
+##   &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 devicetype     2     1.69  0.844     0.510  6.01e- 1
+## 2 format         3    86.2  28.7      17.3    3.01e-11
+## 3 proid        968 12439.   12.9       7.76   0       
+## 4 Residuals  36038 59688.    1.66     NA     NA</code></pre>
+<pre class="r"><code>rD2_aov = tidy(aov(mod.responseD))
+rD2_sig = rD2_aov$p.value[[3]] &lt; .05
+rD2_aov = rD2_aov %&gt;% 
+  as_tibble() %&gt;% 
+  mutate(across(starts_with(&quot;P&quot;), printp),
+         across(where(is.numeric), printnum))</code></pre>
+<p>The interaction between device type and format was NA with the time
+it took to respond to personality items <span
+class="math inline">\((\chi^2(36,038.00) = NA, p = )\)</span>.</p>
+<pre class="r"><code>emmeans(mod.responseD2, ~&quot;devicetype*format&quot;) %&gt;% 
+  as.data.frame() %&gt;% 
+  ggplot(aes(x = format, y = emmean, group = devicetype)) +
+  geom_bar(stat = &quot;identity&quot;, aes(fill = devicetype),
+           position = position_dodge(.9)) + 
+  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), 
+                width = .5,
+                position = position_dodge(.9)) +
+   labs(x = NULL,
        y = &quot;Average response&quot;,
        title = &quot;Average responses by device&quot;,
        caption = &quot;Bars represent 95% confidence intervals&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure"><span style="display:block;" id="fig:device-18"></span>
+<div class="figure">
 <img src="device_files/figure-html/device-18-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
-Figure 7: Predicted response on personality items by condition.
+Predicted response on personality items by condition.
 </p>
 </div>
 </div>
@@ -565,8 +556,6 @@ Figure 7: Predicted response on personality items by condition.
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -599,35 +588,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
