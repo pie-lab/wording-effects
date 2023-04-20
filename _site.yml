@@ -19,6 +19,8 @@ navbar:
           href: timing_format.html
         - text: "Does device type affect response and timing?"
           href: device.html
+        - text: "Does item formatting affect participant survey enjoyment?"
+          href: subjective.html
     - text: Power analysis
       href: power.html
     - text: R version and packages

@@ -1228,6 +1228,39 @@ items_df %>%
   theme_pubr()
 ```
 
+## Enjoyment
+
+Finally, in the first wave of data collection, we poll participants about their enjoyment of the study and experience of taking the survey. We extract those columns, along with the condition assigned in Block 1, for later analyses.
+
+```{r}
+enjoy_df = data_t1 %>% 
+  select(proid, condition, devicetype, enjoy_responding, well_designed_study) %>% 
+  # convert responses to numeric
+  mutate(
+    format = tolower(condition),
+    format = factor(format,
+                    levels = c("a","b","c","d"),
+                    labels = c("Adjective\nOnly", 
+                               "Am\nAdjective", 
+                               "Tend to be\nAdjective", 
+                               "Am someone\nwho tends to be\nAdjective")),
+    across(
+      c(enjoy_responding, well_designed_study),
+      ~case_when(
+        . == "Very inaccurate"       ~ 1,
+        . == "Moderately inaccurate" ~ 2,
+        . == "Slightly inaccurate"   ~ 3,
+        . == "Slightly accurate"     ~ 4,
+        . == "Moderately accurate"   ~ 5,
+        . == "Very accurate"         ~ 6,
+        TRUE ~ NA_real_
+      )
+    )
+  ) %>% 
+  filter(proid %in% items_df$proid)
+```
+
+
 
 ## Save files
 
@@ -1240,5 +1273,6 @@ save(reverse, file = here("objects/reverse_vector.Rds"))
 save(bfmm, file = here("objects/bfmm.Rds"))
 save(data, file = here("objects/cleaned_data.Rds"))
 save(items_df, file = here("objects/items_df.Rds"))
+save(enjoy_df, file = here("objects/enjoy_df.Rds"))
 ```
 

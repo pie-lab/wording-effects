@@ -11,7 +11,7 @@
 
 
 
-<title>Power analysis</title>
+<title>Does item format impact experience?</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -297,58 +297,160 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Power analysis</h1>
+<h1 class="title toc-ignore">Does item format impact experience?</h1>
 <h4 class="date">Last updated 2023-04-20</h4>
 
 </div>
 
 
-<p>We conduct power analyses for the research question, “Does item
-format influence expected response to personality items?” by powering a
-balanced one-way analysis of variance. This model assumes no individual
-differences in response, thereby providing a more conservative estimate
-of the sample size needed.</p>
-<pre class="r"><code># calculate each individual&#39;s average response
-means = item_block1 %&gt;% 
-  group_by(proid, condition) %&gt;% 
-  summarise(response = mean(response)) %&gt;% 
-  ungroup() 
-
-# calculate mean and variance for each condition
-means = means %&gt;% 
-  group_by(condition) %&gt;%
-  summarise(m = mean(response),
-            v = var(response),
-            n = n()) 
-
-# calculate ewighted variance
-weighted_var = means %&gt;% 
-  mutate(newv = v*(n-1)) %&gt;% 
-  select(newv, n) %&gt;% 
-  colSums() 
-weighted_var = weighted_var[[1]]/(weighted_var[[2]]-4)
-
-# enter information into power function
-power.anova.test(groups = 4, 
-                 between.var = var(means$m), 
-                 within.var = weighted_var,
-                 power = .9, 
-                 sig.level = .05)</code></pre>
-<pre><code>## 
-##      Balanced one-way analysis of variance power calculation 
+<p>These analyses test whether item format affects participants’
+subjective experiences of participating in personality surveys.</p>
+<div id="enjoyment" class="section level1">
+<h1>Enjoyment</h1>
+<p>First, we test whether participants enjoyed their experience as a
+function of format. The item participants rated was:</p>
+<p>“Overall, I am enjoying responding to the present survey.”</p>
+<pre class="r"><code>mod_enjoy_1 = lm(enjoy_responding ~ format, data = enjoy_df)
+car::Anova(mod_enjoy_1)</code></pre>
+<pre><code>## Anova Table (Type II tests)
 ## 
-##          groups = 4
-##               n = 135.3274
-##     between.var = 0.009118785
-##      within.var = 0.2593392
-##       sig.level = 0.05
-##           power = 0.9
+## Response: enjoy_responding
+##            Sum Sq  Df F value Pr(&gt;F)
+## format       5.28   3  1.6728 0.1712
+## Residuals 1021.42 970</code></pre>
+<p>Participants did not vary in their enjoyment of the survey as a
+function of item format. See @ref(fig:enjoyFormat).</p>
+<pre class="r"><code>plot_model(mod_enjoy_1, type = &quot;pred&quot;, show.data = T, jitter = T)$format +
+  labs(x = NULL, 
+       y = &quot;Average enjoyment&quot;, 
+       title = &quot;Predicted enjoyment by item format&quot;)</code></pre>
+<p><img src="subjective_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>We also test whether this is a function of device type and the
+interaction of devicetype with format.</p>
+<pre class="r"><code>mod_enjoy_2 = lm(enjoy_responding ~ devicetype, data = enjoy_df)
+car::Anova(mod_enjoy_2)</code></pre>
+<pre><code>## Anova Table (Type II tests)
 ## 
-## NOTE: n is number in each group</code></pre>
-<p>This analysis suggests that 136 participants are needed in each
-condition to achieve 90% power for the differences in means found in the
-pilot data. To be safe, we plan to recruit 250 participants per
-condition.</p>
+## Response: enjoy_responding
+##             Sum Sq  Df F value Pr(&gt;F)
+## devicetype    2.91   2  1.3777 0.2527
+## Residuals  1023.80 971</code></pre>
+<p>Participants did not enjoy differently by format.</p>
+<pre class="r"><code>mod_enjoy_3 = lm(enjoy_responding ~ format*devicetype, data = enjoy_df)
+car::Anova(mod_enjoy_3, type = &quot;3&quot;)</code></pre>
+<pre><code>## Anova Table (Type III tests)
+## 
+## Response: enjoy_responding
+##                    Sum Sq  Df   F value Pr(&gt;F)    
+## (Intercept)       1422.05   1 1350.6771 &lt;2e-16 ***
+## format               2.21   3    0.7006 0.5518    
+## devicetype           4.03   2    1.9136 0.1481    
+## format:devicetype    5.57   6    0.8822 0.5072    
+## Residuals         1012.84 962                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The relationship of item format to enjoyment did not vary as a
+function of device type.</p>
+</div>
+<div id="perception-of-survey-design" class="section level1">
+<h1>Perception of survey design</h1>
+<p>Next, we test whether participants viewed the survey differently as a
+function of format. The item participants rated was:</p>
+<p>“Overall, I think the present survey is well designed.”</p>
+<pre class="r"><code>mod_design_1 = lm(well_designed_study ~ format, data = enjoy_df)
+car::Anova(mod_design_1)</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: well_designed_study
+##           Sum Sq  Df F value Pr(&gt;F)
+## format      2.97   3  1.2987 0.2736
+## Residuals 740.05 970</code></pre>
+<p>Participants did not vary in their perception of the survey as a
+function of item format. See @ref(fig:designFormat).</p>
+<pre class="r"><code>plot_model(mod_design_1, type = &quot;pred&quot;, show.data = T, jitter = T)$format +
+  labs(x = NULL, 
+       y = &quot;Average designment&quot;, 
+       title = &quot;Predicted design perception by item format&quot;)</code></pre>
+<p><img src="subjective_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>We also test whether this is a function of device type and the
+interaction of devicetype with format.</p>
+<pre class="r"><code>mod_design_2 = lm(well_designed_study ~ devicetype, data = enjoy_df)
+car::Anova(mod_design_2)</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: well_designed_study
+##            Sum Sq  Df F value  Pr(&gt;F)  
+## devicetype   4.66   2  3.0666 0.04703 *
+## Residuals  738.36 971                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Participants did perceive the design of the study differently by
+format. We explore this more here:</p>
+<pre class="r"><code>emmeans(mod_design_2, pairwise~&quot;devicetype&quot;, adjust = &quot;none&quot;)</code></pre>
+<pre><code>## $emmeans
+##  devicetype                                                   emmean     SE  df
+##  Mobile                                                         5.36 0.0615 971
+##  Desktop or laptop computer                                     5.20 0.0322 971
+##  Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)   5.08 0.1415 971
+##  lower.CL upper.CL
+##      5.24     5.48
+##      5.14     5.27
+##      4.80     5.36
+## 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast                                                                                 
+##  Mobile - Desktop or laptop computer                                                      
+##  Mobile - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)                    
+##  Desktop or laptop computer - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)
+##  estimate     SE  df t.ratio p.value
+##     0.154 0.0694 971   2.221  0.0266
+##     0.279 0.1543 971   1.810  0.0705
+##     0.125 0.1451 971   0.863  0.3886</code></pre>
+<pre class="r"><code>emmeans(mod_design_2, pairwise~&quot;devicetype&quot;, adjust = &quot;holm&quot;)</code></pre>
+<pre><code>## $emmeans
+##  devicetype                                                   emmean     SE  df
+##  Mobile                                                         5.36 0.0615 971
+##  Desktop or laptop computer                                     5.20 0.0322 971
+##  Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)   5.08 0.1415 971
+##  lower.CL upper.CL
+##      5.24     5.48
+##      5.14     5.27
+##      4.80     5.36
+## 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast                                                                                 
+##  Mobile - Desktop or laptop computer                                                      
+##  Mobile - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)                    
+##  Desktop or laptop computer - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)
+##  estimate     SE  df t.ratio p.value
+##     0.154 0.0694 971   2.221  0.0798
+##     0.279 0.1543 971   1.810  0.1411
+##     0.125 0.1451 971   0.863  0.3886
+## 
+## P value adjustment: holm method for 3 tests</code></pre>
+<p>Participants perceive the design to be better on mobile devices than
+on desktop or laptop computers; however, after correcting for multiple
+comparisons, this effect is no longer significant.</p>
+<pre class="r"><code>mod_design_3 = lm(well_designed_study ~ format*devicetype, data = enjoy_df)
+car::Anova(mod_design_3, type = &quot;3&quot;)</code></pre>
+<pre><code>## Anova Table (Type III tests)
+## 
+## Response: well_designed_study
+##                    Sum Sq  Df   F value Pr(&gt;F)    
+## (Intercept)       1479.86   1 1941.1083 &lt;2e-16 ***
+## format               0.67   3    0.2930 0.8305    
+## devicetype           0.86   2    0.5646 0.5688    
+## format:devicetype    1.88   6    0.4106 0.8723    
+## Residuals          733.41 962                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The relationship of item format to survey design enjoyment did not
+vary as a function of device type.</p>
+</div>
 
 
 

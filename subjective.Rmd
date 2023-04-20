@@ -1,0 +1,108 @@
+---
+title: "Does item format impact experience?"
+date: "Last updated `r Sys.Date()`"
+output: 
+  bookdown::html_document2:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+These analyses test whether item format affects participants' subjective experiences of participating in personality surveys. 
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(warning = F, message = F)
+```
+
+```{r, echo = F}
+library(here) # for working with files
+library(tidyverse) # for cleaning
+library(janitor) # for variable names
+library(emmeans) # for comparisons
+library(sjPlot) # for figures
+library(ggpubr) # for prettier plots
+library(kableExtra) # for nicer tables
+library(papaja) # pretty numbers
+```
+
+```{r, echo = F}
+load(here("objects/enjoy_df.Rds"))
+```
+
+# Enjoyment
+
+First, we test whether participants enjoyed their experience as a function of format. The item participants rated was:
+
+"Overall, I am enjoying responding to the present survey."
+
+```{r}
+mod_enjoy_1 = lm(enjoy_responding ~ format, data = enjoy_df)
+car::Anova(mod_enjoy_1)
+```
+
+Participants did not vary in their enjoyment of the survey as a function of item format. See \@ref(fig:enjoyFormat).
+
+```{r}
+plot_model(mod_enjoy_1, type = "pred", show.data = T, jitter = T)$format +
+  labs(x = NULL, 
+       y = "Average enjoyment", 
+       title = "Predicted enjoyment by item format")
+```
+
+We also test whether this is a function of device type and the interaction of devicetype with format. 
+
+```{r}
+mod_enjoy_2 = lm(enjoy_responding ~ devicetype, data = enjoy_df)
+car::Anova(mod_enjoy_2)
+```
+
+Participants did not enjoy differently by format. 
+
+```{r}
+mod_enjoy_3 = lm(enjoy_responding ~ format*devicetype, data = enjoy_df)
+car::Anova(mod_enjoy_3, type = "3")
+```
+
+The relationship of item format to enjoyment did not vary as a function of device type.
+
+# Perception of survey design
+
+Next, we test whether participants viewed the survey differently as a function of format. The item participants rated was:
+
+"Overall, I think the present survey is well designed."
+
+```{r}
+mod_design_1 = lm(well_designed_study ~ format, data = enjoy_df)
+car::Anova(mod_design_1)
+```
+
+Participants did not vary in their perception of the survey as a function of item format. See \@ref(fig:designFormat).
+
+```{r}
+plot_model(mod_design_1, type = "pred", show.data = T, jitter = T)$format +
+  labs(x = NULL, 
+       y = "Average designment", 
+       title = "Predicted design perception by item format")
+```
+
+We also test whether this is a function of device type and the interaction of devicetype with format. 
+
+```{r}
+mod_design_2 = lm(well_designed_study ~ devicetype, data = enjoy_df)
+car::Anova(mod_design_2)
+```
+
+Participants did perceive the design of the study differently by format. We explore this more here:
+
+```{r}
+emmeans(mod_design_2, pairwise~"devicetype", adjust = "none")
+emmeans(mod_design_2, pairwise~"devicetype", adjust = "holm")
+```
+
+Participants perceive the design to be better on mobile devices than on desktop or laptop computers; however, after correcting for multiple comparisons, this effect is no longer significant.
+
+```{r}
+mod_design_3 = lm(well_designed_study ~ format*devicetype, data = enjoy_df)
+car::Anova(mod_design_3, type = "3")
+```
+
+The relationship of item format to survey design enjoyment did not vary as a function of device type.

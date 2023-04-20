@@ -13,8 +13,8 @@
 
 <title>Does the internal consistency of Big Five traits vary by item wording?</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -29,9 +29,6 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -67,6 +64,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -87,6 +85,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -144,11 +145,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -177,8 +182,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -186,16 +191,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -225,69 +223,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -297,22 +232,12 @@ div.tocify {
 <div class="container-fluid main-container">
 
 
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -328,7 +253,7 @@ div.tocify {
   <a href="descriptives.html">Descriptives</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Analysis
      
     <span class="caret"></span>
@@ -374,14 +299,22 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Does the internal consistency of Big Five traits vary by item wording?</h1>
-<h4 class="date">Last updated 2022-07-16</h4>
+<h1 class="title toc-ignore">Does the internal consistency of Big Five
+traits vary by item wording?</h1>
+<h4 class="date">Last updated 2023-04-20</h4>
 
 </div>
 
 
-<p>We calculate and report Cronbach’s alpha for all formats using data from Blocks 1 and 2. This will include both the average split-half reliability, as well as the 95% confidence interval. Differences in internal consistency will be considered statistically significant if the confidence intervals of two formats do not overlap. We will also show the distribution of all possible split halves for each of the four formats.</p>
-<p>We start by creating a wide-format of the dataset using only the Block 1 data.</p>
+<p>We calculate and report Cronbach’s alpha for all formats using data
+from Blocks 1 and 2. This will include both the average split-half
+reliability, as well as the 95% confidence interval. Differences in
+internal consistency will be considered statistically significant if the
+confidence intervals of two formats do not overlap. We will also show
+the distribution of all possible split halves for each of the four
+formats.</p>
+<p>We start by creating a wide-format of the dataset using only the
+Block 1 data.</p>
 <pre class="r"><code>items_wide = items_df %&gt;%
   # only blocks 1 and 2
   filter(block %in% c(1,2)) %&gt;% 
@@ -389,7 +322,10 @@ div.tocify {
   select(proid, block, condition, item, response) %&gt;% 
   # to wide form
   spread(item, response)</code></pre>
-<p>Next, we identify the items associated with each trait. These come from the Health and Retirement Study Psychosocial and Lifestyle Questionnaire 2006-2016 user guide, which can be found at this <a href="https://hrs.isr.umich.edu/publications/biblio/9066">link</a>.</p>
+<p>Next, we identify the items associated with each trait. These come
+from the Health and Retirement Study Psychosocial and Lifestyle
+Questionnaire 2006-2016 user guide, which can be found at this <a
+href="https://hrs.isr.umich.edu/publications/biblio/9066">link</a>.</p>
 <pre class="r"><code>Extra = c(&quot;outgoing&quot;, &quot;friendly&quot;, &quot;lively&quot;, &quot;active&quot; ,&quot;talkative&quot;)
 Agree = c(&quot;helpful&quot;, &quot;warm&quot;, &quot;caring&quot;, &quot;softhearted&quot;, &quot;sympathetic&quot;)
 Consc = c(&quot;reckless&quot;, &quot;organized&quot;, &quot;responsible&quot;, &quot;hardworking&quot;, &quot;selfdisciplined&quot;, 
@@ -397,14 +333,17 @@ Consc = c(&quot;reckless&quot;, &quot;organized&quot;, &quot;responsible&quot;, 
 Neuro = c(&quot;moody&quot;, &quot;worrying&quot;, &quot;nervous&quot;, &quot;calm&quot;)
 Openn = c(&quot;creative&quot;, &quot;imaginative&quot;, &quot;intelligent&quot;, &quot;curious&quot;, &quot;broadminded&quot;, 
           &quot;sophisticated&quot;, &quot;adventurous&quot;)</code></pre>
-<div id="calculate-cronbachs-alpha-for-each-format" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Calculate Cronbach’s alpha for each format</h2>
-<p>We start by grouping data by condition and then nesting, to create separate data frames for each of the four formats.</p>
+<div id="calculate-cronbachs-alpha-for-each-format"
+class="section level2">
+<h2>Calculate Cronbach’s alpha for each format</h2>
+<p>We start by grouping data by condition and then nesting, to create
+separate data frames for each of the four formats.</p>
 <pre class="r"><code>format_data = items_wide %&gt;% 
   group_by(condition) %&gt;% 
   nest() %&gt;% 
   ungroup()</code></pre>
-<p>Next we create separate datasets for each of the five personality traits.</p>
+<p>Next we create separate datasets for each of the five personality
+traits.</p>
 <pre class="r"><code>format_data = format_data %&gt;% 
   mutate(
     data_Extra = map(data, ~select(.x, all_of(Extra))),
@@ -418,16 +357,22 @@ Openn = c(&quot;creative&quot;, &quot;imaginative&quot;, &quot;intelligent&quot;
   select(-data) %&gt;% 
   gather(variable, data, starts_with(&quot;data&quot;)) %&gt;% 
   mutate(variable = str_remove(variable, &quot;data_&quot;))</code></pre>
-<p>Next we apply the <code>alpha</code> and <code>omega</code> functions to the datasets. We do not need to use the <code>check.keys</code> function, as items were reverse-scored during the cleaning process.</p>
+<p>Next we apply the <code>alpha</code> and <code>omega</code> functions
+to the datasets. We do not need to use the <code>check.keys</code>
+function, as items were reverse-scored during the cleaning process.</p>
 <pre class="r"><code>format_data = format_data %&gt;% 
   mutate(
     nvar = map_dbl(data, ncol),
     alpha = map(data, psych::alpha),
     omega = map(data, psych::omega, plot = F))</code></pre>
 </div>
-<div id="alpha" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Alpha</h2>
-<p>We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table <a href="#tab:internal10b">1</a> and Figure <a href="#fig:internal11">1</a>.</p>
+<div id="alpha" class="section level2">
+<h2>Alpha</h2>
+<p>We extract the estimated confidence intervals. (Note that these
+estimates are unreliable in small samples. The estimates extracted based
+on pilot data are not expected to reflect estimates provided in the
+final analyses.) The final summary of results is presented in Table
+@ref(tab:internal10b) and Figure @ref(fig:internal11).</p>
 <pre class="r"><code>format_alpha = format_data %&gt;% 
   mutate(alpha_list = map(alpha, &quot;total&quot;),
          alpha_est = map_dbl(alpha_list, &quot;raw_alpha&quot;),
@@ -436,7 +381,7 @@ Openn = c(&quot;creative&quot;, &quot;imaginative&quot;, &quot;intelligent&quot;
          upper_est = alpha_est + (1.96*se_est)) </code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:internal10b">Table 1: </span>Cronbach’s alpha across format and trait.
+Cronbach’s alpha across format and trait.
 </caption>
 <thead>
 <tr>
@@ -463,16 +408,16 @@ D
 Extraversion (5 descriptors)
 </td>
 <td style="text-align:left;">
-0.12 [-0.47, 0.70]
+0.80 [0.77, 0.82]
 </td>
 <td style="text-align:left;">
-0.68 [0.48, 0.88]
+0.82 [0.80, 0.85]
 </td>
 <td style="text-align:left;">
-0.60 [0.28, 0.93]
+0.84 [0.82, 0.86]
 </td>
 <td style="text-align:left;">
-0.86 [0.75, 0.97]
+0.81 [0.78, 0.83]
 </td>
 </tr>
 <tr>
@@ -480,16 +425,16 @@ Extraversion (5 descriptors)
 Agreeableness (5 descriptors)
 </td>
 <td style="text-align:left;">
-0.51 [0.19, 0.82]
+0.90 [0.89, 0.91]
 </td>
 <td style="text-align:left;">
-0.57 [0.25, 0.89]
+0.90 [0.88, 0.91]
 </td>
 <td style="text-align:left;">
-0.90 [0.83, 0.97]
+0.90 [0.88, 0.91]
 </td>
 <td style="text-align:left;">
-0.23 [-0.42, 0.88]
+0.92 [0.91, 0.93]
 </td>
 </tr>
 <tr>
@@ -497,16 +442,16 @@ Agreeableness (5 descriptors)
 Conscientiousness (10 descriptors)
 </td>
 <td style="text-align:left;">
-0.43 [0.09, 0.76]
+0.83 [0.80, 0.85]
 </td>
 <td style="text-align:left;">
-0.56 [0.28, 0.83]
+0.84 [0.82, 0.87]
 </td>
 <td style="text-align:left;">
-0.80 [0.65, 0.95]
+0.80 [0.78, 0.83]
 </td>
 <td style="text-align:left;">
-0.51 [0.11, 0.91]
+0.84 [0.81, 0.86]
 </td>
 </tr>
 <tr>
@@ -514,16 +459,16 @@ Conscientiousness (10 descriptors)
 Neuroticism (4 descriptors)
 </td>
 <td style="text-align:left;">
-0.67 [0.47, 0.86]
+0.83 [0.81, 0.86]
 </td>
 <td style="text-align:left;">
-0.71 [0.54, 0.89]
+0.86 [0.84, 0.88]
 </td>
 <td style="text-align:left;">
-0.37 [-0.14, 0.88]
+0.82 [0.79, 0.84]
 </td>
 <td style="text-align:left;">
-0.72 [0.50, 0.93]
+0.83 [0.81, 0.86]
 </td>
 </tr>
 <tr>
@@ -531,49 +476,58 @@ Neuroticism (4 descriptors)
 Openness (7 descriptors)
 </td>
 <td style="text-align:left;">
-0.56 [0.27, 0.84]
+0.76 [0.72, 0.79]
 </td>
 <td style="text-align:left;">
-0.70 [0.49, 0.90]
+0.68 [0.64, 0.73]
 </td>
 <td style="text-align:left;">
-0.85 [0.74, 0.96]
+0.77 [0.73, 0.80]
 </td>
 <td style="text-align:left;">
-0.41 [-0.08, 0.90]
+0.72 [0.68, 0.76]
 </td>
 </tr>
 </tbody>
 </table>
-<div class="figure"><span style="display:block;" id="fig:internal11"></span>
+<div class="figure">
 <img src="internal_files/figure-html/internal11-1.png" alt="Estimates of Cronbach's alpha across format and trait." width="672" />
 <p class="caption">
-Figure 1: Estimates of Cronbach’s alpha across format and trait.
+Estimates of Cronbach’s alpha across format and trait.
 </p>
 </div>
 </div>
-<div id="split-half-reliability" class="section level2" number="0.3">
-<h2><span class="header-section-number">0.3</span> Split-half reliability</h2>
-<p>Alpha is the average split-half reliability; given space, it can be useful to report the distribution of all split-half reliability estimates. We use the <code>splitHalf</code> function to calculate those. We use smoothed correlation matrices here because when developing code on the pilot data, we had non-positive definite correlation matrices. See Figure <a href="#fig:internal12b">2</a> for these distributions.</p>
+<div id="split-half-reliability" class="section level2">
+<h2>Split-half reliability</h2>
+<p>Alpha is the average split-half reliability; given space, it can be
+useful to report the distribution of all split-half reliability
+estimates. We use the <code>splitHalf</code> function to calculate
+those. We use smoothed correlation matrices here because when developing
+code on the pilot data, we had non-positive definite correlation
+matrices. See Figure @ref(fig:internal12b) for these distributions.</p>
 <pre class="r"><code>format_split = format_data %&gt;% 
   mutate(cor_mat = map(data, cor),
          cor_mat = map(cor_mat, cor.smooth)) %&gt;% 
   mutate(splithalf = map(cor_mat, splitHalf, raw = T))</code></pre>
-<div class="figure"><span style="display:block;" id="fig:internal12b"></span>
+<div class="figure">
 <img src="internal_files/figure-html/internal12b-1.png" alt="Distribution of split-half reliabilities" width="672" />
 <p class="caption">
-Figure 2: Distribution of split-half reliabilities
+Distribution of split-half reliabilities
 </p>
 </div>
 </div>
-<div id="omega" class="section level2" number="0.4">
-<h2><span class="header-section-number">0.4</span> Omega</h2>
-<p>We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table <a href="#tab:internal10b">1</a> and Figure <a href="#fig:internal11">1</a>.</p>
+<div id="omega" class="section level2">
+<h2>Omega</h2>
+<p>We extract the estimated confidence intervals. (Note that these
+estimates are unreliable in small samples. The estimates extracted based
+on pilot data are not expected to reflect estimates provided in the
+final analyses.) The final summary of results is presented in Table
+@ref(tab:internal10b) and Figure @ref(fig:internal11).</p>
 <pre class="r"><code>format_omega = format_data %&gt;% 
   mutate(omega_h = map_dbl(omega, &quot;omega_h&quot;)) </code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:internal13b">Table 2: </span>Omega hierarchical across format and trait.
+Omega hierarchical across format and trait.
 </caption>
 <thead>
 <tr>
@@ -600,33 +554,33 @@ D
 Extraversion (5 descriptors)
 </td>
 <td style="text-align:left;">
-0.35
+0.75
 </td>
 <td style="text-align:left;">
-0.65
-</td>
-<td style="text-align:left;">
-0.78
-</td>
-<td style="text-align:left;">
-0.87
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Agreeableness (5 descriptors)
-</td>
-<td style="text-align:left;">
-0.40
-</td>
-<td style="text-align:left;">
-0.35
+0.76
 </td>
 <td style="text-align:left;">
 0.77
 </td>
 <td style="text-align:left;">
-0.33
+0.75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Agreeableness (5 descriptors)
+</td>
+<td style="text-align:left;">
+0.89
+</td>
+<td style="text-align:left;">
+0.82
+</td>
+<td style="text-align:left;">
+0.82
+</td>
+<td style="text-align:left;">
+0.88
 </td>
 </tr>
 <tr>
@@ -634,16 +588,16 @@ Agreeableness (5 descriptors)
 Conscientiousness (10 descriptors)
 </td>
 <td style="text-align:left;">
-0.79
+0.67
 </td>
 <td style="text-align:left;">
-0.61
+0.65
 </td>
 <td style="text-align:left;">
-0.47
+0.54
 </td>
 <td style="text-align:left;">
-0.72
+0.55
 </td>
 </tr>
 <tr>
@@ -651,16 +605,16 @@ Conscientiousness (10 descriptors)
 Neuroticism (4 descriptors)
 </td>
 <td style="text-align:left;">
-0.52
+0.80
 </td>
 <td style="text-align:left;">
-0.84
+0.85
 </td>
 <td style="text-align:left;">
-0.47
+0.81
 </td>
 <td style="text-align:left;">
-0.41
+0.79
 </td>
 </tr>
 <tr>
@@ -668,13 +622,13 @@ Neuroticism (4 descriptors)
 Openness (7 descriptors)
 </td>
 <td style="text-align:left;">
-0.42
+0.62
 </td>
 <td style="text-align:left;">
-0.58
+0.55
 </td>
 <td style="text-align:left;">
-0.59
+0.66
 </td>
 <td style="text-align:left;">
 0.53
@@ -682,18 +636,16 @@ Openness (7 descriptors)
 </tr>
 </tbody>
 </table>
-<div class="figure"><span style="display:block;" id="fig:internal13c"></span>
+<div class="figure">
 <img src="internal_files/figure-html/internal13c-1.png" alt="Estimates of omega hierarchical across format and trait." width="672" />
 <p class="caption">
-Figure 3: Estimates of omega hierarchical across format and trait.
+Estimates of omega hierarchical across format and trait.
 </p>
 </div>
 </div>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -726,35 +678,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

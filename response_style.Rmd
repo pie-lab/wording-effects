@@ -143,7 +143,7 @@ summary_by_item = mod_by_item %>%
   unnest(cols = c(tidy)) %>%
   mutate(df2 = ifelse(term == "Residuals", df, NA)) %>% 
   with_groups(item, fill, df2, .direction = "downup") %>% 
-  filter(term == "format") %>%
+  filter(term == "format") %>% 
   mutate(reverse = case_when(
     item %in% reverse ~ "Y",
     TRUE ~ "N"
@@ -151,12 +151,12 @@ summary_by_item = mod_by_item %>%
   mutate(p.adj = p.adjust(p.value, method = "holm"))
 
 summary_by_item %>%
-  mutate(across( starts_with("p"), printp )) %>% # format p-values
   arrange(reverse, item) %>%
-  select(item, reverse, sumsq, meansq, df, df2, statistic, p.value, p.adj) %>%
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  select(item, reverse, sumsq, meansq, df, df2, statistic, p.value, p.adj) %>% 
   kable(digits = 2,
-        booktabs = T,
-        escape = F,
+        booktabs = T, 
+        align = c("l", rep("c", 6), rep("r",2)),
         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df1", "df2", "F", "raw", "adj"),
         caption = "Format effects on expected response by item.") %>%
   kable_styling()
@@ -209,7 +209,6 @@ pairwise_response %>%
   select(item, contrast, estimate) %>% 
   pivot_wider(names_from = contrast, values_from = estimate) %>% 
   kable(booktabs = T,
-        escape = F,
         caption = "Pairwise differences of means by format. A = Adjective only. B = Am Adjective. C = Tend to be Adjective. D = Am someone who tends to be Adjective. * p < .05, ** p < .01, *** p < .001") %>%
   kable_styling()
 ```
@@ -329,7 +328,7 @@ summary_by_item_ex %>%
   select(item, reverse, sumsq, meansq, df, df2, statistic, p.value, p.adj) %>%
   kable(digits = 2,
         booktabs = T,
-        escape = F,
+        align = c("l", rep("c", 6), rep("r",2)),
         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "df2" , "F", "raw", "adj"),
         caption = "Format effects on extrene response by item.") %>%
   kable_styling()
@@ -382,7 +381,6 @@ pairwise_response_ex %>%
   select(item, contrast, estimate) %>% 
   pivot_wider(names_from = contrast, values_from = estimate) %>% 
   kable(booktabs = T,
-        escape = F,
         caption = "Pairwise differences in likelihood of extreme responding by format. A = Adjective only. B = Am Adjective. C = Tend to be Adjective. D = Am someone who tends to be Adjective. * p < .05, ** p < .01, *** p < .001") %>%
   kable_styling()
 ```
@@ -522,7 +520,7 @@ summary_by_item_ya %>%
   select(item, reverse, sumsq, meansq, df, df2, statistic, p.value, p.adj) %>%
   kable(digits = 2,
         booktabs = T,
-        #escape = F,
+        align = c("l", rep("c", 6), rep("r",2)),
         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "df2", "F", "raw", "adj"),
         caption = "Format effects on yea-saying by item.") %>%
   kable_styling()
@@ -575,7 +573,6 @@ pairwise_response_ya %>%
   select(item, contrast, estimate) %>% 
   pivot_wider(names_from = contrast, values_from = estimate) %>% 
   kable(booktabs = T,
-        escape = F,
         caption = "Pairwise differences in likelihood of yea-saying by format. A = Adjective only. B = Am Adjective. C = Tend to be Adjective. D = Am someone who tends to be Adjective. * p < .05, ** p < .01, *** p < .001") %>%
   kable_styling()
 ```

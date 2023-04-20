@@ -103,7 +103,7 @@ tibble(models = c("Block 1 - Block 2", "Block 1 - Block 3"),
 
 ## Test-retest reliability (all items pooled, moderated by memory)
 
-Here we fit models moderated by memory -- that it, perhaps the test-retest coefficient is affected by the memory of the participant. Results are shown in Table \@ref(tab:testretest8b)
+Here we fit models moderated by memory -- that it, perhaps the test-retest coefficient is affected by the memory of the participant. Results are shown in Table \@ref(tab:testretest18)
 
 ```{r test-retest-8, results = 'asis'}
 tr_mod2_b1b2 = glmmTMB(block_2 ~ block_1*delayed_memory +
@@ -153,8 +153,6 @@ emtrends(tr_mod2_b1b2,
 ```
 
 ### Block 1/Block 3
-
-**This chunk is turned off due to low coverage. Be sure to turn on with real data.**
 
 ```{r test-retest-10 }
 mem_list = list(very_delayed_memory = c(-1,0,1))
@@ -247,11 +245,7 @@ The test-retest correlations of each item-format combination are presented in Ta
 
 ```{r testretest17, results = 'asis', echo = F}
 items_cors %>%
-  mutate(raw.r = printnum(raw.r),
-         raw.r = case_when(
-           is.na(raw.p) ~ NA_character_,
-           raw.p < .05 ~ paste0(raw.r, "*"),
-           TRUE ~ raw.r)) %>%
+  mutate(raw.r = printnum(raw.r)) %>%
   select(item, condition, comp, raw.r) %>%
   mutate(reverse = case_when(
     item %in% reverse ~ "Y",
@@ -267,7 +261,7 @@ items_cors %>%
   unite(comp, condition, comp) %>%
   spread(comp, raw.r) %>%
   arrange(reverse, item) %>%
-  kable(caption = "Test-retest correlations for each item and condition. Preregistration note: given the low sample size for the pilot data, we are missing observations for many of these comparisons. Correlations which could not be computed are blank in this table, but we expect them to be reported in the final manuscript.",
+  kable(caption = "Test-retest correlations for each item and condition.",
         col.names = c("Item", "Reverse scored?", rep(c("5 min", "2 weeks"), 4)),
         booktabs = T) %>%
   kable_styling() %>%

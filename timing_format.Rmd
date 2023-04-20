@@ -38,10 +38,12 @@ load(here("objects/reverse_vector.Rds"))
 We used a multilevel model, nesting log-seconds within participant to account for dependence. Our primary predictor was format. Here, we use only Block 1 data. Results are depicted in Figure \@ref(fig:timingmod1). The full distribution of timing (in log-seconds) is shown in Figure \@ref(fig:timingdist). Tests of pairwise comparisons are shown in Table \@ref(tab:pairwiseTab).
 
 ```{r}
-item_block12 = filter(items_df, block %in% c("1", "2"))
+item_block12 = filter(items_df, block %in% c("1", "2")) %>% 
+  filter(!is.infinite(seconds_log)) # this was added post pre-registration
 
 mod.format_b1 = glmmTMB(seconds_log~format + (1|block) + (1|proid), 
                   data = item_block12)
+
 tidy(aov(mod.format_b1))
 ```
 
@@ -156,88 +158,85 @@ sig_item_b1
 
 Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean. 
 
-**This code will have to be changed after final data collection. It is not self-adapting!**
 
+### Active
 
-### Helpful
-
-Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:helpfulpairs) and means are shown in Figure \@ref(fig:helpfulplot).
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:activepairs) and means are shown in Figure \@ref(fig:activeplot).
 
 
 ```{r, results = 'asis'}
-helpful_model_b1 = item_block12 %>%
-  filter(item == "helpful") %>%
+active_model_b1 = item_block12 %>%
+  filter(item == "active") %>%
   lm(seconds_log~format, data = .)
 
-helpful_em_b1 = emmeans(helpful_model_b1, "format")
+active_em_b1 = emmeans(active_model_b1, "format")
 ```
-```{r helpfulpairs, echo = F, results = 'asis'}
-pairs(helpful_em_b1, adjust = "holm") %>%
+```{r activepairs, echo = F, results = 'asis'}
+pairs(active_em_b1, adjust = "holm") %>%
   as_tibble() %>% 
   mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
         digits = 2,
-        caption = "Differences in log-seconds to Helpful by format (Block 1 data only)",
+        caption = "Differences in log-seconds to Active by format (Block 1 data only)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
 ```
 
-```{r helpfulplot, echo = F, fig.cap = "Average log-seconds to \"helpful\" by format (block 1 data only)" }
-plot_model(helpful_model_b1, type = "pred", terms = c("format"))
+```{r activeplot, echo = F, fig.cap = "Average log-seconds to \"active\" by format (block 1 data only)" }
+plot_model(active_model_b1, type = "pred", terms = c("format"))
 ```
 
-### Caring
 
-Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:caringpairs) and means are shown in Figure \@ref(fig:caringplot).
+### Adventurous
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:adventurepairs) and means are shown in Figure \@ref(fig:adventureplot).
+
+```{r, results = 'asis'}
+adventurous_model_b1 = item_block12 %>%
+  filter(item == "adventurous") %>%
+  lm(seconds_log~format, data = .)
+```
+```{r adventurepairs, echo = F, results = 'asis'}
+adventurous_em_b1 = emmeans(adventurous_model_b1, "format")
+pairs(adventurous_em_b1, adjust = "holm") %>%
+   as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Adventurous by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r adventureplot, echo = F, fig.cap = "Average log-seconds to \"adventurous\" by format (block 1 data only)" }
+plot_model(adventurous_model_b1, type = "pred", terms = c("format"))
+```
+
+### Broadminded
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:broadmindedpairs) and means are shown in Figure \@ref(fig:broadmindedplot).
 
 
 ```{r, results = 'asis'}
-caring_model_b1 = item_block12 %>%
-  filter(item == "caring") %>%
+broadminded_model_b1 = item_block12 %>%
+  filter(item == "broadminded") %>%
   lm(seconds_log~format, data = .)
-```
-```{r caringpairs, echo = F, results = 'asis'}
 
-caring_em_b1 = emmeans(caring_model_b1, "format")
-pairs(caring_em_b1, adjust = "holm") %>%
+broadminded_em_b1 = emmeans(broadminded_model_b1, "format")
+```
+```{r broadmindedpairs, echo = F, results = 'asis'}
+pairs(broadminded_em_b1, adjust = "holm") %>%
   as_tibble() %>% 
   mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
         digits = 2,
-        caption = "Differences in log-seconds to Caring by format (Block 1 data only)",
+        caption = "Differences in log-seconds to broadminded by format (Block 1 data only)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
 ```
 
-```{r caringplot, echo = F, fig.cap = "Average log-seconds to \"caring\" by format (block 1 data only)" }
-plot_model(caring_model_b1, type = "pred", terms = c("format"))
-```
-
-### Soft-hearted
-
-Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:softpairs) and means are shown in Figure \@ref(fig:softplot).
-
-
-```{r, results = 'asis'}
-softhearted_model_b1 = item_block12 %>%
-  filter(item == "softhearted") %>%
-  lm(seconds_log~format, data = .)
-```
-```{r softpairs, echo = F, results = 'asis'}
-
-softhearted_em_b1 = emmeans(softhearted_model_b1, "format")
-pairs(softhearted_em_b1, adjust = "holm") %>%
-  as_tibble() %>% 
-  mutate(across( starts_with("p"), printp )) %>% # format p-values
-  kable(booktabs = T,
-        digits = 2,
-        caption = "Differences in log-seconds to Soft-hearted by format (Block 1 data only)",
-        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
-  kable_styling()
-```
-
-```{r softplot, echo = F, fig.cap = "Average log-seconds to \"softhearted\" by format (block 1 data only)" }
-plot_model(softhearted_model_b1, type = "pred", terms = c("format"))
+```{r broadmindedplot, echo = F, fig.cap = "Average log-seconds to \"broadminded\" by format (block 1 data only)" }
+plot_model(broadminded_model_b1, type = "pred", terms = c("format"))
 ```
 
 ### Calm
@@ -267,6 +266,547 @@ pairs(calm_em_b1, adjust = "holm") %>%
 plot_model(calm_model_b1, type = "pred", terms = c("format"))
 ```
 
+### Caring
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:caringpairs) and means are shown in Figure \@ref(fig:caringplot).
+
+
+```{r, results = 'asis'}
+caring_model_b1 = item_block12 %>%
+  filter(item == "caring") %>%
+  lm(seconds_log~format, data = .)
+```
+```{r caringpairs, echo = F, results = 'asis'}
+
+caring_em_b1 = emmeans(caring_model_b1, "format")
+pairs(caring_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Caring by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r caringplot, echo = F, fig.cap = "Average log-seconds to \"caring\" by format (block 1 data only)" }
+plot_model(caring_model_b1, type = "pred", terms = c("format"))
+```
+
+### Cautious
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:helpfulpairs) and means are shown in Figure \@ref(fig:helpfulplot).
+
+
+```{r, results = 'asis'}
+cautious_model_b1 = item_block12 %>%
+  filter(item == "cautious") %>%
+  lm(seconds_log~format, data = .)
+
+cautious_em_b1 = emmeans(cautious_model_b1, "format")
+```
+```{r cautiouspairs, echo = F, results = 'asis'}
+pairs(cautious_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Cautious by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r cautiousplot, echo = F, fig.cap = "Average log-seconds to \"cautious\" by format (block 1 data only)" }
+plot_model(cautious_model_b1, type = "pred", terms = c("format"))
+```
+
+### Cold
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:coldpairs) and means are shown in Figure \@ref(fig:coldplot).
+
+
+```{r, results = 'asis'}
+cold_model_b1 = item_block12 %>%
+  filter(item == "cold") %>%
+  lm(seconds_log~format, data = .)
+
+cold_em_b1 = emmeans(cold_model_b1, "format")
+```
+```{r coldpairs, echo = F, results = 'asis'}
+pairs(cold_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Cold by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r coldplot, echo = F, fig.cap = "Average log-seconds to \"cold\" by format (block 1 data only)" }
+plot_model(cold_model_b1, type = "pred", terms = c("format"))
+```
+
+### Creative
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:creativepairs) and means are shown in Figure \@ref(fig:creativeplot).
+
+
+```{r, results = 'asis'}
+creative_model_b1 = item_block12 %>%
+  filter(item == "creative") %>%
+  lm(seconds_log~format, data = .)
+
+creative_em_b1 = emmeans(creative_model_b1, "format")
+```
+```{r creativepairs, echo = F, results = 'asis'}
+pairs(creative_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Creative by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r creativeplot, echo = F, fig.cap = "Average log-seconds to \"creative\" by format (block 1 data only)" }
+plot_model(creative_model_b1, type = "pred", terms = c("format"))
+```
+
+### Curious
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:curiouspairs) and means are shown in Figure \@ref(fig:curiousplot).
+
+
+```{r, results = 'asis'}
+curious_model_b1 = item_block12 %>%
+  filter(item == "curious") %>%
+  lm(seconds_log~format, data = .)
+
+curious_em_b1 = emmeans(curious_model_b1, "format")
+```
+```{r curiouspairs, echo = F, results = 'asis'}
+pairs(curious_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Curious by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r curiousplot, echo = F, fig.cap = "Average log-seconds to \"curious\" by format (block 1 data only)" }
+plot_model(curious_model_b1, type = "pred", terms = c("format"))
+```
+
+### Friendly
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:friendlypairs) and means are shown in Figure \@ref(fig:friendlyplot).
+
+
+```{r, results = 'asis'}
+friendly_model_b1 = item_block12 %>%
+  filter(item == "friendly") %>%
+  lm(seconds_log~format, data = .)
+
+friendly_em_b1 = emmeans(friendly_model_b1, "format")
+```
+```{r friendlypairs, echo = F, results = 'asis'}
+pairs(friendly_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Friendly by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r friendlyplot, echo = F, fig.cap = "Average log-seconds to \"friendly\" by format (block 1 data only)" }
+plot_model(friendly_model_b1, type = "pred", terms = c("format"))
+```
+
+### Hardworking
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:hardworkingpairs) and means are shown in Figure \@ref(fig:hardworkingplot).
+
+
+```{r, results = 'asis'}
+hardworking_model_b1 = item_block12 %>%
+  filter(item == "hardworking") %>%
+  lm(seconds_log~format, data = .)
+
+hardworking_em_b1 = emmeans(hardworking_model_b1, "format")
+```
+```{r hardworkingpairs, echo = F, results = 'asis'}
+pairs(hardworking_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Hardworking by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r hardworkingplot, echo = F, fig.cap = "Average log-seconds to \"hardworking\" by format (block 1 data only)" }
+plot_model(hardworking_model_b1, type = "pred", terms = c("format"))
+```
+
+### Helpful
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:helpfulpairs) and means are shown in Figure \@ref(fig:helpfulplot).
+
+
+```{r, results = 'asis'}
+helpful_model_b1 = item_block12 %>%
+  filter(item == "helpful") %>%
+  lm(seconds_log~format, data = .)
+
+helpful_em_b1 = emmeans(helpful_model_b1, "format")
+```
+```{r helpfulpairs, echo = F, results = 'asis'}
+pairs(helpful_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Helpful by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r helpfulplot, echo = F, fig.cap = "Average log-seconds to \"helpful\" by format (block 1 data only)" }
+plot_model(helpful_model_b1, type = "pred", terms = c("format"))
+```
+
+### Imaginative
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:imaginativepairs) and means are shown in Figure \@ref(fig:imaginativeplot).
+
+
+```{r, results = 'asis'}
+imaginative_model_b1 = item_block12 %>%
+  filter(item == "imaginative") %>%
+  lm(seconds_log~format, data = .)
+
+imaginative_em_b1 = emmeans(imaginative_model_b1, "format")
+```
+```{r imaginativepairs, echo = F, results = 'asis'}
+pairs(imaginative_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Imaginative by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r imaginativeplot, echo = F, fig.cap = "Average log-seconds to \"imaginative\" by format (block 1 data only)" }
+plot_model(imaginative_model_b1, type = "pred", terms = c("format"))
+```
+
+### Intelligent
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:intelligentpairs) and means are shown in Figure \@ref(fig:intelligentplot).
+
+
+```{r, results = 'asis'}
+intelligent_model_b1 = item_block12 %>%
+  filter(item == "intelligent") %>%
+  lm(seconds_log~format, data = .)
+
+intelligent_em_b1 = emmeans(intelligent_model_b1, "format")
+```
+```{r intelligentpairs, echo = F, results = 'asis'}
+pairs(intelligent_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Intelligent by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r intelligentplot, echo = F, fig.cap = "Average log-seconds to \"intelligent\" by format (block 1 data only)" }
+plot_model(intelligent_model_b1, type = "pred", terms = c("format"))
+```
+
+### Lively
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:livelypairs) and means are shown in Figure \@ref(fig:livelyplot).
+
+
+```{r, results = 'asis'}
+lively_model_b1 = item_block12 %>%
+  filter(item == "lively") %>%
+  lm(seconds_log~format, data = .)
+
+lively_em_b1 = emmeans(lively_model_b1, "format")
+```
+```{r livelypairs, echo = F, results = 'asis'}
+pairs(lively_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Lively by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r livelyplot, echo = F, fig.cap = "Average log-seconds to \"lively\" by format (block 1 data only)" }
+plot_model(lively_model_b1, type = "pred", terms = c("format"))
+```
+
+### Organized
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:organizedpairs) and means are shown in Figure \@ref(fig:organizedplot).
+
+
+```{r, results = 'asis'}
+organized_model_b1 = item_block12 %>%
+  filter(item == "organized") %>%
+  lm(seconds_log~format, data = .)
+
+organized_em_b1 = emmeans(organized_model_b1, "format")
+```
+```{r organizedpairs, echo = F, results = 'asis'}
+pairs(organized_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Organized by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r organizedplot, echo = F, fig.cap = "Average log-seconds to \"organized\" by format (block 1 data only)" }
+plot_model(organized_model_b1, type = "pred", terms = c("format"))
+```
+
+### Outgoing
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:outgoingpairs) and means are shown in Figure \@ref(fig:outgoingplot).
+
+
+```{r, results = 'asis'}
+outgoing_model_b1 = item_block12 %>%
+  filter(item == "outgoing") %>%
+  lm(seconds_log~format, data = .)
+
+outgoing_em_b1 = emmeans(outgoing_model_b1, "format")
+```
+```{r outgoingpairs, echo = F, results = 'asis'}
+pairs(outgoing_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Outgoing by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r outgoingplot, echo = F, fig.cap = "Average log-seconds to \"outgoing\" by format (block 1 data only)" }
+plot_model(outgoing_model_b1, type = "pred", terms = c("format"))
+```
+
+### Quiet
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:quietpairs) and means are shown in Figure \@ref(fig:quietplot).
+
+
+```{r, results = 'asis'}
+quiet_model_b1 = item_block12 %>%
+  filter(item == "quiet") %>%
+  lm(seconds_log~format, data = .)
+
+quiet_em_b1 = emmeans(quiet_model_b1, "format")
+```
+```{r quietpairs, echo = F, results = 'asis'}
+pairs(quiet_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Quiet by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r quietplot, echo = F, fig.cap = "Average log-seconds to \"quiet\" by format (block 1 data only)" }
+plot_model(quiet_model_b1, type = "pred", terms = c("format"))
+```
+
+### Relaxed
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:relaxedpairs) and means are shown in Figure \@ref(fig:relaxedplot).
+
+
+```{r, results = 'asis'}
+relaxed_model_b1 = item_block12 %>%
+  filter(item == "relaxed") %>%
+  lm(seconds_log~format, data = .)
+
+relaxed_em_b1 = emmeans(relaxed_model_b1, "format")
+```
+```{r relaxedpairs, echo = F, results = 'asis'}
+pairs(relaxed_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Relaxed by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r relaxedplot, echo = F, fig.cap = "Average log-seconds to \"relaxed\" by format (block 1 data only)" }
+plot_model(relaxed_model_b1, type = "pred", terms = c("format"))
+```
+
+### Responsible
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:responsiblepairs) and means are shown in Figure \@ref(fig:responsibleplot).
+
+
+```{r, results = 'asis'}
+responsible_model_b1 = item_block12 %>%
+  filter(item == "responsible") %>%
+  lm(seconds_log~format, data = .)
+
+responsible_em_b1 = emmeans(responsible_model_b1, "format")
+```
+```{r responsiblepairs, echo = F, results = 'asis'}
+pairs(responsible_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Responsible by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r responsibleplot, echo = F, fig.cap = "Average log-seconds to \"responsible\" by format (block 1 data only)" }
+plot_model(responsible_model_b1, type = "pred", terms = c("format"))
+```
+
+### Self-disciplined
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:selfdisciplinedpairs) and means are shown in Figure \@ref(fig:selfdisciplinedplot).
+
+
+```{r, results = 'asis'}
+selfdisciplined_model_b1 = item_block12 %>%
+  filter(item == "selfdisciplined") %>%
+  lm(seconds_log~format, data = .)
+
+selfdisciplined_em_b1 = emmeans(selfdisciplined_model_b1, "format")
+```
+```{r selfdisciplinedpairs, echo = F, results = 'asis'}
+pairs(selfdisciplined_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Self-disciplined by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r selfdisciplinedplot, echo = F, fig.cap = "Average log-seconds to \"selfdisciplined\" by format (block 1 data only)" }
+plot_model(selfdisciplined_model_b1, type = "pred", terms = c("format"))
+```
+
+### Shy
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:shypairs) and means are shown in Figure \@ref(fig:shyplot).
+
+
+```{r, results = 'asis'}
+shy_model_b1 = item_block12 %>%
+  filter(item == "shy") %>%
+  lm(seconds_log~format, data = .)
+
+shy_em_b1 = emmeans(shy_model_b1, "format")
+```
+```{r shypairs, echo = F, results = 'asis'}
+pairs(shy_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Shy by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r shyplot, echo = F, fig.cap = "Average log-seconds to \"shy\" by format (block 1 data only)" }
+plot_model(shy_model_b1, type = "pred", terms = c("format"))
+```
+
+### Soft-hearted
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:softpairs) and means are shown in Figure \@ref(fig:softplot).
+
+
+```{r, results = 'asis'}
+softhearted_model_b1 = item_block12 %>%
+  filter(item == "softhearted") %>%
+  lm(seconds_log~format, data = .)
+```
+```{r softpairs, echo = F, results = 'asis'}
+
+softhearted_em_b1 = emmeans(softhearted_model_b1, "format")
+pairs(softhearted_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Soft-hearted by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r softplot, echo = F, fig.cap = "Average log-seconds to \"softhearted\" by format (block 1 data only)" }
+plot_model(softhearted_model_b1, type = "pred", terms = c("format"))
+```
+
+### Sophisticated
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:sophisticatedpairs) and means are shown in Figure \@ref(fig:sophisticatedplot).
+
+
+```{r, results = 'asis'}
+sophisticated_model_b1 = item_block12 %>%
+  filter(item == "sophisticated") %>%
+  lm(seconds_log~format, data = .)
+
+sophisticated_em_b1 = emmeans(sophisticated_model_b1, "format")
+```
+```{r sophisticatedpairs, echo = F, results = 'asis'}
+pairs(sophisticated_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Sophisticated by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r sophisticatedplot, echo = F, fig.cap = "Average log-seconds to \"sophisticated\" by format (block 1 data only)" }
+plot_model(sophisticated_model_b1, type = "pred", terms = c("format"))
+```
+
+
 ### Sympathetic
 
 Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:symppairs) and means are shown in Figure \@ref(fig:sympplot).
@@ -294,31 +834,356 @@ pairs(sympathetic_em_b1, adjust = "holm") %>%
 plot_model(sympathetic_model_b1, type = "pred", terms = c("format"))
 ```
 
-### Adventurous
+### Talkative
 
-Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:adventurepairs) and means are shown in Figure \@ref(fig:adventureplot).
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:talkativepairs) and means are shown in Figure \@ref(fig:talkativeplot).
+
 
 ```{r, results = 'asis'}
-adventurous_model_b1 = item_block12 %>%
-  filter(item == "adventurous") %>%
+talkative_model_b1 = item_block12 %>%
+  filter(item == "talkative") %>%
   lm(seconds_log~format, data = .)
+
+talkative_em_b1 = emmeans(talkative_model_b1, "format")
 ```
-```{r adventurepairs, echo = F, results = 'asis'}
-adventurous_em_b1 = emmeans(adventurous_model_b1, "format")
-pairs(adventurous_em_b1, adjust = "holm") %>%
-   as_tibble() %>% 
+```{r talkativepairs, echo = F, results = 'asis'}
+pairs(talkative_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
   mutate(across( starts_with("p"), printp )) %>% # format p-values
   kable(booktabs = T,
         digits = 2,
-        caption = "Differences in log-seconds to Adventurous by format (Block 1 data only)",
+        caption = "Differences in log-seconds to Talkative by format (Block 1 data only)",
         col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
   kable_styling()
 ```
 
-```{r adventureplot, echo = F, fig.cap = "Average log-seconds to \"adventurous\" by format (block 1 data only)" }
-plot_model(adventurous_model_b1, type = "pred", terms = c("format"))
+```{r talkativeplot, echo = F, fig.cap = "Average log-seconds to \"talkative\" by format (block 1 data only)" }
+plot_model(talkative_model_b1, type = "pred", terms = c("format"))
 ```
 
+### Thorough
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:thoroughpairs) and means are shown in Figure \@ref(fig:thoroughplot).
+
+
+```{r, results = 'asis'}
+thorough_model_b1 = item_block12 %>%
+  filter(item == "thorough") %>%
+  lm(seconds_log~format, data = .)
+
+thorough_em_b1 = emmeans(thorough_model_b1, "format")
+```
+```{r thoroughpairs, echo = F, results = 'asis'}
+pairs(thorough_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Thorough by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r thoroughplot, echo = F, fig.cap = "Average log-seconds to \"thorough\" by format (block 1 data only)" }
+plot_model(thorough_model_b1, type = "pred", terms = c("format"))
+```
+
+### Thrifty
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:thriftypairs) and means are shown in Figure \@ref(fig:thriftyplot).
+
+
+```{r, results = 'asis'}
+thrifty_model_b1 = item_block12 %>%
+  filter(item == "thrifty") %>%
+  lm(seconds_log~format, data = .)
+
+thrifty_em_b1 = emmeans(thrifty_model_b1, "format")
+```
+```{r thriftypairs, echo = F, results = 'asis'}
+pairs(thrifty_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Thrifty by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r thriftyplot, echo = F, fig.cap = "Average log-seconds to \"thrifty\" by format (block 1 data only)" }
+plot_model(thrifty_model_b1, type = "pred", terms = c("format"))
+```
+
+### Uncreative
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:uncreativepairs) and means are shown in Figure \@ref(fig:uncreativeplot).
+
+
+```{r, results = 'asis'}
+uncreative_model_b1 = item_block12 %>%
+  filter(item == "uncreative") %>%
+  lm(seconds_log~format, data = .)
+
+uncreative_em_b1 = emmeans(uncreative_model_b1, "format")
+```
+```{r uncreativepairs, echo = F, results = 'asis'}
+pairs(uncreative_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Uncreative by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r uncreativeplot, echo = F, fig.cap = "Average log-seconds to \"uncreative\" by format (block 1 data only)" }
+plot_model(uncreative_model_b1, type = "pred", terms = c("format"))
+```
+
+### Unintellectual
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:unintellectualpairs) and means are shown in Figure \@ref(fig:unintellectualplot).
+
+
+```{r, results = 'asis'}
+unintellectual_model_b1 = item_block12 %>%
+  filter(item == "unintellectual") %>%
+  lm(seconds_log~format, data = .)
+
+unintellectual_em_b1 = emmeans(unintellectual_model_b1, "format")
+```
+```{r unintellectualpairs, echo = F, results = 'asis'}
+pairs(unintellectual_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Unintellectual by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r unintellectualplot, echo = F, fig.cap = "Average log-seconds to \"unintellectual\" by format (block 1 data only)" }
+plot_model(unintellectual_model_b1, type = "pred", terms = c("format"))
+```
+
+### Unsympathetic
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:unsympatheticpairs) and means are shown in Figure \@ref(fig:unsympatheticplot).
+
+
+```{r, results = 'asis'}
+unsympathetic_model_b1 = item_block12 %>%
+  filter(item == "unsympathetic") %>%
+  lm(seconds_log~format, data = .)
+
+unsympathetic_em_b1 = emmeans(unsympathetic_model_b1, "format")
+```
+```{r unsympatheticpairs, echo = F, results = 'asis'}
+pairs(unsympathetic_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Unsympathetic by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r unsympatheticplot, echo = F, fig.cap = "Average log-seconds to \"unsympathetic\" by format (block 1 data only)" }
+plot_model(unsympathetic_model_b1, type = "pred", terms = c("format"))
+```
+
+### Warm
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:warmpairs) and means are shown in Figure \@ref(fig:warmplot).
+
+
+```{r, results = 'asis'}
+warm_model_b1 = item_block12 %>%
+  filter(item == "warm") %>%
+  lm(seconds_log~format, data = .)
+
+warm_em_b1 = emmeans(warm_model_b1, "format")
+```
+```{r warmpairs, echo = F, results = 'asis'}
+pairs(warm_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Warm by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r warmplot, echo = F, fig.cap = "Average log-seconds to \"warm\" by format (block 1 data only)" }
+plot_model(warm_model_b1, type = "pred", terms = c("format"))
+```
+
+### Careless
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:carelesspairs) and means are shown in Figure \@ref(fig:carelessplot).
+
+
+```{r, results = 'asis'}
+careless_model_b1 = item_block12 %>%
+  filter(item == "careless") %>%
+  lm(seconds_log~format, data = .)
+
+careless_em_b1 = emmeans(careless_model_b1, "format")
+```
+```{r carelesspairs, echo = F, results = 'asis'}
+pairs(careless_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Careless by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r carelessplot, echo = F, fig.cap = "Average log-seconds to \"careless\" by format (block 1 data only)" }
+plot_model(careless_model_b1, type = "pred", terms = c("format"))
+```
+
+### Impulsive
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:impulsivepairs) and means are shown in Figure \@ref(fig:impulsiveplot).
+
+
+```{r, results = 'asis'}
+impulsive_model_b1 = item_block12 %>%
+  filter(item == "impulsive") %>%
+  lm(seconds_log~format, data = .)
+
+impulsive_em_b1 = emmeans(impulsive_model_b1, "format")
+```
+```{r impulsivepairs, echo = F, results = 'asis'}
+pairs(impulsive_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Impulsive by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r impulsiveplot, echo = F, fig.cap = "Average log-seconds to \"impulsive\" by format (block 1 data only)" }
+plot_model(impulsive_model_b1, type = "pred", terms = c("format"))
+```
+
+### Moody
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:moodypairs) and means are shown in Figure \@ref(fig:moodyplot).
+
+
+```{r, results = 'asis'}
+moody_model_b1 = item_block12 %>%
+  filter(item == "moody") %>%
+  lm(seconds_log~format, data = .)
+
+moody_em_b1 = emmeans(moody_model_b1, "format")
+```
+```{r moodypairs, echo = F, results = 'asis'}
+pairs(moody_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Moody by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r moodyplot, echo = F, fig.cap = "Average log-seconds to \"moody\" by format (block 1 data only)" }
+plot_model(moody_model_b1, type = "pred", terms = c("format"))
+```
+
+### Nervous
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:nervouspairs) and means are shown in Figure \@ref(fig:nervousplot).
+
+
+```{r, results = 'asis'}
+nervous_model_b1 = item_block12 %>%
+  filter(item == "nervous") %>%
+  lm(seconds_log~format, data = .)
+
+nervous_em_b1 = emmeans(nervous_model_b1, "format")
+```
+```{r nervouspairs, echo = F, results = 'asis'}
+pairs(nervous_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Nervous by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r nervousplot, echo = F, fig.cap = "Average log-seconds to \"nervous\" by format (block 1 data only)" }
+plot_model(nervous_model_b1, type = "pred", terms = c("format"))
+```
+
+### Reckless
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:recklesspairs) and means are shown in Figure \@ref(fig:recklessplot).
+
+
+```{r, results = 'asis'}
+reckless_model_b1 = item_block12 %>%
+  filter(item == "reckless") %>%
+  lm(seconds_log~format, data = .)
+
+reckless_em_b1 = emmeans(reckless_model_b1, "format")
+```
+```{r recklesspairs, echo = F, results = 'asis'}
+pairs(reckless_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Reckless by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r recklessplot, echo = F, fig.cap = "Average log-seconds to \"reckless\" by format (block 1 data only)" }
+plot_model(reckless_model_b1, type = "pred", terms = c("format"))
+```
+
+### Worrying
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:worryingpairs) and means are shown in Figure \@ref(fig:worryingplot).
+
+
+```{r, results = 'asis'}
+worrying_model_b1 = item_block12 %>%
+  filter(item == "worrying") %>%
+  lm(seconds_log~format, data = .)
+
+worrying_em_b1 = emmeans(worrying_model_b1, "format")
+```
+```{r worryingpairs, echo = F, results = 'asis'}
+pairs(worrying_em_b1, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Worrying by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r worryingplot, echo = F, fig.cap = "Average log-seconds to \"worrying\" by format (block 1 data only)" }
+plot_model(worrying_model_b1, type = "pred", terms = c("format"))
+```
 
 ## Inclusion of "I" (Blocks 1 and 3)
 
@@ -328,7 +1193,8 @@ We used a multilevel model, nesting response within participant to account for d
 items_13 = items_df %>% 
   filter(block %in% c("1","3")) %>% 
   filter(condition != "A") %>% 
-  filter(time2 == "yes")
+  filter(time2 == "yes") %>% 
+  filter(!is.infinite(seconds_log))
 ```
 
 ```{r}
@@ -417,4 +1283,35 @@ summary_by_item_i2 %>%
   kable(digits = 2, booktabs = T,
         caption = "Interaction of I with format on timing for each item") %>%
   kable_styling()
+```
+
+#### Outgoing
+
+
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:outgoingpairsi) and means are shown in Figure \@ref(fig:outgoingplot).
+
+
+```{r, results = 'asis'}
+outgoing_model_b1i = items_13 %>%
+  filter(item == "outgoing") %>%
+  lm(seconds_log~format*i, data = .)
+
+outgoing_em_b1i = emmeans(outgoing_model_b1i, ~ "format*i")
+```
+```{r outgoingpairsi, echo = F, results = 'asis'}
+pairs(outgoing_em_b1i, adjust = "holm") %>%
+  as_tibble() %>% 
+  mutate(
+    across( starts_with("p"), printp ), # format p-values
+    contrast = str_replace(contrast, "Absent", "I-Absent"),
+    contrast = str_replace(contrast, "Present", "I-Present")) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = "Differences in log-seconds to Outgoing by format (Block 1 data only)",
+        col.names = c("Contrast", "Difference in means", "SE", "df", "t", "p")) %>%
+  kable_styling()
+```
+
+```{r outgoingploti, echo = F, fig.cap = "Average log-seconds to \"outgoing\" by format (block 1 data only)" }
+plot_model(outgoing_model_b1i, type = "pred", terms = c("format", "i"))
 ```

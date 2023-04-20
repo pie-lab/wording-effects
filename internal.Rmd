@@ -26,6 +26,7 @@ library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
 library(papaja) # for number formatting
 library(psych) # for correlation tests
+library(GPArotation)
 library(ggridges) # for overlay distributions
 
 options(knitr.kable.NA = '')
