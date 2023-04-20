@@ -13,8 +13,7 @@
 
 <title>Workspace Information</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -67,6 +66,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -87,6 +87,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -144,11 +147,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -177,8 +184,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -186,16 +193,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -312,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -328,7 +328,7 @@ div.tocify {
   <a href="descriptives.html">Descriptives</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Analysis
      
     <span class="caret"></span>
@@ -348,6 +348,9 @@ div.tocify {
     </li>
     <li>
       <a href="device.html">Does device type affect response and timing?</a>
+    </li>
+    <li>
+      <a href="subjective.html">Does item formatting affect participant survey enjoyment?</a>
     </li>
   </ul>
 </li>
@@ -375,12 +378,12 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Workspace Information</h1>
-<h4 class="date">Last updated 2022-07-16</h4>
+<h4 class="date">Last updated 2023-04-20</h4>
 
 </div>
 
 
-<p>All data cleaning and analyses were completed using R version 4.1.3 (2022-03-10) (One Push-Up). Below we list the packages (and versions) used in these analyses.</p>
+<p>All data cleaning and analyses were completed using R version 4.2.3 (2023-03-15) (Shortstop Beagle). Below we list the packages (and versions) used in these analyses.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -401,7 +404,7 @@ Authors and contributors
 knitr
 </td>
 <td style="text-align:left;">
-1.33
+1.42
 </td>
 <td style="text-align:left;width: 5in; ">
 Yihui Xie [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-0645-5666%3E" class="uri">https://orcid.org/0000-0003-0645-5666&gt;</a>;),
@@ -409,6 +412,7 @@ Abhraneel Sarma [ctb],
 Adam Vogt [ctb],
 Alastair Andrew [ctb],
 Alex Zvoleff [ctb],
+Amar Al-Zubaidi [ctb],
 Andre Simon [ctb] (the CSS files under inst/themes/ were derived from
 the Highlight package <a href="http://www.andre-simon.de" class="uri">http://www.andre-simon.de</a>),
 Aron Atkins [ctb],
@@ -442,6 +446,7 @@ Henrik Bengtsson [ctb],
 Hiroaki Yutani [ctb],
 Ian Lyttle [ctb],
 Hodges Daniel [ctb],
+Jacob Bien [ctb],
 Jake Burkhead [ctb],
 James Manton [ctb],
 Jared Lander [ctb],
@@ -484,12 +489,15 @@ Niels Richard Hansen [ctb],
 Noam Ross [ctb],
 Obada Mahdi [ctb],
 Pavel N. Krivitsky [ctb] (&lt;<a href="https://orcid.org/0000-0002-9101-3362%3E" class="uri">https://orcid.org/0000-0002-9101-3362&gt;</a>;),
+Pedro Faria [ctb],
 Qiang Li [ctb],
 Ramnath Vaidyanathan [ctb],
 Richard Cotton [ctb],
 Robert Krzyzanowski [ctb],
+Rodrigo Copetti [ctb],
 Romain Francois [ctb],
 Ruaridh Williamson [ctb],
+Sagiru Mati [ctb] (&lt;<a href="https://orcid.org/0000-0003-1413-3974%3E" class="uri">https://orcid.org/0000-0003-1413-3974&gt;</a>;),
 Scott Kostyshak [ctb],
 Sebastian Meyer [ctb],
 Sietse Brouwer [ctb],
@@ -505,7 +513,8 @@ Trevor Davis [ctb],
 Viktoras Veitas [ctb],
 Weicheng Zhu [ctb],
 Wush Wu [ctb],
-Zachary Foster [ctb]
+Zachary Foster [ctb],
+Zhian N. Kamvar [ctb] (&lt;<a href="https://orcid.org/0000-0003-1458-7108%3E" class="uri">https://orcid.org/0000-0003-1458-7108&gt;</a>;)
 </td>
 </tr>
 <tr>
@@ -513,7 +522,7 @@ Zachary Foster [ctb]
 car
 </td>
 <td style="text-align:left;">
-3.0-11
+3.1-1
 </td>
 <td style="text-align:left;width: 5in; ">
 John Fox [aut, cre],
@@ -537,6 +546,7 @@ Duncan Murdoch [ctb],
 Henric Nilsson [ctb],
 Derek Ogle [ctb],
 Brian Ripley [ctb],
+Tom Short [ctb],
 William Venables [ctb],
 Steve Walker [ctb],
 David Winsemius [ctb],
@@ -549,7 +559,7 @@ R-Core [ctb]
 carData
 </td>
 <td style="text-align:left;">
-3.0-4
+3.0-5
 </td>
 <td style="text-align:left;width: 5in; ">
 John Fox [aut, cre],
@@ -581,7 +591,7 @@ Helios De Rosario [cre]
 ggridges
 </td>
 <td style="text-align:left;">
-0.5.3
+0.5.4
 </td>
 <td style="text-align:left;width: 5in; ">
 Claus O. Wilke [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-7470-9261%3E" class="uri">https://orcid.org/0000-0002-7470-9261&gt;</a>;)
@@ -589,16 +599,33 @@ Claus O. Wilke [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-7470-9261%3E
 </tr>
 <tr>
 <td style="text-align:left;">
+GPArotation
+</td>
+<td style="text-align:left;">
+2023.3-1
+</td>
+<td style="text-align:left;width: 5in; ">
+Coen Bernaards [aut, cre],
+Paul Gilbert [aut],
+Robert Jennrich [aut]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 emmeans
 </td>
 <td style="text-align:left;">
-1.6.3
+1.8.5
 </td>
 <td style="text-align:left;width: 5in; ">
 Russell V. Lenth [aut, cre, cph],
+Ben Bolker [ctb],
 Paul Buerkner [ctb],
+Iago Giné-Vázquez [ctb],
 Maxime Herve [ctb],
+Maarten Jung [ctb],
 Jonathon Love [ctb],
+Fernando Miguez [ctb],
 Hannes Riebl [ctb],
 Henrik Singmann [ctb]
 </td>
@@ -622,7 +649,7 @@ Sofie Pødenphant Jensen [ctb]
 lme4
 </td>
 <td style="text-align:left;">
-1.1-27.1
+1.1-31
 </td>
 <td style="text-align:left;width: 5in; ">
 Douglas Bates [aut] (&lt;<a href="https://orcid.org/0000-0001-8316-9503%3E" class="uri">https://orcid.org/0000-0001-8316-9503&gt;</a>;),
@@ -647,15 +674,16 @@ shared copyright on simulate.formula)
 Matrix
 </td>
 <td style="text-align:left;">
-1.3-4
+1.5-3
 </td>
 <td style="text-align:left;width: 5in; ">
 Douglas Bates [aut],
 Martin Maechler [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-8685-9910%3E" class="uri">https://orcid.org/0000-0002-8685-9910&gt;</a>;),
+Mikael Jagan [aut] (&lt;<a href="https://orcid.org/0000-0002-3542-2938%3E" class="uri">https://orcid.org/0000-0002-3542-2938&gt;</a>;),
 Timothy A. Davis [ctb] (SuiteSparse and ‘cs’ C libraries, notably
-CHOLMOD, AMD; collaborators listed in dir(pattern =
-‘<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>+[.]txt$’, full.names=TRUE, system.file(‘doc’,
-‘SuiteSparse’, package=‘Matrix’))),
+CHOLMOD and AMD, collaborators listed in
+dir(pattern=“<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>+[.]txt$”, full.names=TRUE, system.file(“doc”,
+“SuiteSparse”, package=“Matrix”))),
 Jens Oehlschlägel [ctb] (initial nearPD()),
 Jason Riedy [ctb] (condest() and onenormest() for octave, Copyright:
 Regents of the University of California),
@@ -667,7 +695,7 @@ R Core Team [ctb] (base R matrix implementation)
 broom.mixed
 </td>
 <td style="text-align:left;">
-0.2.7
+0.2.9.4
 </td>
 <td style="text-align:left;width: 5in; ">
 Ben Bolker [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-2127-0443%3E" class="uri">https://orcid.org/0000-0002-2127-0443&gt;</a>;),
@@ -681,7 +709,9 @@ Joshua Wiley [ctb] (&lt;<a href="https://orcid.org/0000-0002-0271-6702%3E" class
 Patrick Kennedy [ctb],
 Eduard Szöcs [ctb] (&lt;<a href="https://orcid.org/0000-0001-5376-1194%3E" class="uri">https://orcid.org/0000-0001-5376-1194&gt;</a>;, BASF SE),
 Indrajeet Patil [ctb],
-Vincent Arel-Bundock [ctb] (&lt;<a href="https://orcid.org/0000-0003-2042-7063%3E" class="uri">https://orcid.org/0000-0003-2042-7063&gt;</a>;)
+Vincent Arel-Bundock [ctb] (&lt;<a href="https://orcid.org/0000-0003-2042-7063%3E" class="uri">https://orcid.org/0000-0003-2042-7063&gt;</a>;),
+Bill Denney [ctb],
+Cory Brunson [ctb]
 </td>
 </tr>
 <tr>
@@ -689,7 +719,7 @@ Vincent Arel-Bundock [ctb] (&lt;<a href="https://orcid.org/0000-0003-2042-7063%3
 psych
 </td>
 <td style="text-align:left;">
-2.1.6
+2.2.9
 </td>
 <td style="text-align:left;width: 5in; ">
 William Revelle [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-4880-9610%3E" class="uri">https://orcid.org/0000-0003-4880-9610&gt;</a>;)
@@ -700,7 +730,7 @@ William Revelle [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-4880-9610%3
 papaja
 </td>
 <td style="text-align:left;">
-0.1.0.9997
+0.1.1
 </td>
 <td style="text-align:left;width: 5in; ">
 Frederik Aust [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-4900-788X%3E" class="uri">https://orcid.org/0000-0003-4900-788X&gt;</a>;),
@@ -713,10 +743,21 @@ Rudolf Siegel [ctb]
 </tr>
 <tr>
 <td style="text-align:left;">
+tinylabels
+</td>
+<td style="text-align:left;">
+0.2.3
+</td>
+<td style="text-align:left;width: 5in; ">
+Marius Barth [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-3421-6665%3E" class="uri">https://orcid.org/0000-0002-3421-6665&gt;</a>;)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 stringdist
 </td>
 <td style="text-align:left;">
-0.9.7
+0.9.10
 </td>
 <td style="text-align:left;width: 5in; ">
 Mark van der Loo [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-9807-4686%3E" class="uri">https://orcid.org/0000-0002-9807-4686&gt;</a>;),
@@ -724,7 +765,8 @@ Jan van der Laan [ctb],
 R Core Team [ctb],
 Nick Logan [ctb],
 Chris Muir [ctb],
-Johannes Gruber [ctb]
+Johannes Gruber [ctb],
+Brian Ripley [ctb]
 </td>
 </tr>
 <tr>
@@ -756,7 +798,7 @@ Bill Evans [ctb]
 ggpubr
 </td>
 <td style="text-align:left;">
-0.4.0
+0.6.0
 </td>
 <td style="text-align:left;width: 5in; ">
 Alboukadel Kassambara [aut, cre]
@@ -767,7 +809,7 @@ Alboukadel Kassambara [aut, cre]
 sjPlot
 </td>
 <td style="text-align:left;">
-2.8.9
+2.8.12
 </td>
 <td style="text-align:left;width: 5in; ">
 Daniel Lüdecke [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-8895-3206%3E" class="uri">https://orcid.org/0000-0002-8895-3206&gt;</a>;),
@@ -783,12 +825,13 @@ Johannes Titz [ctb] (&lt;<a href="https://orcid.org/0000-0002-1102-5719%3E" clas
 broom
 </td>
 <td style="text-align:left;">
-0.7.9
+1.0.3
 </td>
 <td style="text-align:left;width: 5in; ">
 David Robinson [aut],
 Alex Hayes [aut] (&lt;<a href="https://orcid.org/0000-0002-4985-5160%3E" class="uri">https://orcid.org/0000-0002-4985-5160&gt;</a>;),
 Simon Couch [aut, cre] (&lt;<a href="https://orcid.org/0000-0001-5676-5107%3E" class="uri">https://orcid.org/0000-0001-5676-5107&gt;</a>;),
+RStudio [cph, fnd],
 Indrajeet Patil [ctb] (&lt;<a href="https://orcid.org/0000-0003-1995-6531%3E" class="uri">https://orcid.org/0000-0003-1995-6531&gt;</a>;),
 Derek Chiu [ctb],
 Matthieu Gomez [ctb],
@@ -867,7 +910,6 @@ Clara Wang [ctb],
 Sergio Oller [ctb],
 Luke Sonnet [ctb],
 Jim Hester [ctb],
-Cory Brunson [ctb],
 Ben Schneider [ctb],
 Bernie Gray [ctb] (&lt;<a href="https://orcid.org/0000-0001-9190-6032%3E" class="uri">https://orcid.org/0000-0001-9190-6032&gt;</a>;),
 Mara Averick [ctb],
@@ -909,7 +951,11 @@ Hugo Tavares [ctb] (&lt;<a href="https://orcid.org/0000-0001-9373-2726%3E" class
 R. Willem Vervoort [ctb],
 Brenton M. Wiernik [ctb],
 Josh Yamamoto [ctb],
-Jasme Lee [ctb]
+Jasme Lee [ctb],
+Taren Sanders [ctb] (&lt;<a href="https://orcid.org/0000-0002-4504-6008%3E" class="uri">https://orcid.org/0000-0002-4504-6008&gt;</a>;),
+Ilaria Prosdocimi [ctb] (&lt;<a href="https://orcid.org/0000-0001-8565-094X%3E" class="uri">https://orcid.org/0000-0001-8565-094X&gt;</a>;),
+Daniel D. Sjoberg [ctb] (&lt;<a href="https://orcid.org/0000-0003-0862-2018%3E" class="uri">https://orcid.org/0000-0003-0862-2018&gt;</a>;),
+Alex Reinhart [ctb] (&lt;<a href="https://orcid.org/0000-0002-6658-514X%3E" class="uri">https://orcid.org/0000-0002-6658-514X&gt;</a>;)
 </td>
 </tr>
 <tr>
@@ -917,24 +963,27 @@ Jasme Lee [ctb]
 glmmTMB
 </td>
 <td style="text-align:left;">
-1.1.2
+1.1.5
 </td>
 <td style="text-align:left;width: 5in; ">
+Mollie Brooks [aut, cre] (&lt;<a href="https://orcid.org/0000-0001-6963-8326%3E" class="uri">https://orcid.org/0000-0001-6963-8326&gt;</a>;),
+Ben Bolker [aut] (&lt;<a href="https://orcid.org/0000-0002-2127-0443%3E" class="uri">https://orcid.org/0000-0002-2127-0443&gt;</a>;),
+Kasper Kristensen [aut],
+Martin Maechler [aut] (&lt;<a href="https://orcid.org/0000-0002-8685-9910%3E" class="uri">https://orcid.org/0000-0002-8685-9910&gt;</a>;),
 Arni Magnusson [aut] (&lt;<a href="https://orcid.org/0000-0003-2769-6741%3E" class="uri">https://orcid.org/0000-0003-2769-6741&gt;</a>;),
+Maeve McGillycuddy [ctb],
 Hans Skaug [aut],
 Anders Nielsen [aut] (&lt;<a href="https://orcid.org/0000-0001-9683-9262%3E" class="uri">https://orcid.org/0000-0001-9683-9262&gt;</a>;),
 Casper Berg [aut] (&lt;<a href="https://orcid.org/0000-0002-3812-5269%3E" class="uri">https://orcid.org/0000-0002-3812-5269&gt;</a>;),
-Kasper Kristensen [aut],
-Martin Maechler [aut] (&lt;<a href="https://orcid.org/0000-0002-8685-9910%3E" class="uri">https://orcid.org/0000-0002-8685-9910&gt;</a>;),
 Koen van Bentham [aut],
-Ben Bolker [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-2127-0443%3E" class="uri">https://orcid.org/0000-0002-2127-0443&gt;</a>;),
 Nafis Sadat [ctb] (&lt;<a href="https://orcid.org/0000-0001-5715-616X%3E" class="uri">https://orcid.org/0000-0001-5715-616X&gt;</a>;),
 Daniel Lüdecke [ctb] (&lt;<a href="https://orcid.org/0000-0002-8895-3206%3E" class="uri">https://orcid.org/0000-0002-8895-3206&gt;</a>;),
 Russ Lenth [ctb],
 Joseph O’Brien [ctb] (&lt;<a href="https://orcid.org/0000-0001-9851-5077%3E" class="uri">https://orcid.org/0000-0001-9851-5077&gt;</a>;),
 Charles J. Geyer [ctb],
-Maeve McGillycuddy [ctb],
-Mollie Brooks [aut] (&lt;<a href="https://orcid.org/0000-0001-6963-8326%3E" class="uri">https://orcid.org/0000-0001-6963-8326&gt;</a>;)
+Mikael Jagan [ctb] (&lt;<a href="https://orcid.org/0000-0002-3542-2938%3E" class="uri">https://orcid.org/0000-0002-3542-2938&gt;</a>;),
+Brenton Wiernik [ctb] (&lt;<a href="https://orcid.org/0000-0001-9560-6336%3E" class="uri">https://orcid.org/0000-0001-9560-6336&gt;</a>;),
+Daniel B. Stouffer [ctb] (&lt;<a href="https://orcid.org/0000-0001-9436-9674%3E" class="uri">https://orcid.org/0000-0001-9436-9674&gt;</a>;)
 </td>
 </tr>
 <tr>
@@ -942,13 +991,12 @@ Mollie Brooks [aut] (&lt;<a href="https://orcid.org/0000-0001-6963-8326%3E" clas
 stringi
 </td>
 <td style="text-align:left;">
-1.7.4
+1.7.12
 </td>
 <td style="text-align:left;width: 5in; ">
 Marek Gagolewski [aut, cre, cph] (&lt;<a href="https://orcid.org/0000-0003-0637-6028%3E" class="uri">https://orcid.org/0000-0003-0637-6028&gt;</a>;),
-Bartek Tartanus [ctb],
-and others (stringi source code);
-IBM, Unicode, Inc. and others (ICU4C source code, Unicode Character Database)
+Bartek Tartanus [ctb], and others (stringi source code);
+Unicode, Inc. and others (ICU4C source code, Unicode Character Database)
 </td>
 </tr>
 <tr>
@@ -956,7 +1004,7 @@ IBM, Unicode, Inc. and others (ICU4C source code, Unicode Character Database)
 janitor
 </td>
 <td style="text-align:left;">
-2.1.0
+2.2.0
 </td>
 <td style="text-align:left;width: 5in; ">
 Sam Firke [aut, cre],
@@ -969,10 +1017,31 @@ Jonathan Zadra [ctb]
 </tr>
 <tr>
 <td style="text-align:left;">
+lubridate
+</td>
+<td style="text-align:left;">
+1.9.2
+</td>
+<td style="text-align:left;width: 5in; ">
+Vitalie Spinu [aut, cre],
+Garrett Grolemund [aut],
+Hadley Wickham [aut],
+Davis Vaughan [ctb],
+Ian Lyttle [ctb],
+Imanuel Costigan [ctb],
+Jason Law [ctb],
+Doug Mitarotonda [ctb],
+Joseph Larmarange [ctb],
+Jonathan Boiser [ctb],
+Chel Hee Lee [ctb]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 forcats
 </td>
 <td style="text-align:left;">
-0.5.1
+1.0.0
 </td>
 <td style="text-align:left;width: 5in; ">
 Hadley Wickham [aut, cre],
@@ -984,7 +1053,7 @@ RStudio [cph, fnd]
 stringr
 </td>
 <td style="text-align:left;">
-1.4.0
+1.5.0
 </td>
 <td style="text-align:left;width: 5in; ">
 Hadley Wickham [aut, cre, cph],
@@ -996,14 +1065,15 @@ RStudio [cph, fnd]
 dplyr
 </td>
 <td style="text-align:left;">
-1.0.7
+1.1.0
 </td>
 <td style="text-align:left;width: 5in; ">
 Hadley Wickham [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-4757-117X%3E" class="uri">https://orcid.org/0000-0003-4757-117X&gt;</a>;),
 Romain François [aut] (&lt;<a href="https://orcid.org/0000-0002-2444-4226%3E" class="uri">https://orcid.org/0000-0002-2444-4226&gt;</a>;),
 Lionel Henry [aut],
 Kirill Müller [aut] (&lt;<a href="https://orcid.org/0000-0002-1416-3412%3E" class="uri">https://orcid.org/0000-0002-1416-3412&gt;</a>;),
-RStudio [cph, fnd]
+Davis Vaughan [aut] (&lt;<a href="https://orcid.org/0000-0003-4777-038X%3E" class="uri">https://orcid.org/0000-0003-4777-038X&gt;</a>;),
+Posit, PBC [cph, fnd]
 </td>
 </tr>
 <tr>
@@ -1011,11 +1081,11 @@ RStudio [cph, fnd]
 purrr
 </td>
 <td style="text-align:left;">
-0.3.4
+1.0.1
 </td>
 <td style="text-align:left;width: 5in; ">
-Lionel Henry [aut, cre],
-Hadley Wickham [aut],
+Hadley Wickham [aut, cre] (&lt;<a href="https://orcid.org/0000-0003-4757-117X%3E" class="uri">https://orcid.org/0000-0003-4757-117X&gt;</a>;),
+Lionel Henry [aut],
 RStudio [cph, fnd]
 </td>
 </tr>
@@ -1024,13 +1094,15 @@ RStudio [cph, fnd]
 readr
 </td>
 <td style="text-align:left;">
-2.0.1
+2.1.4
 </td>
 <td style="text-align:left;width: 5in; ">
 Hadley Wickham [aut],
-Jim Hester [aut, cre],
+Jim Hester [aut],
 Romain Francois [ctb],
-RStudio [cph, fnd],
+Jennifer Bryan [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-6983-2759%3E" class="uri">https://orcid.org/0000-0002-6983-2759&gt;</a>;),
+Shelby Bearrows [ctb],
+Posit, PBC [cph, fnd],
 <a href="https://github.com/mandreyel/" class="uri">https://github.com/mandreyel/</a> [cph] (mio library),
 Jukka Jylänki [ctb, cph] (grisu3 implementation),
 Mikkel Jørgensen [ctb, cph] (grisu3 implementation)
@@ -1041,11 +1113,14 @@ Mikkel Jørgensen [ctb, cph] (grisu3 implementation)
 tidyr
 </td>
 <td style="text-align:left;">
-1.1.3
+1.3.0
 </td>
 <td style="text-align:left;width: 5in; ">
 Hadley Wickham [aut, cre],
-RStudio [cph]
+Davis Vaughan [aut],
+Maximilian Girlich [aut],
+Kevin Ushey [ctb],
+Posit, PBC [cph, fnd]
 </td>
 </tr>
 <tr>
@@ -1053,14 +1128,14 @@ RStudio [cph]
 tibble
 </td>
 <td style="text-align:left;">
-3.1.4
+3.2.0
 </td>
 <td style="text-align:left;width: 5in; ">
-Kirill Müller [aut, cre],
+Kirill Müller [aut, cre] (&lt;<a href="https://orcid.org/0000-0002-1416-3412%3E" class="uri">https://orcid.org/0000-0002-1416-3412&gt;</a>;),
 Hadley Wickham [aut],
 Romain Francois [ctb],
 Jennifer Bryan [ctb],
-RStudio [cph]
+RStudio [cph, fnd]
 </td>
 </tr>
 <tr>
@@ -1068,7 +1143,7 @@ RStudio [cph]
 ggplot2
 </td>
 <td style="text-align:left;">
-3.3.5
+3.4.1
 </td>
 <td style="text-align:left;width: 5in; ">
 Hadley Wickham [aut] (&lt;<a href="https://orcid.org/0000-0003-4757-117X%3E" class="uri">https://orcid.org/0000-0003-4757-117X&gt;</a>;),
@@ -1089,7 +1164,7 @@ RStudio [cph, fnd]
 tidyverse
 </td>
 <td style="text-align:left;">
-1.3.1
+2.0.0
 </td>
 <td style="text-align:left;width: 5in; ">
 Hadley Wickham [aut, cre],

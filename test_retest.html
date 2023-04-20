@@ -274,6 +274,9 @@ $(document).ready(function () {
     <li>
       <a href="device.html">Does device type affect response and timing?</a>
     </li>
+    <li>
+      <a href="subjective.html">Does item formatting affect participant survey enjoyment?</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -391,7 +394,7 @@ class="section level2">
 <h2>Test-retest reliability (all items pooled, moderated by memory)</h2>
 <p>Here we fit models moderated by memory – that it, perhaps the
 test-retest coefficient is affected by the memory of the participant.
-Results are shown in Table @ref(tab:testretest18)</p>
+Results are shown in Table @ref(tab:testretest8b)</p>
 <pre class="r"><code>tr_mod2_b1b2 = glmmTMB(block_2 ~ block_1*delayed_memory +
                       (1 |proid),
                     data = items_matchb1)

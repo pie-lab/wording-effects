@@ -13,7 +13,6 @@
 
 <title>Does the internal consistency of Big Five traits vary by item wording?</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -29,6 +28,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -223,6 +225,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -230,6 +295,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -274,6 +349,9 @@ $(document).ready(function () {
     <li>
       <a href="device.html">Does device type affect response and timing?</a>
     </li>
+    <li>
+      <a href="subjective.html">Does item formatting affect participant survey enjoyment?</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -299,22 +377,14 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Does the internal consistency of Big Five
-traits vary by item wording?</h1>
+<h1 class="title toc-ignore">Does the internal consistency of Big Five traits vary by item wording?</h1>
 <h4 class="date">Last updated 2023-04-20</h4>
 
 </div>
 
 
-<p>We calculate and report Cronbach’s alpha for all formats using data
-from Blocks 1 and 2. This will include both the average split-half
-reliability, as well as the 95% confidence interval. Differences in
-internal consistency will be considered statistically significant if the
-confidence intervals of two formats do not overlap. We will also show
-the distribution of all possible split halves for each of the four
-formats.</p>
-<p>We start by creating a wide-format of the dataset using only the
-Block 1 data.</p>
+<p>We calculate and report Cronbach’s alpha for all formats using data from Blocks 1 and 2. This will include both the average split-half reliability, as well as the 95% confidence interval. Differences in internal consistency will be considered statistically significant if the confidence intervals of two formats do not overlap. We will also show the distribution of all possible split halves for each of the four formats.</p>
+<p>We start by creating a wide-format of the dataset using only the Block 1 data.</p>
 <pre class="r"><code>items_wide = items_df %&gt;%
   # only blocks 1 and 2
   filter(block %in% c(1,2)) %&gt;% 
@@ -322,10 +392,7 @@ Block 1 data.</p>
   select(proid, block, condition, item, response) %&gt;% 
   # to wide form
   spread(item, response)</code></pre>
-<p>Next, we identify the items associated with each trait. These come
-from the Health and Retirement Study Psychosocial and Lifestyle
-Questionnaire 2006-2016 user guide, which can be found at this <a
-href="https://hrs.isr.umich.edu/publications/biblio/9066">link</a>.</p>
+<p>Next, we identify the items associated with each trait. These come from the Health and Retirement Study Psychosocial and Lifestyle Questionnaire 2006-2016 user guide, which can be found at this <a href="https://hrs.isr.umich.edu/publications/biblio/9066">link</a>.</p>
 <pre class="r"><code>Extra = c(&quot;outgoing&quot;, &quot;friendly&quot;, &quot;lively&quot;, &quot;active&quot; ,&quot;talkative&quot;)
 Agree = c(&quot;helpful&quot;, &quot;warm&quot;, &quot;caring&quot;, &quot;softhearted&quot;, &quot;sympathetic&quot;)
 Consc = c(&quot;reckless&quot;, &quot;organized&quot;, &quot;responsible&quot;, &quot;hardworking&quot;, &quot;selfdisciplined&quot;, 
@@ -333,17 +400,14 @@ Consc = c(&quot;reckless&quot;, &quot;organized&quot;, &quot;responsible&quot;, 
 Neuro = c(&quot;moody&quot;, &quot;worrying&quot;, &quot;nervous&quot;, &quot;calm&quot;)
 Openn = c(&quot;creative&quot;, &quot;imaginative&quot;, &quot;intelligent&quot;, &quot;curious&quot;, &quot;broadminded&quot;, 
           &quot;sophisticated&quot;, &quot;adventurous&quot;)</code></pre>
-<div id="calculate-cronbachs-alpha-for-each-format"
-class="section level2">
-<h2>Calculate Cronbach’s alpha for each format</h2>
-<p>We start by grouping data by condition and then nesting, to create
-separate data frames for each of the four formats.</p>
+<div id="calculate-cronbachs-alpha-for-each-format" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Calculate Cronbach’s alpha for each format</h2>
+<p>We start by grouping data by condition and then nesting, to create separate data frames for each of the four formats.</p>
 <pre class="r"><code>format_data = items_wide %&gt;% 
   group_by(condition) %&gt;% 
   nest() %&gt;% 
   ungroup()</code></pre>
-<p>Next we create separate datasets for each of the five personality
-traits.</p>
+<p>Next we create separate datasets for each of the five personality traits.</p>
 <pre class="r"><code>format_data = format_data %&gt;% 
   mutate(
     data_Extra = map(data, ~select(.x, all_of(Extra))),
@@ -357,22 +421,16 @@ traits.</p>
   select(-data) %&gt;% 
   gather(variable, data, starts_with(&quot;data&quot;)) %&gt;% 
   mutate(variable = str_remove(variable, &quot;data_&quot;))</code></pre>
-<p>Next we apply the <code>alpha</code> and <code>omega</code> functions
-to the datasets. We do not need to use the <code>check.keys</code>
-function, as items were reverse-scored during the cleaning process.</p>
+<p>Next we apply the <code>alpha</code> and <code>omega</code> functions to the datasets. We do not need to use the <code>check.keys</code> function, as items were reverse-scored during the cleaning process.</p>
 <pre class="r"><code>format_data = format_data %&gt;% 
   mutate(
     nvar = map_dbl(data, ncol),
     alpha = map(data, psych::alpha),
     omega = map(data, psych::omega, plot = F))</code></pre>
 </div>
-<div id="alpha" class="section level2">
-<h2>Alpha</h2>
-<p>We extract the estimated confidence intervals. (Note that these
-estimates are unreliable in small samples. The estimates extracted based
-on pilot data are not expected to reflect estimates provided in the
-final analyses.) The final summary of results is presented in Table
-@ref(tab:internal10b) and Figure @ref(fig:internal11).</p>
+<div id="alpha" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Alpha</h2>
+<p>We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table <a href="#tab:internal10b">1</a> and Figure <a href="#fig:internal11">1</a>.</p>
 <pre class="r"><code>format_alpha = format_data %&gt;% 
   mutate(alpha_list = map(alpha, &quot;total&quot;),
          alpha_est = map_dbl(alpha_list, &quot;raw_alpha&quot;),
@@ -381,7 +439,7 @@ final analyses.) The final summary of results is presented in Table
          upper_est = alpha_est + (1.96*se_est)) </code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Cronbach’s alpha across format and trait.
+<span id="tab:internal10b">Table 1: </span>Cronbach’s alpha across format and trait.
 </caption>
 <thead>
 <tr>
@@ -490,44 +548,35 @@ Openness (7 descriptors)
 </tr>
 </tbody>
 </table>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:internal11"></span>
 <img src="internal_files/figure-html/internal11-1.png" alt="Estimates of Cronbach's alpha across format and trait." width="672" />
 <p class="caption">
-Estimates of Cronbach’s alpha across format and trait.
+Figure 1: Estimates of Cronbach’s alpha across format and trait.
 </p>
 </div>
 </div>
-<div id="split-half-reliability" class="section level2">
-<h2>Split-half reliability</h2>
-<p>Alpha is the average split-half reliability; given space, it can be
-useful to report the distribution of all split-half reliability
-estimates. We use the <code>splitHalf</code> function to calculate
-those. We use smoothed correlation matrices here because when developing
-code on the pilot data, we had non-positive definite correlation
-matrices. See Figure @ref(fig:internal12b) for these distributions.</p>
+<div id="split-half-reliability" class="section level2" number="0.3">
+<h2><span class="header-section-number">0.3</span> Split-half reliability</h2>
+<p>Alpha is the average split-half reliability; given space, it can be useful to report the distribution of all split-half reliability estimates. We use the <code>splitHalf</code> function to calculate those. We use smoothed correlation matrices here because when developing code on the pilot data, we had non-positive definite correlation matrices. See Figure <a href="#fig:internal12b">2</a> for these distributions.</p>
 <pre class="r"><code>format_split = format_data %&gt;% 
   mutate(cor_mat = map(data, cor),
          cor_mat = map(cor_mat, cor.smooth)) %&gt;% 
   mutate(splithalf = map(cor_mat, splitHalf, raw = T))</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:internal12b"></span>
 <img src="internal_files/figure-html/internal12b-1.png" alt="Distribution of split-half reliabilities" width="672" />
 <p class="caption">
-Distribution of split-half reliabilities
+Figure 2: Distribution of split-half reliabilities
 </p>
 </div>
 </div>
-<div id="omega" class="section level2">
-<h2>Omega</h2>
-<p>We extract the estimated confidence intervals. (Note that these
-estimates are unreliable in small samples. The estimates extracted based
-on pilot data are not expected to reflect estimates provided in the
-final analyses.) The final summary of results is presented in Table
-@ref(tab:internal10b) and Figure @ref(fig:internal11).</p>
+<div id="omega" class="section level2" number="0.4">
+<h2><span class="header-section-number">0.4</span> Omega</h2>
+<p>We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table <a href="#tab:internal10b">1</a> and Figure <a href="#fig:internal11">1</a>.</p>
 <pre class="r"><code>format_omega = format_data %&gt;% 
   mutate(omega_h = map_dbl(omega, &quot;omega_h&quot;)) </code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Omega hierarchical across format and trait.
+<span id="tab:internal13b">Table 2: </span>Omega hierarchical across format and trait.
 </caption>
 <thead>
 <tr>
@@ -636,16 +685,18 @@ Openness (7 descriptors)
 </tr>
 </tbody>
 </table>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:internal13c"></span>
 <img src="internal_files/figure-html/internal13c-1.png" alt="Estimates of omega hierarchical across format and trait." width="672" />
 <p class="caption">
-Estimates of omega hierarchical across format and trait.
+Figure 3: Estimates of omega hierarchical across format and trait.
 </p>
 </div>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -678,6 +729,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

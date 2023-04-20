@@ -82,6 +82,13 @@ library(here)
 
 \newpage
 
+# How does format affect participants' subjective experience?
+
+```{r, child = here("subjective.Rmd")}
+```
+
+\newpage
+
 # Power analysis
 
 ```{r, child = here("power.Rmd")}

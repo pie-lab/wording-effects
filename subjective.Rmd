@@ -28,7 +28,7 @@ library(papaja) # pretty numbers
 load(here("objects/enjoy_df.Rds"))
 ```
 
-# Enjoyment
+## Enjoyment
 
 First, we test whether participants enjoyed their experience as a function of format. The item participants rated was:
 
@@ -41,7 +41,7 @@ car::Anova(mod_enjoy_1)
 
 Participants did not vary in their enjoyment of the survey as a function of item format. See \@ref(fig:enjoyFormat).
 
-```{r}
+```{r enjoyFormat}
 plot_model(mod_enjoy_1, type = "pred", show.data = T, jitter = T)$format +
   labs(x = NULL, 
        y = "Average enjoyment", 
@@ -64,7 +64,7 @@ car::Anova(mod_enjoy_3, type = "3")
 
 The relationship of item format to enjoyment did not vary as a function of device type.
 
-# Perception of survey design
+## Perception of survey design
 
 Next, we test whether participants viewed the survey differently as a function of format. The item participants rated was:
 
@@ -77,7 +77,7 @@ car::Anova(mod_design_1)
 
 Participants did not vary in their perception of the survey as a function of item format. See \@ref(fig:designFormat).
 
-```{r}
+```{r designFormat}
 plot_model(mod_design_1, type = "pred", show.data = T, jitter = T)$format +
   labs(x = NULL, 
        y = "Average designment", 

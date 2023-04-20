@@ -103,7 +103,7 @@ tibble(models = c("Block 1 - Block 2", "Block 1 - Block 3"),
 
 ## Test-retest reliability (all items pooled, moderated by memory)
 
-Here we fit models moderated by memory -- that it, perhaps the test-retest coefficient is affected by the memory of the participant. Results are shown in Table \@ref(tab:testretest18)
+Here we fit models moderated by memory -- that it, perhaps the test-retest coefficient is affected by the memory of the participant. Results are shown in Table \@ref(tab:testretest8b)
 
 ```{r test-retest-8, results = 'asis'}
 tr_mod2_b1b2 = glmmTMB(block_2 ~ block_1*delayed_memory +

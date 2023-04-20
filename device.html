@@ -13,7 +13,6 @@
 
 <title>Device effects</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -29,6 +28,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -221,6 +223,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -228,6 +293,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -272,6 +347,9 @@ $(document).ready(function () {
     <li>
       <a href="device.html">Does device type affect response and timing?</a>
     </li>
+    <li>
+      <a href="subjective.html">Does item formatting affect participant survey enjoyment?</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -303,60 +381,38 @@ $(document).ready(function () {
 </div>
 
 
-<p>In this section, we present exploratory analyses which test the
-effect of device type More specifically, we’re interested to know
-whether the time it takes to complete personality assessments differs by
-device type (computer, phone, tablet). We also test whether the typical
-response to personality items is associated with device type, although
-we have no theoretical reasons to suspect this is the case.</p>
+<p>In this section, we present exploratory analyses which test the effect of device type More specifically, we’re interested to know whether the time it takes to complete personality assessments differs by device type (computer, phone, tablet). We also test whether the typical response to personality items is associated with device type, although we have no theoretical reasons to suspect this is the case.</p>
 <p>For these analyses, we use only data collected in Block 1.</p>
-<div id="deviations-from-preregistration" class="section level2">
-<h2>Deviations from preregistration</h2>
-<p>We were unable to extract significance values for interactions using
-the <code>aov</code> function, which would have tested effects using an
-F-test. Instead, we use <code>car::Anova</code>, which uses a <span
-class="math inline">\(\chi^2\)</span> test.</p>
+<div id="deviations-from-preregistration" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Deviations from preregistration</h2>
+<p>We were unable to extract significance values for interactions using the <code>aov</code> function, which would have tested effects using an F-test. Instead, we use <code>car::Anova</code>, which uses a <span class="math inline">\(\chi^2\)</span> test.</p>
 </div>
-<div id="analyses" class="section level2">
-<h2>Analyses</h2>
+<div id="analyses" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Analyses</h2>
 <pre class="r"><code>items_block1 = items_df %&gt;% filter(block == &quot;1&quot;)</code></pre>
 </div>
-<div id="demographics-by-device-type" class="section level2">
-<h2>Demographics by device type</h2>
-<p>Device-type analyses in this project are purely exploratory, but may
-be hampered by potential confounds. We test whether different types of
-participants (based on demographic variables) used different devices to
-complete the survey.</p>
+<div id="demographics-by-device-type" class="section level2" number="0.3">
+<h2><span class="header-section-number">0.3</span> Demographics by device type</h2>
+<p>Device-type analyses in this project are purely exploratory, but may be hampered by potential confounds. We test whether different types of participants (based on demographic variables) used different devices to complete the survey.</p>
 <pre><code>## # A tibble: 3 × 4
 ##   devicetype  Male Female Other
 ##   &lt;ord&gt;      &lt;int&gt;  &lt;int&gt; &lt;int&gt;
 ## 1 Computer     391    343     1
 ## 2 Mobile        89    110     2
 ## 3 Tablet        14     24    NA</code></pre>
-<p>Figure @ref(fig:descriptives-17)A shows the distributions of age by
-device type; the ANOVA test of these differences is <span
-class="math inline">\(F(2, 971) = 6.71\)</span>, <span
-class="math inline">\(p = .001\)</span>, <span
-class="math inline">\(\hat{\eta}^2_G = .014\)</span>, 90% CI <span
-class="math inline">\([.003, .027]\)</span>. The chi-square test of
-biological sex by device type was <span class="math inline">\(\chi^2(4,
-n = 974) = 11.60\)</span>, <span class="math inline">\(p =
-.021\)</span>.</p>
-<div class="figure">
+<p>Figure <a href="#fig:descriptives-17">1</a>A shows the distributions of age by device type; the ANOVA test of these differences is <span class="math inline">\(F(2, 971) = 6.71\)</span>, <span class="math inline">\(p = .001\)</span>, <span class="math inline">\(\hat{\eta}^2_G = .014\)</span>, 90% CI <span class="math inline">\([.003, .027]\)</span>. The chi-square test of biological sex by device type was <span class="math inline">\(\chi^2(4, n = 974) = 11.60\)</span>, <span class="math inline">\(p = .021\)</span>.</p>
+<div class="figure"><span style="display:block;" id="fig:descriptives-17"></span>
 <img src="device_files/figure-html/descriptives-17-1.png" alt="Distributions by device type" width="672" />
 <p class="caption">
-Distributions by device type
+Figure 1: Distributions by device type
 </p>
 </div>
 </div>
-<div id="timing" class="section level2">
-<h2>Timing</h2>
-<div id="timing-by-device" class="section level3">
-<h3>Timing by device</h3>
-<p>We used a multilevel model, nesting timing within participant to
-account for dependence. Our primary predictor was device type. As a
-reminder, our outcome variable (seconds) has been log-transformed, as it
-was strongly skewed.</p>
+<div id="timing" class="section level2" number="0.4">
+<h2><span class="header-section-number">0.4</span> Timing</h2>
+<div id="timing-by-device" class="section level3" number="0.4.1">
+<h3><span class="header-section-number">0.4.1</span> Timing by device</h3>
+<p>We used a multilevel model, nesting timing within participant to account for dependence. Our primary predictor was device type. As a reminder, our outcome variable (seconds) has been log-transformed, as it was strongly skewed.</p>
 <pre class="r"><code>mod.timing = glmmTMB(seconds_log~devicetype + (1|proid), 
                   data = items_block1)
 tidy(car::Anova(mod.timing))</code></pre>
@@ -364,9 +420,7 @@ tidy(car::Anova(mod.timing))</code></pre>
 ##   term       statistic    df p.value
 ##   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
 ## 1 devicetype      9.43     2 0.00894</code></pre>
-<p>Device type was associated with the time it took to respond to
-personality items <span class="math inline">\((\chi^2(2.00) = 9.43, p =
-.009)\)</span>.</p>
+<p>Device type was associated with the time it took to respond to personality items <span class="math inline">\((\chi^2(2.00) = 9.43, p = .009)\)</span>.</p>
 <pre class="r"><code>emmeans(mod.timing, ~&quot;devicetype&quot;) %&gt;% 
   as.data.frame() %&gt;% 
   ggplot(aes(x = devicetype, y = emmean)) +
@@ -377,10 +431,10 @@ personality items <span class="math inline">\((\chi^2(2.00) = 9.43, p =
        title = &quot;Average time per personality item\nby device type&quot;,
        caption = &quot;Bars represent 95% confidence intervals&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:device-7"></span>
 <img src="device_files/figure-html/device-7-1.png" alt="Predicted timing on personality items by condition." width="672" />
 <p class="caption">
-Predicted timing on personality items by condition.
+Figure 2: Predicted timing on personality items by condition.
 </p>
 </div>
 <pre class="r"><code>means_by_group = items_block1 %&gt;%
@@ -399,17 +453,16 @@ items_block1 %&gt;%
        title = &quot;Distribution of timing by format&quot;,
        x = &quot;timing (logrithmic scale)&quot;) +
   theme_pubr()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:device-8"></span>
 <img src="device_files/figure-html/device-8-1.png" alt="Distribution of seconds by category" width="672" />
 <p class="caption">
-Distribution of seconds by category
+Figure 3: Distribution of seconds by category
 </p>
 </div>
 </div>
-<div id="device-by-format" class="section level3">
-<h3>Device by format</h3>
-<p>We also check to see whether device type and format interact in the
-prediction of time to answer personality items.</p>
+<div id="device-by-format" class="section level3" number="0.4.2">
+<h3><span class="header-section-number">0.4.2</span> Device by format</h3>
+<p>We also check to see whether device type and format interact in the prediction of time to answer personality items.</p>
 <pre class="r"><code>mod.timing2 = glmmTMB(seconds_log~devicetype + format + devicetype:format+ (1|proid), 
                   data = items_block1)
 tidy(car::Anova(mod.timing2))</code></pre>
@@ -425,9 +478,7 @@ tD2_aov = tD2_aov %&gt;%
   as_tibble() %&gt;% 
   mutate(across(starts_with(&quot;P&quot;), printp),
          across(where(is.numeric), printnum))</code></pre>
-<p>The interaction between device type and format was associated with
-the time it took to respond to personality items <span
-class="math inline">\((\chi^2(6.00) = 13.78, p = .032)\)</span>.</p>
+<p>The interaction between device type and format was associated with the time it took to respond to personality items <span class="math inline">\((\chi^2(6.00) = 13.78, p = .032)\)</span>.</p>
 <pre class="r"><code>emmeans(mod.timing2, ~&quot;devicetype*format&quot;) %&gt;% 
   as.data.frame() %&gt;% 
   ggplot(aes(x = format, y = emmean, group = devicetype)) +
@@ -441,23 +492,20 @@ class="math inline">\((\chi^2(6.00) = 13.78, p = .032)\)</span>.</p>
        title = &quot;Average time per personality item\nby device type&quot;,
        caption = &quot;Bars represent 95% confidence intervals&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:device-11"></span>
 <img src="device_files/figure-html/device-11-1.png" alt="Predicted timing on personality items by condition." width="672" />
 <p class="caption">
-Predicted timing on personality items by condition.
+Figure 4: Predicted timing on personality items by condition.
 </p>
 </div>
 </div>
 </div>
-<div id="responses" class="section level2">
-<h2>Responses</h2>
-<p>Here we estimate the differences in response to personality items
-items by device. Again, we have no theoretical rationale for these
-models – these are purely exploratory.</p>
-<div id="response-by-device" class="section level3">
-<h3>Response by device</h3>
-<p>We used a multilevel model, nesting response within participant to
-account for dependence. Our primary predictor was device type.</p>
+<div id="responses" class="section level2" number="0.5">
+<h2><span class="header-section-number">0.5</span> Responses</h2>
+<p>Here we estimate the differences in response to personality items items by device. Again, we have no theoretical rationale for these models – these are purely exploratory.</p>
+<div id="response-by-device" class="section level3" number="0.5.1">
+<h3><span class="header-section-number">0.5.1</span> Response by device</h3>
+<p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictor was device type.</p>
 <pre class="r"><code>mod.responseD = glmmTMB(response~devicetype + (1|proid), 
                   data = items_block1)
 tidy(car::Anova(mod.responseD))</code></pre>
@@ -465,9 +513,7 @@ tidy(car::Anova(mod.responseD))</code></pre>
 ##   term       statistic    df p.value
 ##   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
 ## 1 devicetype     0.131     2   0.936</code></pre>
-<p>When examining both Block 1 and Block 2 data, device type was
-unassociated with the time it took to respond to personality items <span
-class="math inline">\((\chi^2(2.00) = 0.51, p = .601)\)</span>.</p>
+<p>When examining both Block 1 and Block 2 data, device type was unassociated with the time it took to respond to personality items <span class="math inline">\((\chi^2(2.00) = 0.51, p = .601)\)</span>.</p>
 <pre class="r"><code>emmeans(mod.responseD, ~&quot;devicetype&quot;) %&gt;% 
   as.data.frame() %&gt;% 
   ggplot(aes(x = devicetype, y = emmean)) +
@@ -478,10 +524,10 @@ class="math inline">\((\chi^2(2.00) = 0.51, p = .601)\)</span>.</p>
        title = &quot;Expected responses by device&quot;,
        caption = &quot;Bars represent 95% confidence intervals&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:device-14"></span>
 <img src="device_files/figure-html/device-14-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
-Predicted response on personality items by condition.
+Figure 5: Predicted response on personality items by condition.
 </p>
 </div>
 <pre class="r"><code>means_by_group = items_block1 %&gt;%
@@ -502,17 +548,16 @@ items_block1 %&gt;%
   labs(y = &quot;Number of particpants&quot;,
        title = &quot;Distribution of responses by format&quot;) +
   theme_pubr()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:device-15"></span>
 <img src="device_files/figure-html/device-15-1.png" alt="Distribution of responses by category" width="672" />
 <p class="caption">
-Distribution of responses by category
+Figure 6: Distribution of responses by category
 </p>
 </div>
 </div>
-<div id="device-by-format-1" class="section level3">
-<h3>Device by format</h3>
-<p>We also check whether item format moderated the relationship between
-device type and response.</p>
+<div id="device-by-format-1" class="section level3" number="0.5.2">
+<h3><span class="header-section-number">0.5.2</span> Device by format</h3>
+<p>We also check whether item format moderated the relationship between device type and response.</p>
 <pre class="r"><code>mod.responseD2 = glmmTMB(response~devicetype*format + (1|proid), 
                   data = items_block1)
 tidy(aov(mod.responseD2))</code></pre>
@@ -529,9 +574,7 @@ rD2_aov = rD2_aov %&gt;%
   as_tibble() %&gt;% 
   mutate(across(starts_with(&quot;P&quot;), printp),
          across(where(is.numeric), printnum))</code></pre>
-<p>The interaction between device type and format was NA with the time
-it took to respond to personality items <span
-class="math inline">\((\chi^2(36,038.00) = NA, p = )\)</span>.</p>
+<p>The interaction between device type and format was NA with the time it took to respond to personality items <span class="math inline">\((\chi^2(36,038.00) = NA, p = )\)</span>.</p>
 <pre class="r"><code>emmeans(mod.responseD2, ~&quot;devicetype*format&quot;) %&gt;% 
   as.data.frame() %&gt;% 
   ggplot(aes(x = format, y = emmean, group = devicetype)) +
@@ -545,10 +588,10 @@ class="math inline">\((\chi^2(36,038.00) = NA, p = )\)</span>.</p>
        title = &quot;Average responses by device&quot;,
        caption = &quot;Bars represent 95% confidence intervals&quot;) +
   theme_pubclean()</code></pre>
-<div class="figure">
+<div class="figure"><span style="display:block;" id="fig:device-18"></span>
 <img src="device_files/figure-html/device-18-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
-Predicted response on personality items by condition.
+Figure 7: Predicted response on personality items by condition.
 </p>
 </div>
 </div>
@@ -556,6 +599,8 @@ Predicted response on personality items by condition.
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -588,6 +633,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

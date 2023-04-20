@@ -13,7 +13,6 @@
 
 <title>Does item format impact experience?</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -29,6 +28,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -221,6 +223,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -228,6 +293,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -272,6 +347,9 @@ $(document).ready(function () {
     <li>
       <a href="device.html">Does device type affect response and timing?</a>
     </li>
+    <li>
+      <a href="subjective.html">Does item formatting affect participant survey enjoyment?</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -303,12 +381,10 @@ $(document).ready(function () {
 </div>
 
 
-<p>These analyses test whether item format affects participants’
-subjective experiences of participating in personality surveys.</p>
-<div id="enjoyment" class="section level1">
-<h1>Enjoyment</h1>
-<p>First, we test whether participants enjoyed their experience as a
-function of format. The item participants rated was:</p>
+<p>These analyses test whether item format affects participants’ subjective experiences of participating in personality surveys.</p>
+<div id="enjoyment" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Enjoyment</h2>
+<p>First, we test whether participants enjoyed their experience as a function of format. The item participants rated was:</p>
 <p>“Overall, I am enjoying responding to the present survey.”</p>
 <pre class="r"><code>mod_enjoy_1 = lm(enjoy_responding ~ format, data = enjoy_df)
 car::Anova(mod_enjoy_1)</code></pre>
@@ -318,15 +394,13 @@ car::Anova(mod_enjoy_1)</code></pre>
 ##            Sum Sq  Df F value Pr(&gt;F)
 ## format       5.28   3  1.6728 0.1712
 ## Residuals 1021.42 970</code></pre>
-<p>Participants did not vary in their enjoyment of the survey as a
-function of item format. See @ref(fig:enjoyFormat).</p>
+<p>Participants did not vary in their enjoyment of the survey as a function of item format. See <a href="#fig:enjoyFormat"><strong>??</strong></a>.</p>
 <pre class="r"><code>plot_model(mod_enjoy_1, type = &quot;pred&quot;, show.data = T, jitter = T)$format +
   labs(x = NULL, 
        y = &quot;Average enjoyment&quot;, 
        title = &quot;Predicted enjoyment by item format&quot;)</code></pre>
 <p><img src="subjective_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>We also test whether this is a function of device type and the
-interaction of devicetype with format.</p>
+<p>We also test whether this is a function of device type and the interaction of devicetype with format.</p>
 <pre class="r"><code>mod_enjoy_2 = lm(enjoy_responding ~ devicetype, data = enjoy_df)
 car::Anova(mod_enjoy_2)</code></pre>
 <pre><code>## Anova Table (Type II tests)
@@ -341,21 +415,19 @@ car::Anova(mod_enjoy_3, type = &quot;3&quot;)</code></pre>
 <pre><code>## Anova Table (Type III tests)
 ## 
 ## Response: enjoy_responding
-##                    Sum Sq  Df   F value Pr(&gt;F)    
-## (Intercept)       1422.05   1 1350.6771 &lt;2e-16 ***
-## format               2.21   3    0.7006 0.5518    
-## devicetype           4.03   2    1.9136 0.1481    
-## format:devicetype    5.57   6    0.8822 0.5072    
-## Residuals         1012.84 962                     
+##                    Sum Sq  Df   F value              Pr(&gt;F)    
+## (Intercept)       1422.05   1 1350.6771 &lt;0.0000000000000002 ***
+## format               2.21   3    0.7006              0.5518    
+## devicetype           4.03   2    1.9136              0.1481    
+## format:devicetype    5.57   6    0.8822              0.5072    
+## Residuals         1012.84 962                                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>The relationship of item format to enjoyment did not vary as a
-function of device type.</p>
+<p>The relationship of item format to enjoyment did not vary as a function of device type.</p>
 </div>
-<div id="perception-of-survey-design" class="section level1">
-<h1>Perception of survey design</h1>
-<p>Next, we test whether participants viewed the survey differently as a
-function of format. The item participants rated was:</p>
+<div id="perception-of-survey-design" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> Perception of survey design</h2>
+<p>Next, we test whether participants viewed the survey differently as a function of format. The item participants rated was:</p>
 <p>“Overall, I think the present survey is well designed.”</p>
 <pre class="r"><code>mod_design_1 = lm(well_designed_study ~ format, data = enjoy_df)
 car::Anova(mod_design_1)</code></pre>
@@ -365,15 +437,13 @@ car::Anova(mod_design_1)</code></pre>
 ##           Sum Sq  Df F value Pr(&gt;F)
 ## format      2.97   3  1.2987 0.2736
 ## Residuals 740.05 970</code></pre>
-<p>Participants did not vary in their perception of the survey as a
-function of item format. See @ref(fig:designFormat).</p>
+<p>Participants did not vary in their perception of the survey as a function of item format. See <a href="#fig:designFormat"><strong>??</strong></a>.</p>
 <pre class="r"><code>plot_model(mod_design_1, type = &quot;pred&quot;, show.data = T, jitter = T)$format +
   labs(x = NULL, 
        y = &quot;Average designment&quot;, 
        title = &quot;Predicted design perception by item format&quot;)</code></pre>
 <p><img src="subjective_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>We also test whether this is a function of device type and the
-interaction of devicetype with format.</p>
+<p>We also test whether this is a function of device type and the interaction of devicetype with format.</p>
 <pre class="r"><code>mod_design_2 = lm(well_designed_study ~ devicetype, data = enjoy_df)
 car::Anova(mod_design_2)</code></pre>
 <pre><code>## Anova Table (Type II tests)
@@ -384,8 +454,7 @@ car::Anova(mod_design_2)</code></pre>
 ## Residuals  738.36 971                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Participants did perceive the design of the study differently by
-format. We explore this more here:</p>
+<p>Participants did perceive the design of the study differently by format. We explore this more here:</p>
 <pre class="r"><code>emmeans(mod_design_2, pairwise~&quot;devicetype&quot;, adjust = &quot;none&quot;)</code></pre>
 <pre><code>## $emmeans
 ##  devicetype                                                   emmean     SE  df
@@ -432,28 +501,27 @@ format. We explore this more here:</p>
 ##     0.125 0.1451 971   0.863  0.3886
 ## 
 ## P value adjustment: holm method for 3 tests</code></pre>
-<p>Participants perceive the design to be better on mobile devices than
-on desktop or laptop computers; however, after correcting for multiple
-comparisons, this effect is no longer significant.</p>
+<p>Participants perceive the design to be better on mobile devices than on desktop or laptop computers; however, after correcting for multiple comparisons, this effect is no longer significant.</p>
 <pre class="r"><code>mod_design_3 = lm(well_designed_study ~ format*devicetype, data = enjoy_df)
 car::Anova(mod_design_3, type = &quot;3&quot;)</code></pre>
 <pre><code>## Anova Table (Type III tests)
 ## 
 ## Response: well_designed_study
-##                    Sum Sq  Df   F value Pr(&gt;F)    
-## (Intercept)       1479.86   1 1941.1083 &lt;2e-16 ***
-## format               0.67   3    0.2930 0.8305    
-## devicetype           0.86   2    0.5646 0.5688    
-## format:devicetype    1.88   6    0.4106 0.8723    
-## Residuals          733.41 962                     
+##                    Sum Sq  Df   F value              Pr(&gt;F)    
+## (Intercept)       1479.86   1 1941.1083 &lt;0.0000000000000002 ***
+## format               0.67   3    0.2930              0.8305    
+## devicetype           0.86   2    0.5646              0.5688    
+## format:devicetype    1.88   6    0.4106              0.8723    
+## Residuals          733.41 962                                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>The relationship of item format to survey design enjoyment did not
-vary as a function of device type.</p>
+<p>The relationship of item format to survey design enjoyment did not vary as a function of device type.</p>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -486,6 +554,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
