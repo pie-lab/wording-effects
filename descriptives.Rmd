@@ -26,7 +26,6 @@ load(here("objects/items_df.Rds"))
 load(here("objects/cleaned_data.Rds"))
 ```
 
-
 ```{r descriptives-4, echo = F}
 age_dist = data %>% 
   select(age) %>% 
@@ -39,7 +38,7 @@ sex_percent = round((table(data$sex)/nrow(data))*100,2)
 ethnic_percent = round((table(data$ethnic)/nrow(data))*100,2)
 ```
 
-Participants (_N_ = `r printnum(nrow(data), digits = 0)`; `r sex_percent["Female"][[1]]`\% female) were, on average, `r printnum(age_dist$age_mean[[1]])` years old (_SD_ = `r printnum(age_dist$age_sd[[1]])`, minimum = `r printnum(age_dist$age_min[[1]], digits = 0)`, maximum = `r printnum(age_dist$age_max[[1]], digits = 0)`; see Figure \@ref(fig:descriptives-5)A for the full distribution). A majority (`r ethnic_percent["White"][[1]]`\%) of participants identified as White only (`r ethnic_percent["Black"][[1]]`\% only); Figure \@ref(fig:descriptives-5)B shows the other response options and frequencies. See Figure \@ref(fig:descriptives-5)C for the distribution of education, and \@ref(fig:descriptives-5)D for the distribution of household income.
+Participants (_N_ = `r printnum(nrow(data), digits = 0)`; `r sex_percent["Female"][[1]]`\% female) were, on average, `r printnum(age_dist$age_mean[[1]])` years old (_SD_ = `r printnum(age_dist$age_sd[[1]])`, minimum = `r printnum(age_dist$age_min[[1]], digits = 0)`, maximum = `r printnum(age_dist$age_max[[1]], digits = 0)`; see Figure \@ref(fig:descriptives-5)A for the full distribution). A majority (`r ethnic_percent["White"][[1]]`\%) of participants identified as White only, and `r ethnic_percent["Black"][[1]]`\% identify as Black only; Figure \@ref(fig:descriptives-5)B shows the other response options and frequencies. See Figure \@ref(fig:descriptives-5)C for the distribution of education, and \@ref(fig:descriptives-5)D for the distribution of household income.
 
 ```{r descriptives-5, echo = F, fig.cap ="Distributions of key demographics across the entire sample", fig.width = 8, fig.height = 10}
 age_plot = data %>% 
@@ -117,8 +116,9 @@ items_df %>%
     N_participants = length(unique(proid))
   ) %>%
   ungroup() %>%
+  mutate(across(c(starts_with("N_"), median), \(x) printnum(x, digits = 0))) %>% 
   arrange(block, format) %>%
-  kable(booktabs = T, digits = c(0,2,2,0,0,0),
+  kable(booktabs = T, digits = 2,
         escape = F, 
         caption = "Descriptives of responses by format and block",
         col.names = c("Block", "Format", "M", "SD", "Median",
@@ -191,3 +191,5 @@ items_df %>%
         caption = "Descriptives of items to Block 3 by format") %>%
   kable_styling()
 ```
+
+\newpage

@@ -216,7 +216,7 @@ data_t1 = data_t1 %>%
   filter(proid != "")
 ```
 
-We removed `r nrow(olddata)-nrow(data_t1)` participants without valid Prolific IDs.
+We removed `r nrow(olddata)-nrow(data_t1)` participants without valid Prolific IDs. (This likely occurred based on sharing of the survey link among Prolific users.)
 
 ```{r 1-cleaning-15, ref.label='rm_proid'}
 ```
@@ -437,7 +437,7 @@ timing_data = timing_data %>%
   filter(!is.na(timing))
 ```
 
-To check, each participant should have the same number of responses: 62.
+To check, each participant should have the same number of responses: 76.
 
 ```{r 1-cleaning-31 }
 timing_data %>%
@@ -1040,6 +1040,8 @@ mem3 = mem3 %>%
 data = full_join(data, mem3)
 ```
 
+Participants remember on average `r papaja::printnum(mean(data$very_delayed_memory))` words correctly $(SD = `r papaja::printnum(sd(data$very_delayed_memory))`)$.
+
 #### Correlations
 
 Figure \@ref(fig:memory-dist) displays the univariate and bivariate distributions of the memory scores and the bivariate correlations. In general, there was good spread in the immediate recall and delayed (10 minute) recall variables. Few participants remembered any of the words after two weeks.
@@ -1213,6 +1215,9 @@ The variable `seconds` appears to have a very severe right skew (see Figure \@re
 ```{r 1-cleaning-94 }
 items_df = items_df %>% 
   mutate(seconds_log = log(timing))
+
+range(items_df$timing, na.rm=T)
+range(items_df$seconds_log, na.rm=T)
 ```
 
 ```{r 1-cleaning-95, echo =F, fig.cap= "Distribution of seconds, raw and transformed."}

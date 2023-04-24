@@ -17,6 +17,15 @@ In this section, we test the impact of item format on three components of respon
   
 For these analyses, we use data from Blocks 1 and 2.
 
+As a reminder, the (numeric) range of options for items was 1-6. Some items are reverse-scored. Those items are `r reverse`. For the majority of the analyses in this section, we use only the items included in the MIDI scales (i.e., we exclude items included from the Big Five Mini Markers -- these are only tested in analyses related to yea-saying, below).
+
+## Deviations from preregistration
+
+<!-- We swapped out the function `aov` to calculate the significance of the categorical factor to `car::Anova` -- this changes the statistical test from an F-test to a Likelihood ratio test (i.e., comparing the model with to the model without the categorical factor). We made this choice for two reasons: (1) We found that the `aov` function was not test the significance of interactions, and (2) the significance test from the `aov` function was inconsistent with plotted means (e.g., the test was significant, but the means were not close together and confidence interval were highly overlapping). In general, we found the `car::Anova` function to be both more interpretable and more conservative. Data are made availale for interested readers to use their own tests of significance. -->
+
+We switched out our plotting function from using the `sjPlot` package to using the `marginaleffects` package -- to calculated the average predicted value for each group -- and plotting those using `ggplot2.` We found that these estimates better accounted for the sample size and nesting in the multilevel models.
+
+
 ```{r responsestyle1, include = FALSE}
 knitr::opts_chunk$set(warning = F, message = F)
 options(scipen = 999)
@@ -27,7 +36,7 @@ library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
 library(glmmTMB) # for binomial models
-library(emmeans) # for comparisons
+library(marginaleffects) # for comparisons
 library(car) # for correct sums of squares
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
@@ -70,7 +79,6 @@ fb1_aov = fb1_aov %>%
 
 Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$df[[1]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[fb1_loc]]`, p = `r fb1_aov$p.value[[fb1_loc]]`)$. See Figure \@ref(fig:responsestyle7) for a visualization of this effect. In addition, Figure \@ref(fig:responsestyle8) shows the full distribution of responses across format.
 
-
 ```{r responsestyle6, echo = F}
 # save for power analysis
 save(mod.expected, file = here("objects/mod_expected.Rdata"))
@@ -78,19 +86,23 @@ save(mod.expected, file = here("objects/mod_expected.Rdata"))
 
 
 ```{r responsestyle7, fig.cap = "Predicted response on personality items by condition.", echo = F}
-plot_expected = plot_model(mod.expected, type = "pred")
+pred.expected = predictions(mod.expected, by = "format", type = "response") 
 
-plot_expected = plot_expected$format +
-  labs(x = NULL,
-       title = "Expected response",
-       y = NULL) +
-  theme_pubclean()
+plot_expected = pred.expected %>% 
+  ggplot(aes(x = format, y = estimate)) +
+  geom_point(stat = "identity") +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
+  labs(title = "Expected response",
+       x = NULL, 
+       y = NULL)
 
 plot_expected
 ```
 
 ```{r responsestyle8, fig.cap = "Distribution of responses by category.", echo = F}
-means_by_group = items_df %>%
+means_by_group = items_df %>% 
+  filter(block %in% c(1,2)) %>% 
+  filter(!(item %in% bfmm)) %>% 
   group_by(format) %>%
   summarise(m = mean(response),
             s = sd(response))
@@ -180,18 +192,20 @@ sig_item
 pairwise_response = mod_by_item %>% 
   #only significant items
   filter(item %in% sig_item) %>% 
-  #use emmeans package to calculate format means and run pairwise comparisons
-  mutate(comp = map(mod, emmeans, pairwise~format, adjust = "none"),
-         means = map(comp, "emmeans"),
-         means = map(means, as.data.frame),
-         contrasts = map(comp, "contrasts"),
-         contrasts = map(contrasts, as.data.frame))
+  #use marginaleffects package to calculate format means and run pairwise comparisons
+  mutate(
+    means = map(mod, 
+                avg_predictions, 
+                variables = "format"),
+    comp = map(mod, 
+               avg_comparisons, 
+               variables = list(format = "pairwise")))
 ```
 
 ```{r responsestyle12}
 pairwise_response %>% 
-  select(item, contrasts) %>% 
-  unnest(cols = c(contrasts)) %>% 
+  select(item, comp) %>% 
+  unnest(cols = c(comp)) %>% 
   mutate(estimate = printnum(estimate),
          estimate = case_when(
            p.value < .001 ~ paste0(estimate, "***"),
@@ -222,17 +236,15 @@ pairwise_response %>%
     format == "Am\nAdjective" ~ 2,
     format == "Tend to be\nAdjective" ~ 3,
     format == "Am someone\nwho tends to be\nAdjective" ~ 4)) %>% 
-  ggplot(aes(x = format, y = emmean)) +
+  ggplot(aes(x = format, y = estimate)) +
   geom_point(stat = "identity") + 
   geom_line(alpha = .3) +
-  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = .3) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .3) +
   scale_x_continuous(breaks = c(1:4), labels= c("A","B","C","D")) +
   labs(x = NULL, y = "Expected response") +
   facet_wrap(~item) +
   theme_pubr() 
 ```
-
-
 
 ## Extreme responding
 
@@ -269,6 +281,7 @@ fb2_aov = fb2_aov %>%
 
 Item format was `r ifelse(fb2_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb2_aov$df[[fb2_loc]]`, `r fb2_aov$df[[fb2_res]]`) = `r fb2_aov$statistic[[fb2_loc]]`, p = `r fb2_aov$p.value[[fb2_loc]]`)$. See Figure \@ref(fig:responsestyle17) for a visualization of this effect. 
 
+
 ```{r , echo = F}
 # save for power analysis
 save(mod.extreme, items_df, file = here("objects/mod_extreme.Rdata"))
@@ -277,13 +290,14 @@ save(mod.extreme, items_df, file = here("objects/mod_extreme.Rdata"))
 
 
 ```{r responsestyle17, fig.cap = "Predicted response on personality items by condition.", echo = F}
-plot_b2 = plot_model(mod.extreme, type = "pred")
+pred.extreme = predictions(mod.extreme, by = "format", type = "response") 
 
-plot_extreme = plot_b2$format +
+plot_extreme = pred.extreme %>% ggplot(aes(x = format, y = estimate)) +
+  geom_point(stat = "identity") +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
   labs(title = "Likelihood of extreme responding",
        x = NULL, 
-       y = NULL) +
-  theme_pubclean()
+       y = "Likelihood")
 
 plot_extreme
 ```
@@ -348,22 +362,26 @@ sig_item_ex
 
 Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean. Likelihood differences are shown in Table \@ref(tab:responsestyle23) and likelihood estimates are in Figure \@ref(fig:responsestyle24).
 
-```{r}
+```{r itemextreme}
 pairwise_response_ex = mod_by_item_ex %>% 
   #only significant items
   filter(item %in% sig_item_ex) %>% 
-  #use emmeans package to calculate format means and run pairwise comparisons
-  mutate(comp = map(mod, emmeans, pairwise~format, adjust = "none"),
-         means = map(comp, "emmeans"),
-         means = map(means, as.data.frame),
-         contrasts = map(comp, "contrasts"),
-         contrasts = map(contrasts, as.data.frame))
+  #use marginaleffects package to calculate format means and run pairwise comparisons
+  mutate(
+    means = map(mod, 
+                avg_predictions, 
+                variables = "format", 
+                type = "response"),
+    comp = map(mod, 
+               avg_comparisons, 
+               variables = list(format = "pairwise"),
+               type = "response"))
 ```
 
 ```{r responsestyle23 }
 pairwise_response_ex %>% 
-  select(item, contrasts) %>% 
-  unnest(cols = c(contrasts)) %>% 
+  select(item, comp) %>% 
+  unnest(cols = c(comp)) %>% 
   mutate(estimate = printnum(estimate),
          estimate = case_when(
            p.value < .001 ~ paste0(estimate, "***"),
@@ -387,12 +405,6 @@ pairwise_response_ex %>%
 
 ```{r responsestyle24, fig.cap = "Extreme responding by format and item. These items were significantly affected by response. A = Adjective only. B = Am Adjective. C = Tend to be Adjective. D = Am someone who tends to be Adjective." }
 
-logit2prob <- function(logit){
-  odds <- exp(logit)
-  prob <- odds / (1 + odds)
-  return(prob)
-}
-
 pairwise_response_ex %>% 
   select(item, means) %>% 
   unnest(cols = c(means)) %>% 
@@ -401,11 +413,10 @@ pairwise_response_ex %>%
     format == "Am\nAdjective" ~ 2,
     format == "Tend to be\nAdjective" ~ 3,
     format == "Am someone\nwho tends to be\nAdjective" ~ 4)) %>% 
-  mutate(across(c(emmean, lower.CL, upper.CL), logit2prob)) %>% 
-  ggplot(aes(x = format, y = emmean)) +
+  ggplot(aes(x = format, y = estimate)) +
   geom_point(stat = "identity") + 
   geom_line(alpha = .3) +
-  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = .3) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .3) +
   scale_x_continuous(breaks = c(1:4), labels= c("A","B","C","D")) +
   labs(x = NULL, y = "Probability of extreme response") +
   facet_wrap(~item) +
@@ -463,19 +474,17 @@ save(mod.yeasaying, items_df, file = here("objects/mod_yeasaying.Rdata"))
 
 
 ```{r responsestyle28, fig.cap = "Predicted response on personality items by condition.", echo = F}
-plot_ya = plot_model(mod.yeasaying, type = "pred")
+pred.yea = predictions(mod.yeasaying, by = "format", type = "response") 
 
-plot_yea = plot_ya$format +
-  labs(title = "Likelihood of yea-saying",
+plot_yea = pred.yea %>% ggplot(aes(x = format, y = estimate)) +
+  geom_point(stat = "identity") +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
+  labs(title = "Likelihood of yea responding",
        x = NULL, 
-       y = NULL) +
-  theme_pubclean() +
-  theme(plot.margin=unit(c(1,1,1,1.2), "cm"))
+       y = "Likelihood")
 
 plot_yea
 ```
-
-
 
 ### One model for each adjective
 
@@ -538,24 +547,28 @@ sig_item_ya = sig_item_ya$item
 sig_item_ya
 ```
 
-Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean. Likelihood differences are shown in Table \@ref(tab:responsestyle23) and likelihood estimates are in Figure \@ref(fig:responsestyle24).
+Then we create models for each adjective. We use the `marginaleffectss` package to perform pairwise comparisonss. We also plot the means and 95% confidence intervals of each mean. Likelihood differences are shown in Table \@ref(tab:responsestyle23) and likelihood estimates are in Figure \@ref(fig:responsestyle24).
 
 ```{r}
 pairwise_response_ya = mod_by_item_ya %>% 
   #only significant items
   filter(item %in% sig_item_ya) %>% 
-  #use emmeans package to calculate format means and run pairwise comparisons
-  mutate(comp = map(mod, emmeans, pairwise~format, adjust = "none"),
-         means = map(comp, "emmeans"),
-         means = map(means, as.data.frame),
-         contrasts = map(comp, "contrasts"),
-         contrasts = map(contrasts, as.data.frame))
+  #use marginaleffects package to calculate format means and run pairwise comparisons
+  mutate(
+    means = map(mod, 
+                avg_predictions, 
+                variables = "format", 
+                type = "response"),
+    comp = map(mod, 
+               avg_comparisons, 
+               variables = list(format = "pairwise"),
+               type = "response"))
 ```
 
 ```{r responsestyle32 }
 pairwise_response_ya %>% 
-  select(item, contrasts) %>% 
-  unnest(cols = c(contrasts)) %>% 
+  select(item, comp) %>% 
+  unnest(cols = c(comp)) %>% 
   mutate(estimate = printnum(estimate),
          estimate = case_when(
            p.value < .001 ~ paste0(estimate, "***"),
@@ -586,11 +599,10 @@ pairwise_response_ya %>%
     format == "Am\nAdjective" ~ 2,
     format == "Tend to be\nAdjective" ~ 3,
     format == "Am someone\nwho tends to be\nAdjective" ~ 4)) %>% 
-  mutate(across(c(emmean, lower.CL, upper.CL), logit2prob)) %>% 
-  ggplot(aes(x = format, y = emmean)) +
+  ggplot(aes(x = format, y = estimate)) +
   geom_point(stat = "identity") + 
   geom_line(alpha = .3) +
-  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = .3) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .3) +
   scale_x_continuous(breaks = c(1:4), labels= c("A","B","C","D")) +
   labs(x = NULL, y = "Probability of yeasaying") +
   facet_wrap(~item) +

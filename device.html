@@ -376,7 +376,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Device effects</h1>
-<h4 class="date">Last updated 2023-04-20</h4>
+<h4 class="date">Last updated 2023-04-24</h4>
 
 </div>
 
@@ -421,13 +421,15 @@ tidy(car::Anova(mod.timing))</code></pre>
 ##   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
 ## 1 devicetype      9.43     2 0.00894</code></pre>
 <p>Device type was associated with the time it took to respond to personality items <span class="math inline">\((\chi^2(2.00) = 9.43, p = .009)\)</span>.</p>
-<pre class="r"><code>emmeans(mod.timing, ~&quot;devicetype&quot;) %&gt;% 
-  as.data.frame() %&gt;% 
-  ggplot(aes(x = devicetype, y = emmean)) +
+<pre class="r"><code>avg_predictions(mod.timing, variables = &quot;devicetype&quot;) %&gt;%
+  mutate(
+    across(where(is.numeric), exp)
+  ) %&gt;% 
+  ggplot(aes(x = devicetype, y = estimate)) +
   geom_bar(stat = &quot;identity&quot;, fill = &quot;grey&quot;) + 
-  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = .5) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
    labs(x = NULL,
-       y = &quot;Log-seconds (per item)&quot;,
+       y = &quot;Seconds (per item)&quot;,
        title = &quot;Average time per personality item\nby device type&quot;,
        caption = &quot;Bars represent 95% confidence intervals&quot;) +
   theme_pubclean()</code></pre>
@@ -479,16 +481,16 @@ tD2_aov = tD2_aov %&gt;%
   mutate(across(starts_with(&quot;P&quot;), printp),
          across(where(is.numeric), printnum))</code></pre>
 <p>The interaction between device type and format was associated with the time it took to respond to personality items <span class="math inline">\((\chi^2(6.00) = 13.78, p = .032)\)</span>.</p>
-<pre class="r"><code>emmeans(mod.timing2, ~&quot;devicetype*format&quot;) %&gt;% 
-  as.data.frame() %&gt;% 
-  ggplot(aes(x = format, y = emmean, group = devicetype)) +
+<pre class="r"><code>avg_predictions(mod.timing2, variables = c(&quot;devicetype&quot;, &quot;format&quot;)) %&gt;% 
+  mutate(across(where(is.numeric), exp)) %&gt;% 
+  ggplot(aes(x = format, y = estimate, group = devicetype)) +
   geom_bar(stat = &quot;identity&quot;, aes(fill = devicetype),
            position = position_dodge(.9)) + 
-  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), 
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), 
                 width = .5,
                 position = position_dodge(.9)) +
    labs(x = NULL,
-       y = &quot;Log-seconds (per item)&quot;,
+       y = &quot;Seconds (per item)&quot;,
        title = &quot;Average time per personality item\nby device type&quot;,
        caption = &quot;Bars represent 95% confidence intervals&quot;) +
   theme_pubclean()</code></pre>
@@ -514,11 +516,10 @@ tidy(car::Anova(mod.responseD))</code></pre>
 ##   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
 ## 1 devicetype     0.131     2   0.936</code></pre>
 <p>When examining both Block 1 and Block 2 data, device type was unassociated with the time it took to respond to personality items <span class="math inline">\((\chi^2(2.00) = 0.51, p = .601)\)</span>.</p>
-<pre class="r"><code>emmeans(mod.responseD, ~&quot;devicetype&quot;) %&gt;% 
-  as.data.frame() %&gt;% 
-  ggplot(aes(x = devicetype, y = emmean)) +
+<pre class="r"><code>avg_predictions(mod.responseD, variables = &quot;devicetype&quot;) %&gt;% 
+  ggplot(aes(x = devicetype, y = estimate)) +
   geom_bar(stat = &quot;identity&quot;, fill = &quot;grey&quot;) + 
-  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = .5) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
    labs(x = NULL,
        y = &quot;Expected response&quot;,
        title = &quot;Expected responses by device&quot;,
@@ -575,12 +576,11 @@ rD2_aov = rD2_aov %&gt;%
   mutate(across(starts_with(&quot;P&quot;), printp),
          across(where(is.numeric), printnum))</code></pre>
 <p>The interaction between device type and format was NA with the time it took to respond to personality items <span class="math inline">\((\chi^2(36,038.00) = NA, p = )\)</span>.</p>
-<pre class="r"><code>emmeans(mod.responseD2, ~&quot;devicetype*format&quot;) %&gt;% 
-  as.data.frame() %&gt;% 
-  ggplot(aes(x = format, y = emmean, group = devicetype)) +
+<pre class="r"><code>avg_predictions(mod.responseD2, variables = c(&quot;devicetype&quot;, &quot;format&quot;)) %&gt;% 
+  ggplot(aes(x = format, y = estimate, group = devicetype)) +
   geom_bar(stat = &quot;identity&quot;, aes(fill = devicetype),
            position = position_dodge(.9)) + 
-  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), 
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), 
                 width = .5,
                 position = position_dodge(.9)) +
    labs(x = NULL,

@@ -302,7 +302,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2023-04-20</h4>
+<h4 class="date">Last updated 2023-04-24</h4>
 
 </div>
 
@@ -482,7 +482,7 @@ data_t1 = full_join(data_t1, personality_items)</code></pre>
 <div id="based-on-id" class="section level4" number="0.5.2.1">
 <h4><span class="header-section-number">0.5.2.1</span> Based on ID</h4>
 <p>Recall that when preparing the data files for sharing, we replaced all Prolific IDs with random strings. A consequence of this cleaning is that any ID entered that did not have a string meeting the Prolific ID format requirements (24 character, starting with a number) was replaced with <code>NA</code>. To remove these bots, we can simply filter out missing ID values.</p>
-<p>We removed 0 participants without valid Prolific IDs.</p>
+<p>We removed 0 participants without valid Prolific IDs. (This likely occurred based on sharing of the survey link among Prolific users.)</p>
 </div>
 <div id="based-on-language" class="section level4" number="0.5.2.2">
 <h4><span class="header-section-number">0.5.2.2</span> Based on language</h4>
@@ -638,7 +638,7 @@ Figure 2: Average response to inattention check items
 <pre class="r"><code>timing_data = timing_data %&gt;%
   gather(variable, timing, -proid) %&gt;%
   filter(!is.na(timing))</code></pre>
-<p>To check, each participant should have the same number of responses: 62.</p>
+<p>To check, each participant should have the same number of responses: 76.</p>
 <pre class="r"><code>timing_data %&gt;%
   group_by(proid) %&gt;%
   count() %&gt;%
@@ -977,11 +977,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall1 = map_chr(recall1, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall1                                    memory
-##   &lt;chr&gt;                                       &lt;dbl&gt;
-## 1 gold, book, child, paper, skin, tree            6
-## 2 book, king, market, hotel, river, child         6
-## 3 book, gold, tree, skin, child, river, king      7</code></pre>
+##   recall1                                                          memory
+##   &lt;chr&gt;                                                             &lt;dbl&gt;
+## 1 i, dont, remember, none                                               0
+## 2 book, child, gold, king, hotel, river, tree, market, house, fish      8
+## 3 book, gold, child, king, market, paper                                6</code></pre>
 <pre class="r"><code>#from memory condition 2
 data %&gt;% 
   filter(mem_condition == 2) %&gt;% 
@@ -989,11 +989,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall2 = map_chr(recall2, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall2                                                         memory
-##   &lt;chr&gt;                                                            &lt;dbl&gt;
-## 1 butter, college, home, sky, earth, machine, wife                     7
-## 2 butter, college, earth, home, sky, wife, dollar, machine, ocean      9
-## 3 butter, college, flag, home, machine, ocean, earth, wife, sky        9</code></pre>
+##   recall2                                                   memory
+##   &lt;chr&gt;                                                      &lt;dbl&gt;
+## 1 wife, sky, dollar, earth, machine, coffee, butter              6
+## 2 butter, college, earth, sky, home, machine, dollar, wife       8
+## 3 butter, dollar, earth, fire, game, home, ocean, sky, wife      7</code></pre>
 <pre class="r"><code>#from memory condition 3
 data %&gt;% 
   filter(mem_condition == 3) %&gt;% 
@@ -1001,11 +1001,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall3 = map_chr(recall3, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall3                                                                memory
-##   &lt;chr&gt;                                                                   &lt;dbl&gt;
-## 1 blood, corner, engine, girl, house, valley, letter, shoes, woman, rock     10
-## 2 blood, corner, house, woman, girl, letter, shoes                            7
-## 3 blood, corner, engine, girl, valley                                         5</code></pre>
+##   recall3                                                 memory
+##   &lt;chr&gt;                                                    &lt;dbl&gt;
+## 1 blood, corner, house, engine, woman, rock, letter, girl      8
+## 2 blood, engine, corner, shoes, house, woman                   6
+## 3 woman, shoes, rock, valley, girl, house, blood, engine       8</code></pre>
 <pre class="r"><code>#from memory condition 4
 data %&gt;% 
   filter(mem_condition == 4) %&gt;% 
@@ -1013,11 +1013,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall4 = map_chr(recall4, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall4                                           memory
-##   &lt;chr&gt;                                              &lt;dbl&gt;
-## 1 baby, church, doctor, fire, palace, water, garden      7
-## 2 baby, church, palace, fire                             4
-## 3 baby, church, garden, water, fire, village, tower      6</code></pre>
+##   recall4                                          memory
+##   &lt;chr&gt;                                             &lt;dbl&gt;
+## 1 baby, church, doctor, fire, garden, sea, palace.      7
+## 2 baby, church, doctor, ocean, table, water             5
+## 3 sea, baby, doctor, village                            4</code></pre>
 <p>Participants remember on average 6.76 words correctly <span class="math inline">\((SD = 1.96)\)</span>.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -1192,6 +1192,7 @@ mem3 = mem3 %&gt;%
   select(-very_delayed_recall, -variable, -newid) 
 
 data = full_join(data, mem3)</code></pre>
+<p>Participants remember on average NA words correctly <span class="math inline">\((SD = NA)\)</span>.</p>
 </div>
 <div id="correlations" class="section level4" number="0.7.2.4">
 <h4><span class="header-section-number">0.7.2.4</span> Correlations</h4>
@@ -1337,7 +1338,12 @@ items_df$format = factor(items_df$format,
 <h4><span class="header-section-number">0.7.5.4</span> Transform seconds</h4>
 <p>The variable <code>seconds</code> appears to have a very severe right skew (see Figure <a href="#fig:1-cleaning-95">8</a>). We log-transform this variable for later analyses.</p>
 <pre class="r"><code>items_df = items_df %&gt;% 
-  mutate(seconds_log = log(timing))</code></pre>
+  mutate(seconds_log = log(timing))
+
+range(items_df$timing, na.rm=T)</code></pre>
+<pre><code>## [1]   0.000 751.823</code></pre>
+<pre class="r"><code>range(items_df$seconds_log, na.rm=T)</code></pre>
+<pre><code>## [1]     -Inf 6.622501</code></pre>
 <div class="figure"><span style="display:block;" id="fig:1-cleaning-95"></span>
 <img src="1-cleaning_files/figure-html/1-cleaning-95-1.png" alt="Distribution of seconds, raw and transformed." width="672" />
 <p class="caption">

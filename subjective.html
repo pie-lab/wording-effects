@@ -376,7 +376,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact experience?</h1>
-<h4 class="date">Last updated 2023-04-20</h4>
+<h4 class="date">Last updated 2023-04-24</h4>
 
 </div>
 
@@ -399,7 +399,7 @@ car::Anova(mod_enjoy_1)</code></pre>
   labs(x = NULL, 
        y = &quot;Average enjoyment&quot;, 
        title = &quot;Predicted enjoyment by item format&quot;)</code></pre>
-<p><img src="subjective_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="subjective_files/figure-html/enjoyFormat-1.png" width="672" /></p>
 <p>We also test whether this is a function of device type and the interaction of devicetype with format.</p>
 <pre class="r"><code>mod_enjoy_2 = lm(enjoy_responding ~ devicetype, data = enjoy_df)
 car::Anova(mod_enjoy_2)</code></pre>
@@ -442,7 +442,7 @@ car::Anova(mod_design_1)</code></pre>
   labs(x = NULL, 
        y = &quot;Average designment&quot;, 
        title = &quot;Predicted design perception by item format&quot;)</code></pre>
-<p><img src="subjective_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="subjective_files/figure-html/designFormat-1.png" width="672" /></p>
 <p>We also test whether this is a function of device type and the interaction of devicetype with format.</p>
 <pre class="r"><code>mod_design_2 = lm(well_designed_study ~ devicetype, data = enjoy_df)
 car::Anova(mod_design_2)</code></pre>

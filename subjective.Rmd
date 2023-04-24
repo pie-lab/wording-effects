@@ -17,7 +17,6 @@ knitr::opts_chunk$set(warning = F, message = F)
 library(here) # for working with files
 library(tidyverse) # for cleaning
 library(janitor) # for variable names
-library(emmeans) # for comparisons
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables

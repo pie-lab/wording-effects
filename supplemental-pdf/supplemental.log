@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.4.13)  20 APR 2023 13:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.4.13)  24 APR 2023 14:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -595,660 +595,783 @@ File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 203.
 [4] [5] [6] [7] [8] [9]
-<supplemental_files/figure-latex/1-cleaning-24-1.pdf, id=146, 463.7325pt x 315.1775pt>
+<supplemental_files/figure-latex/1-cleaning-24-1.pdf, id=152, 463.7325pt x 315.1775pt>
 File: supplemental_files/figure-latex/1-cleaning-24-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/1-cleaning-24-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-24-1.pdf  used on input line 540.
 (pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
 [10 <./supplemental_files/figure-latex/1-cleaning-24-1.pdf>]
-<supplemental_files/figure-latex/1-cleaning-27-1.pdf, id=163, 458.71375pt x 315.1775pt>
+<supplemental_files/figure-latex/1-cleaning-27-1.pdf, id=169, 458.71375pt x 315.1775pt>
 File: supplemental_files/figure-latex/1-cleaning-27-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/1-cleaning-27-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-27-1.pdf  used on input line 582.
 (pdftex.def)             Requested size: 458.73363pt x 315.19115pt.
 [11 <./supplemental_files/figure-latex/1-cleaning-27-1.pdf>]
-<supplemental_files/figure-latex/1-cleaning-33-1.pdf, id=179, 463.7325pt x 308.15125pt>
+<supplemental_files/figure-latex/1-cleaning-33-1.pdf, id=185, 463.7325pt x 308.15125pt>
 File: supplemental_files/figure-latex/1-cleaning-33-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/1-cleaning-33-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-33-1.pdf  used on input line 655.
 (pdftex.def)             Requested size: 463.73842pt x 308.15518pt.
 [12] [13 <./supplemental_files/figure-latex/1-cleaning-33-1.pdf>] [14] [15]
-<supplemental_files/figure-latex/1-cleaning-55-1.pdf, id=216, 463.7325pt x 315.1775pt>
+<supplemental_files/figure-latex/1-cleaning-55-1.pdf, id=222, 463.7325pt x 315.1775pt>
 File: supplemental_files/figure-latex/1-cleaning-55-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/1-cleaning-55-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-55-1.pdf  used on input line 851.
 (pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
 [16 <./supplemental_files/figure-latex/1-cleaning-55-1.pdf>]
-<supplemental_files/figure-latex/1-cleaning-59-1.pdf, id=229, 458.71375pt x 315.1775pt>
+<supplemental_files/figure-latex/1-cleaning-59-1.pdf, id=235, 458.71375pt x 315.1775pt>
 File: supplemental_files/figure-latex/1-cleaning-59-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/1-cleaning-59-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-59-1.pdf  used on input line 893.
 (pdftex.def)             Requested size: 458.73363pt x 315.19115pt.
 [17] [18 <./supplemental_files/figure-latex/1-cleaning-59-1.pdf>]
-<supplemental_files/figure-latex/1-cleaning-64-1.pdf, id=252, 463.7325pt x 308.15125pt>
+<supplemental_files/figure-latex/1-cleaning-64-1.pdf, id=258, 463.7325pt x 308.15125pt>
 File: supplemental_files/figure-latex/1-cleaning-64-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/1-cleaning-64-1.pdf>
 Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-64-1.pdf  used on input line 958.
 (pdftex.def)             Requested size: 463.73842pt x 308.15518pt.
 [19 <./supplemental_files/figure-latex/1-cleaning-64-1.pdf>] [20] [21] [22] [23{/Users/sweston2/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/sweston2/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}] [24]
-<supplemental_files/figure-latex/memory-dist-1.pdf, id=303, 419.5675pt x 275.0275pt>
+<supplemental_files/figure-latex/memory-dist-1.pdf, id=309, 419.5675pt x 275.0275pt>
 File: supplemental_files/figure-latex/memory-dist-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/memory-dist-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/memory-dist-1.pdf  used on input line 1347.
+Package pdftex.def Info: supplemental_files/figure-latex/memory-dist-1.pdf  used on input line 1349.
 (pdftex.def)             Requested size: 419.56647pt x 275.02682pt.
 [25] [26 <./supplemental_files/figure-latex/memory-dist-1.pdf>]
-Underfull \hbox (badness 2088) in paragraph at lines 1414--1415
+Underfull \hbox (badness 2088) in paragraph at lines 1416--1417
 []\T1/lmr/m/n/10 These vari-able names have one of four for-mats: \T1/lmtt/m/n/10 [trait]_[abcd] \T1/lmr/m/n/10 (for ex-am-ple, \T1/lmtt/m/n/10 talkative_a\T1/lmr/m/n/10 ),
  []
 
 
-Underfull \hbox (badness 3471) in paragraph at lines 1414--1415
+Underfull \hbox (badness 3471) in paragraph at lines 1416--1417
 \T1/lmtt/m/n/10 [trait]_[abcd]_2 \T1/lmr/m/n/10 (for ex-am-ple, \T1/lmtt/m/n/10 talkative_a_2\T1/lmr/m/n/10 ), \T1/lmtt/m/n/10 [trait]_[abcd]_3 \T1/lmr/m/n/10 (e.g., \T1/lmtt/m/n/10 talkative_a_3\T1/lmr/m/n/10 ), or
  []
 
 [27] [28]
-<supplemental_files/figure-latex/1-cleaning-95-1.pdf, id=347, 463.7325pt x 312.16624pt>
+<supplemental_files/figure-latex/1-cleaning-95-1.pdf, id=353, 463.7325pt x 312.16624pt>
 File: supplemental_files/figure-latex/1-cleaning-95-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/1-cleaning-95-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-95-1.pdf  used on input line 1529.
+Package pdftex.def Info: supplemental_files/figure-latex/1-cleaning-95-1.pdf  used on input line 1547.
 (pdftex.def)             Requested size: 463.73842pt x 312.17024pt.
 [29 <./supplemental_files/figure-latex/1-cleaning-95-1.pdf>] [30]
-<supplemental_files/figure-latex/descriptives-5-1.pdf, id=369, 572.1375pt x 710.655pt>
+<supplemental_files/figure-latex/descriptives-5-1.pdf, id=375, 572.1375pt x 710.655pt>
 File: supplemental_files/figure-latex/descriptives-5-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/descriptives-5-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/descriptives-5-1.pdf  used on input line 1594.
+Package pdftex.def Info: supplemental_files/figure-latex/descriptives-5-1.pdf  used on input line 1612.
 (pdftex.def)             Requested size: 469.75816pt x 583.48909pt.
 
-Overfull \hbox (6.30113pt too wide) in paragraph at lines 1651--1686
+Overfull \hbox (10.88438pt too wide) in paragraph at lines 1669--1704
  [][] 
  []
 
 
-Overfull \hbox (45.68996pt too wide) in paragraph at lines 1694--1750
+Overfull \hbox (45.68996pt too wide) in paragraph at lines 1712--1768
  [][] 
  []
 
 
-Overfull \hbox (45.68996pt too wide) in paragraph at lines 1758--1814
+Overfull \hbox (45.68996pt too wide) in paragraph at lines 1776--1832
  [][] 
  []
 
 
-Overfull \hbox (45.68996pt too wide) in paragraph at lines 1822--1878
+Overfull \hbox (45.68996pt too wide) in paragraph at lines 1840--1896
  [][] 
  []
 
 [31] [32 <./supplemental_files/figure-latex/descriptives-5-1.pdf>] [33] [34] [35] [36]
-<supplemental_files/figure-latex/responsestyle7-1.pdf, id=423, 463.7325pt x 315.1775pt>
+<supplemental_files/figure-latex/responsestyle7-1.pdf, id=430, 459.7175pt x 315.1775pt>
 File: supplemental_files/figure-latex/responsestyle7-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/responsestyle7-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/responsestyle7-1.pdf  used on input line 1936.
-(pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
-<supplemental_files/figure-latex/responsestyle8-1.pdf, id=424, 463.7325pt x 314.17375pt>
+Package pdftex.def Info: supplemental_files/figure-latex/responsestyle7-1.pdf  used on input line 1963.
+(pdftex.def)             Requested size: 459.74442pt x 315.19595pt.
+<supplemental_files/figure-latex/responsestyle8-1.pdf, id=431, 463.7325pt x 314.17375pt>
 File: supplemental_files/figure-latex/responsestyle8-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/responsestyle8-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/responsestyle8-1.pdf  used on input line 1942.
+Package pdftex.def Info: supplemental_files/figure-latex/responsestyle8-1.pdf  used on input line 1969.
 (pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
-[37 <./supplemental_files/figure-latex/responsestyle7-1.pdf>] [38 <./supplemental_files/figure-latex/responsestyle8-1.pdf>] [39] [40] [41]
-<supplemental_files/figure-latex/responsestyle13-1.pdf, id=472, 463.7325pt x 312.16624pt>
+[37] [38 <./supplemental_files/figure-latex/responsestyle7-1.pdf>] [39 <./supplemental_files/figure-latex/responsestyle8-1.pdf>] [40] [41] [42]
+<supplemental_files/figure-latex/responsestyle13-1.pdf, id=483, 463.7325pt x 312.16624pt>
 File: supplemental_files/figure-latex/responsestyle13-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/responsestyle13-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/responsestyle13-1.pdf  used on input line 2151.
+Package pdftex.def Info: supplemental_files/figure-latex/responsestyle13-1.pdf  used on input line 2180.
 (pdftex.def)             Requested size: 463.73842pt x 312.17024pt.
-[42 <./supplemental_files/figure-latex/responsestyle13-1.pdf>]
-<supplemental_files/figure-latex/responsestyle17-1.pdf, id=489, 463.7325pt x 315.1775pt>
+[43 <./supplemental_files/figure-latex/responsestyle13-1.pdf>]
+<supplemental_files/figure-latex/responsestyle17-1.pdf, id=501, 459.7175pt x 315.1775pt>
 File: supplemental_files/figure-latex/responsestyle17-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/responsestyle17-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/responsestyle17-1.pdf  used on input line 2198.
-(pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
-[43] [44 <./supplemental_files/figure-latex/responsestyle17-1.pdf>] [45] [46]
-<supplemental_files/figure-latex/responsestyle24-1.pdf, id=525, 463.7325pt x 312.16624pt>
+Package pdftex.def Info: supplemental_files/figure-latex/responsestyle17-1.pdf  used on input line 2227.
+(pdftex.def)             Requested size: 459.74442pt x 315.19595pt.
+[44] [45 <./supplemental_files/figure-latex/responsestyle17-1.pdf>] [46] [47]
+<supplemental_files/figure-latex/responsestyle24-1.pdf, id=537, 463.7325pt x 312.16624pt>
 File: supplemental_files/figure-latex/responsestyle24-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/responsestyle24-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/responsestyle24-1.pdf  used on input line 2401.
+Package pdftex.def Info: supplemental_files/figure-latex/responsestyle24-1.pdf  used on input line 2427.
 (pdftex.def)             Requested size: 463.73842pt x 312.17024pt.
-[47] [48 <./supplemental_files/figure-latex/responsestyle24-1.pdf>]
-Overfull \hbox (3.95383pt too wide) in paragraph at lines 2452--2453
+[48] [49 <./supplemental_files/figure-latex/responsestyle24-1.pdf>]
+Overfull \hbox (3.95383pt too wide) in paragraph at lines 2478--2479
 []\T1/lmr/m/n/10 Item for-mat was unas-so-ci-ated with par-tic-i-pants' ex-pected re-sponses to per-son-al-ity items $\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 F\OT1/lmr/m/n/10 (3\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 00\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 37\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 963\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 00) =
  []
 
-<supplemental_files/figure-latex/responsestyle28-1.pdf, id=547, 419.5675pt x 269.005pt>
+<supplemental_files/figure-latex/responsestyle28-1.pdf, id=559, 459.7175pt x 315.1775pt>
 File: supplemental_files/figure-latex/responsestyle28-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/responsestyle28-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/responsestyle28-1.pdf  used on input line 2456.
-(pdftex.def)             Requested size: 419.56647pt x 269.00433pt.
-[49] [50 <./supplemental_files/figure-latex/responsestyle28-1.pdf>] [51]
-<supplemental_files/figure-latex/responsestyle33-1.pdf, id=577, 463.7325pt x 312.16624pt>
+Package pdftex.def Info: supplemental_files/figure-latex/responsestyle28-1.pdf  used on input line 2482.
+(pdftex.def)             Requested size: 459.74442pt x 315.19595pt.
+[50] [51 <./supplemental_files/figure-latex/responsestyle28-1.pdf>] [52]
+Overfull \vbox (1.47015pt too high) detected at line 2663
+ []
+
+[53]
+<supplemental_files/figure-latex/responsestyle33-1.pdf, id=592, 463.7325pt x 312.16624pt>
 File: supplemental_files/figure-latex/responsestyle33-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/responsestyle33-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/responsestyle33-1.pdf  used on input line 2638.
+Package pdftex.def Info: supplemental_files/figure-latex/responsestyle33-1.pdf  used on input line 2667.
 (pdftex.def)             Requested size: 463.73842pt x 312.17024pt.
-<supplemental_files/figure-latex/unnamed-chunk-19-1.pdf, id=578, 347.2975pt x 690.58pt>
-File: supplemental_files/figure-latex/unnamed-chunk-19-1.pdf Graphic file (type pdf)
-<use supplemental_files/figure-latex/unnamed-chunk-19-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-19-1.pdf  used on input line 2645.
-(pdftex.def)             Requested size: 327.11151pt x 650.44139pt.
-[52] [53 <./supplemental_files/figure-latex/responsestyle33-1.pdf>] [54]
-Overfull \vbox (22.46962pt too high) has occurred while \output is active []
+<supplemental_files/figure-latex/unnamed-chunk-18-1.pdf, id=593, 351.3125pt x 713.66624pt>
+File: supplemental_files/figure-latex/unnamed-chunk-18-1.pdf Graphic file (type pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-18-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-18-1.pdf  used on input line 2674.
+(pdftex.def)             Requested size: 320.19876pt x 650.46092pt.
+[54] [55 <./supplemental_files/figure-latex/responsestyle33-1.pdf>] [56]
+Overfull \vbox (22.48915pt too high) has occurred while \output is active []
 
-[55 <./supplemental_files/figure-latex/unnamed-chunk-19-1.pdf>] [56]
-Overfull \hbox (13.13368pt too wide) in paragraph at lines 2754--2765
+[57 <./supplemental_files/figure-latex/unnamed-chunk-18-1.pdf>] [58]
+Overfull \hbox (13.13368pt too wide) in paragraph at lines 2783--2794
  [][] 
  []
 
-<supplemental_files/figure-latex/internal11-1.pdf, id=626, 459.7175pt x 313.17pt>
+<supplemental_files/figure-latex/internal11-1.pdf, id=641, 459.7175pt x 313.17pt>
 File: supplemental_files/figure-latex/internal11-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/internal11-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/internal11-1.pdf  used on input line 2769.
+Package pdftex.def Info: supplemental_files/figure-latex/internal11-1.pdf  used on input line 2798.
 (pdftex.def)             Requested size: 459.7304pt x 313.17877pt.
-<supplemental_files/figure-latex/internal12b-1.pdf, id=628, 458.71375pt x 315.1775pt>
+<supplemental_files/figure-latex/internal12b-1.pdf, id=643, 458.71375pt x 315.1775pt>
 File: supplemental_files/figure-latex/internal12b-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/internal12b-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/internal12b-1.pdf  used on input line 2789.
+Package pdftex.def Info: supplemental_files/figure-latex/internal12b-1.pdf  used on input line 2818.
 (pdftex.def)             Requested size: 458.73363pt x 315.19115pt.
-[57] [58 <./supplemental_files/figure-latex/internal11-1.pdf>] [59 <./supplemental_files/figure-latex/internal12b-1.pdf>]
-<supplemental_files/figure-latex/internal13c-1.pdf, id=667, 460.72125pt x 307.1475pt>
+[59] [60 <./supplemental_files/figure-latex/internal11-1.pdf>] [61 <./supplemental_files/figure-latex/internal12b-1.pdf>]
+<supplemental_files/figure-latex/internal13c-1.pdf, id=683, 460.72125pt x 307.1475pt>
 File: supplemental_files/figure-latex/internal13c-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/internal13c-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/internal13c-1.pdf  used on input line 2824.
+Package pdftex.def Info: supplemental_files/figure-latex/internal13c-1.pdf  used on input line 2853.
 (pdftex.def)             Requested size: 460.72012pt x 307.14674pt.
-[60 <./supplemental_files/figure-latex/internal13c-1.pdf>] [61] [62] [63] [64] [65]
-Overfull \hbox (76.10475pt too wide) in paragraph at lines 3195--3248
+[62 <./supplemental_files/figure-latex/internal13c-1.pdf>] [63] [64] [65] [66] [67]
+Overfull \hbox (76.10475pt too wide) in paragraph at lines 3224--3277
  [][] 
  []
 
-<supplemental_files/figure-latex/testretest18-1.pdf, id=724, 459.7175pt x 312.16624pt>
+<supplemental_files/figure-latex/testretest18-1.pdf, id=740, 459.7175pt x 312.16624pt>
 File: supplemental_files/figure-latex/testretest18-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/testretest18-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/testretest18-1.pdf  used on input line 3252.
+Package pdftex.def Info: supplemental_files/figure-latex/testretest18-1.pdf  used on input line 3281.
 (pdftex.def)             Requested size: 459.72337pt x 312.17024pt.
-[66] [67] [68 <./supplemental_files/figure-latex/testretest18-1.pdf>]
-<supplemental_files/figure-latex/timingmod1-1.pdf, id=750, 468.75125pt x 316.18124pt>
+[68] [69] [70 <./supplemental_files/figure-latex/testretest18-1.pdf>]
+<supplemental_files/figure-latex/timingmod1-1.pdf, id=765, 463.7325pt x 316.18124pt>
 File: supplemental_files/figure-latex/timingmod1-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/timingmod1-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/timingmod1-1.pdf  used on input line 3290.
-(pdftex.def)             Requested size: 468.75009pt x 316.18047pt.
-<supplemental_files/figure-latex/timingdist-1.pdf, id=751, 463.7325pt x 314.17375pt>
+Package pdftex.def Info: supplemental_files/figure-latex/timingmod1-1.pdf  used on input line 3319.
+(pdftex.def)             Requested size: 463.73842pt x 316.18529pt.
+<supplemental_files/figure-latex/timingdist-1.pdf, id=766, 463.7325pt x 314.17375pt>
 File: supplemental_files/figure-latex/timingdist-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/timingdist-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/timingdist-1.pdf  used on input line 3296.
+Package pdftex.def Info: supplemental_files/figure-latex/timingdist-1.pdf  used on input line 3325.
 (pdftex.def)             Requested size: 463.73842pt x 314.17776pt.
 
-Overfull \hbox (15.49513pt too wide) in paragraph at lines 3304--3332
+Overfull \hbox (5.38446pt too wide) in paragraph at lines 3333--3361
  [][] 
  []
 
-[69] [70 <./supplemental_files/figure-latex/timingmod1-1.pdf>] [71 <./supplemental_files/figure-latex/timingdist-1.pdf>] [72]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 3457--3485
+[71] [72 <./supplemental_files/figure-latex/timingmod1-1.pdf>] [73 <./supplemental_files/figure-latex/timingdist-1.pdf>] [74] [75]
+
+LaTeX Warning: Reference `tab:activepairs' on page 76 undefined on input line 3512.
+
+
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 3524--3554
  [][] 
  []
 
-<supplemental_files/figure-latex/activeplot-1.pdf, id=796, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/activeplot-1.pdf, id=816, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/activeplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/activeplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/activeplot-1.pdf  used on input line 3489.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[73] [74 <./supplemental_files/figure-latex/activeplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 3510--3538
+Package pdftex.def Info: supplemental_files/figure-latex/activeplot-1.pdf  used on input line 3558.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:adventurepairs' on page 76 undefined on input line 3565.
+
+
+LaTeX Warning: Reference `fig:adventureplot' on page 76 undefined on input line 3565.
+
+
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 3577--3607
  [][] 
  []
 
-<supplemental_files/figure-latex/adventureplot-1.pdf, id=824, 468.75125pt x 313.17pt>
-File: supplemental_files/figure-latex/adventureplot-1.pdf Graphic file (type pdf)
-<use supplemental_files/figure-latex/adventureplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/adventureplot-1.pdf  used on input line 3542.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[75 <./supplemental_files/figure-latex/adventureplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 3565--3593
+<supplemental_files/figure-latex/adventurousplot-1.pdf, id=817, 456.70625pt x 315.1775pt>
+File: supplemental_files/figure-latex/adventurousplot-1.pdf Graphic file (type pdf)
+<use supplemental_files/figure-latex/adventurousplot-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/adventurousplot-1.pdf  used on input line 3611.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:broadmindedpairs' on page 76 undefined on input line 3618.
+
+[76] [77 <./supplemental_files/figure-latex/activeplot-1.pdf>] [78 <./supplemental_files/figure-latex/adventurousplot-1.pdf>]
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 3630--3660
  [][] 
  []
 
-<supplemental_files/figure-latex/broadmindedplot-1.pdf, id=842, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/broadmindedplot-1.pdf, id=854, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/broadmindedplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/broadmindedplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/broadmindedplot-1.pdf  used on input line 3597.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[76 <./supplemental_files/figure-latex/broadmindedplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 3618--3646
+Package pdftex.def Info: supplemental_files/figure-latex/broadmindedplot-1.pdf  used on input line 3664.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:calmpairs' on page 79 undefined on input line 3671.
+
+[79 <./supplemental_files/figure-latex/broadmindedplot-1.pdf>]
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 3683--3713
  [][] 
  []
 
-<supplemental_files/figure-latex/calmplot-1.pdf, id=860, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/calmplot-1.pdf, id=874, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/calmplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/calmplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/calmplot-1.pdf  used on input line 3650.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[77 <./supplemental_files/figure-latex/calmplot-1.pdf>]
-Overfull \hbox (40.35541pt too wide) in paragraph at lines 3671--3699
+Package pdftex.def Info: supplemental_files/figure-latex/calmplot-1.pdf  used on input line 3717.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:caringpairs' on page 80 undefined on input line 3724.
+
+
+Overfull \hbox (72.35524pt too wide) in paragraph at lines 3736--3766
  [][] 
  []
 
-<supplemental_files/figure-latex/caringplot-1.pdf, id=878, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/caringplot-1.pdf, id=876, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/caringplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/caringplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/caringplot-1.pdf  used on input line 3703.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[78 <./supplemental_files/figure-latex/caringplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 3726--3754
+Package pdftex.def Info: supplemental_files/figure-latex/caringplot-1.pdf  used on input line 3770.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:helpfulpairs' on page 80 undefined on input line 3777.
+
+[80 <./supplemental_files/figure-latex/calmplot-1.pdf>] [81 <./supplemental_files/figure-latex/caringplot-1.pdf>]
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 3789--3819
  [][] 
  []
 
-<supplemental_files/figure-latex/cautiousplot-1.pdf, id=896, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/cautiousplot-1.pdf, id=906, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/cautiousplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/cautiousplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/cautiousplot-1.pdf  used on input line 3758.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[79 <./supplemental_files/figure-latex/cautiousplot-1.pdf>]
-Overfull \hbox (40.35541pt too wide) in paragraph at lines 3781--3809
+Package pdftex.def Info: supplemental_files/figure-latex/cautiousplot-1.pdf  used on input line 3823.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:coldpairs' on page 82 undefined on input line 3830.
+
+[82 <./supplemental_files/figure-latex/cautiousplot-1.pdf>]
+Overfull \hbox (72.35524pt too wide) in paragraph at lines 3842--3872
  [][] 
  []
 
-<supplemental_files/figure-latex/coldplot-1.pdf, id=918, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/coldplot-1.pdf, id=927, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/coldplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/coldplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/coldplot-1.pdf  used on input line 3813.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[80 <./supplemental_files/figure-latex/coldplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 3836--3864
+Package pdftex.def Info: supplemental_files/figure-latex/coldplot-1.pdf  used on input line 3876.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:creativepairs' on page 83 undefined on input line 3883.
+
+
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 3895--3925
  [][] 
  []
 
-<supplemental_files/figure-latex/creativeplot-1.pdf, id=936, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/creativeplot-1.pdf, id=929, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/creativeplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/creativeplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/creativeplot-1.pdf  used on input line 3868.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[81 <./supplemental_files/figure-latex/creativeplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 3891--3919
+Package pdftex.def Info: supplemental_files/figure-latex/creativeplot-1.pdf  used on input line 3929.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:curiouspairs' on page 83 undefined on input line 3936.
+
+[83 <./supplemental_files/figure-latex/coldplot-1.pdf>] [84 <./supplemental_files/figure-latex/creativeplot-1.pdf>]
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 3948--3978
  [][] 
  []
 
-<supplemental_files/figure-latex/curiousplot-1.pdf, id=954, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/curiousplot-1.pdf, id=959, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/curiousplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/curiousplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/curiousplot-1.pdf  used on input line 3923.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[82 <./supplemental_files/figure-latex/curiousplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 3946--3974
+Package pdftex.def Info: supplemental_files/figure-latex/curiousplot-1.pdf  used on input line 3982.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:friendlypairs' on page 85 undefined on input line 3989.
+
+[85 <./supplemental_files/figure-latex/curiousplot-1.pdf>]
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 4001--4031
  [][] 
  []
 
-<supplemental_files/figure-latex/friendlyplot-1.pdf, id=972, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/friendlyplot-1.pdf, id=979, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/friendlyplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/friendlyplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/friendlyplot-1.pdf  used on input line 3978.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[83 <./supplemental_files/figure-latex/friendlyplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4001--4029
+Package pdftex.def Info: supplemental_files/figure-latex/friendlyplot-1.pdf  used on input line 4035.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:hardworkingpairs' on page 86 undefined on input line 4042.
+
+
+Overfull \hbox (83.46655pt too wide) in paragraph at lines 4054--4084
  [][] 
  []
 
-<supplemental_files/figure-latex/hardworkingplot-1.pdf, id=990, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/hardworkingplot-1.pdf, id=981, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/hardworkingplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/hardworkingplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/hardworkingplot-1.pdf  used on input line 4033.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[84 <./supplemental_files/figure-latex/hardworkingplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4056--4084
+Package pdftex.def Info: supplemental_files/figure-latex/hardworkingplot-1.pdf  used on input line 4088.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:helpfulpairs' on page 86 undefined on input line 4095.
+
+[86 <./supplemental_files/figure-latex/friendlyplot-1.pdf>] [87 <./supplemental_files/figure-latex/hardworkingplot-1.pdf>]
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 4107--4137
  [][] 
  []
 
-<supplemental_files/figure-latex/helpfulplot-1.pdf, id=1006, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/helpfulplot-1.pdf, id=1011, 457.71pt x 315.1775pt>
 File: supplemental_files/figure-latex/helpfulplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/helpfulplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/helpfulplot-1.pdf  used on input line 4088.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[85 <./supplemental_files/figure-latex/helpfulplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4111--4139
+Package pdftex.def Info: supplemental_files/figure-latex/helpfulplot-1.pdf  used on input line 4141.
+(pdftex.def)             Requested size: 457.72984pt x 315.19115pt.
+
+LaTeX Warning: Reference `tab:imaginativepairs' on page 88 undefined on input line 4148.
+
+[88 <./supplemental_files/figure-latex/helpfulplot-1.pdf>]
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 4160--4190
  [][] 
  []
 
-<supplemental_files/figure-latex/imaginativeplot-1.pdf, id=1025, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/imaginativeplot-1.pdf, id=1029, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/imaginativeplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/imaginativeplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/imaginativeplot-1.pdf  used on input line 4143.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[86 <./supplemental_files/figure-latex/imaginativeplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4166--4194
+Package pdftex.def Info: supplemental_files/figure-latex/imaginativeplot-1.pdf  used on input line 4194.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:intelligentpairs' on page 89 undefined on input line 4201.
+
+
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 4213--4243
  [][] 
  []
 
-<supplemental_files/figure-latex/intelligentplot-1.pdf, id=1044, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/intelligentplot-1.pdf, id=1031, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/intelligentplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/intelligentplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/intelligentplot-1.pdf  used on input line 4198.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[87 <./supplemental_files/figure-latex/intelligentplot-1.pdf>]
-Overfull \hbox (40.35541pt too wide) in paragraph at lines 4221--4249
+Package pdftex.def Info: supplemental_files/figure-latex/intelligentplot-1.pdf  used on input line 4247.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:livelypairs' on page 89 undefined on input line 4254.
+
+[89 <./supplemental_files/figure-latex/imaginativeplot-1.pdf>] [90 <./supplemental_files/figure-latex/intelligentplot-1.pdf>]
+Overfull \hbox (69.02191pt too wide) in paragraph at lines 4266--4296
  [][] 
  []
 
-<supplemental_files/figure-latex/livelyplot-1.pdf, id=1062, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/livelyplot-1.pdf, id=1062, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/livelyplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/livelyplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/livelyplot-1.pdf  used on input line 4253.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[88 <./supplemental_files/figure-latex/livelyplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4276--4304
+Package pdftex.def Info: supplemental_files/figure-latex/livelyplot-1.pdf  used on input line 4300.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:organizedpairs' on page 91 undefined on input line 4307.
+
+[91 <./supplemental_files/figure-latex/livelyplot-1.pdf>]
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 4319--4349
  [][] 
  []
 
-<supplemental_files/figure-latex/organizedplot-1.pdf, id=1080, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/organizedplot-1.pdf, id=1082, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/organizedplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/organizedplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/organizedplot-1.pdf  used on input line 4308.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[89 <./supplemental_files/figure-latex/organizedplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4331--4359
+Package pdftex.def Info: supplemental_files/figure-latex/organizedplot-1.pdf  used on input line 4353.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:outgoingpairs' on page 92 undefined on input line 4360.
+
+
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 4372--4402
  [][] 
  []
 
-<supplemental_files/figure-latex/outgoingplot-1.pdf, id=1098, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/outgoingplot-1.pdf, id=1084, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/outgoingplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/outgoingplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/outgoingplot-1.pdf  used on input line 4363.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[90 <./supplemental_files/figure-latex/outgoingplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4386--4414
+Package pdftex.def Info: supplemental_files/figure-latex/outgoingplot-1.pdf  used on input line 4406.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:quietpairs' on page 92 undefined on input line 4413.
+
+[92 <./supplemental_files/figure-latex/organizedplot-1.pdf>] [93 <./supplemental_files/figure-latex/outgoingplot-1.pdf>]
+Overfull \hbox (83.46655pt too wide) in paragraph at lines 4425--4455
  [][] 
  []
 
-<supplemental_files/figure-latex/quietplot-1.pdf, id=1116, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/quietplot-1.pdf, id=1114, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/quietplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/quietplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/quietplot-1.pdf  used on input line 4418.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[91 <./supplemental_files/figure-latex/quietplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4441--4469
+Package pdftex.def Info: supplemental_files/figure-latex/quietplot-1.pdf  used on input line 4459.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:relaxedpairs' on page 94 undefined on input line 4466.
+
+[94 <./supplemental_files/figure-latex/quietplot-1.pdf>]
+Overfull \hbox (83.46655pt too wide) in paragraph at lines 4478--4508
  [][] 
  []
 
-<supplemental_files/figure-latex/relaxedplot-1.pdf, id=1135, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/relaxedplot-1.pdf, id=1133, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/relaxedplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/relaxedplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/relaxedplot-1.pdf  used on input line 4473.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[92 <./supplemental_files/figure-latex/relaxedplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4496--4524
+Package pdftex.def Info: supplemental_files/figure-latex/relaxedplot-1.pdf  used on input line 4512.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:responsiblepairs' on page 95 undefined on input line 4519.
+
+
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 4531--4561
  [][] 
  []
 
-<supplemental_files/figure-latex/responsibleplot-1.pdf, id=1153, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/responsibleplot-1.pdf, id=1135, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/responsibleplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/responsibleplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/responsibleplot-1.pdf  used on input line 4528.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[93 <./supplemental_files/figure-latex/responsibleplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4551--4579
+Package pdftex.def Info: supplemental_files/figure-latex/responsibleplot-1.pdf  used on input line 4565.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:selfdisciplinedpairs' on page 95 undefined on input line 4572.
+
+[95 <./supplemental_files/figure-latex/relaxedplot-1.pdf>] [96 <./supplemental_files/figure-latex/responsibleplot-1.pdf>]
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 4584--4614
  [][] 
  []
 
-<supplemental_files/figure-latex/selfdisciplinedplot-1.pdf, id=1172, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/selfdisciplinedplot-1.pdf, id=1165, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/selfdisciplinedplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/selfdisciplinedplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/selfdisciplinedplot-1.pdf  used on input line 4583.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[94 <./supplemental_files/figure-latex/selfdisciplinedplot-1.pdf>]
-Overfull \hbox (40.35541pt too wide) in paragraph at lines 4606--4634
+Package pdftex.def Info: supplemental_files/figure-latex/selfdisciplinedplot-1.pdf  used on input line 4618.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:shypairs' on page 97 undefined on input line 4625.
+
+[97 <./supplemental_files/figure-latex/selfdisciplinedplot-1.pdf>]
+Overfull \hbox (72.35524pt too wide) in paragraph at lines 4637--4667
  [][] 
  []
 
-<supplemental_files/figure-latex/shyplot-1.pdf, id=1190, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/shyplot-1.pdf, id=1186, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/shyplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/shyplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/shyplot-1.pdf  used on input line 4638.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[95 <./supplemental_files/figure-latex/shyplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4659--4687
+Package pdftex.def Info: supplemental_files/figure-latex/shyplot-1.pdf  used on input line 4671.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:softpairs' on page 98 undefined on input line 4678.
+
+
+Overfull \hbox (83.46655pt too wide) in paragraph at lines 4690--4720
  [][] 
  []
 
-<supplemental_files/figure-latex/softplot-1.pdf, id=1208, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/softplot-1.pdf, id=1188, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/softplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/softplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/softplot-1.pdf  used on input line 4691.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[96 <./supplemental_files/figure-latex/softplot-1.pdf>]
-Overfull \hbox (40.35541pt too wide) in paragraph at lines 4714--4742
+Package pdftex.def Info: supplemental_files/figure-latex/softplot-1.pdf  used on input line 4724.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:sophisticatedpairs' on page 98 undefined on input line 4731.
+
+[98 <./supplemental_files/figure-latex/shyplot-1.pdf>] [99 <./supplemental_files/figure-latex/softplot-1.pdf>]
+Overfull \hbox (69.02191pt too wide) in paragraph at lines 4743--4773
  [][] 
  []
 
-<supplemental_files/figure-latex/sophisticatedplot-1.pdf, id=1226, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/sophisticatedplot-1.pdf, id=1218, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/sophisticatedplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/sophisticatedplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/sophisticatedplot-1.pdf  used on input line 4746.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[97 <./supplemental_files/figure-latex/sophisticatedplot-1.pdf>]
-Overfull \hbox (40.35541pt too wide) in paragraph at lines 4767--4795
+Package pdftex.def Info: supplemental_files/figure-latex/sophisticatedplot-1.pdf  used on input line 4777.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:symppairs' on page 100 undefined on input line 4784.
+
+[100 <./supplemental_files/figure-latex/sophisticatedplot-1.pdf>]
+Overfull \hbox (69.02191pt too wide) in paragraph at lines 4796--4826
  [][] 
  []
 
-<supplemental_files/figure-latex/sympplot-1.pdf, id=1245, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/sympplot-1.pdf, id=1237, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/sympplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/sympplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/sympplot-1.pdf  used on input line 4799.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[98 <./supplemental_files/figure-latex/sympplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4822--4850
+Package pdftex.def Info: supplemental_files/figure-latex/sympplot-1.pdf  used on input line 4830.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:talkativepairs' on page 101 undefined on input line 4837.
+
+
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 4849--4879
  [][] 
  []
 
-<supplemental_files/figure-latex/talkativeplot-1.pdf, id=1263, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/talkativeplot-1.pdf, id=1239, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/talkativeplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/talkativeplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/talkativeplot-1.pdf  used on input line 4854.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[99 <./supplemental_files/figure-latex/talkativeplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4877--4905
+Package pdftex.def Info: supplemental_files/figure-latex/talkativeplot-1.pdf  used on input line 4883.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:thoroughpairs' on page 101 undefined on input line 4890.
+
+[101 <./supplemental_files/figure-latex/sympplot-1.pdf>] [102 <./supplemental_files/figure-latex/talkativeplot-1.pdf>]
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 4902--4932
  [][] 
  []
 
-<supplemental_files/figure-latex/thoroughplot-1.pdf, id=1281, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/thoroughplot-1.pdf, id=1269, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/thoroughplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/thoroughplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/thoroughplot-1.pdf  used on input line 4909.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[100 <./supplemental_files/figure-latex/thoroughplot-1.pdf>]
-Overfull \hbox (40.35541pt too wide) in paragraph at lines 4932--4960
+Package pdftex.def Info: supplemental_files/figure-latex/thoroughplot-1.pdf  used on input line 4936.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:thriftypairs' on page 103 undefined on input line 4943.
+
+[103 <./supplemental_files/figure-latex/thoroughplot-1.pdf>]
+Overfull \hbox (72.35524pt too wide) in paragraph at lines 4955--4985
  [][] 
  []
 
-<supplemental_files/figure-latex/thriftyplot-1.pdf, id=1300, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/thriftyplot-1.pdf, id=1289, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/thriftyplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/thriftyplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/thriftyplot-1.pdf  used on input line 4964.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[101 <./supplemental_files/figure-latex/thriftyplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 4987--5015
+Package pdftex.def Info: supplemental_files/figure-latex/thriftyplot-1.pdf  used on input line 4989.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:uncreativepairs' on page 104 undefined on input line 4996.
+
+
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 5008--5038
  [][] 
  []
 
-<supplemental_files/figure-latex/uncreativeplot-1.pdf, id=1318, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/uncreativeplot-1.pdf, id=1291, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/uncreativeplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/uncreativeplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/uncreativeplot-1.pdf  used on input line 5019.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[102 <./supplemental_files/figure-latex/uncreativeplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 5042--5070
+Package pdftex.def Info: supplemental_files/figure-latex/uncreativeplot-1.pdf  used on input line 5042.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:unintellectualpairs' on page 104 undefined on input line 5049.
+
+[104 <./supplemental_files/figure-latex/thriftyplot-1.pdf>] [105 <./supplemental_files/figure-latex/uncreativeplot-1.pdf>]
+Overfull \hbox (83.46655pt too wide) in paragraph at lines 5061--5091
  [][] 
  []
 
-<supplemental_files/figure-latex/unintellectualplot-1.pdf, id=1336, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/unintellectualplot-1.pdf, id=1322, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/unintellectualplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/unintellectualplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unintellectualplot-1.pdf  used on input line 5074.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[103 <./supplemental_files/figure-latex/unintellectualplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 5097--5125
+Package pdftex.def Info: supplemental_files/figure-latex/unintellectualplot-1.pdf  used on input line 5095.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:unsympatheticpairs' on page 106 undefined on input line 5102.
+
+[106 <./supplemental_files/figure-latex/unintellectualplot-1.pdf>]
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 5114--5144
  [][] 
  []
 
-<supplemental_files/figure-latex/unsympatheticplot-1.pdf, id=1355, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/unsympatheticplot-1.pdf, id=1341, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/unsympatheticplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/unsympatheticplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/unsympatheticplot-1.pdf  used on input line 5129.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[104 <./supplemental_files/figure-latex/unsympatheticplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 5152--5180
+Package pdftex.def Info: supplemental_files/figure-latex/unsympatheticplot-1.pdf  used on input line 5148.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:warmpairs' on page 107 undefined on input line 5155.
+
+
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 5167--5197
  [][] 
  []
 
-<supplemental_files/figure-latex/warmplot-1.pdf, id=1373, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/warmplot-1.pdf, id=1343, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/warmplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/warmplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/warmplot-1.pdf  used on input line 5184.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[105 <./supplemental_files/figure-latex/warmplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 5207--5235
+Package pdftex.def Info: supplemental_files/figure-latex/warmplot-1.pdf  used on input line 5201.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:carelesspairs' on page 107 undefined on input line 5208.
+
+[107 <./supplemental_files/figure-latex/unsympatheticplot-1.pdf>] [108 <./supplemental_files/figure-latex/warmplot-1.pdf>]
+Overfull \hbox (83.46655pt too wide) in paragraph at lines 5220--5250
  [][] 
  []
 
-<supplemental_files/figure-latex/carelessplot-1.pdf, id=1391, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/carelessplot-1.pdf, id=1373, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/carelessplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/carelessplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/carelessplot-1.pdf  used on input line 5239.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[106 <./supplemental_files/figure-latex/carelessplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 5262--5290
+Package pdftex.def Info: supplemental_files/figure-latex/carelessplot-1.pdf  used on input line 5254.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:impulsivepairs' on page 109 undefined on input line 5261.
+
+[109 <./supplemental_files/figure-latex/carelessplot-1.pdf>]
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 5273--5303
  [][] 
  []
 
-<supplemental_files/figure-latex/impulsiveplot-1.pdf, id=1409, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/impulsiveplot-1.pdf, id=1393, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/impulsiveplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/impulsiveplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/impulsiveplot-1.pdf  used on input line 5294.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[107 <./supplemental_files/figure-latex/impulsiveplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 5317--5345
+Package pdftex.def Info: supplemental_files/figure-latex/impulsiveplot-1.pdf  used on input line 5307.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:moodypairs' on page 110 undefined on input line 5314.
+
+
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 5326--5356
  [][] 
  []
 
-<supplemental_files/figure-latex/moodyplot-1.pdf, id=1427, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/moodyplot-1.pdf, id=1395, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/moodyplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/moodyplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/moodyplot-1.pdf  used on input line 5349.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[108 <./supplemental_files/figure-latex/moodyplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 5372--5400
+Package pdftex.def Info: supplemental_files/figure-latex/moodyplot-1.pdf  used on input line 5360.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:nervouspairs' on page 110 undefined on input line 5367.
+
+[110 <./supplemental_files/figure-latex/impulsiveplot-1.pdf>] [111 <./supplemental_files/figure-latex/moodyplot-1.pdf>]
+Overfull \hbox (83.46655pt too wide) in paragraph at lines 5379--5409
  [][] 
  []
 
-<supplemental_files/figure-latex/nervousplot-1.pdf, id=1446, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/nervousplot-1.pdf, id=1425, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/nervousplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/nervousplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/nervousplot-1.pdf  used on input line 5404.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[109 <./supplemental_files/figure-latex/nervousplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 5427--5455
+Package pdftex.def Info: supplemental_files/figure-latex/nervousplot-1.pdf  used on input line 5413.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:recklesspairs' on page 112 undefined on input line 5420.
+
+[112 <./supplemental_files/figure-latex/nervousplot-1.pdf>]
+Overfull \hbox (83.46655pt too wide) in paragraph at lines 5432--5462
  [][] 
  []
 
-<supplemental_files/figure-latex/recklessplot-1.pdf, id=1465, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/recklessplot-1.pdf, id=1445, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/recklessplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/recklessplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/recklessplot-1.pdf  used on input line 5459.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[110 <./supplemental_files/figure-latex/recklessplot-1.pdf>]
-Overfull \hbox (51.46672pt too wide) in paragraph at lines 5482--5510
+Package pdftex.def Info: supplemental_files/figure-latex/recklessplot-1.pdf  used on input line 5466.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+
+LaTeX Warning: Reference `tab:worryingpairs' on page 113 undefined on input line 5473.
+
+
+Overfull \hbox (80.13322pt too wide) in paragraph at lines 5485--5515
  [][] 
  []
 
-<supplemental_files/figure-latex/worryingplot-1.pdf, id=1483, 468.75125pt x 313.17pt>
+<supplemental_files/figure-latex/worryingplot-1.pdf, id=1447, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/worryingplot-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/worryingplot-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/worryingplot-1.pdf  used on input line 5514.
-(pdftex.def)             Requested size: 468.75009pt x 313.16922pt.
-[111 <./supplemental_files/figure-latex/worryingplot-1.pdf>]
-<supplemental_files/figure-latex/secondsi-1.pdf, id=1497, 468.75125pt x 315.1775pt>
+Package pdftex.def Info: supplemental_files/figure-latex/worryingplot-1.pdf  used on input line 5519.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+[113 <./supplemental_files/figure-latex/recklessplot-1.pdf>] [114 <./supplemental_files/figure-latex/worryingplot-1.pdf>]
+<supplemental_files/figure-latex/secondsi-1.pdf, id=1477, 456.70625pt x 315.1775pt>
 File: supplemental_files/figure-latex/secondsi-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/secondsi-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/secondsi-1.pdf  used on input line 5574.
-(pdftex.def)             Requested size: 468.75009pt x 315.17673pt.
-[112] [113 <./supplemental_files/figure-latex/secondsi-1.pdf>]
-Overfull \hbox (217.1329pt too wide) in paragraph at lines 5753--5816
- [][] 
- []
+Package pdftex.def Info: supplemental_files/figure-latex/secondsi-1.pdf  used on input line 5579.
+(pdftex.def)             Requested size: 456.71906pt x 315.18634pt.
+[115] [116 <./supplemental_files/figure-latex/secondsi-1.pdf>] [117] [118] [119]
+<supplemental_files/figure-latex/unnamed-chunk-71-1.pdf, id=1513, 457.71pt x 315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-71-1.pdf Graphic file (type pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-71-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-71-1.pdf  used on input line 5796.
+(pdftex.def)             Requested size: 457.72984pt x 315.19115pt.
+<supplemental_files/figure-latex/unnamed-chunk-72-1.pdf, id=1514, 457.71pt x 315.1775pt>
+File: supplemental_files/figure-latex/unnamed-chunk-72-1.pdf Graphic file (type pdf)
+<use supplemental_files/figure-latex/unnamed-chunk-72-1.pdf>
+Package pdftex.def Info: supplemental_files/figure-latex/unnamed-chunk-72-1.pdf  used on input line 5811.
+(pdftex.def)             Requested size: 457.72984pt x 315.19115pt.
+[120 <./supplemental_files/figure-latex/unnamed-chunk-71-1.pdf>] [121 <./supplemental_files/figure-latex/unnamed-chunk-72-1.pdf>]
 
-<supplemental_files/figure-latex/outgoingploti-1.pdf, id=1522, 457.71pt x 313.17pt>
-File: supplemental_files/figure-latex/outgoingploti-1.pdf Graphic file (type pdf)
-<use supplemental_files/figure-latex/outgoingploti-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/outgoingploti-1.pdf  used on input line 5820.
-(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
-[114] [115] [116] [117 <./supplemental_files/figure-latex/outgoingploti-1.pdf>]
+LaTeX Warning: Reference `fig:enjoyFormat' on page 122 undefined on input line 5845.
 
-LaTeX Warning: Reference `fig:enjoyFormat' on page 118 undefined on input line 5854.
-
-<supplemental_files/figure-latex/enjoyFormat-1.pdf, id=1551, 463.7325pt x 315.1775pt>
+<supplemental_files/figure-latex/enjoyFormat-1.pdf, id=1542, 463.7325pt x 315.1775pt>
 File: supplemental_files/figure-latex/enjoyFormat-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/enjoyFormat-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/enjoyFormat-1.pdf  used on input line 5865.
+Package pdftex.def Info: supplemental_files/figure-latex/enjoyFormat-1.pdf  used on input line 5856.
 (pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
-[118] [119 <./supplemental_files/figure-latex/enjoyFormat-1.pdf>]
+[122] [123 <./supplemental_files/figure-latex/enjoyFormat-1.pdf>]
 
-LaTeX Warning: Reference `fig:designFormat' on page 120 undefined on input line 5933.
+LaTeX Warning: Reference `fig:designFormat' on page 124 undefined on input line 5924.
 
-<supplemental_files/figure-latex/designFormat-1.pdf, id=1573, 463.7325pt x 315.1775pt>
+<supplemental_files/figure-latex/designFormat-1.pdf, id=1563, 463.7325pt x 315.1775pt>
 File: supplemental_files/figure-latex/designFormat-1.pdf Graphic file (type pdf)
 <use supplemental_files/figure-latex/designFormat-1.pdf>
-Package pdftex.def Info: supplemental_files/figure-latex/designFormat-1.pdf  used on input line 5944.
+Package pdftex.def Info: supplemental_files/figure-latex/designFormat-1.pdf  used on input line 5935.
 (pdftex.def)             Requested size: 463.73842pt x 315.18153pt.
-[120] [121 <./supplemental_files/figure-latex/designFormat-1.pdf>]
-Overfull \hbox (18.49356pt too wide) in paragraph at lines 5996--5996
+[124] [125 <./supplemental_files/figure-latex/designFormat-1.pdf>]
+Overfull \hbox (18.49356pt too wide) in paragraph at lines 5987--5987
 []\T1/lmtt/m/n/10 ##  Desktop or laptop computer - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)[] 
  []
 
 
-Overfull \hbox (18.49356pt too wide) in paragraph at lines 6028--6028
+Overfull \hbox (18.49356pt too wide) in paragraph at lines 6019--6019
 []\T1/lmtt/m/n/10 ##  Desktop or laptop computer - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)[] 
  []
 
-[122] [123]
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 6064.
+[126] [127]
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 6055.
 (/Users/sweston2/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [124]
-Overfull \hbox (20.95549pt too wide) in alignment at lines 6116--6120
+) [128]
+Overfull \hbox (29.06673pt too wide) in alignment at lines 6107--6111
  [] [] [] 
  []
 
 
-Overfull \hbox (20.95549pt too wide) in alignment at lines 6120--6125
+Overfull \hbox (29.06673pt too wide) in alignment at lines 6111--6116
  [] [] [] 
  []
 
 
-Overfull \hbox (20.95549pt too wide) in alignment at lines 6125--6127
+Overfull \hbox (29.06673pt too wide) in alignment at lines 6116--6118
  [] [] [] 
  []
 
 
-Overfull \hbox (20.95549pt too wide) in alignment at lines 6127--6129
+Overfull \hbox (29.06673pt too wide) in alignment at lines 6118--6120
  [] [] [] 
  []
 
 
-Overfull \hbox (20.95549pt too wide) in alignment at lines 6129--6590
+Overfull \hbox (29.06673pt too wide) in alignment at lines 6120--6586
  [] [] [] 
  []
 
-[125] [126] [127] [128] (./supplemental.aux)
+[129] [130] [131] [132] [133] (./supplemental.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 14764 strings out of 477977
- 250911 string characters out of 5838229
- 1900666 words of memory out of 5000000
- 34144 multiletter control sequences out of 15000+600000
+ 14823 strings out of 477977
+ 252358 string characters out of 5838229
+ 1897666 words of memory out of 5000000
+ 34193 multiletter control sequences out of 15000+600000
  563569 words of font info for 77 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 89i,9n,90p,1116b,590s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,9n,90p,1116b,588s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/sweston2/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/sweston2/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/sweston2/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/sweston2/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/sweston2/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/sweston2/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/sweston2/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/sweston2/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/sweston2/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/sweston2/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on supplemental.pdf (128 pages, 1027320 bytes).
+Output written on supplemental.pdf (133 pages, 1032697 bytes).
 PDF statistics:
- 1900 PDF objects out of 2073 (max. 8388607)
- 1536 compressed objects within 16 object streams
- 487 named destinations out of 1000 (max. 500000)
- 622 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1905 PDF objects out of 2073 (max. 8388607)
+ 1533 compressed objects within 16 object streams
+ 496 named destinations out of 1000 (max. 500000)
+ 651 words of extra memory for PDF output out of 10000 (max. 10000000)
 

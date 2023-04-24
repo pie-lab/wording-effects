@@ -233,6 +233,13 @@
       "Repository": "CRAN",
       "Hash": "f61dbaec772ccd2e17705c1e872e9e7c"
     },
+    "checkmate": {
+      "Package": "checkmate",
+      "Version": "2.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "147e4db6909d8814bb30f671b49d7e06"
+    },
     "cli": {
       "Package": "cli",
       "Version": "3.6.0",
@@ -697,10 +704,10 @@
     },
     "insight": {
       "Package": "insight",
-      "Version": "0.19.0",
+      "Version": "0.19.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "494aea9b1ce585356ddff574c8c09e02"
+      "Hash": "b7a721ab3228268ed3a4ac3d585a09bf"
     },
     "isoband": {
       "Package": "isoband",
@@ -806,6 +813,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "7ce2733a9826b3aeb1775d56fd305472"
+    },
+    "marginaleffects": {
+      "Package": "marginaleffects",
+      "Version": "0.11.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "80fa4daf57b8d5c6e48186269e7f68e7"
     },
     "memoise": {
       "Package": "memoise",
