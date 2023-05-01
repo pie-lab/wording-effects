@@ -302,12 +302,13 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Test-retest reliability</h1>
-<h4 class="date">Last updated 2023-04-24</h4>
+<h4 class="date">Last updated 2023-05-01</h4>
 
 </div>
 
 
-<p>We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific – formats #3 and #4 above vs the use of adjectives alone. In other words, we expect equal or lower retest reliability for the adjectives than for longer phrases. We will also consider the effect of performance on the word recall task on retest reliability.</p>
+<p>We also evaluated test-retest reliability within formats (within session and over two weeks); we expecte slightly higher test-retest reliability for item wording formats that are more specific – formats #3 and #4 above vs the use of adjectives alone. However, we found that test-retest reliability did not differ as a function of item format.</p>
+<p>We also considered the effect of performance on the word recall task on retest reliability.</p>
 <p>The data structure needed for these analyses is in wide-format. That is, we require one column for each time point. In addition, we hope to examine reliability <em>within</em> format, which requires selecting only the response options which match the original, Block 1, assessment.</p>
 <pre class="r"><code>items_df = items_df %&gt;% 
   mutate(condition = tolower(condition)) %&gt;% 
@@ -374,7 +375,7 @@ Block 1 - Block 3
 </div>
 <div id="test-retest-reliability-all-items-pooled-moderated-by-memory" class="section level2" number="0.2">
 <h2><span class="header-section-number">0.2</span> Test-retest reliability (all items pooled, moderated by memory)</h2>
-<p>Here we fit models moderated by memory – that it, perhaps the test-retest coefficient is affected by the memory of the participant. Results are shown in Table <a href="#tab:testretest8b">2</a></p>
+<p>Here we fit models moderated by memory – that is, perhaps the test-retest coefficient is affected by the memory of the participant. Results are shown in Table <a href="#tab:testretest8b">2</a></p>
 <pre class="r"><code>tr_mod2_b1b2 = glmmTMB(block_2 ~ block_1*delayed_memory +
                       (1 |proid),
                     data = items_matchb1)

@@ -378,7 +378,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact timing?</h1>
-<h4 class="date">Last updated 2023-04-24</h4>
+<h4 class="date">Last updated 2023-05-01</h4>
 
 </div>
 
@@ -1618,16 +1618,14 @@ sig_item_b1</code></pre>
                          variables = list(format = &quot;pairwise&quot;)) 
   comp$p.value = p.adjust(comp$p.value, method = &quot;holm&quot;)
   
-  table = comp %&gt;%
+  comp = comp %&gt;% 
     mutate(
-      across( starts_with(&quot;p&quot;), printp )) %&gt;% # format p-values
-    select(-term) %&gt;% 
-    kable(booktabs = T,
-          digits = 2,
-          caption = paste(&quot;Differences in log-seconds to&quot;, str_to_sentence(adjective), &quot;by format (blocks 1 and 2)&quot;),
-          col.names = c(&quot;Contrast&quot;, &quot;Difference in means&quot;, &quot;SE&quot;, &quot;z&quot;, &quot;p&quot;, &quot;low&quot;, &quot;high&quot;)) %&gt;%
-    kable_styling() %&gt;% 
-    add_header_above(c(&quot; &quot; = 5, &quot;95% CI&quot; = 2))
+    across( starts_with(&quot;p&quot;), printp )) 
+  
+  caption = paste(&quot;Differences in log-seconds to&quot;, 
+                  adjective,
+                  &quot;by format (blocks 1 and 2)&quot;)
+  
   
   plot = avg_predictions(model, variables = &quot;format&quot;) %&gt;% 
     mutate(across(where(is.numeric), exp)) %&gt;% 
@@ -1641,18 +1639,19 @@ sig_item_b1</code></pre>
     theme_pubclean()
   
   return(list(
-    table = table,
+    comp = comp,
+    caption = caption,
     plot = plot
   ))
 }</code></pre>
 </div>
 <div id="active" class="section level3" number="0.1.3">
 <h3><span class="header-section-number">0.1.3</span> Active</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:activepairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:activeplot">3</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:activepairs">3</a> and means are shown in Figure <a href="#fig:activeplot">3</a>.</p>
 <pre class="r"><code>active_model = adjective_timing(&quot;active&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-8">Table 3: </span>Differences in log-seconds to Active by format (blocks 1 and 2)
+<span id="tab:activepairs">Table 3: </span>Differences in log-seconds to active by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -1669,7 +1668,7 @@ sig_item_b1</code></pre>
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -1845,19 +1844,19 @@ Adjective
 </tbody>
 </table>
 <div class="figure"><span style="display:block;" id="fig:activeplot"></span>
-<img src="timing_format_files/figure-html/activeplot-1.png" alt="Average seconds to respond to &quot;active&quot; by format (blocks 1 and 2)" width="672" />
+<img src="timing_format_files/figure-html/activeplot-1.png" alt="Average seconds to respond to &quot;active&quot; by format (blocks 1 and 2)." width="672" />
 <p class="caption">
-Figure 3: Average seconds to respond to “active” by format (blocks 1 and 2)
+Figure 3: Average seconds to respond to “active” by format (blocks 1 and 2).
 </p>
 </div>
 </div>
 <div id="adventurous" class="section level3" number="0.1.4">
 <h3><span class="header-section-number">0.1.4</span> Adventurous</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:adventurepairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:adventureplot"><strong>??</strong></a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:adventurouspairs">4</a> and means are shown in Figure <a href="#fig:adventurousplot">4</a>.</p>
 <pre class="r"><code>adventurous_model = adjective_timing(&quot;adventurous&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-9">Table 4: </span>Differences in log-seconds to Adventurous by format (blocks 1 and 2)
+<span id="tab:adventurouspairs">Table 4: </span>Differences in log-seconds to adventurous by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -1874,7 +1873,7 @@ Figure 3: Average seconds to respond to “active” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -2058,11 +2057,11 @@ Figure 4: Average seconds to respond to “adventurous” by format (blocks 1 an
 </div>
 <div id="broadminded" class="section level3" number="0.1.5">
 <h3><span class="header-section-number">0.1.5</span> Broadminded</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:broadmindedpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:broadmindedplot">5</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:broadmindedpairs">5</a> and means are shown in Figure <a href="#fig:broadmindedplot">5</a>.</p>
 <pre class="r"><code>broadminded_model = adjective_timing(&quot;broadminded&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-10">Table 5: </span>Differences in log-seconds to Broadminded by format (blocks 1 and 2)
+<span id="tab:broadmindedpairs">Table 5: </span>Differences in log-seconds to broadminded by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -2079,7 +2078,7 @@ Figure 4: Average seconds to respond to “adventurous” by format (blocks 1 an
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -2263,11 +2262,11 @@ Figure 5: Average log-seconds to “broadminded” by format (blocks 1 and 2)
 </div>
 <div id="calm" class="section level3" number="0.1.6">
 <h3><span class="header-section-number">0.1.6</span> Calm</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:calmpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:calmplot">6</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:calmpairs">6</a> and means are shown in Figure <a href="#fig:calmplot">6</a>.</p>
 <pre class="r"><code>calm_model = adjective_timing(&quot;calm&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-11">Table 6: </span>Differences in log-seconds to Calm by format (blocks 1 and 2)
+<span id="tab:calmpairs">Table 6: </span>Differences in log-seconds to calm by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -2284,7 +2283,7 @@ Figure 5: Average log-seconds to “broadminded” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -2468,11 +2467,11 @@ Figure 6: Average log-seconds to “calm” by format (blocks 1 and 2)
 </div>
 <div id="caring" class="section level3" number="0.1.7">
 <h3><span class="header-section-number">0.1.7</span> Caring</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:caringpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:caringplot">7</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:caringpairs">7</a> and means are shown in Figure <a href="#fig:caringplot">7</a>.</p>
 <pre class="r"><code>caring_model = adjective_timing(&quot;caring&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-12">Table 7: </span>Differences in log-seconds to Caring by format (blocks 1 and 2)
+<span id="tab:caringpairs">Table 7: </span>Differences in log-seconds to caring by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -2489,7 +2488,7 @@ Figure 6: Average log-seconds to “calm” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -2673,11 +2672,11 @@ Figure 7: Average log-seconds to “caring” by format (blocks 1 and 2)
 </div>
 <div id="cautious" class="section level3" number="0.1.8">
 <h3><span class="header-section-number">0.1.8</span> Cautious</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:helpfulpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:helpfulplot">14</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:helpfulpairs">14</a> and means are shown in Figure <a href="#fig:helpfulplot">14</a>.</p>
 <pre class="r"><code>cautious_model = adjective_timing(&quot;cautious&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-13">Table 8: </span>Differences in log-seconds to Cautious by format (blocks 1 and 2)
+<span id="tab:cautiouspairs">Table 8: </span>Differences in log-seconds to cautious by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -2694,7 +2693,7 @@ Figure 7: Average log-seconds to “caring” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -2878,11 +2877,11 @@ Figure 8: Average log-seconds to “cautious” by format (blocks 1 and 2)
 </div>
 <div id="cold" class="section level3" number="0.1.9">
 <h3><span class="header-section-number">0.1.9</span> Cold</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:coldpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:coldplot">9</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:coldpairs">9</a> and means are shown in Figure <a href="#fig:coldplot">9</a>.</p>
 <pre class="r"><code>cold_model = adjective_timing(&quot;cold&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-14">Table 9: </span>Differences in log-seconds to Cold by format (blocks 1 and 2)
+<span id="tab:coldpairs">Table 9: </span>Differences in log-seconds to cold by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -2899,7 +2898,7 @@ Figure 8: Average log-seconds to “cautious” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -3083,11 +3082,11 @@ Figure 9: Average log-seconds to “cold” by format (blocks 1 and 2)
 </div>
 <div id="creative" class="section level3" number="0.1.10">
 <h3><span class="header-section-number">0.1.10</span> Creative</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:creativepairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:creativeplot">10</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:creativepairs">10</a> and means are shown in Figure <a href="#fig:creativeplot">10</a>.</p>
 <pre class="r"><code>creative_model = adjective_timing(&quot;creative&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-15">Table 10: </span>Differences in log-seconds to Creative by format (blocks 1 and 2)
+<span id="tab:creativepairs">Table 10: </span>Differences in log-seconds to creative by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -3104,7 +3103,7 @@ Figure 9: Average log-seconds to “cold” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -3288,11 +3287,11 @@ Figure 10: Average log-seconds to “creative” by format (blocks 1 and 2)
 </div>
 <div id="curious" class="section level3" number="0.1.11">
 <h3><span class="header-section-number">0.1.11</span> Curious</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:curiouspairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:curiousplot">11</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:curiouspairs">11</a> and means are shown in Figure <a href="#fig:curiousplot">11</a>.</p>
 <pre class="r"><code>curious_model = adjective_timing(&quot;curious&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-16">Table 11: </span>Differences in log-seconds to Curious by format (blocks 1 and 2)
+<span id="tab:curiouspairs">Table 11: </span>Differences in log-seconds to curious by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -3309,7 +3308,7 @@ Figure 10: Average log-seconds to “creative” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -3493,11 +3492,11 @@ Figure 11: Average log-seconds to “curious” by format (blocks 1 and 2)
 </div>
 <div id="friendly" class="section level3" number="0.1.12">
 <h3><span class="header-section-number">0.1.12</span> Friendly</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:friendlypairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:friendlyplot">12</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:friendlypairs">12</a> and means are shown in Figure <a href="#fig:friendlyplot">12</a>.</p>
 <pre class="r"><code>friendly_model = adjective_timing(&quot;friendly&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-17">Table 12: </span>Differences in log-seconds to Friendly by format (blocks 1 and 2)
+<span id="tab:friendlypairs">Table 12: </span>Differences in log-seconds to friendly by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -3514,7 +3513,7 @@ Figure 11: Average log-seconds to “curious” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -3698,11 +3697,11 @@ Figure 12: Average log-seconds to “friendly” by format (blocks 1 and 2)
 </div>
 <div id="hardworking" class="section level3" number="0.1.13">
 <h3><span class="header-section-number">0.1.13</span> Hardworking</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:hardworkingpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:hardworkingplot">13</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:hardworkingpairs">13</a> and means are shown in Figure <a href="#fig:hardworkingplot">13</a>.</p>
 <pre class="r"><code>hardworking_model = adjective_timing(&quot;hardworking&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-18">Table 13: </span>Differences in log-seconds to Hardworking by format (blocks 1 and 2)
+<span id="tab:hardworkingpairs">Table 13: </span>Differences in log-seconds to hardworking by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -3719,7 +3718,7 @@ Figure 12: Average log-seconds to “friendly” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -3903,11 +3902,11 @@ Figure 13: Average log-seconds to “hardworking” by format (blocks 1 and 2)
 </div>
 <div id="helpful" class="section level3" number="0.1.14">
 <h3><span class="header-section-number">0.1.14</span> Helpful</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:helpfulpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:helpfulplot">14</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:helpfulpairs">14</a> and means are shown in Figure <a href="#fig:helpfulplot">14</a>.</p>
 <pre class="r"><code>helpful_model = adjective_timing(&quot;helpful&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-19">Table 14: </span>Differences in log-seconds to Helpful by format (blocks 1 and 2)
+<span id="tab:helpfulpairs">Table 14: </span>Differences in log-seconds to helpful by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -3924,7 +3923,7 @@ Figure 13: Average log-seconds to “hardworking” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -4108,11 +4107,11 @@ Figure 14: Average log-seconds to “helpful” by format (blocks 1 and 2)
 </div>
 <div id="imaginative" class="section level3" number="0.1.15">
 <h3><span class="header-section-number">0.1.15</span> Imaginative</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:imaginativepairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:imaginativeplot">15</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:imaginativepairs">15</a> and means are shown in Figure <a href="#fig:imaginativeplot">15</a>.</p>
 <pre class="r"><code>imaginative_model = adjective_timing(&quot;imaginative&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-20">Table 15: </span>Differences in log-seconds to Imaginative by format (blocks 1 and 2)
+<span id="tab:imaginativepairs">Table 15: </span>Differences in log-seconds to imaginative by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -4129,7 +4128,7 @@ Figure 14: Average log-seconds to “helpful” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -4313,11 +4312,11 @@ Figure 15: Average log-seconds to “imaginative” by format (blocks 1 and 2)
 </div>
 <div id="intelligent" class="section level3" number="0.1.16">
 <h3><span class="header-section-number">0.1.16</span> Intelligent</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:intelligentpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:intelligentplot">16</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:intelligentpairs">16</a> and means are shown in Figure <a href="#fig:intelligentplot">16</a>.</p>
 <pre class="r"><code>intelligent_model = adjective_timing(&quot;intelligent&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-21">Table 16: </span>Differences in log-seconds to Intelligent by format (blocks 1 and 2)
+<span id="tab:intelligentpairs">Table 16: </span>Differences in log-seconds to intelligent by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -4334,7 +4333,7 @@ Figure 15: Average log-seconds to “imaginative” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -4518,11 +4517,11 @@ Figure 16: Average log-seconds to “intelligent” by format (blocks 1 and 2)
 </div>
 <div id="lively" class="section level3" number="0.1.17">
 <h3><span class="header-section-number">0.1.17</span> Lively</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:livelypairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:livelyplot">17</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:livelypairs">17</a> and means are shown in Figure <a href="#fig:livelyplot">17</a>.</p>
 <pre class="r"><code>lively_model = adjective_timing(&quot;lively&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-22">Table 17: </span>Differences in log-seconds to Lively by format (blocks 1 and 2)
+<span id="tab:livelypairs">Table 17: </span>Differences in log-seconds to lively by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -4539,7 +4538,7 @@ Figure 16: Average log-seconds to “intelligent” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -4723,11 +4722,11 @@ Figure 17: Average log-seconds to “lively” by format (blocks 1 and 2)
 </div>
 <div id="organized" class="section level3" number="0.1.18">
 <h3><span class="header-section-number">0.1.18</span> Organized</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:organizedpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:organizedplot">18</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:organizedpairs">18</a> and means are shown in Figure <a href="#fig:organizedplot">18</a>.</p>
 <pre class="r"><code>organized_model = adjective_timing(&quot;organized&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-23">Table 18: </span>Differences in log-seconds to Organized by format (blocks 1 and 2)
+<span id="tab:organizedpairs">Table 18: </span>Differences in log-seconds to organized by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -4744,7 +4743,7 @@ Figure 17: Average log-seconds to “lively” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -4928,11 +4927,11 @@ Figure 18: Average log-seconds to “organized” by format (blocks 1 and 2)
 </div>
 <div id="outgoing" class="section level3" number="0.1.19">
 <h3><span class="header-section-number">0.1.19</span> Outgoing</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:outgoingpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:outgoingplot">19</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:outgoingpairs">19</a> and means are shown in Figure <a href="#fig:outgoingplot">19</a>.</p>
 <pre class="r"><code>outgoing_model = adjective_timing(&quot;outgoing&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-24">Table 19: </span>Differences in log-seconds to Outgoing by format (blocks 1 and 2)
+<span id="tab:outgoingpairs">Table 19: </span>Differences in log-seconds to outgoing by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -4949,7 +4948,7 @@ Figure 18: Average log-seconds to “organized” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -5133,11 +5132,11 @@ Figure 19: Average log-seconds to “outgoing” by format (blocks 1 and 2)
 </div>
 <div id="quiet" class="section level3" number="0.1.20">
 <h3><span class="header-section-number">0.1.20</span> Quiet</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:quietpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:quietplot">20</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:quietpairs">20</a> and means are shown in Figure <a href="#fig:quietplot">20</a>.</p>
 <pre class="r"><code>quiet_model = adjective_timing(&quot;quiet&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-25">Table 20: </span>Differences in log-seconds to Quiet by format (blocks 1 and 2)
+<span id="tab:quietpairs">Table 20: </span>Differences in log-seconds to quiet by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -5154,7 +5153,7 @@ Figure 19: Average log-seconds to “outgoing” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -5338,11 +5337,11 @@ Figure 20: Average log-seconds to “quiet” by format (blocks 1 and 2)
 </div>
 <div id="relaxed" class="section level3" number="0.1.21">
 <h3><span class="header-section-number">0.1.21</span> Relaxed</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:relaxedpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:relaxedplot">21</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:relaxedpairs">21</a> and means are shown in Figure <a href="#fig:relaxedplot">21</a>.</p>
 <pre class="r"><code>relaxed_model = adjective_timing(&quot;relaxed&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-26">Table 21: </span>Differences in log-seconds to Relaxed by format (blocks 1 and 2)
+<span id="tab:relaxedpairs">Table 21: </span>Differences in log-seconds to relaxed by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -5359,7 +5358,7 @@ Figure 20: Average log-seconds to “quiet” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -5543,11 +5542,11 @@ Figure 21: Average log-seconds to “relaxed” by format (blocks 1 and 2)
 </div>
 <div id="responsible" class="section level3" number="0.1.22">
 <h3><span class="header-section-number">0.1.22</span> Responsible</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:responsiblepairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:responsibleplot">22</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:responsiblepairs">22</a> and means are shown in Figure <a href="#fig:responsibleplot">22</a>.</p>
 <pre class="r"><code>responsible_model = adjective_timing(&quot;responsible&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-27">Table 22: </span>Differences in log-seconds to Responsible by format (blocks 1 and 2)
+<span id="tab:responsiblepairs">Table 22: </span>Differences in log-seconds to responsible by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -5564,7 +5563,7 @@ Figure 21: Average log-seconds to “relaxed” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -5748,11 +5747,11 @@ Figure 22: Average log-seconds to “responsible” by format (blocks 1 and 2)
 </div>
 <div id="self-disciplined" class="section level3" number="0.1.23">
 <h3><span class="header-section-number">0.1.23</span> Self-disciplined</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:selfdisciplinedpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:selfdisciplinedplot">23</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:selfdisciplinedpairs">23</a> and means are shown in Figure <a href="#fig:selfdisciplinedplot">23</a>.</p>
 <pre class="r"><code>selfdisciplined_model = adjective_timing(&quot;selfdisciplined&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-28">Table 23: </span>Differences in log-seconds to Selfdisciplined by format (blocks 1 and 2)
+<span id="tab:selfdisciplinedpairs">Table 23: </span>Differences in log-seconds to selfdisciplined by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -5769,7 +5768,7 @@ Figure 22: Average log-seconds to “responsible” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -5953,11 +5952,11 @@ Figure 23: Average log-seconds to “selfdisciplined” by format (blocks 1 and 
 </div>
 <div id="shy" class="section level3" number="0.1.24">
 <h3><span class="header-section-number">0.1.24</span> Shy</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:shypairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:shyplot">24</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:shypairs">24</a> and means are shown in Figure <a href="#fig:shyplot">24</a>.</p>
 <pre class="r"><code>shy_model = adjective_timing(&quot;shy&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-29">Table 24: </span>Differences in log-seconds to Shy by format (blocks 1 and 2)
+<span id="tab:shypairs">Table 24: </span>Differences in log-seconds to shy by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -5974,7 +5973,7 @@ Figure 23: Average log-seconds to “selfdisciplined” by format (blocks 1 and 
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -6158,11 +6157,11 @@ Figure 24: Average log-seconds to “shy” by format (blocks 1 and 2)
 </div>
 <div id="soft-hearted" class="section level3" number="0.1.25">
 <h3><span class="header-section-number">0.1.25</span> Soft-hearted</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:softpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:softplot">25</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:softpairs">25</a> and means are shown in Figure <a href="#fig:softplot">25</a>.</p>
 <pre class="r"><code>softhearted_model = adjective_timing(&quot;softhearted&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-30">Table 25: </span>Differences in log-seconds to Softhearted by format (blocks 1 and 2)
+<span id="tab:softpairs">Table 25: </span>Differences in log-seconds to softhearted by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -6179,7 +6178,7 @@ Figure 24: Average log-seconds to “shy” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -6363,11 +6362,11 @@ Figure 25: Average log-seconds to “softhearted” by format (blocks 1 and 2)
 </div>
 <div id="sophisticated" class="section level3" number="0.1.26">
 <h3><span class="header-section-number">0.1.26</span> Sophisticated</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:sophisticatedpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:sophisticatedplot">26</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:sophisticatedpairs">26</a> and means are shown in Figure <a href="#fig:sophisticatedplot">26</a>.</p>
 <pre class="r"><code>sophisticated_model = adjective_timing(&quot;sophisticated&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-31">Table 26: </span>Differences in log-seconds to Sophisticated by format (blocks 1 and 2)
+<span id="tab:sophisticatedpairs">Table 26: </span>Differences in log-seconds to sophisticated by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -6384,7 +6383,7 @@ Figure 25: Average log-seconds to “softhearted” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -6568,11 +6567,11 @@ Figure 26: Average log-seconds to “sophisticated” by format (blocks 1 and 2)
 </div>
 <div id="sympathetic" class="section level3" number="0.1.27">
 <h3><span class="header-section-number">0.1.27</span> Sympathetic</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:symppairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:sympplot">27</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:symppairs">27</a> and means are shown in Figure <a href="#fig:sympplot">27</a>.</p>
 <pre class="r"><code>sympathetic_model = adjective_timing(&quot;sympathetic&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-32">Table 27: </span>Differences in log-seconds to Sympathetic by format (blocks 1 and 2)
+<span id="tab:symppairs">Table 27: </span>Differences in log-seconds to sympathetic by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -6589,7 +6588,7 @@ Figure 26: Average log-seconds to “sophisticated” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -6773,11 +6772,11 @@ Figure 27: Average log-seconds to “sympathetic” by format (blocks 1 and 2)
 </div>
 <div id="talkative" class="section level3" number="0.1.28">
 <h3><span class="header-section-number">0.1.28</span> Talkative</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:talkativepairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:talkativeplot">28</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:talkativepairs">28</a> and means are shown in Figure <a href="#fig:talkativeplot">28</a>.</p>
 <pre class="r"><code>talkative_model = adjective_timing(&quot;talkative&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-33">Table 28: </span>Differences in log-seconds to Talkative by format (blocks 1 and 2)
+<span id="tab:talkativepairs">Table 28: </span>Differences in log-seconds to talkative by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -6794,7 +6793,7 @@ Figure 27: Average log-seconds to “sympathetic” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -6978,11 +6977,11 @@ Figure 28: Average log-seconds to “talkative” by format (blocks 1 and 2)
 </div>
 <div id="thorough" class="section level3" number="0.1.29">
 <h3><span class="header-section-number">0.1.29</span> Thorough</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:thoroughpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:thoroughplot">29</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:thoroughpairs">29</a> and means are shown in Figure <a href="#fig:thoroughplot">29</a>.</p>
 <pre class="r"><code>thorough_model = adjective_timing(&quot;thorough&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-34">Table 29: </span>Differences in log-seconds to Thorough by format (blocks 1 and 2)
+<span id="tab:thoroughpairs">Table 29: </span>Differences in log-seconds to thorough by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -6999,7 +6998,7 @@ Figure 28: Average log-seconds to “talkative” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -7183,11 +7182,11 @@ Figure 29: Average log-seconds to “thorough” by format (blocks 1 and 2)
 </div>
 <div id="thrifty" class="section level3" number="0.1.30">
 <h3><span class="header-section-number">0.1.30</span> Thrifty</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:thriftypairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:thriftyplot">30</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:thriftypairs">30</a> and means are shown in Figure <a href="#fig:thriftyplot">30</a>.</p>
 <pre class="r"><code>thrifty_model = adjective_timing(&quot;thrifty&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-35">Table 30: </span>Differences in log-seconds to Thrifty by format (blocks 1 and 2)
+<span id="tab:thriftypairs">Table 30: </span>Differences in log-seconds to thrifty by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -7204,7 +7203,7 @@ Figure 29: Average log-seconds to “thorough” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -7388,11 +7387,11 @@ Figure 30: Average log-seconds to “thrifty” by format (blocks 1 and 2)
 </div>
 <div id="uncreative" class="section level3" number="0.1.31">
 <h3><span class="header-section-number">0.1.31</span> Uncreative</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:uncreativepairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:uncreativeplot">31</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:uncreativepairs">31</a> and means are shown in Figure <a href="#fig:uncreativeplot">31</a>.</p>
 <pre class="r"><code>uncreative_model = adjective_timing(&quot;uncreative&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-36">Table 31: </span>Differences in log-seconds to Uncreative by format (blocks 1 and 2)
+<span id="tab:uncreativepairs">Table 31: </span>Differences in log-seconds to uncreative by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -7409,7 +7408,7 @@ Figure 30: Average log-seconds to “thrifty” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -7593,11 +7592,11 @@ Figure 31: Average log-seconds to “uncreative” by format (blocks 1 and 2)
 </div>
 <div id="unintellectual" class="section level3" number="0.1.32">
 <h3><span class="header-section-number">0.1.32</span> Unintellectual</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:unintellectualpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:unintellectualplot">32</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:unintellectualpairs">32</a> and means are shown in Figure <a href="#fig:unintellectualplot">32</a>.</p>
 <pre class="r"><code>unintellectual_model = adjective_timing(&quot;unintellectual&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-37">Table 32: </span>Differences in log-seconds to Unintellectual by format (blocks 1 and 2)
+<span id="tab:unintellectualpairs">Table 32: </span>Differences in log-seconds to unintellectual by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -7614,7 +7613,7 @@ Figure 31: Average log-seconds to “uncreative” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -7798,11 +7797,11 @@ Figure 32: Average log-seconds to “unintellectual” by format (blocks 1 and 2
 </div>
 <div id="unsympathetic" class="section level3" number="0.1.33">
 <h3><span class="header-section-number">0.1.33</span> Unsympathetic</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:unsympatheticpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:unsympatheticplot">33</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:unsympatheticpairs">33</a> and means are shown in Figure <a href="#fig:unsympatheticplot">33</a>.</p>
 <pre class="r"><code>unsympathetic_model = adjective_timing(&quot;unsympathetic&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-38">Table 33: </span>Differences in log-seconds to Unsympathetic by format (blocks 1 and 2)
+<span id="tab:unsympatheticpairs">Table 33: </span>Differences in log-seconds to unsympathetic by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -7819,7 +7818,7 @@ Figure 32: Average log-seconds to “unintellectual” by format (blocks 1 and 2
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -8003,11 +8002,11 @@ Figure 33: Average log-seconds to “unsympathetic” by format (blocks 1 and 2)
 </div>
 <div id="warm" class="section level3" number="0.1.34">
 <h3><span class="header-section-number">0.1.34</span> Warm</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:warmpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:warmplot">34</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:warmpairs">34</a> and means are shown in Figure <a href="#fig:warmplot">34</a>.</p>
 <pre class="r"><code>warm_model = adjective_timing(&quot;warm&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-39">Table 34: </span>Differences in log-seconds to Warm by format (blocks 1 and 2)
+<span id="tab:warmpairs">Table 34: </span>Differences in log-seconds to warm by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -8024,7 +8023,7 @@ Figure 33: Average log-seconds to “unsympathetic” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -8208,11 +8207,11 @@ Figure 34: Average log-seconds to “warm” by format (blocks 1 and 2)
 </div>
 <div id="careless" class="section level3" number="0.1.35">
 <h3><span class="header-section-number">0.1.35</span> Careless</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:carelesspairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:carelessplot">35</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:carelesspairs">35</a> and means are shown in Figure <a href="#fig:carelessplot">35</a>.</p>
 <pre class="r"><code>careless_model = adjective_timing(&quot;careless&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-40">Table 35: </span>Differences in log-seconds to Careless by format (blocks 1 and 2)
+<span id="tab:carelesspairs">Table 35: </span>Differences in log-seconds to careless by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -8229,7 +8228,7 @@ Figure 34: Average log-seconds to “warm” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -8413,11 +8412,11 @@ Figure 35: Average log-seconds to “careless” by format (blocks 1 and 2)
 </div>
 <div id="impulsive" class="section level3" number="0.1.36">
 <h3><span class="header-section-number">0.1.36</span> Impulsive</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:impulsivepairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:impulsiveplot">36</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:impulsivepairs">36</a> and means are shown in Figure <a href="#fig:impulsiveplot">36</a>.</p>
 <pre class="r"><code>impulsive_model = adjective_timing(&quot;impulsive&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-41">Table 36: </span>Differences in log-seconds to Impulsive by format (blocks 1 and 2)
+<span id="tab:impulsivepairs">Table 36: </span>Differences in log-seconds to impulsive by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -8434,7 +8433,7 @@ Figure 35: Average log-seconds to “careless” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -8618,11 +8617,11 @@ Figure 36: Average log-seconds to “impulsive” by format (blocks 1 and 2)
 </div>
 <div id="moody" class="section level3" number="0.1.37">
 <h3><span class="header-section-number">0.1.37</span> Moody</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:moodypairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:moodyplot">37</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:moodypairs">37</a> and means are shown in Figure <a href="#fig:moodyplot">37</a>.</p>
 <pre class="r"><code>moody_model = adjective_timing(&quot;moody&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-42">Table 37: </span>Differences in log-seconds to Moody by format (blocks 1 and 2)
+<span id="tab:moodypairs">Table 37: </span>Differences in log-seconds to moody by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -8639,7 +8638,7 @@ Figure 36: Average log-seconds to “impulsive” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -8823,11 +8822,11 @@ Figure 37: Average log-seconds to “moody” by format (blocks 1 and 2)
 </div>
 <div id="nervous" class="section level3" number="0.1.38">
 <h3><span class="header-section-number">0.1.38</span> Nervous</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:nervouspairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:nervousplot">38</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:nervouspairs">38</a> and means are shown in Figure <a href="#fig:nervousplot">38</a>.</p>
 <pre class="r"><code>nervous_model = adjective_timing(&quot;nervous&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-43">Table 38: </span>Differences in log-seconds to Nervous by format (blocks 1 and 2)
+<span id="tab:nervouspairs">Table 38: </span>Differences in log-seconds to nervous by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -8844,7 +8843,7 @@ Figure 37: Average log-seconds to “moody” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -9028,11 +9027,11 @@ Figure 38: Average log-seconds to “nervous” by format (blocks 1 and 2)
 </div>
 <div id="reckless" class="section level3" number="0.1.39">
 <h3><span class="header-section-number">0.1.39</span> Reckless</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:recklesspairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:recklessplot">39</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:recklesspairs">39</a> and means are shown in Figure <a href="#fig:recklessplot">39</a>.</p>
 <pre class="r"><code>reckless_model = adjective_timing(&quot;reckless&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-44">Table 39: </span>Differences in log-seconds to Reckless by format (blocks 1 and 2)
+<span id="tab:recklesspairs">Table 39: </span>Differences in log-seconds to reckless by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -9049,7 +9048,7 @@ Figure 38: Average log-seconds to “nervous” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -9233,11 +9232,11 @@ Figure 39: Average log-seconds to “reckless” by format (blocks 1 and 2)
 </div>
 <div id="worrying" class="section level3" number="0.1.40">
 <h3><span class="header-section-number">0.1.40</span> Worrying</h3>
-<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:worryingpairs"><strong>??</strong></a> and means are shown in Figure <a href="#fig:worryingplot">40</a>.</p>
+<p>Tests of the pairwise comparisons for this item are shown in Table <a href="#tab:worryingpairs">40</a> and means are shown in Figure <a href="#fig:worryingplot">40</a>.</p>
 <pre class="r"><code>worrying_model = adjective_timing(&quot;worrying&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-45">Table 40: </span>Differences in log-seconds to Worrying by format (blocks 1 and 2)
+<span id="tab:worryingpairs">Table 40: </span>Differences in log-seconds to worrying by format (blocks 1 and 2)
 </caption>
 <thead>
 <tr>
@@ -9254,7 +9253,7 @@ Figure 39: Average log-seconds to “reckless” by format (blocks 1 and 2)
 Contrast
 </th>
 <th style="text-align:right;">
-Difference in means
+Mean Diff
 </th>
 <th style="text-align:right;">
 SE
@@ -9440,14 +9439,14 @@ Figure 40: Average log-seconds to “worrying” by format (blocks 1 and 2)
 <div id="inclusion-of-i-blocks-1-and-3" class="section level2" number="0.2">
 <h2><span class="header-section-number">0.2</span> Inclusion of “I” (Blocks 1 and 3)</h2>
 <p>We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word “I”. Here, we use data from blocks 1 and 3. Results are depicted in Figure <a href="#fig:secondsi">41</a>.</p>
-<pre class="r"><code>items_13 = items_df %&gt;% 
-  filter(block %in% c(&quot;1&quot;,&quot;3&quot;)) %&gt;% 
-  filter(condition != &quot;A&quot;) %&gt;% 
-  filter(time2 == &quot;yes&quot;) %&gt;% 
+<pre class="r"><code>items_13 = items_df %&gt;%
+  filter(block %in% c(&quot;1&quot;,&quot;3&quot;)) %&gt;%
+  filter(condition != &quot;A&quot;) %&gt;%
+  filter(time2 == &quot;yes&quot;) %&gt;%
   filter(!is.infinite(seconds_log))</code></pre>
-<pre class="r"><code>mod.format_b3_1 = glmmTMB(seconds_log~format + i + (1|proid), 
+<pre class="r"><code>mod.format_b3_1 = glmmTMB(seconds_log~format + i + (1|proid),
                   data = items_13)
-tidy(aov(mod.format_b3_1)) %&gt;% 
+tidy(aov(mod.format_b3_1)) %&gt;%
   mutate(p.value = papaja::printp(p.value))</code></pre>
 <pre><code>## # A tibble: 4 × 6
 ##   term         df    sumsq meansq statistic p.value 
@@ -9456,9 +9455,9 @@ tidy(aov(mod.format_b3_1)) %&gt;%
 ## 2 i             1     2.28  2.28       6.46 &quot;.011&quot;  
 ## 3 proid       660  5542.    8.40      23.8  &quot;&lt; .001&quot;
 ## 4 Residuals 49612 17536.    0.353     NA    &quot;&quot;</code></pre>
-<pre class="r"><code>mod.format_b3_2 = glmmTMB(seconds_log~format*i + (1|proid), 
+<pre class="r"><code>mod.format_b3_2 = glmmTMB(seconds_log~format*i + (1|proid),
                   data = items_13)
-tidy(aov(mod.format_b3_2)) %&gt;% 
+tidy(aov(mod.format_b3_2)) %&gt;%
   mutate(p.value = papaja::printp(p.value))</code></pre>
 <pre><code>## # A tibble: 5 × 6
 ##   term         df    sumsq meansq statistic p.value 
@@ -9481,17 +9480,17 @@ Figure 41: Predicted log-seconds on personality items by condition and I, using 
   group_by(item) %&gt;%
   nest() %&gt;%
   mutate(mod = map(data, ~glmmTMB(seconds_log~format+i + (1|proid), data = .))) %&gt;%
-  mutate(aov = map(mod, aov)) %&gt;% 
+  mutate(aov = map(mod, aov)) %&gt;%
   ungroup()</code></pre>
-<pre class="r"><code>summary_by_item_i1 = mod_by_item_i1 %&gt;% 
+<pre class="r"><code>summary_by_item_i1 = mod_by_item_i1 %&gt;%
   mutate(tidy = map(aov, broom::tidy)) %&gt;%
-  select(item, tidy) %&gt;% 
+  select(item, tidy) %&gt;%
   unnest(cols = c(tidy)) %&gt;%
   filter(term == &quot;i&quot;) %&gt;%
   mutate(reverse = case_when(
     item %in% reverse ~ &quot;Y&quot;,
     TRUE ~ &quot;N&quot;
-  )) %&gt;% 
+  )) %&gt;%
   mutate(p.adj = p.adjust(p.value, method = &quot;holm&quot;))</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -10520,7 +10519,7 @@ Y
   group_by(item) %&gt;%
   nest() %&gt;%
   mutate(mod = map(data, ~glmmTMB(seconds_log~format*i + (1|proid), data = .))) %&gt;%
-  mutate(aov = map(mod, aov)) %&gt;% 
+  mutate(aov = map(mod, aov)) %&gt;%
   ungroup()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -11547,34 +11546,34 @@ Y
 </table>
 <p>Here we identify the specific items with significant differences.</p>
 <pre class="r"><code>sig_item_b3 = summary_by_item_i2 %&gt;%
-  filter(p.value &lt; .05) 
+  filter(p.value &lt; .05)
 
 sig_item_b3 = sig_item_b3$item
 sig_item_b3</code></pre>
 <pre><code>## [1] &quot;nervous&quot;  &quot;careless&quot;</code></pre>
 <pre class="r"><code>adjective_timing_i = function(adjective){
-  
+
   model = items_13 %&gt;%
     filter(item == adjective) %&gt;%
-    filter(condition != &quot;A&quot;) %&gt;% 
+    filter(condition != &quot;A&quot;) %&gt;%
     glmmTMB(seconds_log~format*i + (1|proid), data = .)
-  
-  plot = avg_predictions(model, variables = c(&quot;format&quot;, &quot;i&quot;)) %&gt;% 
-    mutate(across(where(is.numeric), exp)) %&gt;% 
+
+  plot = avg_predictions(model, variables = c(&quot;format&quot;, &quot;i&quot;)) %&gt;%
+    mutate(across(where(is.numeric), exp)) %&gt;%
     ggplot(aes(x = format, y = estimate, group = i)) +
     geom_point(aes(color = i),
                position = position_dodge(.3),
                size = 3) +
     geom_errorbar(
       aes(ymin = conf.low, ymax = conf.high),
-               position = position_dodge(.3), 
+               position = position_dodge(.3),
       width = .3) +
     labs(
-      x = NULL, 
-      y = &quot;seconds&quot;, 
+      x = NULL,
+      y = &quot;seconds&quot;,
       title = paste0(&quot;Average response time to &quot;, str_to_sentence(adjective))) +
     theme_pubclean()
-  
+
   return(plot)
 }</code></pre>
 </div>
@@ -11591,7 +11590,7 @@ Figure 42: Average seconds to “nervous” by format and inclusion of i (blocks
 </div>
 <div id="careless-1" class="section level2" number="0.4">
 <h2><span class="header-section-number">0.4</span> Careless</h2>
-<pre class="r"><code>adjective_timing_i(&quot;nervous&quot;)</code></pre>
+<pre class="r"><code>adjective_timing_i(&quot;careless&quot;)</code></pre>
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-54"></span>
 <img src="timing_format_files/figure-html/unnamed-chunk-54-1.png" alt="Average seconds to &quot;careless&quot; by format and inclusion of i (blocks 1 and 3)" width="672" />
 <p class="caption">

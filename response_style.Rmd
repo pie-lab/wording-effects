@@ -77,7 +77,7 @@ fb1_aov = fb1_aov %>%
          across(where(is.numeric), papaja::printnum))
 ```
 
-Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$df[[1]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[fb1_loc]]`, p = `r fb1_aov$p.value[[fb1_loc]]`)$. See Figure \@ref(fig:responsestyle7) for a visualization of this effect. In addition, Figure \@ref(fig:responsestyle8) shows the full distribution of responses across format.
+Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$df[[1]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[fb1_loc]]`, p = `r fb1_aov$p.value[[fb1_loc]]`)$. See Figure \@ref(fig:responsestyle7) for a visualization of this effect. In addition, Figure \@ref(fig:responsestyle8) shows the full distribution of responses across format. We note too that expected responses varied as a function of item $(F(`r fb1_aov$df[[2]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[2]]`, p = `r fb1_aov$p.value[[2]]`)$ and block $(F(`r fb1_aov$df[[4]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[4]]`, p = `r fb1_aov$p.value[[4]]`)$.
 
 ```{r responsestyle6, echo = F}
 # save for power analysis
@@ -279,7 +279,7 @@ fb2_aov = fb2_aov %>%
          across(where(is.numeric), papaja::printnum))
 ```
 
-Item format was `r ifelse(fb2_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb2_aov$df[[fb2_loc]]`, `r fb2_aov$df[[fb2_res]]`) = `r fb2_aov$statistic[[fb2_loc]]`, p = `r fb2_aov$p.value[[fb2_loc]]`)$. See Figure \@ref(fig:responsestyle17) for a visualization of this effect. 
+Item format was `r ifelse(fb2_sig, "associated", "unassociated")` with extreme responding to personality items $(F(`r fb2_aov$df[[fb2_loc]]`, `r fb2_aov$df[[fb2_res]]`) = `r fb2_aov$statistic[[fb2_loc]]`, p = `r fb2_aov$p.value[[fb2_loc]]`)$. See Figure \@ref(fig:responsestyle17) for a visualization of this effect. We note too that extreme responding varied as a function of item $(F(`r fb2_aov$df[[2]]`, `r fb2_aov$df[[fb2_res]]`) = `r fb2_aov$statistic[[2]]`, p = `r fb2_aov$p.value[[2]]`)$ and block $(F(`r fb2_aov$df[[4]]`, `r fb2_aov$df[[fb2_res]]`) = `r fb2_aov$statistic[[4]]`, p = `r fb2_aov$p.value[[4]]`)$.
 
 
 ```{r , echo = F}
@@ -344,7 +344,7 @@ summary_by_item_ex %>%
         booktabs = T,
         align = c("l", rep("c", 6), rep("r",2)),
         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "df2" , "F", "raw", "adj"),
-        caption = "Format effects on extrene response by item.") %>%
+        caption = "Format effects on extreme response by item.") %>%
   kable_styling()
 ```
 
@@ -426,7 +426,7 @@ pairwise_response_ex %>%
 
 ## Yea-saying
 
-We define _yea-saying_ as answering "somewhat accurate" (4), "accurate" (5), or "very accurate" (6) to an item. To model likelihood of extreme responding by format, we use logistic regression. As a reminder, we reverse-scored socially desirable items during the cleaning stage. For those items, responses coded as 1, 2, or 3 represent agreement (accurate). Therefore, we code values 1, 2, and 3 as yea-saying for reverse-scored items, and values 4, 5, and 6 as yea-saying for all other items.
+We define _yea-saying_ as answering "somewhat accurate" (4), "accurate" (5), or "very accurate" (6) to an item. To model likelihood of yea-saying  by format, we use logistic regression. As a reminder, we reverse-scored socially desirable items during the cleaning stage. For those items, responses coded as 1, 2, or 3 represent agreement (accurate). Therefore, we code values 1, 2, and 3 as yea-saying for reverse-scored items, and values 4, 5, and 6 as yea-saying for all other items.
 
 For these analyses, we only used a set of matched pairs of adjectives to create balanced subsets of positively and negatively keyed items.
 
@@ -465,7 +465,7 @@ fb3_aov = fb3_aov %>%
          across(where(is.numeric), papaja::printnum))
 ```
 
-Item format was `r ifelse(fb3_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb3_aov$df[[fb3_loc]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[fb3_loc]]`, p = `r fb3_aov$p.value[[fb3_loc]]`)$. See Figure \@ref(fig:responsestyle28) for a visualization of this effect. 
+Item format was `r ifelse(fb3_sig, "associated", "unassociated")` with yea-saying $(F(`r fb3_aov$df[[fb3_loc]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[fb3_loc]]`, p = `r fb3_aov$p.value[[fb3_loc]]`)$. See Figure \@ref(fig:responsestyle28) for a visualization of this effect. We note too that yea-saying varied as a function of item $(F(`r fb3_aov$df[[2]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[2]]`, p = `r fb3_aov$p.value[[2]]`)$ and block $(F(`r fb3_aov$df[[4]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[4]]`, p = `r fb3_aov$p.value[[4]]`)$.
 
 ```{r , echo = F}
 # save for power analysis
@@ -473,13 +473,13 @@ save(mod.yeasaying, items_df, file = here("objects/mod_yeasaying.Rdata"))
 ```
 
 
-```{r responsestyle28, fig.cap = "Predicted response on personality items by condition.", echo = F}
+```{r responsestyle28, fig.cap = "Likelihood of yea-saying to personality items by condition.", echo = F}
 pred.yea = predictions(mod.yeasaying, by = "format", type = "response") 
 
 plot_yea = pred.yea %>% ggplot(aes(x = format, y = estimate)) +
   geom_point(stat = "identity") +
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
-  labs(title = "Likelihood of yea responding",
+  labs(title = "Likelihood of yea-saying",
        x = NULL, 
        y = "Likelihood")
 
@@ -537,7 +537,7 @@ summary_by_item_ya %>%
 
 ### Pairwise t-tests for significant ANOVAs
 
-When format was a significant predictor of extreme responding for an item (using the un-adjusted _p_-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.
+When format was a significant predictor of yea-saying for an item (using the un-adjusted _p_-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.
 
 ```{r responsestyle31 }
 sig_item_ya = summary_by_item_ya %>%

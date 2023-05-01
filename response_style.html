@@ -378,7 +378,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact response syle?</h1>
-<h4 class="date">Last updated 2023-04-24</h4>
+<h4 class="date">Last updated 2023-05-01</h4>
 
 </div>
 
@@ -416,7 +416,7 @@ tidy(aov(mod.expected))</code></pre>
 ## 3 proid       973 21077.    21.7      17.8   0          
 ## 4 block         1     3.18   3.18      2.62  0.106      
 ## 5 Residuals 59380 72129.     1.21     NA    NA</code></pre>
-<p>Item format was associated with participants’ expected responses to personality items <span class="math inline">\((F(3.00, 59,380.00) = 11.08, p = &lt; .001)\)</span>. See Figure <a href="#fig:responsestyle7">1</a> for a visualization of this effect. In addition, Figure <a href="#fig:responsestyle8">2</a> shows the full distribution of responses across format.</p>
+<p>Item format was associated with participants’ expected responses to personality items <span class="math inline">\((F(3.00, 59,380.00) = 11.08, p = &lt; .001)\)</span>. See Figure <a href="#fig:responsestyle7">1</a> for a visualization of this effect. In addition, Figure <a href="#fig:responsestyle8">2</a> shows the full distribution of responses across format. We note too that expected responses varied as a function of item <span class="math inline">\((F(30.00, 59,380.00) = 492.14, p = &lt; .001)\)</span> and block <span class="math inline">\((F(1.00, 59,380.00) = 2.62, p = .106)\)</span>.</p>
 <div class="figure"><span style="display:block;" id="fig:responsestyle7"></span>
 <img src="response_style_files/figure-html/responsestyle7-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
@@ -2130,7 +2130,7 @@ tidy(aov(mod.extreme))</code></pre>
 ## 3 item         30  243.    8.10      54.1   1.33e-318
 ## 4 block         1    1.99  1.99      13.3   2.73e-  4
 ## 5 Residuals 59380 8900.    0.150     NA    NA</code></pre>
-<p>Item format was associated with participants’ expected responses to personality items <span class="math inline">\((F(3.00, 59,380.00) = 7.48, p = &lt; .001)\)</span>. See Figure <a href="#fig:responsestyle17">4</a> for a visualization of this effect.</p>
+<p>Item format was associated with extreme responding to personality items <span class="math inline">\((F(3.00, 59,380.00) = 7.48, p = &lt; .001)\)</span>. See Figure <a href="#fig:responsestyle17">4</a> for a visualization of this effect. We note too that extreme responding varied as a function of item <span class="math inline">\((F(973.00, 59,380.00) = 19.85, p = &lt; .001)\)</span> and block <span class="math inline">\((F(1.00, 59,380.00) = 13.25, p = &lt; .001)\)</span>.</p>
 <div class="figure"><span style="display:block;" id="fig:responsestyle17"></span>
 <img src="response_style_files/figure-html/responsestyle17-1.png" alt="Predicted response on personality items by condition." width="672" />
 <p class="caption">
@@ -2152,7 +2152,7 @@ Figure 4: Predicted response on personality items by condition.
 <p>We apply a Holm correction to the <em>p</em>-values extracted from these analyses, to adjust for the number of tests conducted. We present results in Table <a href="#tab:responsestyle19">3</a>, which is organized by whether items were reverse-coded prior to analysis.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:responsestyle19">Table 3: </span>Format effects on extrene response by item.
+<span id="tab:responsestyle19">Table 3: </span>Format effects on extreme response by item.
 </caption>
 <thead>
 <tr>
@@ -3609,7 +3609,7 @@ Figure 5: Extreme responding by format and item. These items were significantly 
 </div>
 <div id="yea-saying" class="section level2" number="0.4">
 <h2><span class="header-section-number">0.4</span> Yea-saying</h2>
-<p>We define <em>yea-saying</em> as answering “somewhat accurate” (4), “accurate” (5), or “very accurate” (6) to an item. To model likelihood of extreme responding by format, we use logistic regression. As a reminder, we reverse-scored socially desirable items during the cleaning stage. For those items, responses coded as 1, 2, or 3 represent agreement (accurate). Therefore, we code values 1, 2, and 3 as yea-saying for reverse-scored items, and values 4, 5, and 6 as yea-saying for all other items.</p>
+<p>We define <em>yea-saying</em> as answering “somewhat accurate” (4), “accurate” (5), or “very accurate” (6) to an item. To model likelihood of yea-saying by format, we use logistic regression. As a reminder, we reverse-scored socially desirable items during the cleaning stage. For those items, responses coded as 1, 2, or 3 represent agreement (accurate). Therefore, we code values 1, 2, and 3 as yea-saying for reverse-scored items, and values 4, 5, and 6 as yea-saying for all other items.</p>
 <p>For these analyses, we only used a set of matched pairs of adjectives to create balanced subsets of positively and negatively keyed items.</p>
 <pre class="r"><code>items_df = items_df %&gt;% 
   mutate(
@@ -3638,11 +3638,11 @@ tidy(aov(mod.yeasaying))</code></pre>
 ## 3 item         19 2435.     128.       880.     0        
 ## 4 block         1    0.0538   0.0538     0.369  5.44e-  1
 ## 5 Residuals 37963 5530.       0.146     NA     NA</code></pre>
-<p>Item format was unassociated with participants’ expected responses to personality items <span class="math inline">\((F(3.00, 37,963.00) = 1.92, p = .124)\)</span>. See Figure <a href="#fig:responsestyle28">6</a> for a visualization of this effect.</p>
+<p>Item format was unassociated with yea-saying <span class="math inline">\((F(3.00, 37,963.00) = 1.92, p = .124)\)</span>. See Figure <a href="#fig:responsestyle28">6</a> for a visualization of this effect. We note too that yea-saying varied as a function of item <span class="math inline">\((F(973.00, 37,963.00) = 3.89, p = &lt; .001)\)</span> and block <span class="math inline">\((F(1.00, 37,963.00) = 0.37, p = .544)\)</span>.</p>
 <div class="figure"><span style="display:block;" id="fig:responsestyle28"></span>
-<img src="response_style_files/figure-html/responsestyle28-1.png" alt="Predicted response on personality items by condition." width="672" />
+<img src="response_style_files/figure-html/responsestyle28-1.png" alt="Likelihood of yea-saying to personality items by condition." width="672" />
 <p class="caption">
-Figure 6: Predicted response on personality items by condition.
+Figure 6: Likelihood of yea-saying to personality items by condition.
 </p>
 </div>
 <div id="one-model-for-each-adjective-2" class="section level3" number="0.4.1">
@@ -4284,7 +4284,7 @@ Y
 </div>
 <div id="pairwise-t-tests-for-significant-anovas-2" class="section level3" number="0.4.2">
 <h3><span class="header-section-number">0.4.2</span> Pairwise t-tests for significant ANOVAs</h3>
-<p>When format was a significant predictor of extreme responding for an item (using the un-adjusted <em>p</em>-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.</p>
+<p>When format was a significant predictor of yea-saying for an item (using the un-adjusted <em>p</em>-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.</p>
 <pre class="r"><code>sig_item_ya = summary_by_item_ya %&gt;%
   filter(p.value &lt; .05)
 

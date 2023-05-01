@@ -105,7 +105,7 @@ format_data = format_data %>%
 
 ## Alpha 
 
-We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table \@ref(tab:internal10b) and Figure \@ref(fig:internal11).
+We extract the estimated confidence intervals. The final summary of results is presented in Table \@ref(tab:internal10b) and Figure \@ref(fig:internal11).
 
 ```{r internal-10, results = 'asis'}
 format_alpha = format_data %>% 
@@ -145,7 +145,6 @@ format_alpha %>%
   ggplot(aes(x = cond_num, y = alpha_est)) +
   geom_errorbar(aes(ymin = lower_est, ymax = upper_est)) +
   geom_point() +
-  geom_line(alpha = .3) +
   scale_x_continuous(breaks = c(1:4),
                      labels = c("A","B","C","D"))+
   labs(x = NULL, y = "Alpha") +
@@ -180,7 +179,7 @@ format_split %>%
 
 ## Omega
 
-We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table \@ref(tab:internal10b) and Figure \@ref(fig:internal11).
+We extract the estimated confidence intervals.The final summary of results is presented in Table \@ref(tab:internal10b) and Figure \@ref(fig:internal11).
 
 ```{r internal-13, results = 'asis'}
 format_omega = format_data %>% 

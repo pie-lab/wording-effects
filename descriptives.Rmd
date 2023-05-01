@@ -146,7 +146,7 @@ items_df %>%
   select(-mean, -sd) %>%
   spread(format, value) %>%
   kable(booktabs = T,
-        caption = "Descriptives of responses to Block 1 by format and item") %>%
+        caption = "Descriptives of responses to Block 1 by format and item. We report means and standard deviations.") %>%
   kable_styling()
 ```
 
@@ -167,7 +167,7 @@ items_df %>%
   select(-mean, -sd) %>%
   spread(format, value) %>%
   kable(booktabs = T,
-        caption = "Descriptives of responses to Block 2 by format and item") %>%
+        caption = "Descriptives of responses to Block 2 by format and item. We report means and standard deviations.") %>%
   kable_styling()
 ```
 
@@ -188,8 +188,30 @@ items_df %>%
   select(-mean, -sd) %>%
   spread(format, value) %>%
   kable(booktabs = T,
-        caption = "Descriptives of items to Block 3 by format") %>%
+        caption = "Descriptives of items to Block 3 by format. We report means and standard deviations.") %>%
   kable_styling()
 ```
 
+## Response by format
+
+In Table \@ref(tab:proprresponse) we show the proportion of participants _within condition_ who gave a specific response. Note that we only use blocks 1 and 2, as these are the blocks used for the primary analyses (expected response, extreme responding, and yea-saying).
+
+```{r proprresponse, results = 'asis'}
+items_df %>% 
+  filter(block %in% c(1,2)) %>% 
+  filter(!(item %in% bfmm)) %>% 
+  count(format, response) %>% 
+  with_groups(format,
+              mutate,
+              percent = n/sum(n)*100) %>% 
+  select(-n) %>% 
+  pivot_wider(names_from = format, values_from = percent) %>% 
+  kable(digits = 2, 
+        booktabs = T,
+        caption = "Proportion (out of 100) of response within condition by resposne option. These are calculated using Blocks 1 and 2.") %>% 
+  kable_styling()
+```
+
+
 \newpage
+

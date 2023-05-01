@@ -6,7 +6,9 @@ output:
     toc: TRUE
 ---
 
-We also plan to evaluate test-retest reliability within formats (within session and over two weeks); we expect slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. In other words, we expect equal or lower retest reliability for the adjectives than for longer phrases. We will also consider the effect of performance on the word recall task on retest reliability.
+We also evaluated test-retest reliability within formats (within session and over two weeks); we expecte slightly higher test-retest reliability for item wording formats that are more specific -- formats #3 and #4 above vs the use of adjectives alone. However, we found that test-retest reliability did not differ as a function of item format. 
+
+We also considered the effect of performance on the word recall task on retest reliability.
 
 
 ```{r test-retest-1, include = FALSE}
@@ -103,7 +105,7 @@ tibble(models = c("Block 1 - Block 2", "Block 1 - Block 3"),
 
 ## Test-retest reliability (all items pooled, moderated by memory)
 
-Here we fit models moderated by memory -- that it, perhaps the test-retest coefficient is affected by the memory of the participant. Results are shown in Table \@ref(tab:testretest8b)
+Here we fit models moderated by memory -- that is, perhaps the test-retest coefficient is affected by the memory of the participant. Results are shown in Table \@ref(tab:testretest8b)
 
 ```{r test-retest-8, results = 'asis'}
 tr_mod2_b1b2 = glmmTMB(block_2 ~ block_1*delayed_memory +
@@ -272,16 +274,19 @@ items_cors %>%
 ```{r testretest18, fig.cap = "Test-retest correlations of specific items across word format.", echo = F}
 
 items_cors %>%
-  mutate(comp_num = case_when(
-    comp == "blc_1-blc_2" ~ 1,
-    comp == "blc_1-blc_3" ~ 2,
-    comp == "blc_2-blc_3" ~ NA_real_,
-  )) %>%
+  mutate(
+    comp_num = case_when(
+      comp == "blc_1-blc_2" ~ 1,
+      comp == "blc_1-blc_3" ~ 2,
+      comp == "blc_2-blc_3" ~ NA_real_),
+    condition = factor(condition,
+                       levels = c("Adjective\nOnly" ,"Am\nAdjective" ,"Tend to be\nAdjective" ,"Am someone\nwho tends to be\nAdjective"))
+  ) %>%
   filter(!is.na(comp_num)) %>%
   ggplot(aes(x = raw.r)) +
-  geom_histogram(binwidth = .1, color = "white") +
+  geom_density(fill = "grey") +
   facet_grid(condition~comp) +
   labs(x = "correlation", y = "Freqency") +
-  theme_pubr()
+  theme_pubr(base_size = 10)
 ```
 

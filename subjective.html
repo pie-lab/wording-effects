@@ -376,7 +376,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact experience?</h1>
-<h4 class="date">Last updated 2023-04-24</h4>
+<h4 class="date">Last updated 2023-05-01</h4>
 
 </div>
 
@@ -394,13 +394,18 @@ car::Anova(mod_enjoy_1)</code></pre>
 ##            Sum Sq  Df F value Pr(&gt;F)
 ## format       5.28   3  1.6728 0.1712
 ## Residuals 1021.42 970</code></pre>
-<p>Participants did not vary in their enjoyment of the survey as a function of item format. See <a href="#fig:enjoyFormat"><strong>??</strong></a>.</p>
+<p>Participants did not vary in their enjoyment of the survey as a function of item format. See <a href="#fig:enjoyFormat">1</a>.</p>
 <pre class="r"><code>plot_model(mod_enjoy_1, type = &quot;pred&quot;, show.data = T, jitter = T)$format +
   labs(x = NULL, 
-       y = &quot;Average enjoyment&quot;, 
-       title = &quot;Predicted enjoyment by item format&quot;)</code></pre>
-<p><img src="subjective_files/figure-html/enjoyFormat-1.png" width="672" /></p>
-<p>We also test whether this is a function of device type and the interaction of devicetype with format.</p>
+       title = NULL,
+       y = &quot;Average enjoyment&quot;)</code></pre>
+<div class="figure"><span style="display:block;" id="fig:enjoyFormat"></span>
+<img src="subjective_files/figure-html/enjoyFormat-1.png" alt="Predicted enjoyment by item format" width="672" />
+<p class="caption">
+Figure 1: Predicted enjoyment by item format
+</p>
+</div>
+<p>We also test whether this is a function of device type and the interaction of device type with format.</p>
 <pre class="r"><code>mod_enjoy_2 = lm(enjoy_responding ~ devicetype, data = enjoy_df)
 car::Anova(mod_enjoy_2)</code></pre>
 <pre><code>## Anova Table (Type II tests)
@@ -409,7 +414,7 @@ car::Anova(mod_enjoy_2)</code></pre>
 ##             Sum Sq  Df F value Pr(&gt;F)
 ## devicetype    2.91   2  1.3777 0.2527
 ## Residuals  1023.80 971</code></pre>
-<p>Participants did not enjoy differently by format.</p>
+<p>Participants did not enjoy differently by device type.</p>
 <pre class="r"><code>mod_enjoy_3 = lm(enjoy_responding ~ format*devicetype, data = enjoy_df)
 car::Anova(mod_enjoy_3, type = &quot;3&quot;)</code></pre>
 <pre><code>## Anova Table (Type III tests)
@@ -437,12 +442,17 @@ car::Anova(mod_design_1)</code></pre>
 ##           Sum Sq  Df F value Pr(&gt;F)
 ## format      2.97   3  1.2987 0.2736
 ## Residuals 740.05 970</code></pre>
-<p>Participants did not vary in their perception of the survey as a function of item format. See <a href="#fig:designFormat"><strong>??</strong></a>.</p>
+<p>Participants did not vary in their perception of the survey as a function of device type. See <a href="#fig:designFormat">2</a>.</p>
 <pre class="r"><code>plot_model(mod_design_1, type = &quot;pred&quot;, show.data = T, jitter = T)$format +
   labs(x = NULL, 
        y = &quot;Average designment&quot;, 
-       title = &quot;Predicted design perception by item format&quot;)</code></pre>
-<p><img src="subjective_files/figure-html/designFormat-1.png" width="672" /></p>
+       title = NULL)</code></pre>
+<div class="figure"><span style="display:block;" id="fig:designFormat"></span>
+<img src="subjective_files/figure-html/designFormat-1.png" alt="Predicted design perception by item format" width="672" />
+<p class="caption">
+Figure 2: Predicted design perception by item format
+</p>
+</div>
 <p>We also test whether this is a function of device type and the interaction of devicetype with format.</p>
 <pre class="r"><code>mod_design_2 = lm(well_designed_study ~ devicetype, data = enjoy_df)
 car::Anova(mod_design_2)</code></pre>

@@ -39,15 +39,16 @@
 \contentsline {section}{\numberline {2}Descriptives}{31}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Time}{31}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Personality by block and format}{31}{subsection.2.2}%
-\contentsline {section}{\numberline {3}Does item format affect response style?}{33}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Deviations from preregistration}{33}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Expected response}{33}{subsection.3.2}%
-\contentsline {subsubsection}{\numberline {3.2.1}One model for each adjective}{37}{subsubsection.3.2.1}%
-\contentsline {subsubsection}{\numberline {3.2.2}Pairwise t-tests for significant ANOVAs}{37}{subsubsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.3}Extreme responding}{43}{subsection.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.1}One model for each adjective}{44}{subsubsection.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.2}Pairwise t-tests for significant ANOVAs}{44}{subsubsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.4}Yea-saying}{48}{subsection.3.4}%
+\contentsline {subsection}{\numberline {2.3}Response by format}{31}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Does item format affect response style?}{37}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Deviations from preregistration}{37}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Expected response}{37}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}One model for each adjective}{40}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Pairwise t-tests for significant ANOVAs}{40}{subsubsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.3}Extreme responding}{42}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}One model for each adjective}{46}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Pairwise t-tests for significant ANOVAs}{46}{subsubsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.4}Yea-saying}{49}{subsection.3.4}%
 \contentsline {subsubsection}{\numberline {3.4.1}One model for each adjective}{50}{subsubsection.3.4.1}%
 \contentsline {subsubsection}{\numberline {3.4.2}Pairwise t-tests for significant ANOVAs}{52}{subsubsection.3.4.2}%
 \contentsline {subsection}{\numberline {3.5}All tests}{57}{subsection.3.5}%

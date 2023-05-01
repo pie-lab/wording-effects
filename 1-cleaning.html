@@ -302,7 +302,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2023-04-24</h4>
+<h4 class="date">Last updated 2023-05-01</h4>
 
 </div>
 
@@ -977,11 +977,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall1 = map_chr(recall1, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall1                                                          memory
-##   &lt;chr&gt;                                                             &lt;dbl&gt;
-## 1 i, dont, remember, none                                               0
-## 2 book, child, gold, king, hotel, river, tree, market, house, fish      8
-## 3 book, gold, child, king, market, paper                                6</code></pre>
+##   recall1                                          memory
+##   &lt;chr&gt;                                             &lt;dbl&gt;
+## 1 child, gold, hotel, bed, river, tree, king, skin      7
+## 2 book, gold, child, paper, king                        5
+## 3 book, , child, cold, river                            4</code></pre>
 <pre class="r"><code>#from memory condition 2
 data %&gt;% 
   filter(mem_condition == 2) %&gt;% 
@@ -989,11 +989,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall2 = map_chr(recall2, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall2                                                   memory
-##   &lt;chr&gt;                                                      &lt;dbl&gt;
-## 1 wife, sky, dollar, earth, machine, coffee, butter              6
-## 2 butter, college, earth, sky, home, machine, dollar, wife       8
-## 3 butter, dollar, earth, fire, game, home, ocean, sky, wife      7</code></pre>
+##   recall2                                                         memory
+##   &lt;chr&gt;                                                            &lt;dbl&gt;
+## 1 butter, college, flag, machine, wife                                 5
+## 2 butter, college, dollar, earth, house, wife, home, sky, ocean        8
+## 3 butter, college, earth, home, sky, wife, dollar, machine, ocean      9</code></pre>
 <pre class="r"><code>#from memory condition 3
 data %&gt;% 
   filter(mem_condition == 3) %&gt;% 
@@ -1003,9 +1003,9 @@ data %&gt;%
 <pre><code>## # A tibble: 3 × 2
 ##   recall3                                                 memory
 ##   &lt;chr&gt;                                                    &lt;dbl&gt;
-## 1 blood, corner, house, engine, woman, rock, letter, girl      8
-## 2 blood, engine, corner, shoes, house, woman                   6
-## 3 woman, shoes, rock, valley, girl, house, blood, engine       8</code></pre>
+## 1 blood, house, woman, letter, shoes, rock                     6
+## 2 blood, corner, engine, girl, house, valley, rock, woman      8
+## 3 woman, valley, girl, shoes, rock, engine, blood, corner      8</code></pre>
 <pre class="r"><code>#from memory condition 4
 data %&gt;% 
   filter(mem_condition == 4) %&gt;% 
@@ -1013,11 +1013,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall4 = map_chr(recall4, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall4                                          memory
-##   &lt;chr&gt;                                             &lt;dbl&gt;
-## 1 baby, church, doctor, fire, garden, sea, palace.      7
-## 2 baby, church, doctor, ocean, table, water             5
-## 3 sea, baby, doctor, village                            4</code></pre>
+##   recall4                                                 memory
+##   &lt;chr&gt;                                                    &lt;dbl&gt;
+## 1 baby, church, fire, water, sea, palace, garden               7
+## 2 baby, church, fire, village, doctor, garden, water, sea      8
+## 3 baby, garden, sea, table, village                            5</code></pre>
 <p>Participants remember on average 6.76 words correctly <span class="math inline">\((SD = 1.96)\)</span>.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>

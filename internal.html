@@ -378,7 +378,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does the internal consistency of Big Five traits vary by item wording?</h1>
-<h4 class="date">Last updated 2023-04-24</h4>
+<h4 class="date">Last updated 2023-05-01</h4>
 
 </div>
 
@@ -430,7 +430,7 @@ Openn = c(&quot;creative&quot;, &quot;imaginative&quot;, &quot;intelligent&quot;
 </div>
 <div id="alpha" class="section level2" number="0.2">
 <h2><span class="header-section-number">0.2</span> Alpha</h2>
-<p>We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table <a href="#tab:internal10b">1</a> and Figure <a href="#fig:internal11">1</a>.</p>
+<p>We extract the estimated confidence intervals. The final summary of results is presented in Table <a href="#tab:internal10b">1</a> and Figure <a href="#fig:internal11">1</a>.</p>
 <pre class="r"><code>format_alpha = format_data %&gt;% 
   mutate(alpha_list = map(alpha, &quot;total&quot;),
          alpha_est = map_dbl(alpha_list, &quot;raw_alpha&quot;),
@@ -571,7 +571,7 @@ Figure 2: Distribution of split-half reliabilities
 </div>
 <div id="omega" class="section level2" number="0.4">
 <h2><span class="header-section-number">0.4</span> Omega</h2>
-<p>We extract the estimated confidence intervals. (Note that these estimates are unreliable in small samples. The estimates extracted based on pilot data are not expected to reflect estimates provided in the final analyses.) The final summary of results is presented in Table <a href="#tab:internal10b">1</a> and Figure <a href="#fig:internal11">1</a>.</p>
+<p>We extract the estimated confidence intervals.The final summary of results is presented in Table <a href="#tab:internal10b">1</a> and Figure <a href="#fig:internal11">1</a>.</p>
 <pre class="r"><code>format_omega = format_data %&gt;% 
   mutate(omega_h = map_dbl(omega, &quot;omega_h&quot;)) </code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">

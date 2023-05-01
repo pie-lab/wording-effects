@@ -21,6 +21,7 @@ library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tables
 library(papaja) # pretty numbers
+library(emmeans)
 ```
 
 ```{r, echo = F}
@@ -40,21 +41,21 @@ car::Anova(mod_enjoy_1)
 
 Participants did not vary in their enjoyment of the survey as a function of item format. See \@ref(fig:enjoyFormat).
 
-```{r enjoyFormat}
+```{r enjoyFormat, fig.cap = "Predicted enjoyment by item format"}
 plot_model(mod_enjoy_1, type = "pred", show.data = T, jitter = T)$format +
   labs(x = NULL, 
-       y = "Average enjoyment", 
-       title = "Predicted enjoyment by item format")
+       title = NULL,
+       y = "Average enjoyment")
 ```
 
-We also test whether this is a function of device type and the interaction of devicetype with format. 
+We also test whether this is a function of device type and the interaction of device type with format. 
 
 ```{r}
 mod_enjoy_2 = lm(enjoy_responding ~ devicetype, data = enjoy_df)
 car::Anova(mod_enjoy_2)
 ```
 
-Participants did not enjoy differently by format. 
+Participants did not enjoy differently by device type. 
 
 ```{r}
 mod_enjoy_3 = lm(enjoy_responding ~ format*devicetype, data = enjoy_df)
@@ -74,13 +75,13 @@ mod_design_1 = lm(well_designed_study ~ format, data = enjoy_df)
 car::Anova(mod_design_1)
 ```
 
-Participants did not vary in their perception of the survey as a function of item format. See \@ref(fig:designFormat).
+Participants did not vary in their perception of the survey as a function of device type. See \@ref(fig:designFormat).
 
-```{r designFormat}
+```{r designFormat, fig.cap = "Predicted design perception by item format"}
 plot_model(mod_design_1, type = "pred", show.data = T, jitter = T)$format +
   labs(x = NULL, 
        y = "Average designment", 
-       title = "Predicted design perception by item format")
+       title = NULL)
 ```
 
 We also test whether this is a function of device type and the interaction of devicetype with format. 

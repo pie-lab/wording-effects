@@ -170,16 +170,14 @@ adjective_timing = function(adjective){
                          variables = list(format = "pairwise")) 
   comp$p.value = p.adjust(comp$p.value, method = "holm")
   
-  table = comp %>%
+  comp = comp %>% 
     mutate(
-      across( starts_with("p"), printp )) %>% # format p-values
-    select(-term) %>% 
-    kable(booktabs = T,
-          digits = 2,
-          caption = paste("Differences in log-seconds to", str_to_sentence(adjective), "by format (blocks 1 and 2)"),
-          col.names = c("Contrast", "Difference in means", "SE", "z", "p", "low", "high")) %>%
-    kable_styling() %>% 
-    add_header_above(c(" " = 5, "95% CI" = 2))
+    across( starts_with("p"), printp )) 
+  
+  caption = paste("Differences in log-seconds to", 
+                  adjective,
+                  "by format (blocks 1 and 2)")
+  
   
   plot = avg_predictions(model, variables = "format") %>% 
     mutate(across(where(is.numeric), exp)) %>% 
@@ -193,7 +191,8 @@ adjective_timing = function(adjective){
     theme_pubclean()
   
   return(list(
-    table = table,
+    comp = comp,
+    caption = caption,
     plot = plot
   ))
 }
@@ -209,24 +208,41 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:act
 ```{r, results = 'asis'}
 active_model = adjective_timing("active")
 ```
+
 ```{r activepairs, echo = F, results = 'asis'}
-active_model$table
+active_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = active_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
+  
 ```
-```{r activeplot, echo = F, fig.cap = "Average seconds to respond to \"active\" by format (blocks 1 and 2)" }
+
+```{r activeplot, echo = F, fig.cap = "Average seconds to respond to \"active\" by format (blocks 1 and 2)." }
 active_model$plot
 ```
 
 
 ### Adventurous
 
-Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:adventurepairs) and means are shown in Figure \@ref(fig:adventureplot).
+Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:adventurouspairs) and means are shown in Figure \@ref(fig:adventurousplot).
 
 
 ```{r, results = 'asis'}
 adventurous_model = adjective_timing("adventurous")
 ```
 ```{r adventurouspairs, echo = F, results = 'asis'}
-adventurous_model$table
+adventurous_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = adventurous_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r adventurousplot, echo = F, fig.cap = "Average seconds to respond to \"adventurous\" by format (blocks 1 and 2)" }
@@ -243,7 +259,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:bro
 broadminded_model = adjective_timing("broadminded")
 ```
 ```{r broadmindedpairs, echo = F, results = 'asis'}
-broadminded_model$table
+broadminded_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = broadminded_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r broadmindedplot, echo = F, fig.cap = "Average log-seconds to \"broadminded\" by format (blocks 1 and 2)" }
@@ -259,7 +282,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:cal
 calm_model = adjective_timing("calm")
 ```
 ```{r calmpairs, echo = F, results = 'asis'}
-calm_model$table
+calm_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = calm_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r calmplot, echo = F, fig.cap = "Average log-seconds to \"calm\" by format (blocks 1 and 2)" }
@@ -275,7 +305,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:car
 caring_model = adjective_timing("caring")
 ```
 ```{r caringpairs, echo = F, results = 'asis'}
-caring_model$table
+caring_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = caring_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r caringplot, echo = F, fig.cap = "Average log-seconds to \"caring\" by format (blocks 1 and 2)" }
@@ -291,7 +328,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:hel
 cautious_model = adjective_timing("cautious")
 ```
 ```{r cautiouspairs, echo = F, results = 'asis'}
-cautious_model$table
+cautious_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = cautious_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r cautiousplot, echo = F, fig.cap = "Average log-seconds to \"cautious\" by format (blocks 1 and 2)" }
@@ -307,7 +351,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:col
 cold_model = adjective_timing("cold")
 ```
 ```{r coldpairs, echo = F, results = 'asis'}
-cold_model$table
+cold_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = cold_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r coldplot, echo = F, fig.cap = "Average log-seconds to \"cold\" by format (blocks 1 and 2)" }
@@ -323,7 +374,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:cre
 creative_model = adjective_timing("creative")
 ```
 ```{r creativepairs, echo = F, results = 'asis'}
-creative_model$table
+creative_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = creative_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r creativeplot, echo = F, fig.cap = "Average log-seconds to \"creative\" by format (blocks 1 and 2)" }
@@ -339,7 +397,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:cur
 curious_model = adjective_timing("curious")
 ```
 ```{r curiouspairs, echo = F, results = 'asis'}
-curious_model$table
+curious_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = curious_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r curiousplot, echo = F, fig.cap = "Average log-seconds to \"curious\" by format (blocks 1 and 2)" }
@@ -355,7 +420,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:fri
 friendly_model = adjective_timing("friendly")
 ```
 ```{r friendlypairs, echo = F, results = 'asis'}
-friendly_model$table
+friendly_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = friendly_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r friendlyplot, echo = F, fig.cap = "Average log-seconds to \"friendly\" by format (blocks 1 and 2)" }
@@ -371,7 +443,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:har
 hardworking_model = adjective_timing("hardworking")
 ```
 ```{r hardworkingpairs, echo = F, results = 'asis'}
-hardworking_model$table
+hardworking_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = hardworking_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r hardworkingplot, echo = F, fig.cap = "Average log-seconds to \"hardworking\" by format (blocks 1 and 2)" }
@@ -387,7 +466,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:hel
 helpful_model = adjective_timing("helpful")
 ```
 ```{r helpfulpairs, echo = F, results = 'asis'}
-helpful_model$table
+helpful_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = helpful_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r helpfulplot, echo = F, fig.cap = "Average log-seconds to \"helpful\" by format (blocks 1 and 2)" }
@@ -403,7 +489,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:ima
 imaginative_model = adjective_timing("imaginative")
 ```
 ```{r imaginativepairs, echo = F, results = 'asis'}
-imaginative_model$table
+imaginative_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = imaginative_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r imaginativeplot, echo = F, fig.cap = "Average log-seconds to \"imaginative\" by format (blocks 1 and 2)" }
@@ -419,7 +512,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:int
 intelligent_model = adjective_timing("intelligent")
 ```
 ```{r intelligentpairs, echo = F, results = 'asis'}
-intelligent_model$table
+intelligent_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = intelligent_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r intelligentplot, echo = F, fig.cap = "Average log-seconds to \"intelligent\" by format (blocks 1 and 2)" }
@@ -435,7 +535,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:liv
 lively_model = adjective_timing("lively")
 ```
 ```{r livelypairs, echo = F, results = 'asis'}
-lively_model$table
+lively_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = lively_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r livelyplot, echo = F, fig.cap = "Average log-seconds to \"lively\" by format (blocks 1 and 2)" }
@@ -451,7 +558,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:org
 organized_model = adjective_timing("organized")
 ```
 ```{r organizedpairs, echo = F, results = 'asis'}
-organized_model$table
+organized_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = organized_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r organizedplot, echo = F, fig.cap = "Average log-seconds to \"organized\" by format (blocks 1 and 2)" }
@@ -467,7 +581,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:out
 outgoing_model = adjective_timing("outgoing")
 ```
 ```{r outgoingpairs, echo = F, results = 'asis'}
-outgoing_model$table
+outgoing_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = outgoing_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r outgoingplot, echo = F, fig.cap = "Average log-seconds to \"outgoing\" by format (blocks 1 and 2)" }
@@ -483,7 +604,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:qui
 quiet_model = adjective_timing("quiet")
 ```
 ```{r quietpairs, echo = F, results = 'asis'}
-quiet_model$table
+quiet_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = quiet_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r quietplot, echo = F, fig.cap = "Average log-seconds to \"quiet\" by format (blocks 1 and 2)" }
@@ -500,7 +628,14 @@ relaxed_model = adjective_timing("relaxed")
 ```
 
 ```{r relaxedpairs, echo = F, results = 'asis'}
-relaxed_model$table
+relaxed_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = relaxed_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r relaxedplot, echo = F, fig.cap = "Average log-seconds to \"relaxed\" by format (blocks 1 and 2)" }
@@ -516,7 +651,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:res
 responsible_model = adjective_timing("responsible")
 ```
 ```{r responsiblepairs, echo = F, results = 'asis'}
-responsible_model$table
+responsible_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = responsible_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r responsibleplot, echo = F, fig.cap = "Average log-seconds to \"responsible\" by format (blocks 1 and 2)" }
@@ -532,7 +674,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:sel
 selfdisciplined_model = adjective_timing("selfdisciplined")
 ```
 ```{r selfdisciplinedpairs, echo = F, results = 'asis'}
-selfdisciplined_model$table
+selfdisciplined_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = selfdisciplined_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r selfdisciplinedplot, echo = F, fig.cap = "Average log-seconds to \"selfdisciplined\" by format (blocks 1 and 2)" }
@@ -548,7 +697,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:shy
 shy_model = adjective_timing("shy")
 ```
 ```{r shypairs, echo = F, results = 'asis'}
-shy_model$table
+shy_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = shy_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r shyplot, echo = F, fig.cap = "Average log-seconds to \"shy\" by format (blocks 1 and 2)" }
@@ -564,7 +720,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:sof
 softhearted_model = adjective_timing("softhearted")
 ```
 ```{r softpairs, echo = F, results = 'asis'}
-softhearted_model$table
+softhearted_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = softhearted_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r softplot, echo = F, fig.cap = "Average log-seconds to \"softhearted\" by format (blocks 1 and 2)" }
@@ -580,7 +743,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:sop
 sophisticated_model = adjective_timing("sophisticated")
 ```
 ```{r sophisticatedpairs, echo = F, results = 'asis'}
-sophisticated_model$table
+sophisticated_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = sophisticated_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r sophisticatedplot, echo = F, fig.cap = "Average log-seconds to \"sophisticated\" by format (blocks 1 and 2)" }
@@ -597,7 +767,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:sym
 sympathetic_model = adjective_timing("sympathetic")
 ```
 ```{r symppairs, echo = F, results = 'asis'}
-sympathetic_model$table
+sympathetic_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = sympathetic_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r sympplot, echo = F, fig.cap = "Average log-seconds to \"sympathetic\" by format (blocks 1 and 2)" }
@@ -613,7 +790,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:tal
 talkative_model = adjective_timing("talkative")
 ```
 ```{r talkativepairs, echo = F, results = 'asis'}
-talkative_model$table
+talkative_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = talkative_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r talkativeplot, echo = F, fig.cap = "Average log-seconds to \"talkative\" by format (blocks 1 and 2)" }
@@ -629,7 +813,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:tho
 thorough_model = adjective_timing("thorough")
 ```
 ```{r thoroughpairs, echo = F, results = 'asis'}
-thorough_model$table
+thorough_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = thorough_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r thoroughplot, echo = F, fig.cap = "Average log-seconds to \"thorough\" by format (blocks 1 and 2)" }
@@ -645,7 +836,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:thr
 thrifty_model = adjective_timing("thrifty")
 ```
 ```{r thriftypairs, echo = F, results = 'asis'}
-thrifty_model$table
+thrifty_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = thrifty_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r thriftyplot, echo = F, fig.cap = "Average log-seconds to \"thrifty\" by format (blocks 1 and 2)" }
@@ -661,7 +859,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:unc
 uncreative_model = adjective_timing("uncreative")
 ```
 ```{r uncreativepairs, echo = F, results = 'asis'}
-uncreative_model$table
+uncreative_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = uncreative_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r uncreativeplot, echo = F, fig.cap = "Average log-seconds to \"uncreative\" by format (blocks 1 and 2)" }
@@ -677,7 +882,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:uni
 unintellectual_model = adjective_timing("unintellectual")
 ```
 ```{r unintellectualpairs, echo = F, results = 'asis'}
-unintellectual_model$table
+unintellectual_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = unintellectual_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r unintellectualplot, echo = F, fig.cap = "Average log-seconds to \"unintellectual\" by format (blocks 1 and 2)" }
@@ -694,7 +906,14 @@ unsympathetic_model = adjective_timing("unsympathetic")
 ```
 
 ```{r unsympatheticpairs, echo = F, results = 'asis'}
-unsympathetic_model$table
+unsympathetic_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = unsympathetic_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r unsympatheticplot, echo = F, fig.cap = "Average log-seconds to \"unsympathetic\" by format (blocks 1 and 2)" }
@@ -710,7 +929,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:war
 warm_model = adjective_timing("warm")
 ```
 ```{r warmpairs, echo = F, results = 'asis'}
-warm_model$table
+warm_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = warm_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r warmplot, echo = F, fig.cap = "Average log-seconds to \"warm\" by format (blocks 1 and 2)" }
@@ -726,7 +952,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:car
 careless_model = adjective_timing("careless")
 ```
 ```{r carelesspairs, echo = F, results = 'asis'}
-careless_model$table
+careless_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = careless_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r carelessplot, echo = F, fig.cap = "Average log-seconds to \"careless\" by format (blocks 1 and 2)" }
@@ -742,7 +975,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:imp
 impulsive_model = adjective_timing("impulsive")
 ```
 ```{r impulsivepairs, echo = F, results = 'asis'}
-impulsive_model$table
+impulsive_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = impulsive_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r impulsiveplot, echo = F, fig.cap = "Average log-seconds to \"impulsive\" by format (blocks 1 and 2)" }
@@ -758,7 +998,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:moo
 moody_model = adjective_timing("moody")
 ```
 ```{r moodypairs, echo = F, results = 'asis'}
-moody_model$table
+moody_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = moody_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r moodyplot, echo = F, fig.cap = "Average log-seconds to \"moody\" by format (blocks 1 and 2)" }
@@ -774,7 +1021,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:ner
 nervous_model = adjective_timing("nervous")
 ```
 ```{r nervouspairs, echo = F, results = 'asis'}
-nervous_model$table
+nervous_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = nervous_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r nervousplot, echo = F, fig.cap = "Average log-seconds to \"nervous\" by format (blocks 1 and 2)" }
@@ -791,7 +1045,14 @@ reckless_model = adjective_timing("reckless")
 
 ```
 ```{r recklesspairs, echo = F, results = 'asis'}
-reckless_model$table
+reckless_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = reckless_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 
 ```{r recklessplot, echo = F, fig.cap = "Average log-seconds to \"reckless\" by format (blocks 1 and 2)" }
@@ -807,7 +1068,14 @@ Tests of the pairwise comparisons for this item are shown in Table \@ref(tab:wor
 worrying_model = adjective_timing("worrying")
 ```
 ```{r worryingpairs, echo = F, results = 'asis'}
-worrying_model$table
+worrying_model$comp %>% # format p-values
+  select(-term) %>% 
+  kable(booktabs = T,
+        digits = 2,
+        caption = worrying_model$caption,
+        col.names = c("Contrast", "Mean Diff", "SE", "z", "p", "low", "high")) %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 5, "95% CI" = 2))
 ```
 ```{r worryingplot, echo = F, fig.cap = "Average log-seconds to \"worrying\" by format (blocks 1 and 2)" }
 worrying_model$plot
@@ -818,34 +1086,34 @@ worrying_model$plot
 We used a multilevel model, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word "I". Here, we use data from blocks 1 and 3. Results are depicted in Figure \@ref(fig:secondsi).
 
 ```{r}
-items_13 = items_df %>% 
-  filter(block %in% c("1","3")) %>% 
-  filter(condition != "A") %>% 
-  filter(time2 == "yes") %>% 
+items_13 = items_df %>%
+  filter(block %in% c("1","3")) %>%
+  filter(condition != "A") %>%
+  filter(time2 == "yes") %>%
   filter(!is.infinite(seconds_log))
 ```
 
 ```{r}
-mod.format_b3_1 = glmmTMB(seconds_log~format + i + (1|proid), 
+mod.format_b3_1 = glmmTMB(seconds_log~format + i + (1|proid),
                   data = items_13)
-tidy(aov(mod.format_b3_1)) %>% 
+tidy(aov(mod.format_b3_1)) %>%
   mutate(p.value = papaja::printp(p.value))
 
-mod.format_b3_2 = glmmTMB(seconds_log~format*i + (1|proid), 
+mod.format_b3_2 = glmmTMB(seconds_log~format*i + (1|proid),
                   data = items_13)
-tidy(aov(mod.format_b3_2)) %>% 
+tidy(aov(mod.format_b3_2)) %>%
   mutate(p.value = papaja::printp(p.value))
 ```
 
 ```{r secondsi, echo = F, fig.cap = "Predicted log-seconds on personality items by condition and I, using Block 1 and Block 3 data."}
-avg_predictions(mod.format_b3_2, variables = c("format", "i")) %>% 
-  mutate(across(where(is.numeric), exp)) %>% 
+avg_predictions(mod.format_b3_2, variables = c("format", "i")) %>%
+  mutate(across(where(is.numeric), exp)) %>%
   ggplot(aes(x = format, y = estimate, group = i)) +
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), 
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high),
                 width = .3,
                 position = position_dodge(.3)) +
   geom_point(aes(color = i),
-             position = position_dodge(.3), 
+             position = position_dodge(.3),
              size = 3) +
   labs(x = NULL,
        y = "seconds",
@@ -856,34 +1124,34 @@ avg_predictions(mod.format_b3_2, variables = c("format", "i")) %>%
 
 ### One model for each adjective
 
-Additive effects of I (controlling for format) are summarized in Table \@ref(tab:itemi). Tests of the interaction of I with format (for each item) are summarized in Table \@ref(tab:iinteraction). 
+Additive effects of I (controlling for format) are summarized in Table \@ref(tab:itemi). Tests of the interaction of I with format (for each item) are summarized in Table \@ref(tab:iinteraction).
 
 ```{r, results = 'asis'}
 mod_by_item_i1 = items_13 %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~glmmTMB(seconds_log~format+i + (1|proid), data = .))) %>%
-  mutate(aov = map(mod, aov)) %>% 
+  mutate(aov = map(mod, aov)) %>%
   ungroup()
 ```
 
 ```{r}
-summary_by_item_i1 = mod_by_item_i1 %>% 
+summary_by_item_i1 = mod_by_item_i1 %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
-  select(item, tidy) %>% 
+  select(item, tidy) %>%
   unnest(cols = c(tidy)) %>%
   filter(term == "i") %>%
   mutate(reverse = case_when(
     item %in% reverse ~ "Y",
     TRUE ~ "N"
-  )) %>% 
+  )) %>%
   mutate(p.adj = p.adjust(p.value, method = "holm"))
 ```
 ```{r itemi, echo = F, results = 'asis'}
 summary_by_item_i1 %>%
-  arrange(reverse, item) %>% 
+  arrange(reverse, item) %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
-  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>% 
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>%
   kable(digits = 2, booktabs = T,
         caption = "Additive effect of I on timing for each item") %>%
   kable_styling()
@@ -895,25 +1163,25 @@ mod_by_item_i2 = items_13 %>%
   group_by(item) %>%
   nest() %>%
   mutate(mod = map(data, ~glmmTMB(seconds_log~format*i + (1|proid), data = .))) %>%
-  mutate(aov = map(mod, aov)) %>% 
+  mutate(aov = map(mod, aov)) %>%
   ungroup()
 ```
 ```{r iinteraction, echo = F, results = 'asis'}
-summary_by_item_i2 = mod_by_item_i2 %>% 
+summary_by_item_i2 = mod_by_item_i2 %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
-  select(item, tidy) %>% 
+  select(item, tidy) %>%
   unnest(cols = c(tidy)) %>%
   filter(term == "format:i") %>%
   mutate(reverse = case_when(
     item %in% reverse ~ "Y",
     TRUE ~ "N"
-  )) %>% 
+  )) %>%
   mutate(p.adj = p.adjust(p.value, method = "holm"))
 
 summary_by_item_i2 %>%
-  arrange(reverse, item) %>% 
+  arrange(reverse, item) %>%
   mutate(across( starts_with("p"), printp )) %>% # format p-values
-  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>% 
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>%
   kable(digits = 2, booktabs = T,
         caption = "Interaction of I with format on timing for each item") %>%
   kable_styling()
@@ -923,7 +1191,7 @@ Here we identify the specific items with significant differences.
 
 ```{r}
 sig_item_b3 = summary_by_item_i2 %>%
-  filter(p.value < .05) 
+  filter(p.value < .05)
 
 sig_item_b3 = sig_item_b3$item
 sig_item_b3
@@ -931,28 +1199,28 @@ sig_item_b3
 
 ```{r}
 adjective_timing_i = function(adjective){
-  
+
   model = items_13 %>%
     filter(item == adjective) %>%
-    filter(condition != "A") %>% 
+    filter(condition != "A") %>%
     glmmTMB(seconds_log~format*i + (1|proid), data = .)
-  
-  plot = avg_predictions(model, variables = c("format", "i")) %>% 
-    mutate(across(where(is.numeric), exp)) %>% 
+
+  plot = avg_predictions(model, variables = c("format", "i")) %>%
+    mutate(across(where(is.numeric), exp)) %>%
     ggplot(aes(x = format, y = estimate, group = i)) +
     geom_point(aes(color = i),
                position = position_dodge(.3),
                size = 3) +
     geom_errorbar(
       aes(ymin = conf.low, ymax = conf.high),
-               position = position_dodge(.3), 
+               position = position_dodge(.3),
       width = .3) +
     labs(
-      x = NULL, 
-      y = "seconds", 
+      x = NULL,
+      y = "seconds",
       title = paste0("Average response time to ", str_to_sentence(adjective))) +
     theme_pubclean()
-  
+
   return(plot)
 }
 ```
@@ -966,6 +1234,6 @@ adjective_timing_i("nervous")
 ## Careless
 
 ```{r, fig.cap = "Average seconds to \"careless\" by format and inclusion of i (blocks 1 and 3)"}
-adjective_timing_i("nervous")
+adjective_timing_i("careless")
 ```
 
