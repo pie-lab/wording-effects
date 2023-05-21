@@ -302,7 +302,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Test-retest reliability</h1>
-<h4 class="date">Last updated 2023-05-01</h4>
+<h4 class="date">Last updated 2023-05-21</h4>
 
 </div>
 
@@ -458,17 +458,17 @@ emtrends(tr_mod2_b1b2,
          at = mem_list)</code></pre>
 <pre><code>## $emtrends
 ##  delayed_memory block_1.trend      SE   df lower.CL upper.CL
-##              -1         0.822 0.00745 9221    0.807    0.836
-##               0         0.854 0.00534 9221    0.844    0.864
-##               1         0.886 0.00749 9221    0.872    0.901
+##              -1         0.821 0.00745 9226    0.807    0.836
+##               0         0.854 0.00534 9226    0.843    0.864
+##               1         0.886 0.00749 9226    0.872    0.901
 ## 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
 ##  contrast                             estimate      SE   df t.ratio p.value
-##  (delayed_memory-1) - delayed_memory0  -0.0324 0.00522 9221  -6.206  &lt;.0001
-##  (delayed_memory-1) - delayed_memory1  -0.0648 0.01044 9221  -6.206  &lt;.0001
-##  delayed_memory0 - delayed_memory1     -0.0324 0.00522 9221  -6.206  &lt;.0001
+##  (delayed_memory-1) - delayed_memory0  -0.0324 0.00522 9226  -6.206  &lt;.0001
+##  (delayed_memory-1) - delayed_memory1  -0.0648 0.01044 9226  -6.206  &lt;.0001
+##  delayed_memory0 - delayed_memory1     -0.0324 0.00522 9226  -6.206  &lt;.0001
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
@@ -482,17 +482,17 @@ emtrends(tr_mod2_b1b3,
          at = mem_list)</code></pre>
 <pre><code>## $emtrends
 ##  very_delayed_memory block_1.trend      SE    df lower.CL upper.CL
-##                   -1         0.770 0.00477 33548    0.761    0.779
-##                    0         0.782 0.00340 33548    0.775    0.788
+##                   -1         0.770 0.00477 33548    0.760    0.779
+##                    0         0.781 0.00340 33548    0.775    0.788
 ##                    1         0.793 0.00474 33548    0.784    0.802
 ## 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
 ##  contrast                                       estimate      SE    df t.ratio
-##  (very_delayed_memory-1) - very_delayed_memory0  -0.0115 0.00333 33548  -3.464
+##  (very_delayed_memory-1) - very_delayed_memory0  -0.0115 0.00332 33548  -3.464
 ##  (very_delayed_memory-1) - very_delayed_memory1  -0.0230 0.00665 33548  -3.464
-##  very_delayed_memory0 - very_delayed_memory1     -0.0115 0.00333 33548  -3.464
+##  very_delayed_memory0 - very_delayed_memory1     -0.0115 0.00332 33548  -3.464
 ##  p.value
 ##   0.0015
 ##   0.0015
@@ -515,13 +515,13 @@ aov(tr_mod3_b1b2)</code></pre>
 ## 
 ## Terms:
 ##                  block_1 condition    proid block_1:condition Residuals
-## Sum of Squares  6893.344     0.842  323.939             0.422  2007.452
-## Deg. of Freedom        1         3      970                 3      8249
+## Sum of Squares  6896.958     0.836  324.094             0.422  2008.689
+## Deg. of Freedom        1         3      971                 3      8253
 ## 
-## Residual standard error: 0.4933123
-## 3 out of 981 effects not estimable
+## Residual standard error: 0.4933447
+## 3 out of 982 effects not estimable
 ## Estimated effects may be unbalanced
-## 27785 observations deleted due to missingness</code></pre>
+## 27818 observations deleted due to missingness</code></pre>
 <pre class="r"><code>aov(tr_mod3_b1b3)</code></pre>
 <pre><code>## Call:
 ##    aov(formula = tr_mod3_b1b3)
@@ -534,19 +534,19 @@ aov(tr_mod3_b1b2)</code></pre>
 ## Residual standard error: 0.5757692
 ## 3 out of 890 effects not estimable
 ## Estimated effects may be unbalanced
-## 3458 observations deleted due to missingness</code></pre>
+## 3496 observations deleted due to missingness</code></pre>
 <p>We also extract the simple slopes estimates of these models, which allow us to more explicitly identify and compare the test-retest correlations.</p>
 <div id="block-1block-2-1" class="section level3" number="0.3.1">
 <h3><span class="header-section-number">0.3.1</span> Block 1/Block 2</h3>
 <pre class="r"><code>emtrends(tr_mod3_b1b2, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
 <pre><code>## $emtrends
 ##   condition                             block_1.trend     SE   df lower.CL
-##  Adjective\nOnly                                0.853 0.0107 9217    0.832
-##  Am\nAdjective                                  0.848 0.0108 9217    0.827
-##  Am someone\nwho tends to be\nAdjective         0.865 0.0104 9217    0.845
-##  Tend to be\nAdjective                          0.848 0.0105 9217    0.828
+##  Adjective\nOnly                                0.852 0.0107 9222    0.831
+##  Am\nAdjective                                  0.848 0.0108 9222    0.827
+##  Am someone\nwho tends to be\nAdjective         0.865 0.0104 9222    0.844
+##  Tend to be\nAdjective                          0.848 0.0105 9222    0.828
 ##  upper.CL
-##     0.874
+##     0.873
 ##     0.869
 ##     0.885
 ##     0.869
@@ -555,19 +555,19 @@ aov(tr_mod3_b1b2)</code></pre>
 ## 
 ## $contrasts
 ##    contrast                                                      estimate
-##  Adjective\nOnly - Am\nAdjective                                 0.004804
-##  Adjective\nOnly - Am someone\nwho tends to be\nAdjective       -0.012282
-##  Adjective\nOnly - Tend to be\nAdjective                         0.004221
-##  Am\nAdjective - Am someone\nwho tends to be\nAdjective         -0.017086
-##  Am\nAdjective - Tend to be\nAdjective                          -0.000583
-##  Am someone\nwho tends to be\nAdjective - Tend to be\nAdjective  0.016503
+##  Adjective\nOnly - Am\nAdjective                                 0.004792
+##  Adjective\nOnly - Am someone\nwho tends to be\nAdjective       -0.012285
+##  Adjective\nOnly - Tend to be\nAdjective                         0.004219
+##  Am\nAdjective - Am someone\nwho tends to be\nAdjective         -0.017077
+##  Am\nAdjective - Tend to be\nAdjective                          -0.000573
+##  Am someone\nwho tends to be\nAdjective - Tend to be\nAdjective  0.016504
 ##      SE   df t.ratio p.value
-##  0.0152 9217   0.316  0.9890
-##  0.0149 9217  -0.826  0.8420
-##  0.0150 9217   0.282  0.9922
-##  0.0149 9217  -1.143  0.6627
-##  0.0151 9217  -0.039  1.0000
-##  0.0147 9217   1.120  0.6774
+##  0.0152 9222   0.316  0.9891
+##  0.0149 9222  -0.827  0.8418
+##  0.0150 9222   0.282  0.9922
+##  0.0149 9222  -1.143  0.6628
+##  0.0151 9222  -0.038  1.0000
+##  0.0147 9222   1.120  0.6772
 ## 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 </div>
@@ -576,10 +576,10 @@ aov(tr_mod3_b1b2)</code></pre>
 <pre class="r"><code>emtrends(tr_mod3_b1b3, pairwise ~ condition, var = &quot;block_1&quot;)</code></pre>
 <pre><code>## $emtrends
 ##   condition                             block_1.trend      SE    df lower.CL
-##  Adjective\nOnly                                0.785 0.00677 33544    0.772
-##  Am\nAdjective                                  0.791 0.00678 33544    0.778
-##  Am someone\nwho tends to be\nAdjective         0.778 0.00662 33544    0.765
-##  Tend to be\nAdjective                          0.772 0.00682 33544    0.759
+##  Adjective\nOnly                                0.785 0.00676 33544    0.772
+##  Am\nAdjective                                  0.791 0.00678 33544    0.777
+##  Am someone\nwho tends to be\nAdjective         0.778 0.00661 33544    0.765
+##  Tend to be\nAdjective                          0.772 0.00682 33544    0.758
 ##  upper.CL
 ##     0.798
 ##     0.804
@@ -593,15 +593,15 @@ aov(tr_mod3_b1b2)</code></pre>
 ##  Adjective\nOnly - Am\nAdjective                                -0.00581
 ##  Adjective\nOnly - Am someone\nwho tends to be\nAdjective        0.00729
 ##  Adjective\nOnly - Tend to be\nAdjective                         0.01309
-##  Am\nAdjective - Am someone\nwho tends to be\nAdjective          0.01311
+##  Am\nAdjective - Am someone\nwho tends to be\nAdjective          0.01310
 ##  Am\nAdjective - Tend to be\nAdjective                           0.01890
 ##  Am someone\nwho tends to be\nAdjective - Tend to be\nAdjective  0.00580
 ##       SE    df t.ratio p.value
-##  0.00956 33544  -0.608  0.9295
-##  0.00944 33544   0.773  0.8669
+##  0.00956 33544  -0.608  0.9296
+##  0.00944 33544   0.773  0.8668
 ##  0.00958 33544   1.366  0.5206
-##  0.00945 33544   1.386  0.5080
-##  0.00960 33544   1.970  0.1995
+##  0.00945 33544   1.386  0.5079
+##  0.00959 33544   1.970  0.1995
 ##  0.00948 33544   0.612  0.9284
 ## 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
@@ -626,7 +626,7 @@ aov(tr_mod3_b1b2)</code></pre>
 <pre><code>## # A tibble: 1 × 4
 ##     min   max  mean median
 ##   &lt;int&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
-## 1   238   248  244.    244</code></pre>
+## 1   239   248  244.    244</code></pre>
 <pre class="r"><code>items_cors = items_matchb1 %&gt;%
   select(item, condition, contains(&quot;block&quot;)) %&gt;%
   group_by(item, condition) %&gt;%
@@ -1450,7 +1450,7 @@ N
 0.75
 </td>
 <td style="text-align:left;">
-0.81
+0.80
 </td>
 <td style="text-align:left;">
 0.76

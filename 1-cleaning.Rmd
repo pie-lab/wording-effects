@@ -236,9 +236,9 @@ We removed `r nrow(olddata)-nrow(data_t1)` participants that do not speak englis
 
 #### Based on patterns
 
-We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row.
+We remove any participant who provides the same response to over half of the items (21 or more items) from a given block in a row.
 
-To proceed, first we create a dataframe containing just the responses to personality items in the first block.
+To proceed, first we create a data frame containing just the responses to personality items in the first block.
 
 ```{r 1-cleaning-18 }
 # first, identify unique adjectives, in order
@@ -341,7 +341,7 @@ for(i in 1:nrow(block2)){
 block2$block2_runs = block2_runs
 ```
 
-We combine the variables holding the maximum runs into a single data frame. We will remove participants if their maximum run in either block was greater than or equal to 17. See Figure \@ref(fig:1-cleaning-24) for a visualization of the spread and associations between run lengths across participants. 
+We combine the variables holding the maximum runs into a single data frame. We will remove participants if their maximum run in either block was greater than or equal to 21. See Figure \@ref(fig:1-cleaning-24) for a visualization of the spread and associations between run lengths across participants. 
 
 ```{r 1-cleaning-23 }
 #combine results
@@ -350,8 +350,8 @@ runs_data = block1 %>%
   full_join(select(block2, proid, block2_runs)) %>%
   mutate(
     remove = case_when(
-      block1_runs >= 17 ~ "Remove",
-      block2_runs >= 17 ~ "Remove",
+      block1_runs >= 21 ~ "Remove",
+      block2_runs >= 21 ~ "Remove",
       TRUE ~ "Keep"
     ))
 ```
@@ -370,7 +370,7 @@ runs_data %>%
   theme_pubr()
 ```
 
-There were `r table(runs_data$remove)[[2]]` participants who provided the same answer 17 or more times in a row. These participants were removed from the analyses.
+There were `r table(runs_data$remove)[[2]]` participants who provided the same answer 21 or more times in a row. These participants were removed from the analyses.
 
 ```{r 1-cleaning-25 }
 data_t1 = data_t1 %>%
@@ -598,7 +598,7 @@ olddata_2 = data_2
 
 #### Based on patterns
 
-We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row. The distribution of runs in Time 2 is depicted in Figure \@ref(fig:1-cleaning-55).
+We remove any participant who provides the same response to over half of the items (21 or more items) from a given block in a row. The distribution of runs in Time 2 is depicted in Figure \@ref(fig:1-cleaning-55).
 
 ```{r 1-cleaning-53 }
 # first, identify unique adjectives, in order
@@ -651,7 +651,7 @@ runs_data_2 = block3 %>%
   select(proid, block3_runs) %>%
   mutate(
     remove = case_when(
-      block3_runs >= 17 ~ "Remove",
+      block3_runs >= 21 ~ "Remove",
       TRUE ~ "Keep"
     ))
 ```
@@ -674,7 +674,7 @@ n_removed = ifelse(length(n_removed) == 1, 0, n_removed[[2]])
 ```
 
 
-There were `r n_removed` participants who provided the same answer 17 or more times in a row. These participants were removed from the analyses.
+There were `r n_removed` participants who provided the same answer 21 or more times in a row. These participants were removed from the analyses.
 
 ```{r 1-cleaning-57 }
 data_2 = data_2 %>%
@@ -1040,7 +1040,7 @@ mem3 = mem3 %>%
 data = full_join(data, mem3)
 ```
 
-Participants remember on average `r papaja::printnum(mean(data$very_delayed_memory))` words correctly $(SD = `r papaja::printnum(sd(data$very_delayed_memory))`)$.
+Participants remember on average `r papaja::printnum(mean(data$very_delayed_memory, na.rm = T))` words correctly $(SD = `r papaja::printnum(sd(data$very_delayed_memory, na.rm=T))`)$.
 
 #### Correlations
 

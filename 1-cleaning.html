@@ -302,7 +302,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Data cleaning</h1>
-<h4 class="date">Last updated 2023-05-01</h4>
+<h4 class="date">Last updated 2023-05-21</h4>
 
 </div>
 
@@ -492,8 +492,8 @@ data_t1 = full_join(data_t1, personality_items)</code></pre>
 </div>
 <div id="based-on-patterns" class="section level4" number="0.5.2.3">
 <h4><span class="header-section-number">0.5.2.3</span> Based on patterns</h4>
-<p>We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row.</p>
-<p>To proceed, first we create a dataframe containing just the responses to personality items in the first block.</p>
+<p>We remove any participant who provides the same response to over half of the items (21 or more items) from a given block in a row.</p>
+<p>To proceed, first we create a data frame containing just the responses to personality items in the first block.</p>
 <pre class="r"><code># first, identify unique adjectives, in order
 adjectives = p_items %&gt;%
   str_remove_all(&quot;_.&quot;) %&gt;%
@@ -576,15 +576,15 @@ for(i in 1:nrow(block2)){
 
 #add to data_t1 frame
 block2$block2_runs = block2_runs</code></pre>
-<p>We combine the variables holding the maximum runs into a single data frame. We will remove participants if their maximum run in either block was greater than or equal to 17. See Figure <a href="#fig:1-cleaning-24">1</a> for a visualization of the spread and associations between run lengths across participants.</p>
+<p>We combine the variables holding the maximum runs into a single data frame. We will remove participants if their maximum run in either block was greater than or equal to 21. See Figure <a href="#fig:1-cleaning-24">1</a> for a visualization of the spread and associations between run lengths across participants.</p>
 <pre class="r"><code>#combine results
 runs_data = block1 %&gt;%
   select(proid, block1_runs) %&gt;%
   full_join(select(block2, proid, block2_runs)) %&gt;%
   mutate(
     remove = case_when(
-      block1_runs &gt;= 17 ~ &quot;Remove&quot;,
-      block2_runs &gt;= 17 ~ &quot;Remove&quot;,
+      block1_runs &gt;= 21 ~ &quot;Remove&quot;,
+      block2_runs &gt;= 21 ~ &quot;Remove&quot;,
       TRUE ~ &quot;Keep&quot;
     ))</code></pre>
 <div class="figure"><span style="display:block;" id="fig:1-cleaning-24"></span>
@@ -593,7 +593,7 @@ runs_data = block1 %&gt;%
 Figure 1: Maximum number of same consecutive responses in personality blocks.
 </p>
 </div>
-<p>There were 6 participants who provided the same answer 17 or more times in a row. These participants were removed from the analyses.</p>
+<p>There were 5 participants who provided the same answer 21 or more times in a row. These participants were removed from the analyses.</p>
 <pre class="r"><code>data_t1 = data_t1 %&gt;%
   full_join(select(runs_data, proid, remove)) %&gt;%
   filter(remove != &quot;Remove&quot;) %&gt;%
@@ -725,7 +725,7 @@ data_2 = full_join(data_2, personality_items_2)</code></pre>
 </div>
 <div id="based-on-patterns-1" class="section level4" number="0.6.2.2">
 <h4><span class="header-section-number">0.6.2.2</span> Based on patterns</h4>
-<p>We remove any participant who provides the same response to over half of the items (17 or more items) from a given block in a row. The distribution of runs in Time 2 is depicted in Figure <a href="#fig:1-cleaning-55">4</a>.</p>
+<p>We remove any participant who provides the same response to over half of the items (21 or more items) from a given block in a row. The distribution of runs in Time 2 is depicted in Figure <a href="#fig:1-cleaning-55">4</a>.</p>
 <pre class="r"><code># first, identify unique adjectives, in order
 adjectives = p_items_2 %&gt;%
   str_remove_all(&quot;_.&quot;) %&gt;%
@@ -772,7 +772,7 @@ runs_data_2 = block3 %&gt;%
   select(proid, block3_runs) %&gt;%
   mutate(
     remove = case_when(
-      block3_runs &gt;= 17 ~ &quot;Remove&quot;,
+      block3_runs &gt;= 21 ~ &quot;Remove&quot;,
       TRUE ~ &quot;Keep&quot;
     ))</code></pre>
 <div class="figure"><span style="display:block;" id="fig:1-cleaning-55"></span>
@@ -781,7 +781,7 @@ runs_data_2 = block3 %&gt;%
 Figure 4: Maximum number of same consecutive responses in personality block 3.
 </p>
 </div>
-<p>There were 0 participants who provided the same answer 17 or more times in a row. These participants were removed from the analyses.</p>
+<p>There were 0 participants who provided the same answer 21 or more times in a row. These participants were removed from the analyses.</p>
 <pre class="r"><code>data_2 = data_2 %&gt;%
   full_join(select(runs_data_2, proid, remove)) %&gt;%
   filter(remove != &quot;Remove&quot;) %&gt;%
@@ -977,11 +977,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall1 = map_chr(recall1, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall1                                          memory
-##   &lt;chr&gt;                                             &lt;dbl&gt;
-## 1 child, gold, hotel, bed, river, tree, king, skin      7
-## 2 book, gold, child, paper, king                        5
-## 3 book, , child, cold, river                            4</code></pre>
+##   recall1                                                          memory
+##   &lt;chr&gt;                                                             &lt;dbl&gt;
+## 1 book, child, gold, hotel, king, market, paper, river, tree, skin     10
+## 2 market, paper, river, skin, tree, book, hotel, king, gold, child     10
+## 3 book, gold, child, king, market, paper                                6</code></pre>
 <pre class="r"><code>#from memory condition 2
 data %&gt;% 
   filter(mem_condition == 2) %&gt;% 
@@ -991,9 +991,9 @@ data %&gt;%
 <pre><code>## # A tibble: 3 × 2
 ##   recall2                                                         memory
 ##   &lt;chr&gt;                                                            &lt;dbl&gt;
-## 1 butter, college, flag, machine, wife                                 5
-## 2 butter, college, dollar, earth, house, wife, home, sky, ocean        8
-## 3 butter, college, earth, home, sky, wife, dollar, machine, ocean      9</code></pre>
+## 1 butter, college, dollar, earth, flag, home, machine, ocean, sky      9
+## 2 butter, earth, flag, sky, machine                                    5
+## 3 butter, college, ocean, earth, wife                                  5</code></pre>
 <pre class="r"><code>#from memory condition 3
 data %&gt;% 
   filter(mem_condition == 3) %&gt;% 
@@ -1001,11 +1001,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall3 = map_chr(recall3, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall3                                                 memory
-##   &lt;chr&gt;                                                    &lt;dbl&gt;
-## 1 blood, house, woman, letter, shoes, rock                     6
-## 2 blood, corner, engine, girl, house, valley, rock, woman      8
-## 3 woman, valley, girl, shoes, rock, engine, blood, corner      8</code></pre>
+##   recall3                                                                memory
+##   &lt;chr&gt;                                                                   &lt;dbl&gt;
+## 1 blood, corner, engine, girl, house, valley, letter, shoes, woman, rock     10
+## 2 blood, valley, girl, letter, corner                                         5
+## 3 girl, corner, woman, blood, engine, shoes, rock, valley, house, letter     10</code></pre>
 <pre class="r"><code>#from memory condition 4
 data %&gt;% 
   filter(mem_condition == 4) %&gt;% 
@@ -1013,11 +1013,11 @@ data %&gt;%
   sample_n(3) %&gt;% 
   mutate(recall4 = map_chr(recall4, paste, collapse = &quot;, &quot;))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   recall4                                                 memory
-##   &lt;chr&gt;                                                    &lt;dbl&gt;
-## 1 baby, church, fire, water, sea, palace, garden               7
-## 2 baby, church, fire, village, doctor, garden, water, sea      8
-## 3 baby, garden, sea, table, village                            5</code></pre>
+##   recall4                                                              memory
+##   &lt;chr&gt;                                                                 &lt;dbl&gt;
+## 1 church, baby, water                                                       3
+## 2 baby, church, doctor, fire, sea, table, village, chair, sword, house      7
+## 3 baby, church, doctor, garden, palace, sea                                 6</code></pre>
 <p>Participants remember on average 6.76 words correctly <span class="math inline">\((SD = 1.96)\)</span>.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -1111,10 +1111,10 @@ N
 4
 </td>
 <td style="text-align:right;">
-7.02
+7.00
 </td>
 <td style="text-align:right;">
-1.83
+1.85
 </td>
 <td style="text-align:right;">
 2
@@ -1123,7 +1123,7 @@ N
 10
 </td>
 <td style="text-align:right;">
-243
+244
 </td>
 </tr>
 </tbody>
@@ -1192,7 +1192,7 @@ mem3 = mem3 %&gt;%
   select(-very_delayed_recall, -variable, -newid) 
 
 data = full_join(data, mem3)</code></pre>
-<p>Participants remember on average NA words correctly <span class="math inline">\((SD = NA)\)</span>.</p>
+<p>Participants remember on average 1.62 words correctly <span class="math inline">\((SD = 1.75)\)</span>.</p>
 </div>
 <div id="correlations" class="section level4" number="0.7.2.4">
 <h4><span class="header-section-number">0.7.2.4</span> Correlations</h4>
@@ -1208,8 +1208,8 @@ data = full_join(data, mem3)</code></pre>
 ## very_delayed_memory   0.38           0.46                1.00
 ## Sample Size 
 ##                     memory delayed_memory very_delayed_memory
-## memory                 974            974                 883
-## delayed_memory         974            974                 883
+## memory                 975            975                 883
+## delayed_memory         975            975                 883
 ## very_delayed_memory    883            883                 883
 ## Probability values (Entries above the diagonal are adjusted for multiple tests.) 
 ##                     memory delayed_memory very_delayed_memory

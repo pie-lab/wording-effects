@@ -376,7 +376,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact experience?</h1>
-<h4 class="date">Last updated 2023-05-01</h4>
+<h4 class="date">Last updated 2023-05-21</h4>
 
 </div>
 
@@ -392,8 +392,8 @@ car::Anova(mod_enjoy_1)</code></pre>
 ## 
 ## Response: enjoy_responding
 ##            Sum Sq  Df F value Pr(&gt;F)
-## format       5.28   3  1.6728 0.1712
-## Residuals 1021.42 970</code></pre>
+## format       5.21   3  1.6494 0.1764
+## Residuals 1022.53 971</code></pre>
 <p>Participants did not vary in their enjoyment of the survey as a function of item format. See <a href="#fig:enjoyFormat">1</a>.</p>
 <pre class="r"><code>plot_model(mod_enjoy_1, type = &quot;pred&quot;, show.data = T, jitter = T)$format +
   labs(x = NULL, 
@@ -412,8 +412,8 @@ car::Anova(mod_enjoy_2)</code></pre>
 ## 
 ## Response: enjoy_responding
 ##             Sum Sq  Df F value Pr(&gt;F)
-## devicetype    2.91   2  1.3777 0.2527
-## Residuals  1023.80 971</code></pre>
+## devicetype    2.97   2  1.4074 0.2453
+## Residuals  1024.77 972</code></pre>
 <p>Participants did not enjoy differently by device type.</p>
 <pre class="r"><code>mod_enjoy_3 = lm(enjoy_responding ~ format*devicetype, data = enjoy_df)
 car::Anova(mod_enjoy_3, type = &quot;3&quot;)</code></pre>
@@ -421,11 +421,11 @@ car::Anova(mod_enjoy_3, type = &quot;3&quot;)</code></pre>
 ## 
 ## Response: enjoy_responding
 ##                    Sum Sq  Df   F value              Pr(&gt;F)    
-## (Intercept)       1422.05   1 1350.6771 &lt;0.0000000000000002 ***
-## format               2.21   3    0.7006              0.5518    
+## (Intercept)       1422.05   1 1350.6791 &lt;0.0000000000000002 ***
+## format               2.18   3    0.6904              0.5580    
 ## devicetype           4.03   2    1.9136              0.1481    
-## format:devicetype    5.57   6    0.8822              0.5072    
-## Residuals         1012.84 962                                  
+## format:devicetype    5.56   6    0.8803              0.5087    
+## Residuals         1013.89 963                                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The relationship of item format to enjoyment did not vary as a function of device type.</p>
@@ -440,8 +440,8 @@ car::Anova(mod_design_1)</code></pre>
 ## 
 ## Response: well_designed_study
 ##           Sum Sq  Df F value Pr(&gt;F)
-## format      2.97   3  1.2987 0.2736
-## Residuals 740.05 970</code></pre>
+## format      2.88   3  1.2581 0.2875
+## Residuals 741.65 971</code></pre>
 <p>Participants did not vary in their perception of the survey as a function of device type. See <a href="#fig:designFormat">2</a>.</p>
 <pre class="r"><code>plot_model(mod_design_1, type = &quot;pred&quot;, show.data = T, jitter = T)$format +
   labs(x = NULL, 
@@ -460,17 +460,17 @@ car::Anova(mod_design_2)</code></pre>
 ## 
 ## Response: well_designed_study
 ##            Sum Sq  Df F value  Pr(&gt;F)  
-## devicetype   4.66   2  3.0666 0.04703 *
-## Residuals  738.36 971                  
+## devicetype   4.73   2  3.1071 0.04518 *
+## Residuals  739.81 972                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Participants did perceive the design of the study differently by format. We explore this more here:</p>
 <pre class="r"><code>emmeans(mod_design_2, pairwise~&quot;devicetype&quot;, adjust = &quot;none&quot;)</code></pre>
 <pre><code>## $emmeans
 ##  devicetype                                                   emmean     SE  df
-##  Mobile                                                         5.36 0.0615 971
-##  Desktop or laptop computer                                     5.20 0.0322 971
-##  Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)   5.08 0.1415 971
+##  Mobile                                                         5.36 0.0615 972
+##  Desktop or laptop computer                                     5.20 0.0322 972
+##  Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)   5.08 0.1415 972
 ##  lower.CL upper.CL
 ##      5.24     5.48
 ##      5.14     5.27
@@ -484,15 +484,15 @@ car::Anova(mod_design_2)</code></pre>
 ##  Mobile - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)                    
 ##  Desktop or laptop computer - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)
 ##  estimate     SE  df t.ratio p.value
-##     0.154 0.0694 971   2.221  0.0266
-##     0.279 0.1543 971   1.810  0.0705
-##     0.125 0.1451 971   0.863  0.3886</code></pre>
+##     0.156 0.0694 972   2.243  0.0251
+##     0.279 0.1543 972   1.810  0.0707
+##     0.123 0.1451 972   0.851  0.3950</code></pre>
 <pre class="r"><code>emmeans(mod_design_2, pairwise~&quot;devicetype&quot;, adjust = &quot;holm&quot;)</code></pre>
 <pre><code>## $emmeans
 ##  devicetype                                                   emmean     SE  df
-##  Mobile                                                         5.36 0.0615 971
-##  Desktop or laptop computer                                     5.20 0.0322 971
-##  Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)   5.08 0.1415 971
+##  Mobile                                                         5.36 0.0615 972
+##  Desktop or laptop computer                                     5.20 0.0322 972
+##  Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)   5.08 0.1415 972
 ##  lower.CL upper.CL
 ##      5.24     5.48
 ##      5.14     5.27
@@ -506,9 +506,9 @@ car::Anova(mod_design_2)</code></pre>
 ##  Mobile - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)                    
 ##  Desktop or laptop computer - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)
 ##  estimate     SE  df t.ratio p.value
-##     0.154 0.0694 971   2.221  0.0798
-##     0.279 0.1543 971   1.810  0.1411
-##     0.125 0.1451 971   0.863  0.3886
+##     0.156 0.0694 972   2.243  0.0753
+##     0.279 0.1543 972   1.810  0.1413
+##     0.123 0.1451 972   0.851  0.3950
 ## 
 ## P value adjustment: holm method for 3 tests</code></pre>
 <p>Participants perceive the design to be better on mobile devices than on desktop or laptop computers; however, after correcting for multiple comparisons, this effect is no longer significant.</p>
@@ -518,11 +518,11 @@ car::Anova(mod_design_3, type = &quot;3&quot;)</code></pre>
 ## 
 ## Response: well_designed_study
 ##                    Sum Sq  Df   F value              Pr(&gt;F)    
-## (Intercept)       1479.86   1 1941.1083 &lt;0.0000000000000002 ***
-## format               0.67   3    0.2930              0.8305    
-## devicetype           0.86   2    0.5646              0.5688    
-## format:devicetype    1.88   6    0.4106              0.8723    
-## Residuals          733.41 962                                  
+## (Intercept)       1479.86   1 1939.1012 &lt;0.0000000000000002 ***
+## format               0.65   3    0.2840              0.8370    
+## devicetype           0.86   2    0.5640              0.5691    
+## format:devicetype    1.89   6    0.4124              0.8711    
+## Residuals          734.93 963                                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The relationship of item format to survey design enjoyment did not vary as a function of device type.</p>

@@ -376,7 +376,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Device effects</h1>
-<h4 class="date">Last updated 2023-05-01</h4>
+<h4 class="date">Last updated 2023-05-21</h4>
 
 </div>
 
@@ -397,10 +397,10 @@ div.tocify {
 <pre><code>## # A tibble: 3 × 4
 ##   devicetype  Male Female Other
 ##   &lt;ord&gt;      &lt;int&gt;  &lt;int&gt; &lt;int&gt;
-## 1 Computer     391    343     1
+## 1 Computer     392    343     1
 ## 2 Mobile        89    110     2
 ## 3 Tablet        14     24    NA</code></pre>
-<p>Figure <a href="#fig:descriptives-17">1</a>A shows the distributions of age by device type; the ANOVA test of these differences is <span class="math inline">\(F(2, 971) = 6.71\)</span>, <span class="math inline">\(p = .001\)</span>, <span class="math inline">\(\hat{\eta}^2_G = .014\)</span>, 90% CI <span class="math inline">\([.003, .027]\)</span>. The chi-square test of biological sex by device type was <span class="math inline">\(\chi^2(4, n = 974) = 11.60\)</span>, <span class="math inline">\(p = .021\)</span>.</p>
+<p>Figure <a href="#fig:descriptives-17">1</a>A shows the distributions of age by device type; the ANOVA test of these differences is <span class="math inline">\(F(2, 972) = 6.72\)</span>, <span class="math inline">\(p = .001\)</span>, <span class="math inline">\(\hat{\eta}^2_G = .014\)</span>, 90% CI <span class="math inline">\([.003, .027]\)</span>. The chi-square test of biological sex by device type was <span class="math inline">\(\chi^2(4, n = 975) = 11.70\)</span>, <span class="math inline">\(p = .020\)</span>.</p>
 <div class="figure"><span style="display:block;" id="fig:descriptives-17"></span>
 <img src="device_files/figure-html/descriptives-17-1.png" alt="Distributions by device type" width="672" />
 <p class="caption">
@@ -419,8 +419,8 @@ tidy(car::Anova(mod.timing))</code></pre>
 <pre><code>## # A tibble: 1 × 4
 ##   term       statistic    df p.value
 ##   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
-## 1 devicetype      9.43     2 0.00894</code></pre>
-<p>Device type was associated with the time it took to respond to personality items <span class="math inline">\((\chi^2(2.00) = 9.43, p = .009)\)</span>.</p>
+## 1 devicetype      9.28     2 0.00964</code></pre>
+<p>Device type was associated with the time it took to respond to personality items <span class="math inline">\((\chi^2(2.00) = 9.28, p = .010)\)</span>.</p>
 <pre class="r"><code>avg_predictions(mod.timing, variables = &quot;devicetype&quot;) %&gt;%
   mutate(
     across(where(is.numeric), exp)
@@ -471,16 +471,16 @@ tidy(car::Anova(mod.timing2))</code></pre>
 <pre><code>## # A tibble: 3 × 4
 ##   term              statistic    df p.value
 ##   &lt;chr&gt;                 &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
-## 1 devicetype             9.81     2 0.00741
-## 2 format                10.2      3 0.0167 
-## 3 devicetype:format     13.8      6 0.0322</code></pre>
+## 1 devicetype             9.65     2 0.00803
+## 2 format                10.2      3 0.0168 
+## 3 devicetype:format     13.5      6 0.0354</code></pre>
 <pre class="r"><code>tD2_aov = tidy(car::Anova(mod.timing2))
 tD2_sig = tD2_aov$p.value[[3]] &lt; .05
 tD2_aov = tD2_aov %&gt;% 
   as_tibble() %&gt;% 
   mutate(across(starts_with(&quot;P&quot;), printp),
          across(where(is.numeric), printnum))</code></pre>
-<p>The interaction between device type and format was associated with the time it took to respond to personality items <span class="math inline">\((\chi^2(6.00) = 13.78, p = .032)\)</span>.</p>
+<p>The interaction between device type and format was associated with the time it took to respond to personality items <span class="math inline">\((\chi^2(6.00) = 13.52, p = .035)\)</span>.</p>
 <pre class="r"><code>avg_predictions(mod.timing2, variables = c(&quot;devicetype&quot;, &quot;format&quot;)) %&gt;% 
   mutate(across(where(is.numeric), exp)) %&gt;% 
   ggplot(aes(x = format, y = estimate, group = devicetype)) +
@@ -514,8 +514,8 @@ tidy(car::Anova(mod.responseD))</code></pre>
 <pre><code>## # A tibble: 1 × 4
 ##   term       statistic    df p.value
 ##   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
-## 1 devicetype     0.131     2   0.936</code></pre>
-<p>When examining both Block 1 and Block 2 data, device type was unassociated with the time it took to respond to personality items <span class="math inline">\((\chi^2(2.00) = 0.51, p = .601)\)</span>.</p>
+## 1 devicetype     0.120     2   0.942</code></pre>
+<p>When examining both Block 1 and Block 2 data, device type was unassociated with the time it took to respond to personality items <span class="math inline">\((\chi^2(2.00) = 0.47, p = .626)\)</span>.</p>
 <pre class="r"><code>avg_predictions(mod.responseD, variables = &quot;devicetype&quot;) %&gt;% 
   ggplot(aes(x = devicetype, y = estimate)) +
   geom_bar(stat = &quot;identity&quot;, fill = &quot;grey&quot;) + 
@@ -565,17 +565,17 @@ tidy(aov(mod.responseD2))</code></pre>
 <pre><code>## # A tibble: 4 × 6
 ##   term          df    sumsq meansq statistic   p.value
 ##   &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 devicetype     2     1.69  0.844     0.510  6.01e- 1
-## 2 format         3    86.2  28.7      17.3    3.01e-11
-## 3 proid        968 12439.   12.9       7.76   0       
-## 4 Residuals  36038 59688.    1.66     NA     NA</code></pre>
+## 1 devicetype     2     1.55  0.774     0.468  6.26e- 1
+## 2 format         3    84.1  28.0      16.9    5.42e-11
+## 3 proid        969 12453.   12.9       7.76   0       
+## 4 Residuals  36075 59706.    1.66     NA     NA</code></pre>
 <pre class="r"><code>rD2_aov = tidy(aov(mod.responseD))
 rD2_sig = rD2_aov$p.value[[3]] &lt; .05
 rD2_aov = rD2_aov %&gt;% 
   as_tibble() %&gt;% 
   mutate(across(starts_with(&quot;P&quot;), printp),
          across(where(is.numeric), printnum))</code></pre>
-<p>The interaction between device type and format was NA with the time it took to respond to personality items <span class="math inline">\((\chi^2(36,038.00) = NA, p = )\)</span>.</p>
+<p>The interaction between device type and format was NA with the time it took to respond to personality items <span class="math inline">\((\chi^2(36,075.00) = NA, p = )\)</span>.</p>
 <pre class="r"><code>avg_predictions(mod.responseD2, variables = c(&quot;devicetype&quot;, &quot;format&quot;)) %&gt;% 
   ggplot(aes(x = format, y = estimate, group = devicetype)) +
   geom_bar(stat = &quot;identity&quot;, aes(fill = devicetype),

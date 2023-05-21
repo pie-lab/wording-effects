@@ -378,7 +378,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact timing?</h1>
-<h4 class="date">Last updated 2023-05-01</h4>
+<h4 class="date">Last updated 2023-05-21</h4>
 
 </div>
 
@@ -396,10 +396,10 @@ tidy(aov(mod.format_b1))</code></pre>
 <pre><code>## # A tibble: 4 × 6
 ##   term         df   sumsq  meansq statistic    p.value
 ##   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
-## 1 format        3   404.  135.        453.   1.24e-291
-## 2 block         1    69.4  69.4       234.   1.10e- 52
-## 3 proid       973  8005.    8.23       27.7  0        
-## 4 Residuals 73037 21698.    0.297      NA   NA</code></pre>
+## 1 format        3   405.  135.        453.   1.16e-291
+## 2 block         1    69.3  69.3       233.   1.70e- 52
+## 3 proid       974  8030.    8.24       27.7  0        
+## 4 Residuals 73111 21768.    0.298      NA   NA</code></pre>
 <div class="figure"><span style="display:block;" id="fig:timingmod1"></span>
 <img src="timing_format_files/figure-html/timingmod1-1.png" alt="Predictions by condition, using only Block 1 data. Figure A shows log seconds, Figure B shows raw seconds." width="672" />
 <p class="caption">
@@ -449,10 +449,10 @@ Only
 0.01
 </td>
 <td style="text-align:right;">
-2.59
+2.63
 </td>
 <td style="text-align:left;">
-.010
+.009
 </td>
 </tr>
 <tr>
@@ -469,7 +469,7 @@ Only
 0.01
 </td>
 <td style="text-align:right;">
-34.37
+34.40
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -489,7 +489,7 @@ Adjective
 0.01
 </td>
 <td style="text-align:right;">
-31.80
+31.81
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -509,7 +509,7 @@ Adjective
 0.01
 </td>
 <td style="text-align:right;">
-24.73
+24.79
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -528,7 +528,7 @@ Only
 0.01
 </td>
 <td style="text-align:right;">
-9.68
+9.67
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -547,7 +547,7 @@ Adjective
 0.01
 </td>
 <td style="text-align:right;">
-7.09
+7.05
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -606,16 +606,16 @@ active
 N
 </td>
 <td style="text-align:right;">
-12.15
+12.22
 </td>
 <td style="text-align:right;">
-4.05
+4.07
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-11.23
+11.30
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -632,16 +632,16 @@ adventurous
 N
 </td>
 <td style="text-align:right;">
-13.84
+13.86
 </td>
 <td style="text-align:right;">
-4.61
+4.62
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-11.80
+11.83
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -658,22 +658,22 @@ broadminded
 N
 </td>
 <td style="text-align:right;">
-5.31
+5.22
 </td>
 <td style="text-align:right;">
-1.77
+1.74
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-4.51
+4.42
 </td>
 <td style="text-align:left;">
 .004
 </td>
 <td style="text-align:left;">
-.012
+.013
 </td>
 </tr>
 <tr>
@@ -684,16 +684,16 @@ calm
 N
 </td>
 <td style="text-align:right;">
-12.18
+12.22
 </td>
 <td style="text-align:right;">
-4.06
+4.07
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-9.73
+9.76
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -710,16 +710,16 @@ caring
 N
 </td>
 <td style="text-align:right;">
-6.91
+6.96
 </td>
 <td style="text-align:right;">
-2.30
+2.32
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-6.54
+6.59
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -736,22 +736,22 @@ cautious
 N
 </td>
 <td style="text-align:right;">
-4.29
+4.35
 </td>
 <td style="text-align:right;">
-1.43
+1.45
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-3.33
+3.38
 </td>
 <td style="text-align:left;">
-.019
+.018
 </td>
 <td style="text-align:left;">
-.019
+.018
 </td>
 </tr>
 <tr>
@@ -762,22 +762,22 @@ cold
 N
 </td>
 <td style="text-align:right;">
-5.35
+5.25
 </td>
 <td style="text-align:right;">
-1.78
+1.75
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-4.88
+4.77
 </td>
 <td style="text-align:left;">
-.002
+.003
 </td>
 <td style="text-align:left;">
-.011
+.013
 </td>
 </tr>
 <tr>
@@ -788,16 +788,16 @@ creative
 N
 </td>
 <td style="text-align:right;">
-10.71
+10.68
 </td>
 <td style="text-align:right;">
-3.57
+3.56
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-9.70
+9.67
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -814,16 +814,16 @@ curious
 N
 </td>
 <td style="text-align:right;">
-9.54
+9.61
 </td>
 <td style="text-align:right;">
-3.18
+3.20
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-7.97
+8.04
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -840,16 +840,16 @@ friendly
 N
 </td>
 <td style="text-align:right;">
-18.74
+20.00
 </td>
 <td style="text-align:right;">
-6.25
+6.67
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-16.54
+17.37
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -866,16 +866,16 @@ hardworking
 N
 </td>
 <td style="text-align:right;">
-11.46
+11.34
 </td>
 <td style="text-align:right;">
-3.82
+3.78
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-10.23
+10.12
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -892,16 +892,16 @@ helpful
 N
 </td>
 <td style="text-align:right;">
-29.98
+29.68
 </td>
 <td style="text-align:right;">
-9.99
+9.89
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-29.25
+28.79
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -918,16 +918,16 @@ imaginative
 N
 </td>
 <td style="text-align:right;">
-13.50
+13.44
 </td>
 <td style="text-align:right;">
-4.50
+4.48
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-11.43
+11.39
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -953,7 +953,7 @@ N
 3
 </td>
 <td style="text-align:right;">
-10.46
+10.45
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -970,16 +970,16 @@ lively
 N
 </td>
 <td style="text-align:right;">
-7.37
+7.42
 </td>
 <td style="text-align:right;">
-2.46
+2.47
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-5.30
+5.33
 </td>
 <td style="text-align:left;">
 .001
@@ -996,16 +996,16 @@ organized
 N
 </td>
 <td style="text-align:right;">
-21.15
+21.24
 </td>
 <td style="text-align:right;">
-7.05
+7.08
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-17.76
+17.85
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1022,10 +1022,10 @@ outgoing
 N
 </td>
 <td style="text-align:right;">
-18.41
+18.39
 </td>
 <td style="text-align:right;">
-6.14
+6.13
 </td>
 <td style="text-align:right;">
 3
@@ -1048,16 +1048,16 @@ quiet
 N
 </td>
 <td style="text-align:right;">
-7.66
+7.62
 </td>
 <td style="text-align:right;">
-2.55
+2.54
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-6.98
+6.94
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1074,16 +1074,16 @@ relaxed
 N
 </td>
 <td style="text-align:right;">
-9.26
+9.20
 </td>
 <td style="text-align:right;">
-3.09
+3.07
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-7.19
+7.13
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1100,16 +1100,16 @@ responsible
 N
 </td>
 <td style="text-align:right;">
-22.92
+24.42
 </td>
 <td style="text-align:right;">
-7.64
+8.14
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-17.88
+18.75
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1126,16 +1126,16 @@ selfdisciplined
 N
 </td>
 <td style="text-align:right;">
-13.82
+13.97
 </td>
 <td style="text-align:right;">
-4.61
+4.66
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-10.51
+10.62
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1152,7 +1152,7 @@ shy
 N
 </td>
 <td style="text-align:right;">
-6.11
+6.13
 </td>
 <td style="text-align:right;">
 2.04
@@ -1178,16 +1178,16 @@ softhearted
 N
 </td>
 <td style="text-align:right;">
-10.84
+10.64
 </td>
 <td style="text-align:right;">
-3.61
+3.55
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-8.92
+8.74
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1219,7 +1219,7 @@ N
 .004
 </td>
 <td style="text-align:left;">
-.012
+.013
 </td>
 </tr>
 <tr>
@@ -1230,16 +1230,16 @@ sympathetic
 N
 </td>
 <td style="text-align:right;">
-7.29
+7.17
 </td>
 <td style="text-align:right;">
-2.43
+2.39
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-6.61
+6.44
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1256,16 +1256,16 @@ talkative
 N
 </td>
 <td style="text-align:right;">
-9.19
+9.25
 </td>
 <td style="text-align:right;">
-3.06
+3.08
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-8.32
+8.38
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1282,16 +1282,16 @@ thorough
 N
 </td>
 <td style="text-align:right;">
-11.95
+11.86
 </td>
 <td style="text-align:right;">
-3.98
+3.95
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-9.62
+9.55
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1308,7 +1308,7 @@ thrifty
 N
 </td>
 <td style="text-align:right;">
-6.37
+6.35
 </td>
 <td style="text-align:right;">
 2.12
@@ -1317,13 +1317,13 @@ N
 3
 </td>
 <td style="text-align:right;">
-4.67
+4.65
 </td>
 <td style="text-align:left;">
 .003
 </td>
 <td style="text-align:left;">
-.012
+.013
 </td>
 </tr>
 <tr>
@@ -1334,16 +1334,16 @@ uncreative
 N
 </td>
 <td style="text-align:right;">
-9.55
+9.65
 </td>
 <td style="text-align:right;">
-3.18
+3.22
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-9.53
+9.63
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1360,16 +1360,16 @@ unintellectual
 N
 </td>
 <td style="text-align:right;">
-12.21
+12.55
 </td>
 <td style="text-align:right;">
-4.07
+4.18
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-10.40
+10.63
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1386,16 +1386,16 @@ unsympathetic
 N
 </td>
 <td style="text-align:right;">
-7.76
+7.61
 </td>
 <td style="text-align:right;">
-2.59
+2.54
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-7.05
+6.86
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1412,16 +1412,16 @@ warm
 N
 </td>
 <td style="text-align:right;">
-26.74
+26.59
 </td>
 <td style="text-align:right;">
-8.91
+8.86
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-22.18
+21.87
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1438,16 +1438,16 @@ careless
 Y
 </td>
 <td style="text-align:right;">
-7.55
+7.64
 </td>
 <td style="text-align:right;">
-2.52
+2.55
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-7.08
+7.17
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1464,16 +1464,16 @@ impulsive
 Y
 </td>
 <td style="text-align:right;">
-9.16
+9.27
 </td>
 <td style="text-align:right;">
-3.05
+3.09
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-7.88
+7.98
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1490,16 +1490,16 @@ moody
 Y
 </td>
 <td style="text-align:right;">
-19.54
+19.62
 </td>
 <td style="text-align:right;">
-6.51
+6.54
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-19.66
+19.76
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1516,7 +1516,7 @@ nervous
 Y
 </td>
 <td style="text-align:right;">
-10.36
+10.34
 </td>
 <td style="text-align:right;">
 3.45
@@ -1525,7 +1525,7 @@ Y
 3
 </td>
 <td style="text-align:right;">
-8.75
+8.73
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1542,16 +1542,16 @@ reckless
 Y
 </td>
 <td style="text-align:right;">
-19.73
+19.53
 </td>
 <td style="text-align:right;">
-6.58
+6.51
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-19.10
+18.85
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1568,16 +1568,16 @@ worrying
 Y
 </td>
 <td style="text-align:right;">
-9.18
+8.92
 </td>
 <td style="text-align:right;">
-3.06
+2.97
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-8.88
+8.49
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1701,10 +1701,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-0.58
+0.55
 </td>
 <td style="text-align:left;">
-.561
+.583
 </td>
 <td style="text-align:right;">
 -0.05
@@ -1753,7 +1753,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-4.44
+4.47
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1782,7 +1782,7 @@ Adjective
 1.68
 </td>
 <td style="text-align:left;">
-.186
+.187
 </td>
 <td style="text-align:right;">
 -0.01
@@ -1829,10 +1829,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-2.78
+2.82
 </td>
 <td style="text-align:left;">
-.016
+.015
 </td>
 <td style="text-align:right;">
 0.03
@@ -1909,7 +1909,7 @@ Only
 1.26
 </td>
 <td style="text-align:left;">
-.332
+.307
 </td>
 <td style="text-align:right;">
 -0.03
@@ -1958,7 +1958,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-4.38
+4.39
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -1984,10 +1984,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.02
+2.98
 </td>
 <td style="text-align:left;">
-.010
+.011
 </td>
 <td style="text-align:right;">
 0.04
@@ -2009,16 +2009,16 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-2.66
+2.69
 </td>
 <td style="text-align:left;">
-.024
+.021
 </td>
 <td style="text-align:right;">
 0.03
 </td>
 <td style="text-align:right;">
-0.18
+0.19
 </td>
 </tr>
 <tr>
@@ -2034,16 +2034,16 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-1.39
+1.43
 </td>
 <td style="text-align:left;">
-.332
+.307
 </td>
 <td style="text-align:right;">
 -0.02
 </td>
 <td style="text-align:right;">
-0.13
+0.14
 </td>
 </tr>
 </tbody>
@@ -2105,19 +2105,19 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.01
+0.02
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-0.31
+0.38
 </td>
 <td style="text-align:left;">
 &gt; .999
 </td>
 <td style="text-align:right;">
--0.07
+-0.06
 </td>
 <td style="text-align:right;">
 0.09
@@ -2163,10 +2163,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-2.99
+2.92
 </td>
 <td style="text-align:left;">
-.014
+.017
 </td>
 <td style="text-align:right;">
 0.04
@@ -2183,16 +2183,16 @@ Adjective - Tend to be
 Adjective
 </td>
 <td style="text-align:right;">
-0.10
+0.09
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-2.38
+2.36
 </td>
 <td style="text-align:left;">
-.070
+.072
 </td>
 <td style="text-align:right;">
 0.02
@@ -2214,7 +2214,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-0.94
+0.95
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -2233,19 +2233,19 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.03
+0.02
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-0.63
+0.57
 </td>
 <td style="text-align:left;">
 &gt; .999
 </td>
 <td style="text-align:right;">
--0.05
+-0.06
 </td>
 <td style="text-align:right;">
 0.10
@@ -2316,10 +2316,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.50
+1.48
 </td>
 <td style="text-align:left;">
-.265
+.278
 </td>
 <td style="text-align:right;">
 -0.02
@@ -2368,7 +2368,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.71
+3.74
 </td>
 <td style="text-align:left;">
 .001
@@ -2377,7 +2377,7 @@ Adjective
 0.07
 </td>
 <td style="text-align:right;">
-0.23
+0.24
 </td>
 </tr>
 <tr>
@@ -2394,7 +2394,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.49
+3.51
 </td>
 <td style="text-align:left;">
 .002
@@ -2419,10 +2419,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.73
+1.72
 </td>
 <td style="text-align:left;">
-.253
+.258
 </td>
 <td style="text-align:right;">
 -0.01
@@ -2444,10 +2444,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-0.22
+0.24
 </td>
 <td style="text-align:left;">
-.826
+.814
 </td>
 <td style="text-align:right;">
 -0.07
@@ -2515,16 +2515,16 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
--0.01
+0.00
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
--0.16
+-0.13
 </td>
 <td style="text-align:left;">
-.872
+.897
 </td>
 <td style="text-align:right;">
 -0.08
@@ -2547,7 +2547,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-3.75
+3.79
 </td>
 <td style="text-align:left;">
 .001
@@ -2618,16 +2618,16 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.04
+0.05
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-1.17
+1.20
 </td>
 <td style="text-align:left;">
-.551
+.552
 </td>
 <td style="text-align:right;">
 -0.03
@@ -2652,13 +2652,13 @@ Adjective
 1.33
 </td>
 <td style="text-align:left;">
-.551
+.552
 </td>
 <td style="text-align:right;">
 -0.02
 </td>
 <td style="text-align:right;">
-0.13
+0.12
 </td>
 </tr>
 </tbody>
@@ -2752,10 +2752,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-2.95
+2.97
 </td>
 <td style="text-align:left;">
-.019
+.018
 </td>
 <td style="text-align:right;">
 0.04
@@ -2778,10 +2778,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-2.37
+2.39
 </td>
 <td style="text-align:left;">
-.089
+.083
 </td>
 <td style="text-align:right;">
 0.02
@@ -2804,10 +2804,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-2.12
+2.14
 </td>
 <td style="text-align:left;">
-.136
+.130
 </td>
 <td style="text-align:right;">
 0.01
@@ -2931,10 +2931,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.60
+1.62
 </td>
 <td style="text-align:left;">
-.326
+.314
 </td>
 <td style="text-align:right;">
 -0.01
@@ -2957,10 +2957,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-3.69
+3.64
 </td>
 <td style="text-align:left;">
-.001
+.002
 </td>
 <td style="text-align:right;">
 0.07
@@ -2983,16 +2983,16 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-2.07
+2.00
 </td>
 <td style="text-align:left;">
-.153
+.181
 </td>
 <td style="text-align:right;">
 0.00
 </td>
 <td style="text-align:right;">
-0.16
+0.15
 </td>
 </tr>
 <tr>
@@ -3034,10 +3034,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.00
+0.95
 </td>
 <td style="text-align:left;">
-.639
+.687
 </td>
 <td style="text-align:right;">
 -0.04
@@ -3053,16 +3053,16 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
--0.02
+-0.03
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
--0.61
+-0.68
 </td>
 <td style="text-align:left;">
-.639
+.687
 </td>
 <td style="text-align:right;">
 -0.10
@@ -3130,16 +3130,16 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.05
+0.06
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-1.38
+1.42
 </td>
 <td style="text-align:left;">
-.333
+.309
 </td>
 <td style="text-align:right;">
 -0.02
@@ -3188,7 +3188,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.78
+3.74
 </td>
 <td style="text-align:left;">
 .001
@@ -3214,10 +3214,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.42
+3.44
 </td>
 <td style="text-align:left;">
-.003
+.002
 </td>
 <td style="text-align:right;">
 0.06
@@ -3239,16 +3239,16 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.78
+1.76
 </td>
 <td style="text-align:left;">
-.226
+.235
 </td>
 <td style="text-align:right;">
 -0.01
 </td>
 <td style="text-align:right;">
-0.15
+0.14
 </td>
 </tr>
 <tr>
@@ -3258,16 +3258,16 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.02
+0.01
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-0.39
+0.33
 </td>
 <td style="text-align:left;">
-.699
+.744
 </td>
 <td style="text-align:right;">
 -0.06
@@ -3341,10 +3341,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-0.69
+0.67
 </td>
 <td style="text-align:left;">
-.983
+&gt; .999
 </td>
 <td style="text-align:right;">
 -0.05
@@ -3367,7 +3367,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-4.51
+4.52
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -3387,13 +3387,13 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.15
+0.16
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-3.83
+3.85
 </td>
 <td style="text-align:left;">
 .001
@@ -3402,7 +3402,7 @@ Adjective
 0.08
 </td>
 <td style="text-align:right;">
-0.23
+0.24
 </td>
 </tr>
 <tr>
@@ -3419,7 +3419,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.19
+3.20
 </td>
 <td style="text-align:left;">
 .006
@@ -3469,10 +3469,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-0.65
+0.67
 </td>
 <td style="text-align:left;">
-.983
+&gt; .999
 </td>
 <td style="text-align:right;">
 -0.05
@@ -3546,7 +3546,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-0.63
+0.61
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -3566,13 +3566,13 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.24
+0.25
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-6.19
+6.32
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -3581,7 +3581,7 @@ Only
 0.17
 </td>
 <td style="text-align:right;">
-0.32
+0.33
 </td>
 </tr>
 <tr>
@@ -3592,19 +3592,19 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.22
+0.23
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-5.55
+5.71
 </td>
 <td style="text-align:left;">
 &lt; .001
 </td>
 <td style="text-align:right;">
-0.14
+0.15
 </td>
 <td style="text-align:right;">
 0.30
@@ -3618,19 +3618,19 @@ Adjective - Tend to be
 Adjective
 </td>
 <td style="text-align:right;">
-0.21
+0.22
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-5.36
+5.50
 </td>
 <td style="text-align:left;">
 &lt; .001
 </td>
 <td style="text-align:right;">
-0.13
+0.14
 </td>
 <td style="text-align:right;">
 0.29
@@ -3674,7 +3674,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-0.21
+0.23
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -3751,7 +3751,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
--0.63
+-0.57
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -3803,7 +3803,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-5.02
+4.97
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -3829,7 +3829,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.77
+3.79
 </td>
 <td style="text-align:left;">
 .001
@@ -3848,13 +3848,13 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.03
+0.02
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-0.65
+0.63
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -3879,16 +3879,16 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-1.27
+1.20
 </td>
 <td style="text-align:left;">
-.611
+.695
 </td>
 <td style="text-align:right;">
 -0.03
 </td>
 <td style="text-align:right;">
-0.13
+0.12
 </td>
 </tr>
 </tbody>
@@ -3956,16 +3956,16 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.27
+1.38
 </td>
 <td style="text-align:left;">
-.205
+.169
 </td>
 <td style="text-align:right;">
--0.03
+-0.02
 </td>
 <td style="text-align:right;">
-0.12
+0.13
 </td>
 </tr>
 <tr>
@@ -3982,7 +3982,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-8.68
+8.65
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -4002,13 +4002,13 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.28
+0.27
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-7.38
+7.25
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -4034,7 +4034,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-5.15
+5.11
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -4043,7 +4043,7 @@ Adjective
 0.12
 </td>
 <td style="text-align:right;">
-0.27
+0.26
 </td>
 </tr>
 <tr>
@@ -4059,7 +4059,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-3.56
+3.58
 </td>
 <td style="text-align:left;">
 .001
@@ -4078,16 +4078,16 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.09
+0.08
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-2.27
+2.18
 </td>
 <td style="text-align:left;">
-.046
+.058
 </td>
 <td style="text-align:right;">
 0.01
@@ -4161,10 +4161,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.27
+1.31
 </td>
 <td style="text-align:left;">
-.408
+.379
 </td>
 <td style="text-align:right;">
 -0.03
@@ -4213,7 +4213,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-4.31
+4.28
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -4289,10 +4289,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-1.00
+0.96
 </td>
 <td style="text-align:left;">
-.408
+.379
 </td>
 <td style="text-align:right;">
 -0.04
@@ -4366,10 +4366,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.79
+1.81
 </td>
 <td style="text-align:left;">
-.146
+.141
 </td>
 <td style="text-align:right;">
 -0.01
@@ -4418,7 +4418,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.67
+3.66
 </td>
 <td style="text-align:left;">
 .001
@@ -4438,16 +4438,16 @@ Adjective - Tend to be
 Adjective
 </td>
 <td style="text-align:right;">
-0.11
+0.10
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-2.77
+2.72
 </td>
 <td style="text-align:left;">
-.022
+.021
 </td>
 <td style="text-align:right;">
 0.03
@@ -4469,10 +4469,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-2.73
+2.79
 </td>
 <td style="text-align:left;">
-.022
+.021
 </td>
 <td style="text-align:right;">
 0.03
@@ -4494,10 +4494,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-0.92
+0.96
 </td>
 <td style="text-align:left;">
-.356
+.336
 </td>
 <td style="text-align:right;">
 -0.04
@@ -4571,10 +4571,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-0.89
+0.86
 </td>
 <td style="text-align:left;">
-.742
+.785
 </td>
 <td style="text-align:right;">
 -0.05
@@ -4623,10 +4623,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-2.91
+2.95
 </td>
 <td style="text-align:left;">
-.018
+.016
 </td>
 <td style="text-align:right;">
 0.04
@@ -4649,10 +4649,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-2.26
+2.25
 </td>
 <td style="text-align:left;">
-.094
+.099
 </td>
 <td style="text-align:right;">
 0.01
@@ -4674,10 +4674,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.55
+1.57
 </td>
 <td style="text-align:left;">
-.365
+.351
 </td>
 <td style="text-align:right;">
 -0.02
@@ -4699,16 +4699,16 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-0.65
+0.71
 </td>
 <td style="text-align:left;">
-.742
+.785
 </td>
 <td style="text-align:right;">
--0.06
+-0.05
 </td>
 <td style="text-align:right;">
-0.11
+0.12
 </td>
 </tr>
 </tbody>
@@ -4776,10 +4776,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.29
+1.28
 </td>
 <td style="text-align:left;">
-.394
+.403
 </td>
 <td style="text-align:right;">
 -0.03
@@ -4796,13 +4796,13 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.27
+0.28
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-6.82
+6.83
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -4828,7 +4828,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-5.50
+5.53
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -4854,7 +4854,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-4.84
+4.85
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -4904,10 +4904,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-0.69
+0.71
 </td>
 <td style="text-align:left;">
-.490
+.480
 </td>
 <td style="text-align:right;">
 -0.05
@@ -4981,10 +4981,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-0.14
+0.18
 </td>
 <td style="text-align:left;">
-.890
+.861
 </td>
 <td style="text-align:right;">
 -0.08
@@ -5007,7 +5007,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-5.59
+5.60
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -5033,7 +5033,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-5.43
+5.41
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -5084,10 +5084,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.69
+1.71
 </td>
 <td style="text-align:left;">
-.272
+.264
 </td>
 <td style="text-align:right;">
 -0.01
@@ -5109,10 +5109,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-1.55
+1.53
 </td>
 <td style="text-align:left;">
-.272
+.264
 </td>
 <td style="text-align:right;">
 -0.02
@@ -5186,13 +5186,13 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.05
+1.11
 </td>
 <td style="text-align:left;">
-.875
+.796
 </td>
 <td style="text-align:right;">
--0.04
+-0.03
 </td>
 <td style="text-align:right;">
 0.12
@@ -5238,13 +5238,13 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.18
+3.12
 </td>
 <td style="text-align:left;">
-.006
+.007
 </td>
 <td style="text-align:right;">
-0.05
+0.04
 </td>
 <td style="text-align:right;">
 0.20
@@ -5292,7 +5292,7 @@ Only
 0.81
 </td>
 <td style="text-align:left;">
-.875
+.841
 </td>
 <td style="text-align:right;">
 -0.04
@@ -5314,16 +5314,16 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
--0.25
+-0.31
 </td>
 <td style="text-align:left;">
-.875
+.841
 </td>
 <td style="text-align:right;">
 -0.09
 </td>
 <td style="text-align:right;">
-0.07
+0.06
 </td>
 </tr>
 </tbody>
@@ -5385,19 +5385,19 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.08
+0.09
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-2.01
+2.08
 </td>
 <td style="text-align:left;">
-.134
+.113
 </td>
 <td style="text-align:right;">
-0.00
+0.01
 </td>
 <td style="text-align:right;">
 0.17
@@ -5417,7 +5417,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-4.59
+4.58
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -5437,19 +5437,19 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.11
+0.10
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-2.57
+2.48
 </td>
 <td style="text-align:left;">
-.041
+.052
 </td>
 <td style="text-align:right;">
-0.03
+0.02
 </td>
 <td style="text-align:right;">
 0.19
@@ -5472,7 +5472,7 @@ Adjective
 2.87
 </td>
 <td style="text-align:left;">
-.020
+.021
 </td>
 <td style="text-align:right;">
 0.04
@@ -5494,10 +5494,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.73
+1.71
 </td>
 <td style="text-align:left;">
-.167
+.173
 </td>
 <td style="text-align:right;">
 -0.01
@@ -5513,19 +5513,19 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
--0.01
+-0.02
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
--0.29
+-0.37
 </td>
 <td style="text-align:left;">
-.774
+.709
 </td>
 <td style="text-align:right;">
--0.09
+-0.10
 </td>
 <td style="text-align:right;">
 0.07
@@ -5596,10 +5596,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-0.04
+0.01
 </td>
 <td style="text-align:left;">
-.970
+.992
 </td>
 <td style="text-align:right;">
 -0.08
@@ -5616,19 +5616,19 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.26
+0.27
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-6.30
+6.43
 </td>
 <td style="text-align:left;">
 &lt; .001
 </td>
 <td style="text-align:right;">
-0.18
+0.19
 </td>
 <td style="text-align:right;">
 0.35
@@ -5642,22 +5642,22 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.26
+0.27
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-6.25
+6.41
 </td>
 <td style="text-align:left;">
 &lt; .001
 </td>
 <td style="text-align:right;">
-0.18
+0.19
 </td>
 <td style="text-align:right;">
-0.34
+0.35
 </td>
 </tr>
 <tr>
@@ -5668,13 +5668,13 @@ Adjective - Tend to be
 Adjective
 </td>
 <td style="text-align:right;">
-0.21
+0.22
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-4.99
+5.13
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -5683,7 +5683,7 @@ Adjective
 0.13
 </td>
 <td style="text-align:right;">
-0.29
+0.30
 </td>
 </tr>
 <tr>
@@ -5699,10 +5699,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.33
+1.32
 </td>
 <td style="text-align:left;">
-.552
+.562
 </td>
 <td style="text-align:right;">
 -0.03
@@ -5718,16 +5718,16 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.05
+0.06
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-1.29
+1.31
 </td>
 <td style="text-align:left;">
-.552
+.562
 </td>
 <td style="text-align:right;">
 -0.03
@@ -5801,10 +5801,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.95
+1.92
 </td>
 <td style="text-align:left;">
-.103
+.110
 </td>
 <td style="text-align:right;">
 0.00
@@ -5821,13 +5821,13 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.23
+0.24
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-5.52
+5.55
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -5853,7 +5853,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.55
+3.61
 </td>
 <td style="text-align:left;">
 .002
@@ -5862,7 +5862,7 @@ Adjective
 0.07
 </td>
 <td style="text-align:right;">
-0.23
+0.24
 </td>
 </tr>
 <tr>
@@ -5879,7 +5879,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.30
+3.33
 </td>
 <td style="text-align:left;">
 .004
@@ -5929,10 +5929,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-0.28
+0.31
 </td>
 <td style="text-align:left;">
-.779
+.756
 </td>
 <td style="text-align:right;">
 -0.07
@@ -6006,13 +6006,13 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.21
+1.33
 </td>
 <td style="text-align:left;">
-.453
+.370
 </td>
 <td style="text-align:right;">
--0.03
+-0.02
 </td>
 <td style="text-align:right;">
 0.12
@@ -6052,22 +6052,22 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.09
+0.08
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-2.32
+2.20
 </td>
 <td style="text-align:left;">
-.081
+.111
 </td>
 <td style="text-align:right;">
 0.01
 </td>
 <td style="text-align:right;">
-0.16
+0.15
 </td>
 </tr>
 <tr>
@@ -6084,7 +6084,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.84
+3.83
 </td>
 <td style="text-align:left;">
 .001
@@ -6112,7 +6112,7 @@ Only
 -0.28
 </td>
 <td style="text-align:left;">
-.779
+.780
 </td>
 <td style="text-align:right;">
 -0.08
@@ -6134,16 +6134,16 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
--1.49
+-1.61
 </td>
 <td style="text-align:left;">
-.407
+.323
 </td>
 <td style="text-align:right;">
 -0.13
 </td>
 <td style="text-align:right;">
-0.02
+0.01
 </td>
 </tr>
 </tbody>
@@ -6211,10 +6211,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
--1.08
+-1.01
 </td>
 <td style="text-align:left;">
-.560
+.622
 </td>
 <td style="text-align:right;">
 -0.12
@@ -6263,7 +6263,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-4.91
+4.84
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -6289,7 +6289,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.17
+3.16
 </td>
 <td style="text-align:left;">
 .006
@@ -6317,7 +6317,7 @@ Only
 0.68
 </td>
 <td style="text-align:left;">
-.560
+.622
 </td>
 <td style="text-align:right;">
 -0.05
@@ -6339,10 +6339,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-1.75
+1.69
 </td>
 <td style="text-align:left;">
-.238
+.271
 </td>
 <td style="text-align:right;">
 -0.01
@@ -6419,7 +6419,7 @@ Only
 1.53
 </td>
 <td style="text-align:left;">
-.380
+.382
 </td>
 <td style="text-align:right;">
 -0.02
@@ -6468,10 +6468,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-1.90
+1.91
 </td>
 <td style="text-align:left;">
-.229
+.226
 </td>
 <td style="text-align:right;">
 0.00
@@ -6497,7 +6497,7 @@ Adjective
 0.80
 </td>
 <td style="text-align:left;">
-.542
+.537
 </td>
 <td style="text-align:right;">
 -0.05
@@ -6544,10 +6544,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-1.10
+1.11
 </td>
 <td style="text-align:left;">
-.542
+.537
 </td>
 <td style="text-align:right;">
 -0.04
@@ -6615,16 +6615,16 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.00
+0.01
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-0.06
+0.19
 </td>
 <td style="text-align:left;">
-.955
+.851
 </td>
 <td style="text-align:right;">
 -0.07
@@ -6647,7 +6647,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-3.78
+3.80
 </td>
 <td style="text-align:left;">
 .001
@@ -6656,7 +6656,7 @@ Only
 0.07
 </td>
 <td style="text-align:right;">
-0.22
+0.23
 </td>
 </tr>
 <tr>
@@ -6673,13 +6673,13 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.72
+3.62
 </td>
 <td style="text-align:left;">
 .001
 </td>
 <td style="text-align:right;">
-0.07
+0.06
 </td>
 <td style="text-align:right;">
 0.22
@@ -6693,16 +6693,16 @@ Adjective - Tend to be
 Adjective
 </td>
 <td style="text-align:right;">
-0.06
+0.07
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-1.67
+1.70
 </td>
 <td style="text-align:left;">
-.190
+.177
 </td>
 <td style="text-align:right;">
 -0.01
@@ -6724,10 +6724,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-2.13
+2.12
 </td>
 <td style="text-align:left;">
-.134
+.137
 </td>
 <td style="text-align:right;">
 0.01
@@ -6749,16 +6749,16 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-2.07
+1.93
 </td>
 <td style="text-align:left;">
-.134
+.160
 </td>
 <td style="text-align:right;">
 0.00
 </td>
 <td style="text-align:right;">
-0.16
+0.15
 </td>
 </tr>
 </tbody>
@@ -6826,10 +6826,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-0.32
+0.33
 </td>
 <td style="text-align:left;">
-.750
+.740
 </td>
 <td style="text-align:right;">
 -0.06
@@ -6852,7 +6852,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-4.47
+4.50
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -6878,7 +6878,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-4.15
+4.16
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -6904,10 +6904,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-2.68
+2.70
 </td>
 <td style="text-align:left;">
-.030
+.028
 </td>
 <td style="text-align:right;">
 0.03
@@ -6954,10 +6954,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-1.48
+1.47
 </td>
 <td style="text-align:left;">
-.277
+.283
 </td>
 <td style="text-align:right;">
 -0.02
@@ -7031,10 +7031,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-0.90
+0.94
 </td>
 <td style="text-align:left;">
-.740
+.693
 </td>
 <td style="text-align:right;">
 -0.04
@@ -7083,7 +7083,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-4.12
+4.07
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -7109,10 +7109,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.34
+3.31
 </td>
 <td style="text-align:left;">
-.003
+.004
 </td>
 <td style="text-align:right;">
 0.06
@@ -7134,10 +7134,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.69
+1.72
 </td>
 <td style="text-align:left;">
-.274
+.256
 </td>
 <td style="text-align:right;">
 -0.01
@@ -7159,10 +7159,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-0.79
+0.77
 </td>
 <td style="text-align:left;">
-.740
+.693
 </td>
 <td style="text-align:right;">
 -0.05
@@ -7239,7 +7239,7 @@ Only
 2.07
 </td>
 <td style="text-align:left;">
-.153
+.156
 </td>
 <td style="text-align:right;">
 0.00
@@ -7265,7 +7265,7 @@ Only
 3.66
 </td>
 <td style="text-align:left;">
-.002
+.001
 </td>
 <td style="text-align:right;">
 0.07
@@ -7288,10 +7288,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-1.56
+1.57
 </td>
 <td style="text-align:left;">
-.356
+.350
 </td>
 <td style="text-align:right;">
 -0.02
@@ -7314,13 +7314,13 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-2.33
+2.30
 </td>
 <td style="text-align:left;">
-.099
+.107
 </td>
 <td style="text-align:right;">
-0.02
+0.01
 </td>
 <td style="text-align:right;">
 0.18
@@ -7339,13 +7339,13 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.35
+1.38
 </td>
 <td style="text-align:left;">
-.356
+.350
 </td>
 <td style="text-align:right;">
--0.03
+-0.02
 </td>
 <td style="text-align:right;">
 0.14
@@ -7364,10 +7364,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
--0.74
+-0.70
 </td>
 <td style="text-align:left;">
-.459
+.482
 </td>
 <td style="text-align:right;">
 -0.12
@@ -7441,16 +7441,16 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-2.19
+2.22
 </td>
 <td style="text-align:left;">
-.057
+.053
 </td>
 <td style="text-align:right;">
 0.01
 </td>
 <td style="text-align:right;">
-0.15
+0.16
 </td>
 </tr>
 <tr>
@@ -7467,7 +7467,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-5.29
+5.33
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -7519,13 +7519,13 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-2.36
+2.40
 </td>
 <td style="text-align:left;">
-.054
+.050
 </td>
 <td style="text-align:right;">
-0.01
+0.02
 </td>
 <td style="text-align:right;">
 0.16
@@ -7569,10 +7569,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-0.74
+0.71
 </td>
 <td style="text-align:left;">
-.460
+.477
 </td>
 <td style="text-align:right;">
 -0.05
@@ -7646,13 +7646,13 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-3.50
+3.58
 </td>
 <td style="text-align:left;">
 .002
 </td>
 <td style="text-align:right;">
-0.06
+0.07
 </td>
 <td style="text-align:right;">
 0.22
@@ -7672,7 +7672,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-5.50
+5.56
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -7698,10 +7698,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-1.99
+1.96
 </td>
 <td style="text-align:left;">
-.100
+.099
 </td>
 <td style="text-align:right;">
 0.00
@@ -7724,16 +7724,16 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-2.13
+2.19
 </td>
 <td style="text-align:left;">
-.100
+.085
 </td>
 <td style="text-align:right;">
 0.01
 </td>
 <td style="text-align:right;">
-0.16
+0.17
 </td>
 </tr>
 <tr>
@@ -7749,7 +7749,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-3.38
+3.37
 </td>
 <td style="text-align:left;">
 .003
@@ -7774,13 +7774,13 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
--0.13
+-0.22
 </td>
 <td style="text-align:left;">
-.895
+.823
 </td>
 <td style="text-align:right;">
--0.08
+-0.09
 </td>
 <td style="text-align:right;">
 0.07
@@ -7845,22 +7845,22 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.03
+0.04
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-0.89
+1.02
 </td>
 <td style="text-align:left;">
-.745
+.619
 </td>
 <td style="text-align:right;">
 -0.04
 </td>
 <td style="text-align:right;">
-0.11
+0.12
 </td>
 </tr>
 <tr>
@@ -7877,7 +7877,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-4.32
+4.30
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -7903,16 +7903,16 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.43
+3.29
 </td>
 <td style="text-align:left;">
-.003
+.005
 </td>
 <td style="text-align:right;">
-0.06
+0.05
 </td>
 <td style="text-align:right;">
-0.21
+0.20
 </td>
 </tr>
 <tr>
@@ -7929,10 +7929,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.03
+2.99
 </td>
 <td style="text-align:left;">
-.010
+.011
 </td>
 <td style="text-align:right;">
 0.04
@@ -7954,13 +7954,13 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.30
+1.33
 </td>
 <td style="text-align:left;">
-.580
+.549
 </td>
 <td style="text-align:right;">
--0.03
+-0.02
 </td>
 <td style="text-align:right;">
 0.13
@@ -7973,16 +7973,16 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.02
+0.01
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-0.41
+0.31
 </td>
 <td style="text-align:left;">
-.745
+.755
 </td>
 <td style="text-align:right;">
 -0.06
@@ -8050,22 +8050,22 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.14
+0.15
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-3.37
+3.55
 </td>
 <td style="text-align:left;">
-.002
+.001
 </td>
 <td style="text-align:right;">
-0.06
+0.07
 </td>
 <td style="text-align:right;">
-0.22
+0.23
 </td>
 </tr>
 <tr>
@@ -8082,7 +8082,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-8.09
+8.06
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -8102,22 +8102,22 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.19
+0.18
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-4.68
+4.47
 </td>
 <td style="text-align:left;">
 &lt; .001
 </td>
 <td style="text-align:right;">
-0.11
+0.10
 </td>
 <td style="text-align:right;">
-0.27
+0.26
 </td>
 </tr>
 <tr>
@@ -8134,7 +8134,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.71
+3.70
 </td>
 <td style="text-align:left;">
 .001
@@ -8159,7 +8159,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-4.39
+4.37
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -8178,22 +8178,22 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.04
+0.03
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-0.99
+0.80
 </td>
 <td style="text-align:left;">
-.322
+.426
 </td>
 <td style="text-align:right;">
--0.04
+-0.05
 </td>
 <td style="text-align:right;">
-0.12
+0.11
 </td>
 </tr>
 </tbody>
@@ -8261,10 +8261,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.29
+1.28
 </td>
 <td style="text-align:left;">
-.590
+.604
 </td>
 <td style="text-align:right;">
 -0.03
@@ -8287,7 +8287,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-4.37
+4.39
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -8313,10 +8313,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.07
+3.11
 </td>
 <td style="text-align:left;">
-.009
+.007
 </td>
 <td style="text-align:right;">
 0.04
@@ -8364,16 +8364,16 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.03
+1.06
 </td>
 <td style="text-align:left;">
-.602
+.604
 </td>
 <td style="text-align:right;">
--0.04
+-0.03
 </td>
 <td style="text-align:right;">
-0.11
+0.12
 </td>
 </tr>
 <tr>
@@ -8389,10 +8389,10 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
--0.26
+-0.22
 </td>
 <td style="text-align:left;">
-.796
+.827
 </td>
 <td style="text-align:right;">
 -0.08
@@ -8466,10 +8466,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-0.14
+0.13
 </td>
 <td style="text-align:left;">
-.892
+.900
 </td>
 <td style="text-align:right;">
 -0.07
@@ -8492,7 +8492,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-4.26
+4.28
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -8512,13 +8512,13 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.16
+0.17
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-4.11
+4.15
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -8544,7 +8544,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.17
+3.19
 </td>
 <td style="text-align:left;">
 .006
@@ -8594,7 +8594,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-0.96
+0.97
 </td>
 <td style="text-align:left;">
 .812
@@ -8671,10 +8671,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-0.63
+0.62
 </td>
 <td style="text-align:left;">
-.634
+.618
 </td>
 <td style="text-align:right;">
 -0.05
@@ -8697,7 +8697,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-6.88
+6.89
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -8723,7 +8723,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-6.22
+6.25
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -8749,7 +8749,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-5.25
+5.26
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -8799,13 +8799,13 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-1.00
+1.02
 </td>
 <td style="text-align:left;">
-.634
+.618
 </td>
 <td style="text-align:right;">
--0.04
+-0.03
 </td>
 <td style="text-align:right;">
 0.11
@@ -8876,7 +8876,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
--0.34
+-0.32
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -8928,13 +8928,13 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-4.32
+4.31
 </td>
 <td style="text-align:left;">
 &lt; .001
 </td>
 <td style="text-align:right;">
-0.10
+0.09
 </td>
 <td style="text-align:right;">
 0.25
@@ -8954,7 +8954,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-4.19
+4.20
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -8979,7 +8979,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
--0.18
+-0.19
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -9004,7 +9004,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-0.16
+0.13
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -9013,7 +9013,7 @@ Adjective
 -0.07
 </td>
 <td style="text-align:right;">
-0.09
+0.08
 </td>
 </tr>
 </tbody>
@@ -9081,7 +9081,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
--0.25
+-0.22
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -9090,7 +9090,7 @@ Only
 -0.08
 </td>
 <td style="text-align:right;">
-0.06
+0.07
 </td>
 </tr>
 <tr>
@@ -9107,7 +9107,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-6.09
+6.08
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -9133,7 +9133,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-6.33
+6.30
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -9159,13 +9159,13 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-6.11
+6.02
 </td>
 <td style="text-align:left;">
 &lt; .001
 </td>
 <td style="text-align:right;">
-0.16
+0.15
 </td>
 <td style="text-align:right;">
 0.30
@@ -9184,7 +9184,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
--0.01
+0.07
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -9193,7 +9193,7 @@ Only
 -0.07
 </td>
 <td style="text-align:right;">
-0.07
+0.08
 </td>
 </tr>
 <tr>
@@ -9209,7 +9209,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-0.24
+0.30
 </td>
 <td style="text-align:left;">
 &gt; .999
@@ -9280,22 +9280,22 @@ Adjective - Adjective
 Only
 </td>
 <td style="text-align:right;">
-0.03
+0.04
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-0.86
+1.09
 </td>
 <td style="text-align:left;">
-.779
+.604
 </td>
 <td style="text-align:right;">
--0.04
+-0.03
 </td>
 <td style="text-align:right;">
-0.11
+0.12
 </td>
 </tr>
 <tr>
@@ -9312,7 +9312,7 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-4.79
+4.75
 </td>
 <td style="text-align:left;">
 &lt; .001
@@ -9332,22 +9332,22 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.15
+0.14
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-3.92
+3.65
 </td>
 <td style="text-align:left;">
-&lt; .001
+.001
 </td>
 <td style="text-align:right;">
-0.07
+0.06
 </td>
 <td style="text-align:right;">
-0.22
+0.21
 </td>
 </tr>
 <tr>
@@ -9364,7 +9364,7 @@ Adjective
 0.04
 </td>
 <td style="text-align:right;">
-3.50
+3.47
 </td>
 <td style="text-align:left;">
 .002
@@ -9373,7 +9373,7 @@ Adjective
 0.06
 </td>
 <td style="text-align:right;">
-0.20
+0.21
 </td>
 </tr>
 <tr>
@@ -9389,10 +9389,10 @@ Only
 0.04
 </td>
 <td style="text-align:right;">
-1.29
+1.28
 </td>
 <td style="text-align:left;">
-.593
+.604
 </td>
 <td style="text-align:right;">
 -0.03
@@ -9408,22 +9408,22 @@ Adjective - Am
 Adjective
 </td>
 <td style="text-align:right;">
-0.02
+0.01
 </td>
 <td style="text-align:right;">
 0.04
 </td>
 <td style="text-align:right;">
-0.43
+0.18
 </td>
 <td style="text-align:left;">
-.779
+.854
 </td>
 <td style="text-align:right;">
--0.06
+-0.07
 </td>
 <td style="text-align:right;">
-0.09
+0.08
 </td>
 </tr>
 </tbody>

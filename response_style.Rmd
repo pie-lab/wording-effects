@@ -77,7 +77,7 @@ fb1_aov = fb1_aov %>%
          across(where(is.numeric), papaja::printnum))
 ```
 
-Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$df[[1]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[fb1_loc]]`, p = `r fb1_aov$p.value[[fb1_loc]]`)$. See Figure \@ref(fig:responsestyle7) for a visualization of this effect. In addition, Figure \@ref(fig:responsestyle8) shows the full distribution of responses across format. We note too that expected responses varied as a function of item $(F(`r fb1_aov$df[[2]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[2]]`, p = `r fb1_aov$p.value[[2]]`)$ and block $(F(`r fb1_aov$df[[4]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[4]]`, p = `r fb1_aov$p.value[[4]]`)$.
+Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$df[[1]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[fb1_loc]]`, p = `r fb1_aov$p.value[[fb1_loc]]`)$. See Figure \@ref(fig:responsestyle7) for a visualization of this effect. In addition, Figure \@ref(fig:responsestyle8) shows the full distribution of responses across format. We note too that expected responses varied as a function of item $(F(`r fb1_aov$df[[2]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[2]]`, p = `r fb1_aov$p.value[[2]]`)$ but not block $(F(`r fb1_aov$df[[4]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[4]]`, p = `r fb1_aov$p.value[[4]]`)$.
 
 ```{r responsestyle6, echo = F}
 # save for power analysis
