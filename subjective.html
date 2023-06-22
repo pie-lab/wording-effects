@@ -376,7 +376,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Does item format impact experience?</h1>
-<h4 class="date">Last updated 2023-05-21</h4>
+<h4 class="date">Last updated 2023-06-22</h4>
 
 </div>
 
@@ -420,12 +420,12 @@ car::Anova(mod_enjoy_3, type = &quot;3&quot;)</code></pre>
 <pre><code>## Anova Table (Type III tests)
 ## 
 ## Response: enjoy_responding
-##                    Sum Sq  Df   F value              Pr(&gt;F)    
-## (Intercept)       1422.05   1 1350.6791 &lt;0.0000000000000002 ***
-## format               2.18   3    0.6904              0.5580    
-## devicetype           4.03   2    1.9136              0.1481    
-## format:devicetype    5.56   6    0.8803              0.5087    
-## Residuals         1013.89 963                                  
+##                   Sum Sq  Df   F value              Pr(&gt;F)    
+## (Intercept)       4228.5   1 4016.2580 &lt;0.0000000000000002 ***
+## format               5.5   3    1.7313              0.1589    
+## devicetype           4.0   2    1.9136              0.1481    
+## format:devicetype    5.6   6    0.8803              0.5087    
+## Residuals         1013.9 963                                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The relationship of item format to enjoyment did not vary as a function of device type.</p>
@@ -468,47 +468,47 @@ car::Anova(mod_design_2)</code></pre>
 <pre class="r"><code>emmeans(mod_design_2, pairwise~&quot;devicetype&quot;, adjust = &quot;none&quot;)</code></pre>
 <pre><code>## $emmeans
 ##  devicetype                                                   emmean     SE  df
-##  Mobile                                                         5.36 0.0615 972
 ##  Desktop or laptop computer                                     5.20 0.0322 972
+##  Mobile                                                         5.36 0.0615 972
 ##  Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)   5.08 0.1415 972
 ##  lower.CL upper.CL
-##      5.24     5.48
 ##      5.14     5.27
+##      5.24     5.48
 ##      4.80     5.36
 ## 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
 ##  contrast                                                                                 
-##  Mobile - Desktop or laptop computer                                                      
-##  Mobile - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)                    
+##  Desktop or laptop computer - Mobile                                                      
 ##  Desktop or laptop computer - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)
+##  Mobile - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)                    
 ##  estimate     SE  df t.ratio p.value
-##     0.156 0.0694 972   2.243  0.0251
-##     0.279 0.1543 972   1.810  0.0707
-##     0.123 0.1451 972   0.851  0.3950</code></pre>
+##    -0.156 0.0694 972  -2.243  0.0251
+##     0.123 0.1451 972   0.851  0.3950
+##     0.279 0.1543 972   1.810  0.0707</code></pre>
 <pre class="r"><code>emmeans(mod_design_2, pairwise~&quot;devicetype&quot;, adjust = &quot;holm&quot;)</code></pre>
 <pre><code>## $emmeans
 ##  devicetype                                                   emmean     SE  df
-##  Mobile                                                         5.36 0.0615 972
 ##  Desktop or laptop computer                                     5.20 0.0322 972
+##  Mobile                                                         5.36 0.0615 972
 ##  Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)   5.08 0.1415 972
 ##  lower.CL upper.CL
-##      5.24     5.48
 ##      5.14     5.27
+##      5.24     5.48
 ##      4.80     5.36
 ## 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
 ##  contrast                                                                                 
-##  Mobile - Desktop or laptop computer                                                      
-##  Mobile - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)                    
+##  Desktop or laptop computer - Mobile                                                      
 ##  Desktop or laptop computer - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)
+##  Mobile - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)                    
 ##  estimate     SE  df t.ratio p.value
-##     0.156 0.0694 972   2.243  0.0753
-##     0.279 0.1543 972   1.810  0.1413
+##    -0.156 0.0694 972  -2.243  0.0753
 ##     0.123 0.1451 972   0.851  0.3950
+##     0.279 0.1543 972   1.810  0.1413
 ## 
 ## P value adjustment: holm method for 3 tests</code></pre>
 <p>Participants perceive the design to be better on mobile devices than on desktop or laptop computers; however, after correcting for multiple comparisons, this effect is no longer significant.</p>
@@ -517,12 +517,12 @@ car::Anova(mod_design_3, type = &quot;3&quot;)</code></pre>
 <pre><code>## Anova Table (Type III tests)
 ## 
 ## Response: well_designed_study
-##                    Sum Sq  Df   F value              Pr(&gt;F)    
-## (Intercept)       1479.86   1 1939.1012 &lt;0.0000000000000002 ***
-## format               0.65   3    0.2840              0.8370    
-## devicetype           0.86   2    0.5640              0.5691    
-## format:devicetype    1.89   6    0.4124              0.8711    
-## Residuals          734.93 963                                  
+##                   Sum Sq  Df   F value              Pr(&gt;F)    
+## (Intercept)       4718.2   1 6182.4022 &lt;0.0000000000000002 ***
+## format               1.8   3    0.7901              0.4995    
+## devicetype           0.9   2    0.5640              0.5691    
+## format:devicetype    1.9   6    0.4124              0.8711    
+## Residuals          734.9 963                                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The relationship of item format to survey design enjoyment did not vary as a function of device type.</p>
