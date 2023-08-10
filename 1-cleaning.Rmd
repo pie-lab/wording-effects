@@ -234,6 +234,45 @@ data_t1 = data_t1 %>%
 
 We removed `r nrow(olddata)-nrow(data_t1)` participants that do not speak english well or very well.
 
+#### Based on inattentive responding
+
+We expect to exclude any participant who has an average response of 4 (“slightly agree”) or greater to the attention check items. Two items from the Inattentive and Deviant Responding Inventory for Adjectives (IDRIA) scale (Kay & Saucier, in prep) have been included here, in part to help evaluate the extent of inattentive responding but also to consider the effect of item wording on these items. The two items used here (i.e., “Asleep”, “Human”) were chosen to be as inconspicuous as possible, so as to not to inflate item response duration. The frequency item (i.e., “human”) will be reverse-scored, so that higher scores on both the infrequency and frequency items reflect greater inattentive responding. Figure \@ref(fig:1-cleaning-27) shows the distribution of average responses to attention check items.
+
+```{r 1-cleaning-26 }
+in_average = data_t1 %>%
+  # reverse score human
+  mutate(across(matches("^human"),  ~(.x*-1)+7)) %>%
+  # select id and attention check items
+  select(proid, matches("^human"), matches("^asleep")) %>% 
+  gather(item, response, -proid) %>%
+  filter(!is.na(response)) %>%
+  group_by(proid) %>%
+  summarise(avg = mean(response)) %>%
+  mutate(
+    remove = case_when(
+      avg >= 4 ~ "Remove",
+      TRUE ~ "Keep"))
+```
+
+```{r 1-cleaning-27, fig.cap = "Average response to inattention check items", echo = F}
+in_average %>%
+  ggplot(aes(x = avg, fill = remove)) +
+  geom_histogram(bins = 20, color = "white") +
+  geom_vline(aes(xintercept = 4)) +
+  guides(fill = "none") +
+  labs(x = "Average response to inattention check items") +
+  theme_pubr()
+```
+
+We remove `r table(in_average$remove)[[2]]` participants whose responses suggest inattention.
+
+```{r 1-cleaning-28 }
+data_t1 = data_t1 %>%
+  full_join(select(in_average, proid, remove)) %>%
+  filter(remove != "Remove") %>%
+  select(-remove)
+```
+
 #### Based on patterns
 
 We remove any participant who provides the same response to over half of the items (21 or more items) from a given block in a row.
@@ -381,44 +420,6 @@ data_t1 = data_t1 %>%
 rm(runs_data)
 ```
 
-#### Based on inattentive responding
-
-We expect to exclude any participant who has an average response of 4 (“slightly agree”) or greater to the attention check items. Two items from the Inattentive and Deviant Responding Inventory for Adjectives (IDRIA) scale (Kay & Saucier, in prep) have been included here, in part to help evaluate the extent of inattentive responding but also to consider the effect of item wording on these items. The two items used here (i.e., “Asleep”, “Human”) were chosen to be as inconspicuous as possible, so as to not to inflate item response duration. The frequency item (i.e., “human”) will be reverse-scored, so that higher scores on both the infrequency and frequency items reflect greater inattentive responding. Figure \@ref(fig:1-cleaning-27) shows the distribution of average responses to attention check items.
-
-```{r 1-cleaning-26 }
-in_average = data_t1 %>%
-  # reverse score human
-  mutate(across(matches("^human"),  ~(.x*-1)+7)) %>%
-  # select id and attention check items
-  select(proid, matches("^human"), matches("^asleep")) %>% 
-  gather(item, response, -proid) %>%
-  filter(!is.na(response)) %>%
-  group_by(proid) %>%
-  summarise(avg = mean(response)) %>%
-  mutate(
-    remove = case_when(
-      avg >= 4 ~ "Remove",
-      TRUE ~ "Keep"))
-```
-
-```{r 1-cleaning-27, fig.cap = "Average response to inattention check items", echo = F}
-in_average %>%
-  ggplot(aes(x = avg, fill = remove)) +
-  geom_histogram(bins = 20, color = "white") +
-  geom_vline(aes(xintercept = 4)) +
-  guides(fill = "none") +
-  labs(x = "Average response to inattention check items") +
-  theme_pubr()
-```
-
-We remove `r table(in_average$remove[[2]])` participants whose responses suggest inattention.
-
-```{r 1-cleaning-28 }
-data_t1 = data_t1 %>%
-  full_join(select(in_average, proid, remove)) %>%
-  filter(remove != "Remove") %>%
-  select(-remove)
-```
 
 #### Based on average time to respond to personality items
 
@@ -596,6 +597,44 @@ We removed `r nrow(olddata_2)-nrow(data_2)` participants without valid Prolific 
 olddata_2 = data_2
 ```
 
+#### Based on inattentive responding
+
+Participants who respond positively to the adjective _asleep_ or negatively to the word _human_ are assumed to be inattentive. We filter out participants whose average response to these two items is greater than or equal to 4 (see Figure \@ref(fig:1-cleaning-59) for the distribution).
+
+```{r 1-cleaning-58 }
+in_average = data_2 %>%
+  # reverse score human
+  mutate(across(matches("^human"),  ~(.x*-1)+7)) %>%
+  # select id and attention check items
+  select(proid, matches("^human"), matches("^asleep")) %>% 
+  gather(item, response, -proid) %>%
+  filter(!is.na(response)) %>%
+  group_by(proid) %>%
+  summarise(avg = mean(response)) %>%
+  mutate(
+    remove = case_when(
+      avg >= 4 ~ "Remove",
+      TRUE ~ "Keep"))
+```
+```{r 1-cleaning-59, fig.cap = "Average response to inattention check items", echo = F}
+in_average %>%
+  ggplot(aes(x = avg, fill = remove)) +
+  geom_histogram(bins = 20, color = "white") +
+  geom_vline(aes(xintercept = 4)) +
+  guides(fill = "none") +
+  labs(x = "Average response to inattention check items") +
+  theme_pubr()
+```
+
+We remove `r table(in_average$remove)[[2]]` participants whose responses suggest inattention.
+
+```{r 1-cleaning-60 }
+data_2 = data_2 %>%
+  full_join(select(in_average, proid, remove)) %>%
+  filter(remove != "Remove") %>%
+  select(-remove)
+```
+
 #### Based on patterns
 
 We remove any participant who provides the same response to over half of the items (21 or more items) from a given block in a row. The distribution of runs in Time 2 is depicted in Figure \@ref(fig:1-cleaning-55).
@@ -685,44 +724,6 @@ data_2 = data_2 %>%
 rm(runs_data_2)
 ```
 
-#### Based on inattentive responding
-
-Participants who respond positively to the adjective _asleep_ or negatively to the word _human_ are assumed to be inattentive. We filter out participants whose average response to these two items is greater than or equal to 4 (see Figure \@ref(fig:1-cleaning-59) for the distribution).
-
-```{r 1-cleaning-58 }
-in_average = data_2 %>%
-  # reverse score human
-  mutate(across(matches("^human"),  ~(.x*-1)+7)) %>%
-  # select id and attention check items
-  select(proid, matches("^human"), matches("^asleep")) %>% 
-  gather(item, response, -proid) %>%
-  filter(!is.na(response)) %>%
-  group_by(proid) %>%
-  summarise(avg = mean(response)) %>%
-  mutate(
-    remove = case_when(
-      avg >= 4 ~ "Remove",
-      TRUE ~ "Keep"))
-```
-```{r 1-cleaning-59, fig.cap = "Average response to inattention check items", echo = F}
-in_average %>%
-  ggplot(aes(x = avg, fill = remove)) +
-  geom_histogram(bins = 20, color = "white") +
-  geom_vline(aes(xintercept = 4)) +
-  guides(fill = "none") +
-  labs(x = "Average response to inattention check items") +
-  theme_pubr()
-```
-
-We remove `r table(in_average$remove[[2]])` participants whose responses suggest inattention.
-
-```{r 1-cleaning-60 }
-data_2 = data_2 %>%
-  full_join(select(in_average, proid, remove)) %>%
-  filter(remove != "Remove") %>%
-  select(-remove)
-```
-
 #### Based on average time to respond to personality items
 
 Participants who take too little (< 1 second) or too long (greater than 30 seconds) on average to answer each personality item are excluded. See Figure \@ref(fig:1-cleaning-64) for the distribution of average response time per item.
@@ -773,6 +774,8 @@ olddata_2 = data_2
 data_2 = inner_join(data_2, filter(timing_data_2, remove == "Keep")) %>%
   select(-remove)
 ```
+
+Based on timing, we removed `r printnum(nrow(olddata_2)-nrow(data_2))` participants.
 
 ### Merge all datasets together
 

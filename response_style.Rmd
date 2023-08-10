@@ -90,11 +90,11 @@ pred.expected = predictions(mod.expected, by = "format", type = "response")
 
 plot_expected = pred.expected %>% 
   ggplot(aes(x = format, y = estimate)) +
-  geom_point(stat = "identity") +
+  geom_point(stat = "identity", size = 2) +
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
   labs(title = "Expected response",
        x = NULL, 
-       y = NULL)
+       y = NULL) + theme_minimal(base_size = 15)
 
 plot_expected
 ```
@@ -293,11 +293,11 @@ save(mod.extreme, items_df, file = here("objects/mod_extreme.Rdata"))
 pred.extreme = predictions(mod.extreme, by = "format", type = "response") 
 
 plot_extreme = pred.extreme %>% ggplot(aes(x = format, y = estimate)) +
-  geom_point(stat = "identity") +
+  geom_point(stat = "identity", size = 2) +
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
   labs(title = "Likelihood of extreme responding",
        x = NULL, 
-       y = "Likelihood")
+       y = "Likelihood") + theme_minimal(base_size = 15)
 
 plot_extreme
 ```
@@ -477,11 +477,11 @@ save(mod.yeasaying, items_df, file = here("objects/mod_yeasaying.Rdata"))
 pred.yea = predictions(mod.yeasaying, by = "format", type = "response") 
 
 plot_yea = pred.yea %>% ggplot(aes(x = format, y = estimate)) +
-  geom_point(stat = "identity") +
+  geom_point(stat = "identity", size = 2) +
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
-  labs(title = "Likelihood of yea-saying",
+  labs(title = "Likelihood of acquiescent responding",
        x = NULL, 
-       y = "Likelihood")
+       y = "Likelihood") + theme_minimal(base_size = 15)
 
 plot_yea
 ```
