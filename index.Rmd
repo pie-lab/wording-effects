@@ -19,3 +19,15 @@ A fundamental assumption in the methodology of psychological assessment relates 
 Yet, claims of equivalence based on face validity have some limits. For example, the absence of an effect due to item wording changes seems less clear for some descriptors than others. Consider being instructed to rate yourself as “active” or “warm” relative to “Tend to be active” or “Tend to be warm.” By specifically invoking tendency, the latter phrasing is more clearly prompting the respondents to rate trait-level psychological characteristics across situations, reducing the likelihood that they will respond based on transient physical (or even psychological) states. Similarly, the extent of the differences in phrasing should also be expected to increase the likelihood of a meaningful difference, i.e., “Organized” vs “I am someone who tends to be organized.” The latter format improves upon the simple adjective prompt in this case by clarifying both the trait/state ambiguity (by referencing tendency) and the lack of clarity around between-person and within-person ratings (with “... am someone who…”). To be specific, the second format is prompting respondents to rate the tendency to be organized relative to other people.
 
 The primary aim of the current study is to evaluate the effect of different item wording options using both between-person and within-person analyses. The study design required to evaluate this question will also allow for evaluation of test-retest reliability at the item-level. Main effects of item-wording format are not expected, though minor variability is expected depending on the content of the item stem -- the single-word descriptor. In addition, the absence of a significant main effect is likely to be a meaningful contribution for research on personality structure and assessment.
+
+# Reproducibility
+
+In an effort to facilitate the reproducibility of our findings, we have used the `renv` package to document the packages and versions used in this study and to allow others to recreate our working environment. We recommend the following steps to set up your environment before attempting to run any of the code on your local machine:
+
+  1. Use R Version 4.2.3. There are [several ways](https://support.posit.co/hc/en-us/articles/200486138-Using-Different-Versions-of-R) to change the version of R active. We found [RSwitch](https://rud.is/rswitch/) to be the easiest method for toggling between versions of R (only available for Mac).
+  
+  2. Install the `renv` package and then run the function `renv::restore`. This will read the contained `renv.lock` file to identify which packages (and versions) are necessary for this project, download the required package version from CRAN and install it on your machine. 
+  
+These two steps should ensure that our code reproduces results identical those reported in our manuscript in supplemental files. 
+
+

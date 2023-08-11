@@ -14,9 +14,10 @@
 
 <title>On item wording effects</title>
 
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -29,9 +30,6 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -224,69 +222,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -294,16 +229,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -383,18 +308,73 @@ div.tocify {
 </div>
 
 
-<p>Would you prefer to see the code and results in PDF form? <a href="supplemental-pdf/supplemental.pdf">You can download a PDF here</a>.</p>
-<div id="overview" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Overview</h1>
-<p>A fundamental assumption in the methodology of psychological assessment relates to the equivalence of self-report ratings based on single-word descriptors (typically, adjectives) and brief phrases containing the same terms (i.e., “Calm” vs “I am typically calm.”). The assumption is that seemingly trivial differences in stimuli have no effect on response patterns or the interpretations that can be made from data collected using either of these formats. Indeed, there are numerous cases where the assumption of functional equivalence is self-evident. To give another example, “Talkative” and “Talk a lot” are essentially identical.</p>
-<p>Yet, claims of equivalence based on face validity have some limits. For example, the absence of an effect due to item wording changes seems less clear for some descriptors than others. Consider being instructed to rate yourself as “active” or “warm” relative to “Tend to be active” or “Tend to be warm.” By specifically invoking tendency, the latter phrasing is more clearly prompting the respondents to rate trait-level psychological characteristics across situations, reducing the likelihood that they will respond based on transient physical (or even psychological) states. Similarly, the extent of the differences in phrasing should also be expected to increase the likelihood of a meaningful difference, i.e., “Organized” vs “I am someone who tends to be organized.” The latter format improves upon the simple adjective prompt in this case by clarifying both the trait/state ambiguity (by referencing tendency) and the lack of clarity around between-person and within-person ratings (with “… am someone who…”). To be specific, the second format is prompting respondents to rate the tendency to be organized relative to other people.</p>
-<p>The primary aim of the current study is to evaluate the effect of different item wording options using both between-person and within-person analyses. The study design required to evaluate this question will also allow for evaluation of test-retest reliability at the item-level. Main effects of item-wording format are not expected, though minor variability is expected depending on the content of the item stem – the single-word descriptor. In addition, the absence of a significant main effect is likely to be a meaningful contribution for research on personality structure and assessment.</p>
+<p>Would you prefer to see the code and results in PDF form? <a
+href="supplemental-pdf/supplemental.pdf">You can download a PDF
+here</a>.</p>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>A fundamental assumption in the methodology of psychological
+assessment relates to the equivalence of self-report ratings based on
+single-word descriptors (typically, adjectives) and brief phrases
+containing the same terms (i.e., “Calm” vs “I am typically calm.”). The
+assumption is that seemingly trivial differences in stimuli have no
+effect on response patterns or the interpretations that can be made from
+data collected using either of these formats. Indeed, there are numerous
+cases where the assumption of functional equivalence is self-evident. To
+give another example, “Talkative” and “Talk a lot” are essentially
+identical.</p>
+<p>Yet, claims of equivalence based on face validity have some limits.
+For example, the absence of an effect due to item wording changes seems
+less clear for some descriptors than others. Consider being instructed
+to rate yourself as “active” or “warm” relative to “Tend to be active”
+or “Tend to be warm.” By specifically invoking tendency, the latter
+phrasing is more clearly prompting the respondents to rate trait-level
+psychological characteristics across situations, reducing the likelihood
+that they will respond based on transient physical (or even
+psychological) states. Similarly, the extent of the differences in
+phrasing should also be expected to increase the likelihood of a
+meaningful difference, i.e., “Organized” vs “I am someone who tends to
+be organized.” The latter format improves upon the simple adjective
+prompt in this case by clarifying both the trait/state ambiguity (by
+referencing tendency) and the lack of clarity around between-person and
+within-person ratings (with “… am someone who…”). To be specific, the
+second format is prompting respondents to rate the tendency to be
+organized relative to other people.</p>
+<p>The primary aim of the current study is to evaluate the effect of
+different item wording options using both between-person and
+within-person analyses. The study design required to evaluate this
+question will also allow for evaluation of test-retest reliability at
+the item-level. Main effects of item-wording format are not expected,
+though minor variability is expected depending on the content of the
+item stem – the single-word descriptor. In addition, the absence of a
+significant main effect is likely to be a meaningful contribution for
+research on personality structure and assessment.</p>
+</div>
+<div id="reproducibility" class="section level1">
+<h1>Reproducibility</h1>
+<p>In an effort to facilitate the reproducibility of our findings, we
+have used the <code>renv</code> package to document the packages and
+versions used in this study and to allow others to recreate our working
+environment. We recommend the following steps to set up your environment
+before attempting to run any of the code on your local machine:</p>
+<ol style="list-style-type: decimal">
+<li><p>Use R Version 4.2.3. There are <a
+href="https://support.posit.co/hc/en-us/articles/200486138-Using-Different-Versions-of-R">several
+ways</a> to change the version of R active. We found <a
+href="https://rud.is/rswitch/">RSwitch</a> to be the easiest method for
+toggling between versions of R (only available for Mac).</p></li>
+<li><p>Install the <code>renv</code> package and then run the function
+<code>renv::restore</code>. This will read the contained
+<code>renv.lock</code> file to identify which packages (and versions)
+are necessary for this project, download the required package version
+from CRAN and install it on your machine.</p></li>
+</ol>
+<p>These two steps should ensure that our code reproduces results
+identical those reported in our manuscript in supplemental files.</p>
 </div>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -427,35 +407,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

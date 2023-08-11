@@ -578,7 +578,7 @@
     },
     "glmmTMB": {
       "Package": "glmmTMB",
-      "Version": "1.1.7",
+      "Version": "1.1.5",
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "7d4008c93929d644902a942392fb0ed4"
