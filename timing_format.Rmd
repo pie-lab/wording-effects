@@ -1157,7 +1157,6 @@ summary_by_item_i1 %>%
   kable_styling()
 ```
 
-
 ```{r, results = 'asis'}
 mod_by_item_i2 = items_13 %>%
   group_by(item) %>%
