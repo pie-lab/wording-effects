@@ -17,7 +17,7 @@ In this section, we test the impact of item format on three components of respon
   
 For these analyses, we use data from Blocks 1 and 2.
 
-As a reminder, the (numeric) range of options for items was 1-6. Some items are reverse-scored. Those items are `r reverse`. For the majority of the analyses in this section, we use only the items included in the MIDI scales (i.e., we exclude items included from the Big Five Mini Markers -- these are only tested in analyses related to yea-saying, below).
+As a reminder, the (numeric) range of options for items was 1-6. Some items are reverse-scored. Those items are `r reverse`. For the majority of the analyses in this section, we use only the items included in the MIDI scales (i.e., we exclude items included from the Big Five Mini Markers -- these are only tested in analyses related to acquiescent responding, below).
 
 ## Deviations from preregistration
 
@@ -94,7 +94,7 @@ plot_expected = pred.expected %>%
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
   labs(title = "Expected response",
        x = NULL, 
-       y = NULL) + theme_minimal(base_size = 15)
+       y = NULL) + theme_pubclean(base_size = 15)
 
 plot_expected
 ```
@@ -297,7 +297,7 @@ plot_extreme = pred.extreme %>% ggplot(aes(x = format, y = estimate)) +
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
   labs(title = "Likelihood of extreme responding",
        x = NULL, 
-       y = "Likelihood") + theme_minimal(base_size = 15)
+       y = "Likelihood") + theme_pubclean(base_size = 15)
 
 plot_extreme
 ```
@@ -424,9 +424,9 @@ pairwise_response_ex %>%
 ```
 
 
-## Yea-saying
+## Acquiescent responding
 
-We define _yea-saying_ as answering "somewhat accurate" (4), "accurate" (5), or "very accurate" (6) to an item. To model likelihood of yea-saying  by format, we use logistic regression. As a reminder, we reverse-scored socially desirable items during the cleaning stage. For those items, responses coded as 1, 2, or 3 represent agreement (accurate). Therefore, we code values 1, 2, and 3 as yea-saying for reverse-scored items, and values 4, 5, and 6 as yea-saying for all other items.
+We define _acquiescent responding_ as answering "somewhat accurate" (4), "accurate" (5), or "very accurate" (6) to an item. To model likelihood of acquiescent responding  by format, we use logistic regression. As a reminder, we reverse-scored socially desirable items during the cleaning stage. For those items, responses coded as 1, 2, or 3 represent agreement (accurate). Therefore, we code values 1, 2, and 3 as acquiescent responding for reverse-scored items, and values 4, 5, and 6 as acquiescent responding for all other items.
 
 For these analyses, we only used a set of matched pairs of adjectives to create balanced subsets of positively and negatively keyed items.
 
@@ -465,7 +465,7 @@ fb3_aov = fb3_aov %>%
          across(where(is.numeric), papaja::printnum))
 ```
 
-Item format was `r ifelse(fb3_sig, "associated", "unassociated")` with yea-saying $(F(`r fb3_aov$df[[fb3_loc]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[fb3_loc]]`, p = `r fb3_aov$p.value[[fb3_loc]]`)$. See Figure \@ref(fig:responsestyle28) for a visualization of this effect. We note too that yea-saying varied as a function of item $(F(`r fb3_aov$df[[2]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[2]]`, p = `r fb3_aov$p.value[[2]]`)$ and block $(F(`r fb3_aov$df[[4]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[4]]`, p = `r fb3_aov$p.value[[4]]`)$.
+Item format was `r ifelse(fb3_sig, "associated", "unassociated")` with acquiescent responding $(F(`r fb3_aov$df[[fb3_loc]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[fb3_loc]]`, p = `r fb3_aov$p.value[[fb3_loc]]`)$. See Figure \@ref(fig:responsestyle28) for a visualization of this effect. We note too that acquiescent responding varied as a function of item $(F(`r fb3_aov$df[[2]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[2]]`, p = `r fb3_aov$p.value[[2]]`)$ and block $(F(`r fb3_aov$df[[4]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[4]]`, p = `r fb3_aov$p.value[[4]]`)$.
 
 ```{r , echo = F}
 # save for power analysis
@@ -473,7 +473,7 @@ save(mod.yeasaying, items_df, file = here("objects/mod_yeasaying.Rdata"))
 ```
 
 
-```{r responsestyle28, fig.cap = "Likelihood of yea-saying to personality items by condition.", echo = F}
+```{r responsestyle28, fig.cap = "Likelihood of acquiescent responding to personality items by condition.", echo = F}
 pred.yea = predictions(mod.yeasaying, by = "format", type = "response") 
 
 plot_yea = pred.yea %>% ggplot(aes(x = format, y = estimate)) +
@@ -481,7 +481,7 @@ plot_yea = pred.yea %>% ggplot(aes(x = format, y = estimate)) +
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
   labs(title = "Likelihood of acquiescent responding",
        x = NULL, 
-       y = "Likelihood") + theme_minimal(base_size = 15)
+       y = "Likelihood") + theme_pubclean(base_size = 15)
 
 plot_yea
 ```
@@ -531,13 +531,13 @@ summary_by_item_ya %>%
         booktabs = T,
         align = c("l", rep("c", 6), rep("r",2)),
         col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df", "df2", "F", "raw", "adj"),
-        caption = "Format effects on yea-saying by item.") %>%
+        caption = "Format effects on acquiescent responding by item.") %>%
   kable_styling()
 ```
 
 ### Pairwise t-tests for significant ANOVAs
 
-When format was a significant predictor of yea-saying for an item (using the un-adjusted _p_-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.
+When format was a significant predictor of acquiescent responding for an item (using the un-adjusted _p_-value here), we follow up with pairwise comparisons of format. Here we identify the items which meet this criteria. In the manuscript proper, we will only report the results for items in which format was significant, even after applying the Holm correction.
 
 ```{r responsestyle31 }
 sig_item_ya = summary_by_item_ya %>%
@@ -586,11 +586,11 @@ pairwise_response_ya %>%
   select(item, contrast, estimate) %>% 
   pivot_wider(names_from = contrast, values_from = estimate) %>% 
   kable(booktabs = T,
-        caption = "Pairwise differences in likelihood of yea-saying by format. A = Adjective only. B = Am Adjective. C = Tend to be Adjective. D = Am someone who tends to be Adjective. * p < .05, ** p < .01, *** p < .001") %>%
+        caption = "Pairwise differences in likelihood of acquiescent responding by format. A = Adjective only. B = Am Adjective. C = Tend to be Adjective. D = Am someone who tends to be Adjective. * p < .05, ** p < .01, *** p < .001") %>%
   kable_styling()
 ```
 
-```{r responsestyle33, fig.cap = "Yea-saying by format and item. These items were significantly affected by response. A = Adjective only. B = Am Adjective. C = Tend to be Adjective. D = Am someone who tends to be Adjective." }
+```{r responsestyle33, fig.cap = "Acquiescent responding by format and item. These items were significantly affected by response. A = Adjective only. B = Am Adjective. C = Tend to be Adjective. D = Am someone who tends to be Adjective." }
 pairwise_response_ya %>% 
   select(item, means) %>% 
   unnest(cols = c(means)) %>% 
