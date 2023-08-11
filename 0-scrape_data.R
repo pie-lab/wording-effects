@@ -1,5 +1,6 @@
 library(qualtRics)
 library(tidyverse)
+library(here)
 
 
 # connect to qualtrics ----------------------------------------------------
@@ -37,8 +38,9 @@ data_t1 = data_t1 %>%
   filter(Finished)
 
 # save file
-write.csv(data_t1, file = "data/data_t1.csv", row.names = F)
-write_rds(data_t1, file = "data/data_t1.rds")
+dir.create(here("data"))
+write.csv(data_t1, file = here("data/data_t1.csv"), row.names = F)
+write_rds(data_t1, file = here("data/data_t1.rds"))
 
 # load/save time 2 survey A------------------------------------------------------
 
