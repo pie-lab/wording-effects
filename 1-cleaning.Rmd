@@ -504,9 +504,9 @@ data_t1 %>%
 
 ```{r 1-cleaning-39 }
 data_2 = data_2A %>% 
-  dplyr::full_join(data_2B) %>% 
-  dplyr::full_join(data_2C) %>% 
-  dplyr::full_join(data_2D)
+  full_join(data_2B) %>% 
+  full_join(data_2C) %>% 
+  full_join(data_2D)
 ```
 
 Rename the following columns.
