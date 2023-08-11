@@ -1094,12 +1094,12 @@ items_13 = items_df %>%
 ```
 
 ```{r}
-mod.format_b3_1 = glmmTMB(seconds_log~format + i + (1|proid),
+mod.format_b3_1 = glmmTMB(seconds_log~format + i + (1|proid) + (1|block),
                   data = items_13)
 tidy(aov(mod.format_b3_1)) %>%
   mutate(p.value = papaja::printp(p.value))
 
-mod.format_b3_2 = glmmTMB(seconds_log~format*i + (1|proid),
+mod.format_b3_2 = glmmTMB(seconds_log~format*i + (1|proid) + (1|block),
                   data = items_13)
 tidy(aov(mod.format_b3_2)) %>%
   mutate(p.value = papaja::printp(p.value))
