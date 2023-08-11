@@ -1,4 +1,3 @@
----
 title: "Device effects"
 date: "Last updated `r Sys.Date()`"
 output: 
@@ -35,7 +34,7 @@ For these analyses, we use only data collected in Block 1.
 
 ## Deviations from preregistration
 
-We were unable to extract significance values for interactions using the `aov` function, which would have tested effects using an F-test. Instead, we use `car::Anova`, which uses a $\chi^2$ test. 
+We were unable to extract significance values for interactions using the `aov` function, which would have tested effects using an F-test. Instead, we use `car::Anova`, which uses a $\chi^2$ test.
 
 ## Analyses
 
@@ -275,7 +274,7 @@ We also check whether item format moderated the relationship between device type
 ```{r device-16}
 mod.responseD2 = glmmTMB(response~devicetype*format + (1|proid), 
                   data = items_block1)
-tidy(aov(mod.responseD2))
+tidy(car::Anova(mod.responseD2))
 ```
 
 
