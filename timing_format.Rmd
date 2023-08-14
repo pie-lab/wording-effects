@@ -1117,7 +1117,7 @@ avg_predictions(mod.format_b3_2, variables = c("format", "i")) %>%
              size = 3) +
   labs(x = NULL,
        y = "seconds",
-       title = "Average responses by item formatting (Block 1 and Block 3)",
+       title = "Average response time by item formatting (Block 1 and Block 3)",
        color = "I") +
   theme_pubclean()
 ```
@@ -1224,13 +1224,13 @@ adjective_timing_i = function(adjective){
 }
 ```
 
-## Nervous
+### Nervous
 
 ```{r, fig.cap = "Average seconds to \"nervous\" by format and inclusion of i (blocks 1 and 3)" }
 adjective_timing_i("nervous")
 ```
 
-## Careless
+### Careless
 
 ```{r, fig.cap = "Average seconds to \"careless\" by format and inclusion of i (blocks 1 and 3)"}
 adjective_timing_i("careless")

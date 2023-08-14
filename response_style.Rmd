@@ -621,7 +621,7 @@ ggarrange(
 ggsave("response_style.png", height = 12, width = 6)
 ```
 
-## Effect of including "I"
+## Effect of including "I" on expected response
 
 Finally, we test whether the inclusion of the word "I" impacts item response (e.g. "I am outgoing"). We used two multilevel models, nesting response within participant to account for dependence. Our primary predictors are format and also the presence of the word "I". Because we have no specific rationale for how or why "I" would impact responses, we test both the partialled main effect of "I" as well as the interaction with format. Here, we use data from Blocks 1 and 3. Results are presented in Figure \@ref(fig:analysisFormat32) and the full distribution of responses by format and "i" are presented in Figure \@ref(fig:analysisFormat33).
 
@@ -633,70 +633,52 @@ items_13 = items_df %>%
 ```
 
 ```{r analysisFormat30}
-mod.format_b3_1 = lmer(response~format + i + (1|proid),
+mod.format_b3_1 = glmmTMB(response~format + i + (1|proid) + (1|block),
                   data = items_13)
-anova(mod.format_b3_1)
+tidy(aov(mod.format_b3_1))
 
-mod.format_b3_2 = lmer(response~format*i + (1|proid),
+mod.format_b3_2 = glmmTMB(response~format*i + (1|proid) + (1|block),
                   data = items_13)
-anova(mod.format_b3_2)
+tidy(aov(mod.format_b3_2))
 ```
 
 ```{r analysisFormat31, echo = F}
 # save for power analysis
-save(mod.format_b3_2, file = here("objects/mod_format_b3.Rdata"))
+save(mod.format_b3_1, mod.format_b3_2, file = here("objects/mod_format_b3.Rdata"))
 ```
 
 
 ```{r analysisFormat32, fig.cap = "Predicted response on personality items by condition, using only Block 1 data.", echo = F}
-plot_b3 = plot_model(mod.format_b3_2, type = "pred", terms = c("format", "i"))
-plot_b3 +
-  geom_line() +
+avg_predictions(mod.format_b3_2, variables = c("format", "i")) %>%
+  ggplot(aes(x = format, y = estimate, group = i)) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high),
+                width = .3,
+                position = position_dodge(.3)) +
+  geom_point(aes(color = i),
+             position = position_dodge(.3),
+             size = 3) +
   labs(x = NULL,
-       y = "Average response",
-       title = "Average responses by item formatting (Block 1 and Block 2)") +
+       y = "response",
+       title = "Average responses by item formatting (Block 1 and Block 3)",
+       color = "I") +
   theme_pubclean()
-```
-
-```{r analysisFormat33, echo = F, fig.cap = "Distribution of responses by category, block 1 and block 2"}
-means_by_group = items_13 %>%
-  group_by(format, i) %>%
-  summarise(m = mean(response),
-            s = sd(response))
-
-items_13 %>%
-  ggplot(aes(x = response, fill = i)) +
-  geom_histogram(bins = 6, color = "white") +
-  geom_vline(aes(xintercept = m), data = means_by_group) +
-  geom_text(aes(x = 1,
-                y = 100,
-                label = paste("M =", round(m,2),
-                              "\nSD =", round(s,2))),
-            data = means_by_group,
-            hjust =0,
-            vjust = 1) +
-  facet_grid(i~format, scales = "free") +
-  guides(fill = "none") +
-  scale_x_continuous(breaks = 1:6) +
-  labs(y = "Number of particpants",
-       title = "Distribution of responses by format and I (Block 1 and Block 2)") +
-  theme_pubr()
 ```
 
 ### One model for each adjective
 
-As before, we test both the additive (Table \@ref(tab:analysisformat34b)) and interaction (Table \@ref(tab:analysisformat35b)) terms of `format` and `i` for each item. 
+Additive effects of I (controlling for format) are summarized in Table \@ref(tab:itemi). Tests of the interaction of I with format (for each item) are summarized in Table \@ref(tab:iinteraction).
 
-```{r analysisFormat34, results = 'asis'}
-mod_by_item_i = items_13 %>%
+```{r, results = 'asis'}
+mod_by_item_i1 = items_13 %>%
   group_by(item) %>%
   nest() %>%
-  mutate(mod = map(data, ~lmer(response~format + i + (1|proid), data = .))) %>%
-  mutate(aov = map(mod, anova))
+  mutate(mod = map(data, ~glmmTMB(response~format+i + (1|proid), data = .))) %>%
+  mutate(aov = map(mod, aov)) %>%
+  ungroup()
 ```
-```{r analysisformat34b, results = 'asis', echo = F}
-summary_by_item_i = mod_by_item_i %>%
-  ungroup() %>%
+
+```{r}
+summary_by_item_i1 = mod_by_item_i1 %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
   select(item, tidy) %>%
   unnest(cols = c(tidy)) %>%
@@ -706,29 +688,28 @@ summary_by_item_i = mod_by_item_i %>%
     TRUE ~ "N"
   )) %>%
   mutate(p.adj = p.adjust(p.value, method = "holm"))
-
-summary_by_item_i %>%
-  mutate(across( starts_with("p"), printp )) %>% # format p-values
-  arrange(reverse, item) %>%
-  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>%
-  kable(digits = 2,
-        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df1", "df2", "F", "raw", "adj"),
-        booktabs = T, caption = "Effect of \"I\" (block 1 and 3 data)") %>%
-  kable_styling() %>%
-    add_header_above(c(" " = 7, "p-value" = 2))
 ```
 
+```{r , echo = F, results = 'asis'}
+summary_by_item_i1 %>%
+  arrange(reverse, item) %>%
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>%
+  kable(digits = 2, booktabs = T,
+        caption = "Additive effect of I on expected response for each item") %>%
+  kable_styling()
+```
 
-```{r analysisFormat35, results = 'asis'}
+```{r, results = 'asis'}
 mod_by_item_i2 = items_13 %>%
   group_by(item) %>%
   nest() %>%
-  mutate(mod = map(data, ~lmer(response~format*i + (1|proid), data = .))) %>%
-  mutate(aov = map(mod, anova))
+  mutate(mod = map(data, ~glmmTMB(response~format*i + (1|proid), data = .))) %>%
+  mutate(aov = map(mod, aov)) %>%
+  ungroup()
 ```
-```{r analysisformat35b, results = 'asis', echo = F}
+```{r , echo = F, results = 'asis'}
 summary_by_item_i2 = mod_by_item_i2 %>%
-  ungroup() %>%
   mutate(tidy = map(aov, broom::tidy)) %>%
   select(item, tidy) %>%
   unnest(cols = c(tidy)) %>%
@@ -740,24 +721,72 @@ summary_by_item_i2 = mod_by_item_i2 %>%
   mutate(p.adj = p.adjust(p.value, method = "holm"))
 
 summary_by_item_i2 %>%
-  mutate(across( starts_with("p"), printp )) %>% # format p-values
   arrange(reverse, item) %>%
-  select(item, reverse, sumsq, meansq, NumDF, DenDF, statistic, p.value, p.adj) %>%
-  kable(digits = 2,
-        col.names = c("Item", "Reverse\nScored?", "SS", "MS", "df1", "df2", "F", "raw", "adj"),
-        booktabs = T, caption = "Interaction of format and \"I\" (block 1 and 3 data)") %>%
-  kable_styling() %>%
-    add_header_above(c(" " = 7, "p-value" = 2))
+  mutate(across( starts_with("p"), printp )) %>% # format p-values
+  select(item, reverse, sumsq, meansq, df, statistic, p.value, p.adj) %>%
+  kable(digits = 2, booktabs = T,
+        caption = "Interaction of I with format on expected response for each item") %>%
+  kable_styling()
 ```
-
-### Pairwise t-tests for significant ANOVAs
 
 Here we identify the specific items with significant differences.
 
-```{r analysisFormat36}
-sig_item_i = summary_by_item_i %>%
+```{r}
+sig_item_b3 = summary_by_item_i2 %>%
   filter(p.value < .05)
 
-sig_item_i = sig_item_i$item
-sig_item_i
+sig_item_b3 = sig_item_b3$item
+sig_item_b3
+```
+
+```{r}
+adjective_response_i = function(adjective){
+
+  model = items_13 %>%
+    filter(item == adjective) %>%
+    filter(condition != "A") %>%
+    glmmTMB(response~format*i + (1|proid), data = .)
+
+  plot = avg_predictions(model, variables = c("format", "i")) %>%
+    ggplot(aes(x = format, y = estimate, group = i)) +
+    geom_point(aes(color = i),
+               position = position_dodge(.3),
+               size = 3) +
+    geom_errorbar(
+      aes(ymin = conf.low, ymax = conf.high),
+               position = position_dodge(.3),
+      width = .3) +
+    labs(
+      x = NULL,
+      y = "seconds",
+      title = paste0("Expected response to ", str_to_sentence(adjective))) +
+    theme_pubclean()
+
+  return(plot)
+}
+```
+
+
+#### Creative
+
+```{r, fig.cap = "Expected response to \"creative\" by format and inclusion of i (blocks 1 and 3)" }
+adjective_response_i("creative")
+```
+
+#### Sophisticated
+
+```{r, fig.cap = "Expected response to \"sophisticated\" by format and inclusion of i (blocks 1 and 3)" }
+adjective_response_i("sophisticated")
+```
+
+#### Adventurous
+
+```{r, fig.cap = "Expected response to \"adventurous\" by format and inclusion of i (blocks 1 and 3)" }
+adjective_response_i("adventurous")
+```
+
+#### Thrifty
+
+```{r, fig.cap = "Expected response to \"thrifty\" by format and inclusion of i (blocks 1 and 3)" }
+adjective_response_i("thrifty")
 ```
