@@ -100,9 +100,11 @@ item_block12 %>%
 
 ```{r pairwiseTab, results = 'asis', echo = F}
 avg_comparisons(mod.format_b1, 
-                variable = list(format = "pairwise"), 
-                p_adjust = "holm") %>% 
-  select(-term) %>% 
+                variable = list(format = "pairwise")) %>% 
+  as.data.frame() |> 
+  rename_all(tolower) |> 
+  mutate(p.value = p.adjust(p.value, method = "holm")) %>%
+  select(-term, -s.value) %>% 
   mutate(p.value = printp(p.value)) %>% 
   kable(booktabs = T, digits = 2,
         caption = "Pairwise comparisons of timing (log-seconds) across format") %>% 
@@ -167,7 +169,7 @@ adjective_timing = function(adjective){
     lm(seconds_log~format, data = .)
   
   comp = avg_comparisons(model, 
-                         variables = list(format = "pairwise")) 
+                         variables = list(format = "pairwise")) |> as.data.frame()
   comp$p.value = p.adjust(comp$p.value, method = "holm")
   
   comp = comp %>% 
@@ -211,7 +213,7 @@ active_model = adjective_timing("active")
 
 ```{r activepairs, echo = F, results = 'asis'}
 active_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = active_model$caption,
@@ -236,7 +238,7 @@ adventurous_model = adjective_timing("adventurous")
 ```
 ```{r adventurouspairs, echo = F, results = 'asis'}
 adventurous_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = adventurous_model$caption,
@@ -260,7 +262,7 @@ broadminded_model = adjective_timing("broadminded")
 ```
 ```{r broadmindedpairs, echo = F, results = 'asis'}
 broadminded_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = broadminded_model$caption,
@@ -283,7 +285,7 @@ calm_model = adjective_timing("calm")
 ```
 ```{r calmpairs, echo = F, results = 'asis'}
 calm_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = calm_model$caption,
@@ -306,7 +308,7 @@ caring_model = adjective_timing("caring")
 ```
 ```{r caringpairs, echo = F, results = 'asis'}
 caring_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = caring_model$caption,
@@ -329,7 +331,7 @@ cautious_model = adjective_timing("cautious")
 ```
 ```{r cautiouspairs, echo = F, results = 'asis'}
 cautious_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = cautious_model$caption,
@@ -352,7 +354,7 @@ cold_model = adjective_timing("cold")
 ```
 ```{r coldpairs, echo = F, results = 'asis'}
 cold_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = cold_model$caption,
@@ -375,7 +377,7 @@ creative_model = adjective_timing("creative")
 ```
 ```{r creativepairs, echo = F, results = 'asis'}
 creative_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = creative_model$caption,
@@ -398,7 +400,7 @@ curious_model = adjective_timing("curious")
 ```
 ```{r curiouspairs, echo = F, results = 'asis'}
 curious_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = curious_model$caption,
@@ -421,7 +423,7 @@ friendly_model = adjective_timing("friendly")
 ```
 ```{r friendlypairs, echo = F, results = 'asis'}
 friendly_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = friendly_model$caption,
@@ -444,7 +446,7 @@ hardworking_model = adjective_timing("hardworking")
 ```
 ```{r hardworkingpairs, echo = F, results = 'asis'}
 hardworking_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = hardworking_model$caption,
@@ -467,7 +469,7 @@ helpful_model = adjective_timing("helpful")
 ```
 ```{r helpfulpairs, echo = F, results = 'asis'}
 helpful_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = helpful_model$caption,
@@ -490,7 +492,7 @@ imaginative_model = adjective_timing("imaginative")
 ```
 ```{r imaginativepairs, echo = F, results = 'asis'}
 imaginative_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = imaginative_model$caption,
@@ -513,7 +515,7 @@ intelligent_model = adjective_timing("intelligent")
 ```
 ```{r intelligentpairs, echo = F, results = 'asis'}
 intelligent_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = intelligent_model$caption,
@@ -536,7 +538,7 @@ lively_model = adjective_timing("lively")
 ```
 ```{r livelypairs, echo = F, results = 'asis'}
 lively_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = lively_model$caption,
@@ -559,7 +561,7 @@ organized_model = adjective_timing("organized")
 ```
 ```{r organizedpairs, echo = F, results = 'asis'}
 organized_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = organized_model$caption,
@@ -582,7 +584,7 @@ outgoing_model = adjective_timing("outgoing")
 ```
 ```{r outgoingpairs, echo = F, results = 'asis'}
 outgoing_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = outgoing_model$caption,
@@ -605,7 +607,7 @@ quiet_model = adjective_timing("quiet")
 ```
 ```{r quietpairs, echo = F, results = 'asis'}
 quiet_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = quiet_model$caption,
@@ -629,7 +631,7 @@ relaxed_model = adjective_timing("relaxed")
 
 ```{r relaxedpairs, echo = F, results = 'asis'}
 relaxed_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = relaxed_model$caption,
@@ -652,7 +654,7 @@ responsible_model = adjective_timing("responsible")
 ```
 ```{r responsiblepairs, echo = F, results = 'asis'}
 responsible_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = responsible_model$caption,
@@ -675,7 +677,7 @@ selfdisciplined_model = adjective_timing("selfdisciplined")
 ```
 ```{r selfdisciplinedpairs, echo = F, results = 'asis'}
 selfdisciplined_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = selfdisciplined_model$caption,
@@ -698,7 +700,7 @@ shy_model = adjective_timing("shy")
 ```
 ```{r shypairs, echo = F, results = 'asis'}
 shy_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = shy_model$caption,
@@ -721,7 +723,7 @@ softhearted_model = adjective_timing("softhearted")
 ```
 ```{r softpairs, echo = F, results = 'asis'}
 softhearted_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = softhearted_model$caption,
@@ -744,7 +746,7 @@ sophisticated_model = adjective_timing("sophisticated")
 ```
 ```{r sophisticatedpairs, echo = F, results = 'asis'}
 sophisticated_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = sophisticated_model$caption,
@@ -768,7 +770,7 @@ sympathetic_model = adjective_timing("sympathetic")
 ```
 ```{r symppairs, echo = F, results = 'asis'}
 sympathetic_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = sympathetic_model$caption,
@@ -791,7 +793,7 @@ talkative_model = adjective_timing("talkative")
 ```
 ```{r talkativepairs, echo = F, results = 'asis'}
 talkative_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = talkative_model$caption,
@@ -814,7 +816,7 @@ thorough_model = adjective_timing("thorough")
 ```
 ```{r thoroughpairs, echo = F, results = 'asis'}
 thorough_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = thorough_model$caption,
@@ -837,7 +839,7 @@ thrifty_model = adjective_timing("thrifty")
 ```
 ```{r thriftypairs, echo = F, results = 'asis'}
 thrifty_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = thrifty_model$caption,
@@ -860,7 +862,7 @@ uncreative_model = adjective_timing("uncreative")
 ```
 ```{r uncreativepairs, echo = F, results = 'asis'}
 uncreative_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = uncreative_model$caption,
@@ -883,7 +885,7 @@ unintellectual_model = adjective_timing("unintellectual")
 ```
 ```{r unintellectualpairs, echo = F, results = 'asis'}
 unintellectual_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = unintellectual_model$caption,
@@ -907,7 +909,7 @@ unsympathetic_model = adjective_timing("unsympathetic")
 
 ```{r unsympatheticpairs, echo = F, results = 'asis'}
 unsympathetic_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = unsympathetic_model$caption,
@@ -930,7 +932,7 @@ warm_model = adjective_timing("warm")
 ```
 ```{r warmpairs, echo = F, results = 'asis'}
 warm_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = warm_model$caption,
@@ -953,7 +955,7 @@ careless_model = adjective_timing("careless")
 ```
 ```{r carelesspairs, echo = F, results = 'asis'}
 careless_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = careless_model$caption,
@@ -976,7 +978,7 @@ impulsive_model = adjective_timing("impulsive")
 ```
 ```{r impulsivepairs, echo = F, results = 'asis'}
 impulsive_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = impulsive_model$caption,
@@ -999,7 +1001,7 @@ moody_model = adjective_timing("moody")
 ```
 ```{r moodypairs, echo = F, results = 'asis'}
 moody_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = moody_model$caption,
@@ -1022,7 +1024,7 @@ nervous_model = adjective_timing("nervous")
 ```
 ```{r nervouspairs, echo = F, results = 'asis'}
 nervous_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = nervous_model$caption,
@@ -1046,7 +1048,7 @@ reckless_model = adjective_timing("reckless")
 ```
 ```{r recklesspairs, echo = F, results = 'asis'}
 reckless_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = reckless_model$caption,
@@ -1069,7 +1071,7 @@ worrying_model = adjective_timing("worrying")
 ```
 ```{r worryingpairs, echo = F, results = 'asis'}
 worrying_model$comp %>% # format p-values
-  select(-term) %>% 
+  select(-term, -s.value) %>% 
   kable(booktabs = T,
         digits = 2,
         caption = worrying_model$caption,
@@ -1091,6 +1093,8 @@ items_13 = items_df %>%
   filter(condition != "A") %>%
   filter(time2 == "yes") %>%
   filter(!is.infinite(seconds_log))
+
+items_13$format = relevel(factor(items_13$format), ref = "Am\nAdjective")
 ```
 
 ```{r}
@@ -1106,8 +1110,13 @@ tidy(aov(mod.format_b3_2)) %>%
 ```
 
 ```{r secondsi, echo = F, fig.cap = "Predicted log-seconds on personality items by condition and I, using Block 1 and Block 3 data."}
-avg_predictions(mod.format_b3_2, variables = c("format", "i")) %>%
-  mutate(across(where(is.numeric), exp)) %>%
+second_est = avg_predictions(
+  mod.format_b3_2, 
+  variables = c("format", "i"), 
+  ) %>%
+  mutate(across(where(is.numeric), exp)) 
+
+second_est %>%
   ggplot(aes(x = format, y = estimate, group = i)) +
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high),
                 width = .3,
@@ -1121,6 +1130,20 @@ avg_predictions(mod.format_b3_2, variables = c("format", "i")) %>%
        color = "I") +
   theme_pubclean()
 ```
+
+Next, we calculate present the average time per condition. 
+
+```{r, results='asis'}
+second_est |> 
+  select(format, i, estimate, conf.low, conf.high) |> 
+  mutate(across(where(is.numeric), printnum)) |> 
+  kable(
+    bookdown=T,
+    caption = "Estimated seconds by format and inclusion of I (blocks 1 and 3)"
+  ) |> 
+    kable_styling()
+```
+
 
 ### One model for each adjective
 
