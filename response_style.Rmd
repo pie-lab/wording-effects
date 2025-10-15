@@ -37,6 +37,7 @@ library(tidyverse) # for cleaning
 library(janitor) # for variable names
 library(glmmTMB) # for binomial models
 library(marginaleffects) # for comparisons
+library(effectsize) # for effect sizes
 library(car) # for correct sums of squares
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
@@ -57,7 +58,7 @@ We used a multilevel model. Our primary predictor was format. We use data from a
 
 We use the `aov` function to calculate the amount of variability in response due to format. 
 
-```{r responsestyle4 }
+```{r responsestyle4, cache = TRUE}
 mod.expected = items_df %>% 
   filter(block %in% c(1,2)) %>% 
   filter(!(item %in% bfmm)) %>% 
@@ -67,7 +68,7 @@ mod.expected = items_df %>%
 tidy(aov(mod.expected))
 ```
 
-```{r responsestyle5, echo = F}
+```{r responsestyle5, echo = F, cache = TRUE}
 fb1_aov = tidy(aov(mod.expected))
 fb1_loc = which(fb1_aov$term == "format")
 fb1_res = which(fb1_aov$term == "Residuals")
@@ -75,6 +76,44 @@ fb1_sig = fb1_aov$p.value[fb1_loc] < .05
 fb1_aov = fb1_aov %>% 
   mutate(across(starts_with("P"), papaja::printp),
          across(where(is.numeric), papaja::printnum))
+```
+
+```{r, cache = TRUE}
+items_fb1 = items_df %>% 
+  filter(block %in% c(1,2)) %>% 
+  filter(!(item %in% bfmm)) %>% 
+  select(format, response) 
+
+effectsize::hedges_g(
+  response~format, 
+  data = filter(items_fb1, format %in% c("Adjective\nOnly", "Am\nAdjective"))
+  )
+
+effectsize::hedges_g(
+  response~format, 
+  data = filter(items_fb1, format %in% c("Adjective\nOnly", "Tend to be\nAdjective"))
+  )
+
+effectsize::hedges_g(
+  response~format, 
+  data = filter(items_fb1, format %in% c("Adjective\nOnly", "Am someone\nwho tends to be\nAdjective"))
+  )
+
+effectsize::hedges_g(
+  response~format, 
+  data = filter(items_fb1, format %in% c("Am\nAdjective", "Tend to be\nAdjective"))
+  )
+
+effectsize::hedges_g(
+  response~format, 
+  data = filter(items_fb1, format %in% c("Am\nAdjective", "Am someone\nwho tends to be\nAdjective"))
+  )
+
+effectsize::hedges_g(
+  response~format, 
+  data = filter(items_fb1, format %in% c("Tend to be\nAdjective", "Am someone\nwho tends to be\nAdjective"))
+  )
+
 ```
 
 Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participants’ expected responses to personality items $(F(`r fb1_aov$df[[1]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[fb1_loc]]`, p = `r fb1_aov$p.value[[fb1_loc]]`)$. See Figure \@ref(fig:responsestyle7) for a visualization of this effect. In addition, Figure \@ref(fig:responsestyle8) shows the full distribution of responses across format. We note too that expected responses varied as a function of item $(F(`r fb1_aov$df[[2]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[2]]`, p = `r fb1_aov$p.value[[2]]`)$ but not block $(F(`r fb1_aov$df[[4]]`, `r fb1_aov$df[[fb1_res]]`) = `r fb1_aov$statistic[[4]]`, p = `r fb1_aov$p.value[[4]]`)$.
@@ -134,7 +173,7 @@ items_df %>%
 
 We repeat this analysis separately for each trait. 
 
-```{r responsestyle9, results = 'asis'}
+```{r responsestyle9, results = 'asis', cache = TRUE}
 mod_by_item = items_df %>%
   filter(block %in% c(1,2)) %>% 
   filter(!(item %in% bfmm)) %>% 
@@ -188,7 +227,7 @@ sig_item = sig_item$item
 sig_item
 ```
 
-```{r}
+```{r, cache = TRUE}
 pairwise_response = mod_by_item %>% 
   #only significant items
   filter(item %in% sig_item) %>% 
@@ -259,10 +298,11 @@ items_df = items_df %>%
   ))
 ```
 
-```{r responsestyle15}
-mod.extreme = items_df %>% 
+```{r responsestyle15, cache = TRUE}
+extreme_items = items_df %>% 
   filter(block %in% c(1,2)) %>% 
-  filter(!(item %in% bfmm)) %>% 
+  filter(!(item %in% bfmm)) 
+mod.extreme = extreme_items %>% 
   glmmTMB(extreme~format + (1|proid) + (1|item) + (1|block), 
           data = ., 
           family = "binomial")
@@ -281,6 +321,35 @@ fb2_aov = fb2_aov %>%
 
 Item format was `r ifelse(fb2_sig, "associated", "unassociated")` with extreme responding to personality items $(F(`r fb2_aov$df[[fb2_loc]]`, `r fb2_aov$df[[fb2_res]]`) = `r fb2_aov$statistic[[fb2_loc]]`, p = `r fb2_aov$p.value[[fb2_loc]]`)$. See Figure \@ref(fig:responsestyle17) for a visualization of this effect. We note too that extreme responding varied as a function of item $(F(`r fb2_aov$df[[2]]`, `r fb2_aov$df[[fb2_res]]`) = `r fb2_aov$statistic[[2]]`, p = `r fb2_aov$p.value[[2]]`)$ and block $(F(`r fb2_aov$df[[4]]`, `r fb2_aov$df[[fb2_res]]`) = `r fb2_aov$statistic[[4]]`, p = `r fb2_aov$p.value[[4]]`)$.
 
+```{r, cache = TRUE}
+effectsize::hedges_g(
+  extreme~format, 
+  data = filter(extreme_items, format %in% c("Adjective\nOnly", "Am\nAdjective"))
+)
+
+effectsize::hedges_g(
+  extreme~format, 
+  data = filter(extreme_items, format %in% c("Adjective\nOnly", "Tend to be\nAdjective"))
+)
+
+effectsize::hedges_g(
+  extreme~format, 
+  data = filter(extreme_items, format %in% c("Adjective\nOnly", "Am someone\nwho tends to be\nAdjective")))
+
+effectsize::hedges_g(
+  extreme~format, 
+  data = filter(extreme_items, format %in% c("Am\nAdjective", "Tend to be\nAdjective"))
+)
+
+effectsize::hedges_g(
+  extreme~format, 
+  data = filter(extreme_items, format %in% c("Am\nAdjective", "Am someone\nwho tends to be\nAdjective"))
+)
+
+effectsize::hedges_g(
+  extreme~format, 
+  data = filter(extreme_items, format %in% c("Tend to be\nAdjective", "Am someone\nwho tends to be\nAdjective")))
+```
 
 ```{r , echo = F}
 # save for power analysis
@@ -307,7 +376,7 @@ plot_extreme
 
 We repeat this analysis separately for each trait. 
 
-```{r responsestyle18, results = 'asis'}
+```{r responsestyle18, results = 'asis', cache = TRUE}
 mod_by_item_ex = items_df %>%
   filter(block %in% c(1,2)) %>%
   filter(!(item %in% bfmm)) %>% 
@@ -362,7 +431,7 @@ sig_item_ex
 
 Then we create models for each adjective. We use the `emmeans` package to perform pairwise comparisons, again with a Holm correction on the _p_-values. We also plot the means and 95% confidence intervals of each mean. Likelihood differences are shown in Table \@ref(tab:responsestyle23) and likelihood estimates are in Figure \@ref(fig:responsestyle24).
 
-```{r itemextreme}
+```{r itemextreme, cache = TRUE}
 pairwise_response_ex = mod_by_item_ex %>% 
   #only significant items
   filter(item %in% sig_item_ex) %>% 
@@ -440,15 +509,16 @@ items_df = items_df %>%
   ))
 ```
 
-```{r responsestyle26}
-mod.yeasaying = items_df %>% 
+```{r responsestyle26, cache = TRUE}
+yeasaying_df = items_df %>% 
   filter(block %in% c(1,2)) %>%
   filter(item %in% 
            c("outgoing", "shy", "talkative", "quiet",
              "sympathetic", "unsympathetic", "warm", "cold",
              "cautious", "careless", "responsible", "reckless",
              "worrying", "relaxed", "nervous", "calm",
-             "creative", "uncreative", "intelligent", "unintellectual")) %>% 
+             "creative", "uncreative", "intelligent", "unintellectual")) 
+mod.yeasaying = yeasaying_df %>% 
   glmmTMB(yeasaying~format + (1|proid) + (1|item) + (1|block), 
                   data = ., 
                   family = "binomial")
@@ -467,13 +537,47 @@ fb3_aov = fb3_aov %>%
 
 Item format was `r ifelse(fb3_sig, "associated", "unassociated")` with acquiescent responding $(F(`r fb3_aov$df[[fb3_loc]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[fb3_loc]]`, p = `r fb3_aov$p.value[[fb3_loc]]`)$. See Figure \@ref(fig:responsestyle28) for a visualization of this effect. We note too that acquiescent responding varied as a function of item $(F(`r fb3_aov$df[[2]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[2]]`, p = `r fb3_aov$p.value[[2]]`)$ and block $(F(`r fb3_aov$df[[4]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[4]]`, p = `r fb3_aov$p.value[[4]]`)$.
 
+```{r, cache = TRUE}
+effectsize::hedges_g(
+  yeasaying~format, 
+  data = filter(yeasaying_df, format %in% c("Adjective\nOnly", "Am\nAdjective"))
+)
+
+effectsize::hedges_g(
+  yeasaying~format, 
+  data = filter(yeasaying_df, format %in% c("Adjective\nOnly", "Tend to be\nAdjective"))
+)
+
+effectsize::hedges_g(
+  yeasaying~format, 
+  data = filter(yeasaying_df, format %in% c("Adjective\nOnly", "Am someone\nwho tends to be\nAdjective"))
+)
+
+effectsize::hedges_g(
+  yeasaying~format, 
+  data = filter(yeasaying_df, format %in% c("Am\nAdjective", "Tend to be\nAdjective"))
+)
+
+effectsize::hedges_g(
+  yeasaying~format, 
+  data = filter(yeasaying_df, format %in% c("Am\nAdjective", "Am someone\nwho tends to be\nAdjective"))
+)
+
+effectsize::hedges_g(
+  yeasaying~format, 
+  data = filter(yeasaying_df, format %in% c("Tend to be\nAdjective", "Am someone\nwho tends to be\nAdjective"))
+)
+
+```
+
+
 ```{r , echo = F}
 # save for power analysis
 save(mod.yeasaying, items_df, file = here("objects/mod_yeasaying.Rdata"))
 ```
 
 
-```{r responsestyle28, fig.cap = "Likelihood of acquiescent responding to personality items by condition.", echo = F}
+```{r responsestyle28, fig.cap = "Likelihood of acquiescent responding to personality items by condition.", echo = F, cache = TRUE}
 pred.yea = predictions(mod.yeasaying, by = "format", type = "response") 
 
 plot_yea = pred.yea %>% ggplot(aes(x = format, y = estimate)) +
@@ -630,6 +734,8 @@ items_13 = items_df %>%
   filter(block %in% c("1","3")) %>%
   filter(condition != "A") %>%
   filter(time2 == "yes")
+
+items_13$format = as.character(items_13$format)
 ```
 
 ```{r analysisFormat30}

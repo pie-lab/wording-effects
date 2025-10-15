@@ -21,6 +21,7 @@ library(janitor) # for variable names
 library(glmmTMB) # for mulitlevel modeling
 library(broom) # for tidying
 library(marginaleffects) # for comparisons
+library(effectsize) # for effect sizes
 library(ggpubr) # for prettier plots
 library(kableExtra) # for nicer tablesgi
 library(papaja) # for formatting numbers
@@ -44,6 +45,33 @@ mod.format_b1 = glmmTMB(seconds_log~format + (1|block) + (1|proid),
                   data = item_block12)
 
 tidy(aov(mod.format_b1))
+```
+
+```{r}
+effectsize::hedges_g(
+  seconds_log ~ format, 
+  data = filter(item_block12, format %in% c("Adjective\nOnly", "Am\nAdjective"))
+)
+effectsize::hedges_g(
+  seconds_log ~ format, 
+  data = filter(item_block12, format %in% c("Adjective\nOnly", "Tend to be\nAdjective")))
+
+effectsize::hedges_g(
+  seconds_log ~ format, 
+  data = filter(item_block12, format %in% c("Adjective\nOnly", "Am someone\nwho tends to be\nAdjective")))
+
+effectsize::hedges_g(
+  seconds_log ~ format, 
+  data = filter(item_block12, format %in% c("Am\nAdjective", "Tend to be\nAdjective")))
+
+effectsize::hedges_g(
+  seconds_log ~ format, 
+  data = filter(item_block12, format %in% c("Am\nAdjective", "Am someone\nwho tends to be\nAdjective")))
+
+effectsize::hedges_g(
+  seconds_log ~ format, 
+  data = filter(item_block12, format %in% c("Tend to be\nAdjective", "Am someone\nwho tends to be\nAdjective")))
+
 ```
 
 ```{r timingmod1, echo = F, fig.cap = "Predictions by condition, using only Block 1 data. Figure A shows log seconds, Figure B shows raw seconds."}
@@ -99,15 +127,22 @@ item_block12 %>%
 
 
 ```{r pairwiseTab, results = 'asis', echo = F}
-avg_comparisons(mod.format_b1, 
-                variable = list(format = "pairwise")) %>% 
+format_b1_comp = avg_comparisons(mod.format_b1, 
+                variable = list(format = "pairwise")) 
+                
+format_b1_comp %>% 
   as.data.frame() |> 
-  rename_all(tolower) |> 
-  mutate(p.value = p.adjust(p.value, method = "holm")) %>%
+  mutate(
+    p.value = p.adjust(p.value, method = "holm"),
+    p.value = printp(p.value),
+    across(where(is.numeric), printnum)
+    ) %>%
   select(-term, -s.value) %>% 
-  mutate(p.value = printp(p.value)) %>% 
-  kable(booktabs = T, digits = 2,
-        caption = "Pairwise comparisons of timing (log-seconds) across format") %>% 
+  kable(
+    booktabs = T, 
+    digits = 2, 
+    caption = "Pairwise comparisons of timing (log-seconds) across format"
+    ) %>% 
   kable_styling()
 ```
 
@@ -1107,6 +1142,13 @@ mod.format_b3_2 = glmmTMB(seconds_log~format*i + (1|proid) + (1|block),
                   data = items_13)
 tidy(aov(mod.format_b3_2)) %>%
   mutate(p.value = papaja::printp(p.value))
+```
+
+```{r}
+effectsize::hedges_g(
+  seconds_log ~ i,
+  data = items_13
+)
 ```
 
 ```{r secondsi, echo = F, fig.cap = "Predicted log-seconds on personality items by condition and I, using Block 1 and Block 3 data."}

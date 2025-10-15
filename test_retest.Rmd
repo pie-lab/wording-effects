@@ -11,7 +11,7 @@ We also evaluated test-retest reliability within formats (within session and ove
 We also considered the effect of performance on the word recall task on retest reliability.
 
 
-```{r test-retest-1, include = FALSE}
+```{r test-retest-1, include = FALSE, eval=F}
 knitr::opts_chunk$set(warning = F, message = F)
 is_pdf = "pdf_document" %in% rmarkdown::all_output_formats(knitr::current_input())
 is_html = !is_pdf
@@ -80,10 +80,9 @@ items_matchb1 = items_matchb1 %>%
 
 To estimate the reliability coefficients, we use a multilevel model, predicting the latter block from the earlier one. These models nest responses within participant, allowing us to estimate standard errors which account for the dependency of scores. Results are shown in Table \@ref(tab:testretest7b).
 
-```{r test-retest-7, results = ifelse(is_html, "asis", "hide")}
+```{r test-retest-7, results = "hide"}
 tr_mod1_b1b2 = glmmTMB(block_2 ~ block_1 + (1 |proid), data = items_matchb1)
 tr_mod1_b1b3 = glmmTMB(block_3 ~ block_1 + (1 |proid), data = items_matchb1)
-
 ```
 
 ```{r testretest7b, results = 'asis', echo = F}
