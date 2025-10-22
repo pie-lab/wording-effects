@@ -16,6 +16,7 @@ knitr::opts_chunk$set(warning = F, message = F)
 ```{r, echo = F}
 library(here) # for working with files
 library(tidyverse) # for cleaning
+library(effectsize) # for effect sizes
 library(janitor) # for variable names
 library(sjPlot) # for figures
 library(ggpubr) # for prettier plots
@@ -37,6 +38,37 @@ First, we test whether participants enjoyed their experience as a function of fo
 ```{r}
 mod_enjoy_1 = lm(enjoy_responding ~ format, data = enjoy_df)
 car::Anova(mod_enjoy_1)
+```
+
+```{r}
+effectsize::hedges_g(
+  enjoy_responding ~ format, 
+  data = filter(enjoy_df, format %in% c("Adjective\nOnly", "Am\nAdjective")
+))
+
+effectsize::hedges_g(
+  enjoy_responding ~ format, 
+  data = filter(enjoy_df, format %in% c("Adjective\nOnly", "Tend to be\nAdjective")))
+
+effectsize::hedges_g(
+  enjoy_responding ~ format, 
+  data = filter(enjoy_df, format %in% c("Adjective\nOnly", "Am someone\nwho tends to be\nAdjective")
+))
+
+effectsize::hedges_g(
+  enjoy_responding ~ format, 
+  data = filter(enjoy_df, format %in% c("Am\nAdjective", "Tend to be\nAdjective")
+))
+
+effectsize::hedges_g(
+  enjoy_responding ~ format, 
+  data = filter(enjoy_df, format %in% c("Am\nAdjective", "Am someone\nwho tends to be\nAdjective")
+))
+
+effectsize::hedges_g(
+  enjoy_responding ~ format, 
+  data = filter(enjoy_df, format %in% c("Tend to be\nAdjective", "Am someone\nwho tends to be\nAdjective")
+))
 ```
 
 Participants did not vary in their enjoyment of the survey as a function of item format. See \@ref(fig:enjoyFormat).
