@@ -125,7 +125,10 @@ save(mod.expected, file = here("objects/mod_expected.Rdata"))
 
 
 ```{r responsestyle7, fig.cap = "Predicted response on personality items by condition.", echo = F}
-pred.expected = predictions(mod.expected, by = "format", type = "response") 
+pred.expected = predictions(mod.expected, 
+                            by = "format", 
+                            type = "response",
+                            re.form=NA) 
 
 plot_expected = pred.expected %>% 
   ggplot(aes(x = format, y = estimate)) +
@@ -535,7 +538,7 @@ fb3_aov = fb3_aov %>%
          across(where(is.numeric), papaja::printnum))
 ```
 
-Item format was `r ifelse(fb3_sig, "associated", "unassociated")` with acquiescent responding $(F(`r fb3_aov$df[[fb3_loc]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[fb3_loc]]`, p = `r fb3_aov$p.value[[fb3_loc]]`)$. See Figure \@ref(fig:responsestyle28) for a visualization of this effect. We note too that acquiescent responding varied as a function of item $(F(`r fb3_aov$df[[2]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[2]]`, p = `r fb3_aov$p.value[[2]]`)$ and block $(F(`r fb3_aov$df[[4]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[4]]`, p = `r fb3_aov$p.value[[4]]`)$.
+Item format was `r ifelse(fb3_sig, "associated", "unassociated")` with acquiescent responding $(F(`r fb3_aov$df[[fb3_loc]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[fb3_loc]]`, p = `r fb3_aov$p.value[[fb3_loc]]`)$. See Figure \@ref(fig:responsestyle28) for a visualization of this effect. We note too that acquiescent responding varied as a function of item $(F(`r fb3_aov$df[[2]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[2]]`, p = `r fb3_aov$p.value[[2]]`)$ but not block $(F(`r fb3_aov$df[[4]]`, `r fb3_aov$df[[fb3_res]]`) = `r fb3_aov$statistic[[4]]`, p = `r fb3_aov$p.value[[4]]`)$.
 
 ```{r, cache = TRUE}
 effectsize::hedges_g(
@@ -769,6 +772,14 @@ avg_predictions(mod.format_b3_2, variables = c("format", "i")) %>%
        color = "I") +
   theme_pubclean()
 ```
+
+```{r}
+effectsize::hedges_g(
+  response~i, 
+  data = items_13
+  )
+```
+
 
 ### One model for each adjective
 

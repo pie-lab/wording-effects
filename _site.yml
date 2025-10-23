@@ -29,6 +29,6 @@ navbar:
     - icon: fa-github
       href: https://github.com/pie-lab/wording-effects
 output:
-  html_document:
+  bookdown::html_document2:
     lib_dir: site_libs
     self_contained: no

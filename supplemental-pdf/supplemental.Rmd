@@ -4,6 +4,7 @@ date: "Last updated `r Sys.Date()`"
 output: 
   bookdown::pdf_document2:
     toc: TRUE
+    fig_caption: true
 ---
 
 \renewcommand{\thetable}{S\arabic{table}} 
@@ -35,7 +36,7 @@ if (!requireNamespace("remotes"))
   install.packages("remotes")
 if (!requireNamespace("renv"))
   remotes::install_github("rstudio/renv")
-renv::restore()
+#renv::restore() # uncomment this line to restore package versions
 
 # Install devtools package if necessary
 if(!"devtools" %in% rownames(installed.packages())) install.packages("devtools")
@@ -52,7 +53,7 @@ library(here)
 
 # Cleaning
 
-```{r, child = here("1-cleaning.Rmd")}
+```{r, child = here("cleaning.Rmd")}
 ```
 
 \newpage

@@ -74,10 +74,10 @@ effectsize::hedges_g(
 Participants did not vary in their enjoyment of the survey as a function of item format. See \@ref(fig:enjoyFormat).
 
 ```{r enjoyFormat, fig.cap = "Predicted enjoyment by item format"}
-plot_model(mod_enjoy_1, type = "pred", show.data = T, jitter = T)$format +
-  labs(x = NULL, 
-       title = NULL,
-       y = "Average enjoyment")
+plot_model(mod_enjoy_1, type = "pred", show.data = T, jitter = T) +
+  labs(x = NULL,
+       y = "Average enjoyment",
+       title = NULL)
 ```
 
 We also test whether this is a function of device type and the interaction of device type with format. 
@@ -88,6 +88,26 @@ car::Anova(mod_enjoy_2)
 ```
 
 Participants did not enjoy differently by device type. 
+
+```{r}
+hedges_g(
+  enjoy_responding ~ devicetype, 
+  data = filter(enjoy_df,
+    devicetype %in% c("Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)", "Mobile")))
+
+
+hedges_g(
+  enjoy_responding ~ devicetype, 
+  data = filter(enjoy_df,
+    devicetype %in% c("Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)", "Desktop or laptop computer"))
+)
+
+hedges_g(
+  enjoy_responding ~ devicetype, 
+  data = filter(enjoy_df,
+    devicetype %in% c("Mobile", "Desktop or laptop computer"))
+)
+```
 
 ```{r}
 mod_enjoy_3 = lm(enjoy_responding ~ format*devicetype, data = enjoy_df)
@@ -107,12 +127,38 @@ mod_design_1 = lm(well_designed_study ~ format, data = enjoy_df)
 car::Anova(mod_design_1)
 ```
 
+```{r}
+hedges_g(
+  well_designed_study ~ format, 
+  data = filter(enjoy_df, format %in% c("Adjective\nOnly", "Am\nAdjective")))
+
+hedges_g(
+  well_designed_study ~ format, 
+  data = filter(enjoy_df, format %in% c("Adjective\nOnly", "Tend to be\nAdjective")))
+
+hedges_g(
+  well_designed_study ~ format, 
+  data = filter(enjoy_df, format %in% c("Adjective\nOnly", "Am someone\nwho tends to be\nAdjective")))
+
+hedges_g(
+  well_designed_study ~ format, 
+  data = filter(enjoy_df, format %in% c("Am\nAdjective", "Tend to be\nAdjective")))
+
+hedges_g(
+  well_designed_study ~ format, 
+  data = filter(enjoy_df, format %in% c("Am\nAdjective", "Am someone\nwho tends to be\nAdjective")))
+
+hedges_g(
+  well_designed_study ~ format, 
+  data = filter(enjoy_df, format %in% c("Tend to be\nAdjective", "Am someone\nwho tends to be\nAdjective")))
+```
+
 Participants did not vary in their perception of the survey as a function of device type. See \@ref(fig:designFormat).
 
 ```{r designFormat, fig.cap = "Predicted design perception by item format"}
-plot_model(mod_design_1, type = "pred", show.data = T, jitter = T)$format +
-  labs(x = NULL, 
-       y = "Average designment", 
+plot_model(mod_design_1, type = "pred", show.data = T, jitter = T) +
+  labs(x = NULL,
+       y = "Average perception",
        title = NULL)
 ```
 
@@ -124,6 +170,25 @@ car::Anova(mod_design_2)
 ```
 
 Participants did perceive the design of the study differently by format. We explore this more here:
+
+```{r}
+hedges_g(
+  well_designed_study ~ devicetype, 
+  data = filter(enjoy_df,
+    devicetype %in% c("Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)", "Mobile")))
+
+hedges_g(
+  well_designed_study ~ devicetype, 
+  data = filter(enjoy_df,
+    devicetype %in% c("Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)", "Desktop or laptop computer"))
+)
+
+hedges_g(
+  well_designed_study ~ devicetype, 
+  data = filter(enjoy_df,
+    devicetype %in% c("Mobile", "Desktop or laptop computer"))
+)
+```
 
 ```{r}
 emmeans(mod_design_2, pairwise~"devicetype", adjust = "none")

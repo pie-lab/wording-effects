@@ -168,6 +168,23 @@ items_block1 %>%
   theme_pubr()
 ```
 
+```{r}
+hedges_g(
+  timing ~ devicetype, 
+  data = filter(items_block1, devicetype %in% c("Tablet", "Mobile"))
+)
+
+hedges_g(
+  timing ~ devicetype, 
+  data = filter(items_block1, devicetype %in% c("Tablet", "Computer"))
+)
+
+hedges_g(
+  timing ~ devicetype, 
+  data = filter(items_block1, devicetype %in% c("Computer", "Mobile"))
+  )
+```
+
 ### Device by format
 
 We also check to see whether device type and format interact in the prediction of time to answer personality items.
@@ -265,6 +282,23 @@ items_block1 %>%
   labs(y = "Number of particpants",
        title = "Distribution of responses by format") +
   theme_pubr()
+```
+
+```{r}
+hedges_g(
+  response ~ devicetype, 
+  data = filter(items_block1, devicetype %in% c("Tablet", "Mobile"))
+)
+
+hedges_g(
+  response ~ devicetype, 
+  data = filter(items_block1, devicetype %in% c("Tablet", "Computer"))
+)
+
+hedges_g(
+  response ~ devicetype, 
+  data = filter(items_block1, devicetype %in% c("Computer", "Mobile"))
+)
 ```
 
 ### Device by format

@@ -1,608 +1,768 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
-<html>
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
 
-<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta charset="utf-8" />
-<meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
-
-
-
+<meta name="dcterms.date" content="2025-10-22">
 
 <title>Does item format impact experience?</title>
-
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
-<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<style>h1 {font-size: 34px;}
-       h1.title {font-size: 38px;}
-       h2 {font-size: 30px;}
-       h3 {font-size: 24px;}
-       h4 {font-size: 18px;}
-       h5 {font-size: 16px;}
-       h6 {font-size: 12px;}
-       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
-       pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
-
-<style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
-
-<style type="text/css">code{white-space: pre;}</style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
 }
-</script>
-
-
-
-
-
-
-
-
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-img {
-  max-width:100%;
-}
-.tabbed-pane {
-  padding-top: 12px;
-}
-.html-widget {
-  margin-bottom: 20px;
-}
-button.code-folding-btn:focus {
-  outline: none;
-}
-summary {
-  display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
-}
-pre code {
-  padding: 0;
-}
-</style>
-
-
-<style type="text/css">
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu>.dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  border-radius: 0 6px 6px 6px;
-}
-.dropdown-submenu:hover>.dropdown-menu {
-  display: block;
-}
-.dropdown-submenu>a:after {
-  display: block;
-  content: " ";
-  float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-  border-left-color: #adb5bd;
-}
-.dropdown-submenu.pull-left {
-  float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  border-radius: 6px 0 6px 6px;
-}
-</style>
-
-<script type="text/javascript">
-// manage active state of menu based on current page
-$(document).ready(function () {
-  // active menu anchor
-  href = window.location.pathname
-  href = href.substr(href.lastIndexOf('/') + 1)
-  if (href === "")
-    href = "index.html";
-  var menuAnchor = $('a[href="' + href + '"]');
-
-  // mark the anchor link active (and if it's in a dropdown, also mark that active)
-  var dropdown = menuAnchor.closest('li.dropdown');
-  if (window.bootstrap) { // Bootstrap 4+
-    menuAnchor.addClass('active');
-    dropdown.find('> .dropdown-toggle').addClass('active');
-  } else { // Bootstrap 3
-    menuAnchor.parent().addClass('active');
-    dropdown.addClass('active');
-  }
-
-  // Navbar adjustments
-  var navHeight = $(".navbar").first().height() + 15;
-  var style = document.createElement('style');
-  var pt = "padding-top: " + navHeight + "px; ";
-  var mt = "margin-top: -" + navHeight + "px; ";
-  var css = "";
-  // offset scroll position for anchor links (for fixed navbar)
-  for (var i = 1; i <= 6; i++) {
-    css += ".section h" + i + "{ " + pt + mt + "}\n";
-  }
-  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
-  document.head.appendChild(style);
-});
-</script>
-
-<!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-  background-color: transparent;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
-<!-- code folding -->
-
-
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
 @media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
   }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
 </style>
 
+
+<script src="subjective_files/libs/clipboard/clipboard.min.js"></script>
+<script src="subjective_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="subjective_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="subjective_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="subjective_files/libs/quarto-html/popper.min.js"></script>
+<script src="subjective_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="subjective_files/libs/quarto-html/anchor.min.js"></script>
+<link href="subjective_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="subjective_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="subjective_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="subjective_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="subjective_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
 
-<body>
+<body class="fullcontent quarto-light">
 
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 
-<div class="container-fluid main-container">
+<main class="content" id="quarto-document-content">
 
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Does item format impact experience?</h1>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
+<div class="quarto-title-meta">
 
-
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">On item wording effects</a>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 22, 2025</p>
     </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li>
-  <a href="1-cleaning.html">Data cleaning</a>
-</li>
-<li>
-  <a href="descriptives.html">Descriptives</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Analysis
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="response_style.html">Does item formatting affect response style?</a>
-    </li>
-    <li>
-      <a href="internal.html">Does item formatting affect internal consistency?</a>
-    </li>
-    <li>
-      <a href="test_retest.html">Does item formatting affect test-retest reliability?</a>
-    </li>
-    <li>
-      <a href="timing_format.html">Does timing differ across format?</a>
-    </li>
-    <li>
-      <a href="device.html">Does device type affect response and timing?</a>
-    </li>
-    <li>
-      <a href="subjective.html">Does item formatting affect participant survey enjoyment?</a>
-    </li>
-  </ul>
-</li>
-<li>
-  <a href="power.html">Power analysis</a>
-</li>
-<li>
-  <a href="workspace.html">R version and packages</a>
-</li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/pie-lab/wording-effects">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container -->
-</div><!--/.navbar -->
-
-<div id="header">
+  </div>
+  
+    
+  </div>
+  
 
 
-
-<h1 class="title toc-ignore">Does item format impact experience?</h1>
-<h4 class="date">Last updated 2023-08-11</h4>
-
-</div>
+</header>
 
 
 <p>These analyses test whether item format affects participants’ subjective experiences of participating in personality surveys.</p>
-<div id="enjoyment" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Enjoyment</h2>
+<section id="enjoyment" class="level2">
+<h2 class="anchored" data-anchor-id="enjoyment">Enjoyment</h2>
 <p>First, we test whether participants enjoyed their experience as a function of format. The item participants rated was:</p>
 <p>“Overall, I am enjoying responding to the present survey.”</p>
-<pre class="r"><code>mod_enjoy_1 = lm(enjoy_responding ~ format, data = enjoy_df)
-car::Anova(mod_enjoy_1)</code></pre>
-<pre><code>## Anova Table (Type II tests)
-## 
-## Response: enjoy_responding
-##            Sum Sq  Df F value Pr(&gt;F)
-## format       5.21   3  1.6494 0.1764
-## Residuals 1022.53 971</code></pre>
-<p>Participants did not vary in their enjoyment of the survey as a function of item format. See <a href="#fig:enjoyFormat">1</a>.</p>
-<pre class="r"><code>plot_model(mod_enjoy_1, type = &quot;pred&quot;, show.data = T, jitter = T)$format +
-  labs(x = NULL, 
-       title = NULL,
-       y = &quot;Average enjoyment&quot;)</code></pre>
-<div class="figure"><span style="display:block;" id="fig:enjoyFormat"></span>
-<img src="subjective_files/figure-html/enjoyFormat-1.png" alt="Predicted enjoyment by item format" width="672" />
-<p class="caption">
-Figure 1: Predicted enjoyment by item format
-</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>mod_enjoy_1 <span class="ot">=</span> <span class="fu">lm</span>(enjoy_responding <span class="sc">~</span> format, <span class="at">data =</span> enjoy_df)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod_enjoy_1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type II tests)
+
+Response: enjoy_responding
+           Sum Sq  Df F value Pr(&gt;F)
+format       5.21   3  1.6494 0.1764
+Residuals 1022.53 971               </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>effectsize<span class="sc">::</span><span class="fu">hedges_g</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  enjoy_responding <span class="sc">~</span> format, </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">filter</span>(enjoy_df, format <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Adjective</span><span class="sc">\n</span><span class="st">Only"</span>, <span class="st">"Am</span><span class="sc">\n</span><span class="st">Adjective"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Hedges' g |        95% CI
+-------------------------
+-0.11     | [-0.29, 0.07]
+
+- Estimated using pooled SD.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>effectsize<span class="sc">::</span><span class="fu">hedges_g</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  enjoy_responding <span class="sc">~</span> format, </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">filter</span>(enjoy_df, format <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Adjective</span><span class="sc">\n</span><span class="st">Only"</span>, <span class="st">"Tend to be</span><span class="sc">\n</span><span class="st">Adjective"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Hedges' g |        95% CI
+-------------------------
+-0.04     | [-0.21, 0.14]
+
+- Estimated using pooled SD.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>effectsize<span class="sc">::</span><span class="fu">hedges_g</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  enjoy_responding <span class="sc">~</span> format, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">filter</span>(enjoy_df, format <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Adjective</span><span class="sc">\n</span><span class="st">Only"</span>, <span class="st">"Am someone</span><span class="sc">\n</span><span class="st">who tends to be</span><span class="sc">\n</span><span class="st">Adjective"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Hedges' g |         95% CI
+--------------------------
+-0.18     | [-0.36,  0.00]
+
+- Estimated using pooled SD.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>effectsize<span class="sc">::</span><span class="fu">hedges_g</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  enjoy_responding <span class="sc">~</span> format, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">filter</span>(enjoy_df, format <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Am</span><span class="sc">\n</span><span class="st">Adjective"</span>, <span class="st">"Tend to be</span><span class="sc">\n</span><span class="st">Adjective"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Hedges' g |        95% CI
+-------------------------
+0.08      | [-0.10, 0.26]
+
+- Estimated using pooled SD.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>effectsize<span class="sc">::</span><span class="fu">hedges_g</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  enjoy_responding <span class="sc">~</span> format, </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">filter</span>(enjoy_df, format <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Am</span><span class="sc">\n</span><span class="st">Adjective"</span>, <span class="st">"Am someone</span><span class="sc">\n</span><span class="st">who tends to be</span><span class="sc">\n</span><span class="st">Adjective"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Hedges' g |        95% CI
+-------------------------
+-0.07     | [-0.25, 0.11]
+
+- Estimated using pooled SD.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>effectsize<span class="sc">::</span><span class="fu">hedges_g</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  enjoy_responding <span class="sc">~</span> format, </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">filter</span>(enjoy_df, format <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Tend to be</span><span class="sc">\n</span><span class="st">Adjective"</span>, <span class="st">"Am someone</span><span class="sc">\n</span><span class="st">who tends to be</span><span class="sc">\n</span><span class="st">Adjective"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Hedges' g |        95% CI
+-------------------------
+-0.15     | [-0.33, 0.02]
+
+- Estimated using pooled SD.</code></pre>
+</div>
+</div>
+<p>Participants did not vary in their enjoyment of the survey as a function of item format. See @ref(fig:enjoyFormat).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_model</span>(mod_enjoy_1, <span class="at">type =</span> <span class="st">"pred"</span>, <span class="at">show.data =</span> T, <span class="at">jitter =</span> T) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average enjoyment"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="cn">NULL</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="subjective_files/figure-html/enjoyFormat-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Predicted enjoyment by item format</figcaption>
+</figure>
+</div>
+</div>
 </div>
 <p>We also test whether this is a function of device type and the interaction of device type with format.</p>
-<pre class="r"><code>mod_enjoy_2 = lm(enjoy_responding ~ devicetype, data = enjoy_df)
-car::Anova(mod_enjoy_2)</code></pre>
-<pre><code>## Anova Table (Type II tests)
-## 
-## Response: enjoy_responding
-##             Sum Sq  Df F value Pr(&gt;F)
-## devicetype    2.97   2  1.4074 0.2453
-## Residuals  1024.77 972</code></pre>
-<p>Participants did not enjoy differently by device type.</p>
-<pre class="r"><code>mod_enjoy_3 = lm(enjoy_responding ~ format*devicetype, data = enjoy_df)
-car::Anova(mod_enjoy_3, type = &quot;3&quot;)</code></pre>
-<pre><code>## Anova Table (Type III tests)
-## 
-## Response: enjoy_responding
-##                   Sum Sq  Df   F value              Pr(&gt;F)    
-## (Intercept)       4228.5   1 4016.2580 &lt;0.0000000000000002 ***
-## format               5.5   3    1.7313              0.1589    
-## devicetype           4.0   2    1.9136              0.1481    
-## format:devicetype    5.6   6    0.8803              0.5087    
-## Residuals         1013.9 963                                  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>The relationship of item format to enjoyment did not vary as a function of device type.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mod_enjoy_2 <span class="ot">=</span> <span class="fu">lm</span>(enjoy_responding <span class="sc">~</span> devicetype, <span class="at">data =</span> enjoy_df)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod_enjoy_2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type II tests)
+
+Response: enjoy_responding
+            Sum Sq  Df F value Pr(&gt;F)
+devicetype    2.97   2  1.4074 0.2453
+Residuals  1024.77 972               </code></pre>
 </div>
-<div id="perception-of-survey-design" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Perception of survey design</h2>
+</div>
+<p>Participants did not enjoy differently by device type.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mod_enjoy_3 <span class="ot">=</span> <span class="fu">lm</span>(enjoy_responding <span class="sc">~</span> format<span class="sc">*</span>devicetype, <span class="at">data =</span> enjoy_df)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod_enjoy_3, <span class="at">type =</span> <span class="st">"3"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type III tests)
+
+Response: enjoy_responding
+                  Sum Sq  Df   F value Pr(&gt;F)    
+(Intercept)       4228.5   1 4016.2580 &lt;2e-16 ***
+format               5.5   3    1.7313 0.1589    
+devicetype           4.0   2    1.9136 0.1481    
+format:devicetype    5.6   6    0.8803 0.5087    
+Residuals         1013.9 963                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The relationship of item format to enjoyment did not vary as a function of device type.</p>
+</section>
+<section id="perception-of-survey-design" class="level2">
+<h2 class="anchored" data-anchor-id="perception-of-survey-design">Perception of survey design</h2>
 <p>Next, we test whether participants viewed the survey differently as a function of format. The item participants rated was:</p>
 <p>“Overall, I think the present survey is well designed.”</p>
-<pre class="r"><code>mod_design_1 = lm(well_designed_study ~ format, data = enjoy_df)
-car::Anova(mod_design_1)</code></pre>
-<pre><code>## Anova Table (Type II tests)
-## 
-## Response: well_designed_study
-##           Sum Sq  Df F value Pr(&gt;F)
-## format      2.88   3  1.2581 0.2875
-## Residuals 741.65 971</code></pre>
-<p>Participants did not vary in their perception of the survey as a function of device type. See <a href="#fig:designFormat">2</a>.</p>
-<pre class="r"><code>plot_model(mod_design_1, type = &quot;pred&quot;, show.data = T, jitter = T)$format +
-  labs(x = NULL, 
-       y = &quot;Average designment&quot;, 
-       title = NULL)</code></pre>
-<div class="figure"><span style="display:block;" id="fig:designFormat"></span>
-<img src="subjective_files/figure-html/designFormat-1.png" alt="Predicted design perception by item format" width="672" />
-<p class="caption">
-Figure 2: Predicted design perception by item format
-</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>mod_design_1 <span class="ot">=</span> <span class="fu">lm</span>(well_designed_study <span class="sc">~</span> format, <span class="at">data =</span> enjoy_df)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod_design_1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type II tests)
+
+Response: well_designed_study
+          Sum Sq  Df F value Pr(&gt;F)
+format      2.88   3  1.2581 0.2875
+Residuals 741.65 971               </code></pre>
+</div>
+</div>
+<p>Participants did not vary in their perception of the survey as a function of device type. See @ref(fig:designFormat).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_model</span>(mod_design_1, <span class="at">type =</span> <span class="st">"pred"</span>, <span class="at">show.data =</span> T, <span class="at">jitter =</span> T) <span class="sc">+</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average perception"</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="cn">NULL</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="subjective_files/figure-html/designFormat-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Predicted design perception by item format</figcaption>
+</figure>
+</div>
+</div>
 </div>
 <p>We also test whether this is a function of device type and the interaction of devicetype with format.</p>
-<pre class="r"><code>mod_design_2 = lm(well_designed_study ~ devicetype, data = enjoy_df)
-car::Anova(mod_design_2)</code></pre>
-<pre><code>## Anova Table (Type II tests)
-## 
-## Response: well_designed_study
-##            Sum Sq  Df F value  Pr(&gt;F)  
-## devicetype   4.73   2  3.1071 0.04518 *
-## Residuals  739.81 972                  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mod_design_2 <span class="ot">=</span> <span class="fu">lm</span>(well_designed_study <span class="sc">~</span> devicetype, <span class="at">data =</span> enjoy_df)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod_design_2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type II tests)
+
+Response: well_designed_study
+           Sum Sq  Df F value  Pr(&gt;F)  
+devicetype   4.73   2  3.1071 0.04518 *
+Residuals  739.81 972                  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
 <p>Participants did perceive the design of the study differently by format. We explore this more here:</p>
-<pre class="r"><code>emmeans(mod_design_2, pairwise~&quot;devicetype&quot;, adjust = &quot;none&quot;)</code></pre>
-<pre><code>## $emmeans
-##  devicetype                                                   emmean     SE  df
-##  Desktop or laptop computer                                     5.20 0.0322 972
-##  Mobile                                                         5.36 0.0615 972
-##  Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)   5.08 0.1415 972
-##  lower.CL upper.CL
-##      5.14     5.27
-##      5.24     5.48
-##      4.80     5.36
-## 
-## Confidence level used: 0.95 
-## 
-## $contrasts
-##  contrast                                                                                 
-##  Desktop or laptop computer - Mobile                                                      
-##  Desktop or laptop computer - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)
-##  Mobile - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)                    
-##  estimate     SE  df t.ratio p.value
-##    -0.156 0.0694 972  -2.243  0.0251
-##     0.123 0.1451 972   0.851  0.3950
-##     0.279 0.1543 972   1.810  0.0707</code></pre>
-<pre class="r"><code>emmeans(mod_design_2, pairwise~&quot;devicetype&quot;, adjust = &quot;holm&quot;)</code></pre>
-<pre><code>## $emmeans
-##  devicetype                                                   emmean     SE  df
-##  Desktop or laptop computer                                     5.20 0.0322 972
-##  Mobile                                                         5.36 0.0615 972
-##  Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)   5.08 0.1415 972
-##  lower.CL upper.CL
-##      5.14     5.27
-##      5.24     5.48
-##      4.80     5.36
-## 
-## Confidence level used: 0.95 
-## 
-## $contrasts
-##  contrast                                                                                 
-##  Desktop or laptop computer - Mobile                                                      
-##  Desktop or laptop computer - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)
-##  Mobile - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)                    
-##  estimate     SE  df t.ratio p.value
-##    -0.156 0.0694 972  -2.243  0.0753
-##     0.123 0.1451 972   0.851  0.3950
-##     0.279 0.1543 972   1.810  0.1413
-## 
-## P value adjustment: holm method for 3 tests</code></pre>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>(mod_design_2, pairwise<span class="sc">~</span><span class="st">"devicetype"</span>, <span class="at">adjust =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$emmeans
+ devicetype                                                   emmean     SE  df
+ Desktop or laptop computer                                     5.20 0.0322 972
+ Mobile                                                         5.36 0.0615 972
+ Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)   5.08 0.1420 972
+ lower.CL upper.CL
+     5.14     5.27
+     5.24     5.48
+     4.80     5.36
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast                                                                                 
+ Desktop or laptop computer - Mobile                                                      
+ Desktop or laptop computer - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)
+ Mobile - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)                    
+ estimate     SE  df t.ratio p.value
+   -0.156 0.0694 972  -2.243  0.0251
+    0.123 0.1450 972   0.851  0.3950
+    0.279 0.1540 972   1.810  0.0707</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>(mod_design_2, pairwise<span class="sc">~</span><span class="st">"devicetype"</span>, <span class="at">adjust =</span> <span class="st">"holm"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$emmeans
+ devicetype                                                   emmean     SE  df
+ Desktop or laptop computer                                     5.20 0.0322 972
+ Mobile                                                         5.36 0.0615 972
+ Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)   5.08 0.1420 972
+ lower.CL upper.CL
+     5.14     5.27
+     5.24     5.48
+     4.80     5.36
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast                                                                                 
+ Desktop or laptop computer - Mobile                                                      
+ Desktop or laptop computer - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)
+ Mobile - Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)                    
+ estimate     SE  df t.ratio p.value
+   -0.156 0.0694 972  -2.243  0.0753
+    0.123 0.1450 972   0.851  0.3950
+    0.279 0.1540 972   1.810  0.1413
+
+P value adjustment: holm method for 3 tests </code></pre>
+</div>
+</div>
 <p>Participants perceive the design to be better on mobile devices than on desktop or laptop computers; however, after correcting for multiple comparisons, this effect is no longer significant.</p>
-<pre class="r"><code>mod_design_3 = lm(well_designed_study ~ format*devicetype, data = enjoy_df)
-car::Anova(mod_design_3, type = &quot;3&quot;)</code></pre>
-<pre><code>## Anova Table (Type III tests)
-## 
-## Response: well_designed_study
-##                   Sum Sq  Df   F value              Pr(&gt;F)    
-## (Intercept)       4718.2   1 6182.4022 &lt;0.0000000000000002 ***
-## format               1.8   3    0.7901              0.4995    
-## devicetype           0.9   2    0.5640              0.5691    
-## format:devicetype    1.9   6    0.4124              0.8711    
-## Residuals          734.9 963                                  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>mod_design_3 <span class="ot">=</span> <span class="fu">lm</span>(well_designed_study <span class="sc">~</span> format<span class="sc">*</span>devicetype, <span class="at">data =</span> enjoy_df)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod_design_3, <span class="at">type =</span> <span class="st">"3"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type III tests)
+
+Response: well_designed_study
+                  Sum Sq  Df   F value Pr(&gt;F)    
+(Intercept)       4718.2   1 6182.4022 &lt;2e-16 ***
+format               1.8   3    0.7901 0.4995    
+devicetype           0.9   2    0.5640 0.5691    
+format:devicetype    1.9   6    0.4124 0.8711    
+Residuals          734.9 963                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
 <p>The relationship of item format to survey design enjoyment did not vary as a function of device type.</p>
-</div>
+</section>
 
-
-
-</div>
-</div>
-
-</div>
-
-<script>
-
-// add bootstrap table styles to pandoc tables
-function bootstrapStylePandocTables() {
-  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
-}
-$(document).ready(function () {
-  bootstrapStylePandocTables();
-});
-
-
-</script>
-
-<!-- tabsets -->
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open');
-  });
-});
-</script>
-
-<!-- code folding -->
-
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    options.showAndHide = true;
-    options.smoothScroll = true;
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
 
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 
-</body>
-</html>
+
+</body></html>
