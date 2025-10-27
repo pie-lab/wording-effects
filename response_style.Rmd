@@ -123,20 +123,35 @@ Item format was `r ifelse(fb1_sig, "associated", "unassociated")` with participa
 save(mod.expected, file = here("objects/mod_expected.Rdata"))
 ```
 
+### Plot
 
 ```{r responsestyle7, fig.cap = "Predicted response on personality items by condition.", echo = F}
 pred.expected = predictions(mod.expected, 
                             by = "format", 
-                            type = "response",
-                            re.form=NA) 
+                            type = "response")
 
 plot_expected = pred.expected %>% 
-  ggplot(aes(x = format, y = estimate)) +
-  geom_point(stat = "identity", size = 2) +
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
+  tibble() %>%
+  mutate(format = case_when(format == "Adjective\nOnly" ~ "Adjective\nOnly",
+                            format == "Am\nAdjective" ~ "\"Am\" +\nAdjective",
+                            format == "Tend to be\nAdjective" ~ "\"Tend to be\" +\nAdjective",
+                            format == "Am someone\nwho tends to be\nAdjective" ~ "\"Am someone who\ntends to be\" +\nAdjective")) %>%
+  mutate(format = factor(format, levels = format)) %>%
+  ggplot(aes(x = format, y = estimate, color = format)) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0, lwd = 1.05) +
+  geom_point(aes(color = NULL), stat = "identity", size = 3.5, color = "black") +
+  geom_point(stat = "identity", size = 3) +
   labs(title = "Expected response",
        x = NULL, 
-       y = NULL) + theme_pubclean(base_size = 15)
+       y = NULL) + 
+  coord_cartesian(ylim = c(4.1, 4.7)) +
+  scale_color_manual(values = c("#5293BB", "#3776A1", "#185886", "#003A6B")) +
+  scale_y_continuous(breaks = seq(4.10, 4.70, by = .10),
+                     labels = sprintf("%.2f",seq(4.10, 4.70, by = .10))) +
+  theme_pubclean(base_size = 15) +
+  theme(legend.position = "none",
+        title = element_text(face = "bold", size = 12))
+  
 
 plot_expected
 ```
@@ -359,17 +374,37 @@ effectsize::hedges_g(
 save(mod.extreme, items_df, file = here("objects/mod_extreme.Rdata"))
 ```
 
-
+### Plot
 
 ```{r responsestyle17, fig.cap = "Predicted response on personality items by condition.", echo = F}
-pred.extreme = predictions(mod.extreme, by = "format", type = "response") 
+pred.extreme = predictions(mod.extreme, 
+                           by = "format", 
+                           type = "response")
 
-plot_extreme = pred.extreme %>% ggplot(aes(x = format, y = estimate)) +
-  geom_point(stat = "identity", size = 2) +
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
+plot_extreme = pred.extreme %>% 
+  tibble() %>%
+  mutate(format = case_when(format == "Adjective\nOnly" ~ "Adjective\nOnly",
+                            format == "Am\nAdjective" ~ "\"Am\" +\nAdjective",
+                            format == "Tend to be\nAdjective" ~ "\"Tend to be\" +\nAdjective",
+                            format == "Am someone\nwho tends to be\nAdjective" ~ "\"Am someone who\ntends to be\" +\nAdjective")) %>%
+  mutate(format = factor(format, levels = format)) %>%
+  ggplot(aes(x = format, y = estimate, color = format)) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0, lwd = 1.05) +
+  geom_point(aes(color = NULL), stat = "identity", size = 3.5, color = "black") +
+  geom_point(stat = "identity", size = 3) +
   labs(title = "Likelihood of extreme responding",
        x = NULL, 
-       y = "Likelihood") + theme_pubclean(base_size = 15)
+       y = NULL) + 
+  coord_cartesian(ylim = c(.15, .25)) +
+  scale_y_continuous(breaks = seq(.15, .25, by = .02),
+                     labels = sprintf("%.2f", seq(.15, .25, by = .02))) +
+  # coord_cartesian(ylim = c(.22, .32)) +
+  # scale_y_continuous(breaks = seq(.22, .32, by = .02),
+  #                    labels = sprintf("%.2f", seq(.22, .32, by = .02))) +
+  scale_color_manual(values = c("#5293BB", "#3776A1", "#185886", "#003A6B")) +
+  theme_pubclean(base_size = 15) +
+  theme(legend.position = "none",
+        title = element_text(face = "bold", size = 12))
 
 plot_extreme
 ```
@@ -579,16 +614,34 @@ effectsize::hedges_g(
 save(mod.yeasaying, items_df, file = here("objects/mod_yeasaying.Rdata"))
 ```
 
+### Plot
 
 ```{r responsestyle28, fig.cap = "Likelihood of acquiescent responding to personality items by condition.", echo = F, cache = TRUE}
-pred.yea = predictions(mod.yeasaying, by = "format", type = "response") 
+pred.yea = predictions(mod.yeasaying, 
+                       by = "format", 
+                       type = "response")
 
-plot_yea = pred.yea %>% ggplot(aes(x = format, y = estimate)) +
-  geom_point(stat = "identity", size = 2) +
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
+plot_yea = pred.yea %>% 
+  tibble() %>%
+  mutate(format = case_when(format == "Adjective\nOnly" ~ "Adjective\nOnly",
+                            format == "Am\nAdjective" ~ "\"Am\" +\nAdjective",
+                            format == "Tend to be\nAdjective" ~ "\"Tend to be\" +\nAdjective",
+                            format == "Am someone\nwho tends to be\nAdjective" ~ "\"Am someone who\ntends to be\" +\nAdjective")) %>%
+  mutate(format = factor(format, levels = format)) %>%
+  ggplot(aes(x = format, y = estimate, color = format)) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0, lwd = 1.05) +
+  geom_point(aes(color = NULL), stat = "identity", size = 3.5, color = "black") +
+  geom_point(stat = "identity", size = 3) +
   labs(title = "Likelihood of acquiescent responding",
        x = NULL, 
-       y = "Likelihood") + theme_pubclean(base_size = 15)
+       y = NULL) + 
+  coord_cartesian(ylim = c(.55, .80)) +
+  scale_color_manual(values = c("#5293BB", "#3776A1", "#185886", "#003A6B")) +
+  scale_y_continuous(breaks = seq(.55, .80, by = .05),
+                     labels = sprintf("%.2f",seq(.55, .80, by = .05))) +
+  theme_pubclean(base_size = 15) +
+  theme(legend.position = "none",
+        title = element_text(face = "bold", size = 12))
 
 plot_yea
 ```
@@ -725,7 +778,7 @@ ggarrange(
   plot_yea, labels = c("A", "B", "C"),
   align = "hv",
   ncol = 1)
-ggsave("response_style.png", height = 12, width = 6)
+ggsave("response_style.png", height = 8, width = 8)
 ```
 
 ## Effect of including "I" on expected response
@@ -749,6 +802,10 @@ tidy(aov(mod.format_b3_1))
 mod.format_b3_2 = glmmTMB(response~format*i + (1|proid) + (1|block),
                   data = items_13)
 tidy(aov(mod.format_b3_2))
+
+effectsize::hedges_g(
+  response~i,
+  data = items_13)
 ```
 
 ```{r analysisFormat31, echo = F}
