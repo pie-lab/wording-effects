@@ -90,19 +90,19 @@ car::Anova(mod_enjoy_2)
 Participants did not enjoy differently by device type. 
 
 ```{r}
-hedges_g(
+effectsize::hedges_g(
   enjoy_responding ~ devicetype, 
   data = filter(enjoy_df,
     devicetype %in% c("Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)", "Mobile")))
 
 
-hedges_g(
+effectsize::hedges_g(
   enjoy_responding ~ devicetype, 
   data = filter(enjoy_df,
     devicetype %in% c("Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)", "Desktop or laptop computer"))
 )
 
-hedges_g(
+effectsize::hedges_g(
   enjoy_responding ~ devicetype, 
   data = filter(enjoy_df,
     devicetype %in% c("Mobile", "Desktop or laptop computer"))
@@ -128,27 +128,27 @@ car::Anova(mod_design_1)
 ```
 
 ```{r}
-hedges_g(
+effectsize::hedges_g(
   well_designed_study ~ format, 
   data = filter(enjoy_df, format %in% c("Adjective\nOnly", "Am\nAdjective")))
 
-hedges_g(
+effectsize::hedges_g(
   well_designed_study ~ format, 
   data = filter(enjoy_df, format %in% c("Adjective\nOnly", "Tend to be\nAdjective")))
 
-hedges_g(
+effectsize::hedges_g(
   well_designed_study ~ format, 
   data = filter(enjoy_df, format %in% c("Adjective\nOnly", "Am someone\nwho tends to be\nAdjective")))
 
-hedges_g(
+effectsize::hedges_g(
   well_designed_study ~ format, 
   data = filter(enjoy_df, format %in% c("Am\nAdjective", "Tend to be\nAdjective")))
 
-hedges_g(
+effectsize::hedges_g(
   well_designed_study ~ format, 
   data = filter(enjoy_df, format %in% c("Am\nAdjective", "Am someone\nwho tends to be\nAdjective")))
 
-hedges_g(
+effectsize::hedges_g(
   well_designed_study ~ format, 
   data = filter(enjoy_df, format %in% c("Tend to be\nAdjective", "Am someone\nwho tends to be\nAdjective")))
 ```
@@ -162,28 +162,28 @@ plot_model(mod_design_1, type = "pred", show.data = T, jitter = T) +
        title = NULL)
 ```
 
-We also test whether this is a function of device type and the interaction of devicetype with format. 
+We also test whether this is a function of device type and the interaction of device type with format. 
 
 ```{r}
 mod_design_2 = lm(well_designed_study ~ devicetype, data = enjoy_df)
 car::Anova(mod_design_2)
 ```
 
-Participants did perceive the design of the study differently by format. We explore this more here:
+Participants did perceive the design of the study differently by device type. We explore this more here:
 
 ```{r}
-hedges_g(
+effectsize::hedges_g(
   well_designed_study ~ devicetype, 
   data = filter(enjoy_df,
     devicetype %in% c("Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)", "Mobile")))
 
-hedges_g(
+effectsize::hedges_g(
   well_designed_study ~ devicetype, 
   data = filter(enjoy_df,
     devicetype %in% c("Tablet (for example, iPad, Galaxy Tablet, Amazon Fire, etc.)", "Desktop or laptop computer"))
 )
 
-hedges_g(
+effectsize::hedges_g(
   well_designed_study ~ devicetype, 
   data = filter(enjoy_df,
     devicetype %in% c("Mobile", "Desktop or laptop computer"))
