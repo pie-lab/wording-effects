@@ -163,17 +163,41 @@ format_split = format_data %>%
 ```
 
 ```{r internal12b, echo = F, fig.cap = "Distribution of split-half reliabilities"}
-format_split %>% 
+plot_internal = format_split %>% 
   mutate(sh_est = map(splithalf, "raw")) %>% 
   select(variable, condition, sh_est) %>% 
   unnest(cols = c(sh_est)) %>% 
+  mutate(condition = case_when(condition == "D" ~ "Format 4",
+                               condition == "C" ~ "Format 3",
+                               condition == "B" ~ "Format 2",
+                               condition == "A" ~ "Format 1")) %>%
+  # mutate(condition = case_when(condition == "D" ~ "\"Am someone who tends to be\" + Adjective",
+  #                              condition == "C" ~ "\"Tend to be\" + Adjective",
+  #                              condition == "B" ~ "\"Am\" + Adjective",
+  #                              condition == "A" ~ "Adjective Only")) %>%
+  # mutate(condition = factor(condition, levels = c("Adjective Only", "\"Am\" + Adjective", "\"Tend to be\" + Adjective", "\"Am someone who tends to be\" + Adjective"))) %>%
+  mutate(variable  = case_when(variable == "Agree" ~ "Agreeableness",
+                               variable == "Consc" ~ "Conscientiousness",
+                               variable == "Extra" ~ "Extraversion",
+                               variable == "Neuro" ~ "Neuroticism",
+                               variable == "Openn" ~ "Openness")) %>%
   ggplot(aes(x = sh_est, y = condition, fill = condition)) +
   geom_density_ridges() +
-  facet_wrap(~variable) +
+  facet_wrap(~variable, axes = "all_x") +
+  coord_cartesian(xlim = c(.4, 1), ylim = c(1.5, 5.3)) +
+  scale_x_continuous(breaks = seq(.4, 1, .1), labels = sprintf("%.1f", seq(.4, 1, .1))) +
+  scale_fill_manual(values = c("#5293BB", "#3776A1", "#185886", "#003A6B")) +
   labs(x = "Internal consistency",
        y = NULL) +
   guides(fill = "none") +
-  theme_pubclean()
+  theme_pubclean(base_size = 15) +
+  theme(strip.text = element_text(face = "bold", size = 14),
+        strip.background = element_blank(),
+        axis.title.x = element_text(margin = margin(t = 5)))
+
+plot_internal
+
+ggsave("internal.png", height = 6, width = 9)
 ```
 
 
