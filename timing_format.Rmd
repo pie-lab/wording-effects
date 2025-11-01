@@ -74,29 +74,61 @@ effectsize::hedges_g(
 
 ```
 
+### Plots
+
 ```{r timingmod1, echo = F, fig.cap = "Predictions by condition, using only Block 1 data. Figure A shows log seconds, Figure B shows raw seconds."}
 
 plot_b1 = predictions(mod.format_b1, by = "format", type = "response") 
 
 logplot = plot_b1 %>% 
-  ggplot(aes(x = format, y = estimate)) +
-  geom_point(stat = "identity") +
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .5) +
+  tibble() %>%
+  mutate(format = case_when(format == "Adjective\nOnly" ~ "Adjective\nOnly",
+                            format == "Am\nAdjective" ~ "\"Am\" +\nAdjective",
+                            format == "Tend to be\nAdjective" ~ "\"Tend to be\" +\nAdjective",
+                            format == "Am someone\nwho tends to be\nAdjective" ~ "\"Am someone who\ntends to be\" +\nAdjective")) %>%
+  mutate(format = factor(format, levels = format)) %>%
+  ggplot(aes(x = format, y = estimate, color = format)) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0, lwd = 1.05) +
+  geom_point(aes(color = NULL), stat = "identity", size = 3.5, color = "black") +
+  geom_point(stat = "identity", size = 3) +
+  coord_cartesian(ylim = c(.5, .9)) +
+  scale_y_continuous(breaks = seq(.5, .9, by = .1),
+                     labels = sprintf("%.2f",seq(.5, .9, by = .1))) +
+  scale_color_manual(values = c("#5293BB", "#3776A1", "#185886", "#003A6B")) +
   labs(x = NULL, 
        y = "Average time\n(log seconds)") +
-  theme_pubclean()
+  theme_pubclean(base_size = 15) +
+  theme(legend.position = "none",
+        title = element_text(face = "bold", size = 12),
+        axis.title.y = element_text(angle = 0, vjust = 0.5, margin = margin(r = 10)))
 
 rawplot = plot_b1 %>% 
   mutate(predicted = exp(estimate),
          conf.low = exp(conf.low),
          conf.high = exp(conf.high)) %>% 
-  ggplot(aes(x = format, y = predicted)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .2) + 
+  tibble() %>%
+  mutate(format = case_when(format == "Adjective\nOnly" ~ "Adjective\nOnly",
+                            format == "Am\nAdjective" ~ "\"Am\" +\nAdjective",
+                            format == "Tend to be\nAdjective" ~ "\"Tend to be\" +\nAdjective",
+                            format == "Am someone\nwho tends to be\nAdjective" ~ "\"Am someone who\ntends to be\" +\nAdjective")) %>%
+  mutate(format = factor(format, levels = format)) %>%
+  ggplot(aes(x = format, y = predicted, color = format)) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0, lwd = 1.05) +
+  geom_point(aes(color = NULL), stat = "identity", size = 3.5, color = "black") +
+  geom_point(stat = "identity", size = 3) +
+  coord_cartesian(ylim = c(1.6, 2.4)) +
+  scale_y_continuous(breaks = seq(1.6, 2.4, by = .2),
+                     labels = sprintf("%.2f",seq(1.6, 2.4, by = .2))) +
+  scale_color_manual(values = c("#5293BB", "#3776A1", "#185886", "#003A6B")) +
   labs(x = NULL, y = "Average time\n(seconds)", title = NULL) +
-  theme_pubclean()
+  theme_pubclean(base_size = 15) +
+  theme(legend.position = "none",
+        title = element_text(face = "bold", size = 12),
+        axis.title.y = element_text(angle = 0, vjust = 0.5, margin = margin(r = 10)))
 
 ggarrange(logplot, rawplot, ncol = 1, labels = c("A", "B"))
+
+ggsave("timing_format.png", height = 4.5, width = 9)
 ```
 
 
