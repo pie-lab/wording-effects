@@ -135,6 +135,10 @@ tD_aov = tD_aov %>%
 Device type was `r ifelse(tD_sig, "associated", "unassociated")` with the time it took to respond to personality items $(\chi^2(`r tD_aov$df[[1]]`) = `r tD_aov$statistic[[1]]`, p = `r tD_aov$p.value[[1]]`)$.
 
 ```{r device-7, fig.cap = "Predicted timing on personality items by condition."}
+pred.timing = predictions(mod.timing, 
+                            by = "devicetype", 
+                            type = "response")
+
 avg_predictions(mod.timing, variables = "devicetype") %>%
   mutate(
     across(where(is.numeric), exp)
@@ -169,17 +173,17 @@ items_block1 %>%
 ```
 
 ```{r}
-hedges_g(
+effectsize::hedges_g(
   timing ~ devicetype, 
   data = filter(items_block1, devicetype %in% c("Tablet", "Mobile"))
 )
 
-hedges_g(
+effectsize::hedges_g(
   timing ~ devicetype, 
   data = filter(items_block1, devicetype %in% c("Tablet", "Computer"))
 )
 
-hedges_g(
+effectsize::hedges_g(
   timing ~ devicetype, 
   data = filter(items_block1, devicetype %in% c("Computer", "Mobile"))
   )
@@ -252,6 +256,10 @@ rD_aov = rD_aov %>%
 When examining both Block 1 and Block 2 data, device type was `r ifelse(rD_sig, "associated", "unassociated")` with the time it took to respond to personality items $(\chi^2(`r rD_aov$df[[1]]`) = `r rD_aov$statistic[[1]]`, p = `r rD_aov$p.value[[1]]`)$.
 
 ```{r device-14, fig.cap = "Predicted response on personality items by condition."}
+pred.responseD = predictions(mod.responseD, 
+                            by = "devicetype", 
+                            type = "response")
+
 avg_predictions(mod.responseD, variables = "devicetype") %>% 
   ggplot(aes(x = devicetype, y = estimate)) +
   geom_bar(stat = "identity", fill = "grey") + 
@@ -285,17 +293,17 @@ items_block1 %>%
 ```
 
 ```{r}
-hedges_g(
+effectsize::hedges_g(
   response ~ devicetype, 
   data = filter(items_block1, devicetype %in% c("Tablet", "Mobile"))
 )
 
-hedges_g(
+effectsize::hedges_g(
   response ~ devicetype, 
   data = filter(items_block1, devicetype %in% c("Tablet", "Computer"))
 )
 
-hedges_g(
+effectsize::hedges_g(
   response ~ devicetype, 
   data = filter(items_block1, devicetype %in% c("Computer", "Mobile"))
 )
