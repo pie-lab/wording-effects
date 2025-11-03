@@ -85,7 +85,7 @@ logplot = plot_b1 %>%
   mutate(format = case_when(format == "Adjective\nOnly" ~ "Adjective\nOnly",
                             format == "Am\nAdjective" ~ "\"Am\" +\nAdjective",
                             format == "Tend to be\nAdjective" ~ "\"Tend to be\" +\nAdjective",
-                            format == "Am someone\nwho tends to be\nAdjective" ~ "\"Am someone who\ntends to be\" +\nAdjective")) %>%
+                            format == "Am someone\nwho tends to be\nAdjective" ~ "\"See myself as someone\nwho tends to be\" +\nAdjective")) %>%
   mutate(format = factor(format, levels = format)) %>%
   ggplot(aes(x = format, y = estimate, color = format)) +
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0, lwd = 1.05) +
@@ -110,7 +110,7 @@ rawplot = plot_b1 %>%
   mutate(format = case_when(format == "Adjective\nOnly" ~ "Adjective\nOnly",
                             format == "Am\nAdjective" ~ "\"Am\" +\nAdjective",
                             format == "Tend to be\nAdjective" ~ "\"Tend to be\" +\nAdjective",
-                            format == "Am someone\nwho tends to be\nAdjective" ~ "\"Am someone who\ntends to be\" +\nAdjective")) %>%
+                            format == "Am someone\nwho tends to be\nAdjective" ~ "\"See myself as someone\nwho tends to be\" +\nAdjective")) %>%
   mutate(format = factor(format, levels = format)) %>%
   ggplot(aes(x = format, y = predicted, color = format)) +
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0, lwd = 1.05) +
