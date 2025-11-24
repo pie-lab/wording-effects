@@ -44,83 +44,87 @@
 \contentsline {section}{\numberline {4}Does item format affect response style?}{38}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Deviations from preregistration}{38}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Expected response}{38}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}One model for each adjective}{40}{subsubsection.4.2.1}%
-\contentsline {subsubsection}{\numberline {4.2.2}Pairwise t-tests for significant ANOVAs}{43}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Plot}{40}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}One model for each adjective}{40}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}Pairwise t-tests for significant ANOVAs}{44}{subsubsection.4.2.3}%
 \contentsline {subsection}{\numberline {4.3}Extreme responding}{46}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}One model for each adjective}{48}{subsubsection.4.3.1}%
-\contentsline {subsubsection}{\numberline {4.3.2}Pairwise t-tests for significant ANOVAs}{51}{subsubsection.4.3.2}%
+\contentsline {subsubsection}{\numberline {4.3.1}Plot}{48}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}One model for each adjective}{48}{subsubsection.4.3.2}%
+\contentsline {subsubsection}{\numberline {4.3.3}Pairwise t-tests for significant ANOVAs}{51}{subsubsection.4.3.3}%
 \contentsline {subsection}{\numberline {4.4}Acquiescent responding}{54}{subsection.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.1}One model for each adjective}{56}{subsubsection.4.4.1}%
-\contentsline {subsubsection}{\numberline {4.4.2}Pairwise t-tests for significant ANOVAs}{57}{subsubsection.4.4.2}%
+\contentsline {subsubsection}{\numberline {4.4.1}Plot}{56}{subsubsection.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.2}One model for each adjective}{56}{subsubsection.4.4.2}%
+\contentsline {subsubsection}{\numberline {4.4.3}Pairwise t-tests for significant ANOVAs}{57}{subsubsection.4.4.3}%
 \contentsline {subsection}{\numberline {4.5}All tests}{62}{subsection.4.5}%
 \contentsline {subsection}{\numberline {4.6}Effect of including ``I'' on expected response}{63}{subsection.4.6}%
-\contentsline {subsubsection}{\numberline {4.6.1}One model for each adjective}{63}{subsubsection.4.6.1}%
+\contentsline {subsubsection}{\numberline {4.6.1}One model for each adjective}{65}{subsubsection.4.6.1}%
 \contentsline {paragraph}{\numberline {4.6.1.1}Creative}{68}{figure.18}%
 \contentsline {paragraph}{\numberline {4.6.1.2}Sophisticated}{68}{figure.19}%
-\contentsline {paragraph}{\numberline {4.6.1.3}Adventurous}{70}{figure.20}%
-\contentsline {paragraph}{\numberline {4.6.1.4}Thrifty}{70}{figure.21}%
-\contentsline {section}{\numberline {5}Does the internal consistency and reliability of Big Five traits vary by item wording?}{72}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Calculate Cronbach's alpha for each format}{72}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Alpha}{73}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Split-half reliability}{73}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}Omega}{76}{subsection.5.4}%
-\contentsline {section}{\numberline {6}Does the test-retest reliability of personality items change as a function of item wording?}{77}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Test-retest reliability (all items pooled)}{77}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Test-retest reliability (all items pooled, moderated by memory)}{78}{subsection.6.2}%
-\contentsline {subsubsection}{\numberline {6.2.1}Block 1/Block 2}{78}{subsubsection.6.2.1}%
-\contentsline {subsubsection}{\numberline {6.2.2}Block 1/Block 3}{79}{subsubsection.6.2.2}%
-\contentsline {subsection}{\numberline {6.3}Test-retest reliability (all items pooled, by format)}{79}{subsection.6.3}%
-\contentsline {subsubsection}{\numberline {6.3.1}Block 1/Block 2}{80}{subsubsection.6.3.1}%
-\contentsline {subsubsection}{\numberline {6.3.2}Block 1/Block 3}{81}{subsubsection.6.3.2}%
-\contentsline {subsection}{\numberline {6.4}Test-retest reliability (items separated, by format)}{81}{subsection.6.4}%
-\contentsline {section}{\numberline {7}How does format affect timing of responses?}{85}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Effect of format on timing (Blocks 1 and 2 data)}{85}{subsection.7.1}%
-\contentsline {subsubsection}{\numberline {7.1.1}One model for each adjective}{89}{subsubsection.7.1.1}%
-\contentsline {subsubsection}{\numberline {7.1.2}Pairwise t-tests for significant ANOVAs}{89}{subsubsection.7.1.2}%
-\contentsline {subsubsection}{\numberline {7.1.3}Active}{91}{subsubsection.7.1.3}%
-\contentsline {subsubsection}{\numberline {7.1.4}Adventurous}{91}{subsubsection.7.1.4}%
-\contentsline {subsubsection}{\numberline {7.1.5}Broadminded}{91}{subsubsection.7.1.5}%
-\contentsline {subsubsection}{\numberline {7.1.6}Calm}{94}{subsubsection.7.1.6}%
-\contentsline {subsubsection}{\numberline {7.1.7}Caring}{96}{subsubsection.7.1.7}%
-\contentsline {subsubsection}{\numberline {7.1.8}Cautious}{96}{subsubsection.7.1.8}%
-\contentsline {subsubsection}{\numberline {7.1.9}Cold}{97}{subsubsection.7.1.9}%
-\contentsline {subsubsection}{\numberline {7.1.10}Creative}{99}{subsubsection.7.1.10}%
-\contentsline {subsubsection}{\numberline {7.1.11}Curious}{99}{subsubsection.7.1.11}%
-\contentsline {subsubsection}{\numberline {7.1.12}Friendly}{100}{subsubsection.7.1.12}%
-\contentsline {subsubsection}{\numberline {7.1.13}Hardworking}{102}{subsubsection.7.1.13}%
-\contentsline {subsubsection}{\numberline {7.1.14}Helpful}{102}{subsubsection.7.1.14}%
-\contentsline {subsubsection}{\numberline {7.1.15}Imaginative}{103}{subsubsection.7.1.15}%
-\contentsline {subsubsection}{\numberline {7.1.16}Intelligent}{105}{subsubsection.7.1.16}%
-\contentsline {subsubsection}{\numberline {7.1.17}Lively}{105}{subsubsection.7.1.17}%
-\contentsline {subsubsection}{\numberline {7.1.18}Organized}{106}{subsubsection.7.1.18}%
-\contentsline {subsubsection}{\numberline {7.1.19}Outgoing}{108}{subsubsection.7.1.19}%
-\contentsline {subsubsection}{\numberline {7.1.20}Quiet}{108}{subsubsection.7.1.20}%
-\contentsline {subsubsection}{\numberline {7.1.21}Relaxed}{109}{subsubsection.7.1.21}%
-\contentsline {subsubsection}{\numberline {7.1.22}Responsible}{111}{subsubsection.7.1.22}%
-\contentsline {subsubsection}{\numberline {7.1.23}Self-disciplined}{111}{subsubsection.7.1.23}%
-\contentsline {subsubsection}{\numberline {7.1.24}Shy}{112}{subsubsection.7.1.24}%
-\contentsline {subsubsection}{\numberline {7.1.25}Soft-hearted}{114}{subsubsection.7.1.25}%
-\contentsline {subsubsection}{\numberline {7.1.26}Sophisticated}{114}{subsubsection.7.1.26}%
-\contentsline {subsubsection}{\numberline {7.1.27}Sympathetic}{115}{subsubsection.7.1.27}%
-\contentsline {subsubsection}{\numberline {7.1.28}Talkative}{117}{subsubsection.7.1.28}%
-\contentsline {subsubsection}{\numberline {7.1.29}Thorough}{117}{subsubsection.7.1.29}%
-\contentsline {subsubsection}{\numberline {7.1.30}Thrifty}{118}{subsubsection.7.1.30}%
-\contentsline {subsubsection}{\numberline {7.1.31}Uncreative}{120}{subsubsection.7.1.31}%
-\contentsline {subsubsection}{\numberline {7.1.32}Unintellectual}{120}{subsubsection.7.1.32}%
-\contentsline {subsubsection}{\numberline {7.1.33}Unsympathetic}{121}{subsubsection.7.1.33}%
-\contentsline {subsubsection}{\numberline {7.1.34}Warm}{123}{subsubsection.7.1.34}%
-\contentsline {subsubsection}{\numberline {7.1.35}Careless}{123}{subsubsection.7.1.35}%
-\contentsline {subsubsection}{\numberline {7.1.36}Impulsive}{124}{subsubsection.7.1.36}%
-\contentsline {subsubsection}{\numberline {7.1.37}Moody}{126}{subsubsection.7.1.37}%
-\contentsline {subsubsection}{\numberline {7.1.38}Nervous}{126}{subsubsection.7.1.38}%
-\contentsline {subsubsection}{\numberline {7.1.39}Reckless}{127}{subsubsection.7.1.39}%
-\contentsline {subsubsection}{\numberline {7.1.40}Worrying}{129}{subsubsection.7.1.40}%
-\contentsline {subsection}{\numberline {7.2}Inclusion of ``I'' (Blocks 1 and 3)}{130}{subsection.7.2}%
-\contentsline {subsubsection}{\numberline {7.2.1}One model for each adjective}{132}{subsubsection.7.2.1}%
-\contentsline {subsubsection}{\numberline {7.2.2}Nervous}{135}{subsubsection.7.2.2}%
-\contentsline {subsubsection}{\numberline {7.2.3}Careless}{135}{subsubsection.7.2.3}%
-\contentsline {section}{\numberline {8}How does format affect participants' subjective experience?}{138}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Enjoyment}{138}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Perception of survey design}{140}{subsection.8.2}%
-\contentsline {section}{\numberline {9}Power analysis}{143}{section.9}%
-\contentsline {section}{\numberline {10}R version and packages}{144}{section.10}%
+\contentsline {paragraph}{\numberline {4.6.1.3}Adventurous}{68}{figure.20}%
+\contentsline {paragraph}{\numberline {4.6.1.4}Thrifty}{68}{figure.21}%
+\contentsline {section}{\numberline {5}Does the internal consistency and reliability of Big Five traits vary by item wording?}{73}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Calculate Cronbach's alpha for each format}{73}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Alpha}{74}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Split-half reliability}{74}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Omega}{77}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Does the test-retest reliability of personality items change as a function of item wording?}{78}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Test-retest reliability (all items pooled)}{78}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Test-retest reliability (all items pooled, moderated by memory)}{79}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}Block 1/Block 2}{79}{subsubsection.6.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.2}Block 1/Block 3}{80}{subsubsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.3}Test-retest reliability (all items pooled, by format)}{80}{subsection.6.3}%
+\contentsline {subsubsection}{\numberline {6.3.1}Block 1/Block 2}{81}{subsubsection.6.3.1}%
+\contentsline {subsubsection}{\numberline {6.3.2}Block 1/Block 3}{82}{subsubsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.4}Test-retest reliability (items separated, by format)}{82}{subsection.6.4}%
+\contentsline {section}{\numberline {7}How does format affect timing of responses?}{86}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Effect of format on timing (Blocks 1 and 2 data)}{86}{subsection.7.1}%
+\contentsline {subsubsection}{\numberline {7.1.1}Plots}{87}{subsubsection.7.1.1}%
+\contentsline {subsubsection}{\numberline {7.1.2}One model for each adjective}{87}{subsubsection.7.1.2}%
+\contentsline {subsubsection}{\numberline {7.1.3}Pairwise t-tests for significant ANOVAs}{90}{subsubsection.7.1.3}%
+\contentsline {subsubsection}{\numberline {7.1.4}Active}{92}{subsubsection.7.1.4}%
+\contentsline {subsubsection}{\numberline {7.1.5}Adventurous}{92}{subsubsection.7.1.5}%
+\contentsline {subsubsection}{\numberline {7.1.6}Broadminded}{92}{subsubsection.7.1.6}%
+\contentsline {subsubsection}{\numberline {7.1.7}Calm}{95}{subsubsection.7.1.7}%
+\contentsline {subsubsection}{\numberline {7.1.8}Caring}{97}{subsubsection.7.1.8}%
+\contentsline {subsubsection}{\numberline {7.1.9}Cautious}{97}{subsubsection.7.1.9}%
+\contentsline {subsubsection}{\numberline {7.1.10}Cold}{98}{subsubsection.7.1.10}%
+\contentsline {subsubsection}{\numberline {7.1.11}Creative}{100}{subsubsection.7.1.11}%
+\contentsline {subsubsection}{\numberline {7.1.12}Curious}{100}{subsubsection.7.1.12}%
+\contentsline {subsubsection}{\numberline {7.1.13}Friendly}{101}{subsubsection.7.1.13}%
+\contentsline {subsubsection}{\numberline {7.1.14}Hardworking}{103}{subsubsection.7.1.14}%
+\contentsline {subsubsection}{\numberline {7.1.15}Helpful}{103}{subsubsection.7.1.15}%
+\contentsline {subsubsection}{\numberline {7.1.16}Imaginative}{104}{subsubsection.7.1.16}%
+\contentsline {subsubsection}{\numberline {7.1.17}Intelligent}{106}{subsubsection.7.1.17}%
+\contentsline {subsubsection}{\numberline {7.1.18}Lively}{106}{subsubsection.7.1.18}%
+\contentsline {subsubsection}{\numberline {7.1.19}Organized}{107}{subsubsection.7.1.19}%
+\contentsline {subsubsection}{\numberline {7.1.20}Outgoing}{109}{subsubsection.7.1.20}%
+\contentsline {subsubsection}{\numberline {7.1.21}Quiet}{109}{subsubsection.7.1.21}%
+\contentsline {subsubsection}{\numberline {7.1.22}Relaxed}{110}{subsubsection.7.1.22}%
+\contentsline {subsubsection}{\numberline {7.1.23}Responsible}{112}{subsubsection.7.1.23}%
+\contentsline {subsubsection}{\numberline {7.1.24}Self-disciplined}{112}{subsubsection.7.1.24}%
+\contentsline {subsubsection}{\numberline {7.1.25}Shy}{113}{subsubsection.7.1.25}%
+\contentsline {subsubsection}{\numberline {7.1.26}Soft-hearted}{115}{subsubsection.7.1.26}%
+\contentsline {subsubsection}{\numberline {7.1.27}Sophisticated}{115}{subsubsection.7.1.27}%
+\contentsline {subsubsection}{\numberline {7.1.28}Sympathetic}{116}{subsubsection.7.1.28}%
+\contentsline {subsubsection}{\numberline {7.1.29}Talkative}{118}{subsubsection.7.1.29}%
+\contentsline {subsubsection}{\numberline {7.1.30}Thorough}{118}{subsubsection.7.1.30}%
+\contentsline {subsubsection}{\numberline {7.1.31}Thrifty}{119}{subsubsection.7.1.31}%
+\contentsline {subsubsection}{\numberline {7.1.32}Uncreative}{121}{subsubsection.7.1.32}%
+\contentsline {subsubsection}{\numberline {7.1.33}Unintellectual}{121}{subsubsection.7.1.33}%
+\contentsline {subsubsection}{\numberline {7.1.34}Unsympathetic}{122}{subsubsection.7.1.34}%
+\contentsline {subsubsection}{\numberline {7.1.35}Warm}{124}{subsubsection.7.1.35}%
+\contentsline {subsubsection}{\numberline {7.1.36}Careless}{124}{subsubsection.7.1.36}%
+\contentsline {subsubsection}{\numberline {7.1.37}Impulsive}{125}{subsubsection.7.1.37}%
+\contentsline {subsubsection}{\numberline {7.1.38}Moody}{127}{subsubsection.7.1.38}%
+\contentsline {subsubsection}{\numberline {7.1.39}Nervous}{127}{subsubsection.7.1.39}%
+\contentsline {subsubsection}{\numberline {7.1.40}Reckless}{128}{subsubsection.7.1.40}%
+\contentsline {subsubsection}{\numberline {7.1.41}Worrying}{130}{subsubsection.7.1.41}%
+\contentsline {subsection}{\numberline {7.2}Inclusion of ``I'' (Blocks 1 and 3)}{131}{subsection.7.2}%
+\contentsline {subsubsection}{\numberline {7.2.1}One model for each adjective}{133}{subsubsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.2}Nervous}{136}{subsubsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.3}Careless}{136}{subsubsection.7.2.3}%
+\contentsline {section}{\numberline {8}How does format affect participants' subjective experience?}{139}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Enjoyment}{139}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Perception of survey design}{143}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Power analysis}{148}{section.9}%
+\contentsline {section}{\numberline {10}R version and packages}{149}{section.10}%
